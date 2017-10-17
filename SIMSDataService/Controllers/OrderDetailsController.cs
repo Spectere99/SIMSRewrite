@@ -21,10 +21,10 @@ namespace SIMSDataService.Controllers
     using System.Web.Http.OData.Extensions;
     using SIMSEntities;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<order_detail>("OrderDetail");
+    builder.EntitySet<order_detail>("OrderDetails");
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
-    public class OrderDetailController : ODataController
+    public class OrderDetailsController : ODataController
     {
         private simsEntities db = new simsEntities();
 

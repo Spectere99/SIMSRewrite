@@ -34,7 +34,7 @@ namespace SIMSDataService
             builder.EntitySet<customer>("Customers");
             builder.EntitySet<customer_person>("customer_persons");
             builder.EntitySet<correspondence>("correspondences");
-            builder.EntitySet<order_detail>("order_detail");
+            builder.EntitySet<order_detail>("order_details");
             builder.EntitySet<customer_address>("customer_address");
         config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }
