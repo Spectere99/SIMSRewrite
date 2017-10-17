@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="c337062c9ebc4a8aae3092029ac3c3fb" Name="Diagram1" ZoomLevel="109">
+        <EntityTypeShape EntityType="SimsModel.correspondence" Width="1.5" PointX="1.125" PointY="20.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.customer" Width="2.125" PointX="3.375" PointY="3.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.customer_address" Width="1.625" PointX="6.25" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.customer_notes" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.customer_person" Width="1.875" PointX="0.75" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.lookup_items" Width="1.5" PointX="6.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.navigation" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.order_art_file" Width="1.5" PointX="8.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.order_art_placement" Width="1.5" PointX="8.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.order_colors" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.order_detail" Width="1.5" PointX="3.375" PointY="8.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.order_fees" Width="1.5" PointX="10.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.order_notes" Width="1.5" PointX="10.75" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.order_payments" Width="1.5" PointX="10.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.order_status_history" Width="1.5" PointX="5.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.order_task" Width="1.5" PointX="7.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.order" Width="1.875" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.pricelist" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.task" Width="1.5" PointX="12.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.user" Width="1.5" PointX="12.75" PointY="9.75" IsExpanded="true" />
+        <AssociationConnector Association="SimsModel.customer_customer_address" />
+        <AssociationConnector Association="SimsModel.ordercustomer" />
+        <AssociationConnector Association="SimsModel.correspondencecustomer" />
+        <AssociationConnector Association="SimsModel.orderorder_detail" />
+        <AssociationConnector Association="SimsModel.customer_personcustomer" />
+        <AssociationConnector Association="SimsModel.customer_parent" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
