@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DxDataGridModule } from 'devextreme-angular';
 
 import { AppComponent } from './app.component';
@@ -11,7 +10,7 @@ import { CustomerComponent } from './customer/customer.component';
     AppComponent,
     CustomerComponent
   ],
-  imports: [NgbModule.forRoot(),
+  imports: [
     BrowserModule,
     DxDataGridModule
   ],
