@@ -1,16 +1,4 @@
-<div class="row">
-  <div class="col-lg-6">
-    <dx-data-grid id="gridCustomers"
-  [dataSource]="dataSource">
-    <dxi-column dataField="order_id" caption="ID" [width]="50"></dxi-column>
-    <dxi-column dataField="customer_id" caption="Customer ID" [width]="250"></dxi-column>
-    <dxi-column dataField="order_number" caption="Order Number" [width]="100"></dxi-column>
-    <dxi-column dataField="order_type" caption="Type" [width]="100"></dxi-column>
-    <dxo-search-panel [visible]="true"></dxo-search-panel>
-    <dxo-header-filter [visible]="true"></dxo-header-filter>
-    <dxo-sorting mode="single"> <!-- or "multiple" | "none" -->
-</dxo-sorting>
-</dx-data-grid>
-  </div>
+<div class="container col-md-12">
+  <h5><span class="material-icons" style="text-align: center;">group</span> Customers</h5>
+  <hr>
 </div>
-

@@ -1,6 +1,6 @@
 import { AppPage } from './app.po';
 
-describe('site App', () => {
+describe('sims App', () => {
   let page: AppPage;
 
   beforeEach(() => {

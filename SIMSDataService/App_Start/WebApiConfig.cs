@@ -38,10 +38,10 @@ namespace SIMSDataService
 
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
             builder.EntitySet<order>("orders");
-            builder.EntitySet<customer>("Customers");
+            builder.EntitySet<customer>("customers");
             builder.EntitySet<customer_person>("customer_persons");
             builder.EntitySet<correspondence>("correspondences");
-            builder.EntitySet<order_detail>("order_details");
+            builder.EntitySet<order_detail>("OrderDetails");
             builder.EntitySet<customer_address>("customer_address");
         config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }

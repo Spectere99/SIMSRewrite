@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">SIMS 2.0</a>
+  <button class="navbar-toggler" (click)="collapse=!collapse" type="button" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse" (click)="collapse=true" [hidden]="collapse">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link"  [routerLink] = "['/Customer']"><span class="material-icons">group</span> Customers<span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"  [routerLink] = "['/Order']"><span class="material-icons">shopping_cart</span> Orders</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink] = "['/Task']"><span class="material-icons">watch_later</span> Tasks</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink] = "['/Garment']"><span class="material-icons">shopping_basket</span> Garments</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink] = "['/Report']"><span class="material-icons">dashboard</span> Reports</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"><span class="material-icons">exit_to_app</span> Log Off</a>
+      </li>
+    </ul>
+  </div>
+</nav>

@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.ModelBinding;
 using System.Web.Http.OData;
@@ -22,28 +23,29 @@ namespace SIMSDataService.Controllers
     using SIMSEntities;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
     builder.EntitySet<order_detail>("OrderDetails");
+    builder.EntitySet<order>("orders"); 
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
     public class OrderDetailsController : ODataController
     {
         private simsEntities db = new simsEntities();
 
-        // GET: odata/OrderDetail
+        // GET: odata/OrderDetails
         [EnableQuery]
-        public IQueryable<order_detail> GetOrderDetail()
+        public IQueryable<order_detail> GetOrderDetails()
         {
             return db.order_detail;
         }
 
-        // GET: odata/OrderDetail(5)
+        // GET: odata/OrderDetails(5)
         [EnableQuery]
         public SingleResult<order_detail> Getorder_detail([FromODataUri] int key)
         {
             return SingleResult.Create(db.order_detail.Where(order_detail => order_detail.order_detail_id == key));
         }
 
-        // PUT: odata/OrderDetail(5)
-        public IHttpActionResult Put([FromODataUri] int key, Delta<order_detail> patch)
+        // PUT: odata/OrderDetails(5)
+        public async Task<IHttpActionResult> Put([FromODataUri] int key, Delta<order_detail> patch)
         {
             Validate(patch.GetEntity());
 
@@ -52,7 +54,7 @@ namespace SIMSDataService.Controllers
                 return BadRequest(ModelState);
             }
 
-            order_detail order_detail = db.order_detail.Find(key);
+            order_detail order_detail = await db.order_detail.FindAsync(key);
             if (order_detail == null)
             {
                 return NotFound();
@@ -62,7 +64,7 @@ namespace SIMSDataService.Controllers
 
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,8 +81,8 @@ namespace SIMSDataService.Controllers
             return Updated(order_detail);
         }
 
-        // POST: odata/OrderDetail
-        public IHttpActionResult Post(order_detail order_detail)
+        // POST: odata/OrderDetails
+        public async Task<IHttpActionResult> Post(order_detail order_detail)
         {
             if (!ModelState.IsValid)
             {
@@ -91,7 +93,7 @@ namespace SIMSDataService.Controllers
 
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {
@@ -108,9 +110,9 @@ namespace SIMSDataService.Controllers
             return Created(order_detail);
         }
 
-        // PATCH: odata/OrderDetail(5)
+        // PATCH: odata/OrderDetails(5)
         [AcceptVerbs("PATCH", "MERGE")]
-        public IHttpActionResult Patch([FromODataUri] int key, Delta<order_detail> patch)
+        public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<order_detail> patch)
         {
             Validate(patch.GetEntity());
 
@@ -119,7 +121,7 @@ namespace SIMSDataService.Controllers
                 return BadRequest(ModelState);
             }
 
-            order_detail order_detail = db.order_detail.Find(key);
+            order_detail order_detail = await db.order_detail.FindAsync(key);
             if (order_detail == null)
             {
                 return NotFound();
@@ -129,7 +131,7 @@ namespace SIMSDataService.Controllers
 
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -146,19 +148,26 @@ namespace SIMSDataService.Controllers
             return Updated(order_detail);
         }
 
-        // DELETE: odata/OrderDetail(5)
-        public IHttpActionResult Delete([FromODataUri] int key)
+        // DELETE: odata/OrderDetails(5)
+        public async Task<IHttpActionResult> Delete([FromODataUri] int key)
         {
-            order_detail order_detail = db.order_detail.Find(key);
+            order_detail order_detail = await db.order_detail.FindAsync(key);
             if (order_detail == null)
             {
                 return NotFound();
             }
 
             db.order_detail.Remove(order_detail);
-            db.SaveChanges();
+            await db.SaveChangesAsync();
 
             return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // GET: odata/OrderDetails(5)/order
+        [EnableQuery]
+        public SingleResult<order> Getorder([FromODataUri] int key)
+        {
+            return SingleResult.Create(db.order_detail.Where(m => m.order_detail_id == key).Select(m => m.order));
         }
 
         protected override void Dispose(bool disposing)
