@@ -43,7 +43,8 @@ namespace SIMSDataService
             builder.EntitySet<correspondence>("correspondences");
             builder.EntitySet<order_detail>("OrderDetails");
             builder.EntitySet<customer_address>("customer_address");
-        config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
+            builder.EntitySet<task>("Tasks");
+            config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
         }
     }
 }
