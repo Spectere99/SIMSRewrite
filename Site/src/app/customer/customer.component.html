@@ -1,4 +1,77 @@
 <div class="container col-md-12">
   <h5><span class="material-icons" style="text-align: center;">group</span> Customers</h5>
   <hr>
+  <div class="row">
+    <div class="col-lg-12">
+      <dx-data-grid id="gridOrders"
+    [dataSource]="dataSource"
+    [showColumnLines]="false"
+    [showRowLines]="true"
+    [showBorders]="true"
+    [hoverStateEnabled]="true"
+    [rowAlternationEnabled]="true"
+    [height]="500">
+    <dxo-selection mode="single"></dxo-selection>
+      <dxi-column dataField="reorder_ind" caption="Reorder?" datatype="boolean" [width]="100" [allowFiltering]="false"> ></dxi-column>
+      <dxi-column dataField="order_number" caption="Order #" [width]="110" [allowSearch]="true" [allowFiltering]="false"></dxi-column>
+      <dxi-column dataField="order_status" caption="Status" [width]="125">
+        <dxo-lookup
+          [dataSource]="order_statusSource"
+          valueExpr="char_mod"
+          displayExpr="description"></dxo-lookup>
+      </dxi-column>
+      <dxi-column dataField="ship_attn" caption="Customer Name" [width]="400"></dxi-column>
+      <dxi-column dataField="order_date" caption="Order Date" dataType="date" [width]="100"></dxi-column>
+      <dxi-column dataField="order_due_date" caption="Due Date" dataType="date" [width]="100"></dxi-column>
+      <dxi-column dataField="purchase_order" caption="Purchase Order" [width]="250"></dxi-column>
+      <!--<dxi-column dataField="order_type" caption="Order Type" [width]="100"></dxi-column>
+      <dxi-column dataField="assigned_user_id" caption="Assigned To" [width]="100"></dxi-column> -->
+      <!--<dxi-column dataField="" caption="Items" [width]="100"></dxi-column> -->
+      <dxo-search-panel [visible]="true"></dxo-search-panel>
+      <dxo-header-filter [visible]="true"></dxo-header-filter>
+      <dxo-sorting mode="single"> <!-- or "multiple" | "none" --></dxo-sorting>
+      <dxo-paging [pageSize]="10"></dxo-paging>
+      <dxo-pager
+        [showPageSizeSelector]="true"
+        [allowedPageSizes]="[10, 20, 50]"></dxo-pager>
+  <dxo-editing 
+  mode="popup"
+  [allowUpdating]="true"
+  [allowDeleting]="false"
+  [allowAdding]="true">
+      <dxo-popup
+      title="User Info"
+      [showTitle]="true"
+      [width]="700"
+      [height]="450"
+      [position]="{ my: 'top', at: 'top', of: window }">
+      </dxo-popup>
+</dxo-editing>
+  </dx-data-grid>
+    </div>
+  </div>
+  
+  <div class="row">
+    <div class="col-xs-12">
+        <dx-tab-panel
+        #tabPanel
+        [selectedIndex]="0"
+        [loop]="false"
+        [animationEnabled]="true"
+        [swipeEnabled]="true">
+          <dxi-item title='Info'>
+            <div class="panel panel-default xs-md-12">
+                <div class="panel-heading">Panel Heading</div>
+                <div class="panel-body">Panel Content</div>
+              </div>
+          </dxi-item>
+          <dxi-item title='Details'>
+            <app-orderdetails></app-orderdetails>
+          </dxi-item>
+          <dxi-item title='History'>
+            History
+          </dxi-item>
+      </dx-tab-panel>
+    </div>
+  </div>
 </div>

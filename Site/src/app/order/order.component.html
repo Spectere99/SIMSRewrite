@@ -20,12 +20,12 @@
             valueExpr="char_mod"
             displayExpr="description"></dxo-lookup>
         </dxi-column>
-        <dxi-column dataField="ship_attn" caption="Customer Name" [width]="400"></dxi-column>
+        <dxi-column dataField="customer.customer_name" caption="Customer Name" [width]="400"></dxi-column>
         <dxi-column dataField="order_date" caption="Order Date" dataType="date" [width]="100"></dxi-column>
         <dxi-column dataField="order_due_date" caption="Due Date" dataType="date" [width]="100"></dxi-column>
         <dxi-column dataField="purchase_order" caption="Purchase Order" [width]="250"></dxi-column>
-        <!--<dxi-column dataField="order_type" caption="Order Type" [width]="100"></dxi-column>
-        <dxi-column dataField="assigned_user_id" caption="Assigned To" [width]="100"></dxi-column> -->
+        <dxi-column dataField="order_type" caption="Order Type" [width]="100"></dxi-column>
+        <dxi-column dataField="assigned_user_id" caption="Assigned To" [width]="100"></dxi-column>
         <!--<dxi-column dataField="" caption="Items" [width]="100"></dxi-column> -->
         <dxo-search-panel [visible]="true"></dxo-search-panel>
         <dxo-header-filter [visible]="true"></dxo-header-filter>

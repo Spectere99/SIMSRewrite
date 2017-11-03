@@ -11,7 +11,7 @@ export class OrderComponent implements OnInit {
   order_typeSource: any;
   user_Source: any;
 
-  filterDate = new Date(2015, 1, 1);
+  filterDate = new Date(2008, 1, 1);
 
     constructor() {
       this.createOrderDataSource();
@@ -34,6 +34,7 @@ export class OrderComponent implements OnInit {
           type: 'odata',
           url: 'http://localhost:56543/odata/orders'
       },
+      expand: ['customer'],
       select: [
         'order_id',
         'customer_id',
@@ -82,9 +83,10 @@ export class OrderComponent implements OnInit {
         'contact_phone1_type',
         'contact_phone2',
         'contact_phone2_ext',
-        'contact_phone2_type'
+        'contact_phone2_type',
+        'customer/customer_name'
       ],
-       filter: ['order_date', '>', this.filterDate]
+       //filter: ['order_date', '>', this.filterDate]
    };
   }
 
