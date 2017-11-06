@@ -1,11 +1,33 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
+import { Http, HttpModule, Headers, Response } from '@angular/http';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/map';
+
+/* export interface ILookup {
+  id: number;
+  class: string;
+  description: string;
+  char_mod: string;
+  is_active: string;
+  order_by: number;
+  filter_function: string;
+  created_by: string;
+  created_date: string;
+  updated_by: string;
+  updated_date: string;
+} */
 
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
   styleUrls: ['./order.component.css']
 })
+
 export class OrderComponent implements OnInit {
+  config;
+  baseUrl: string;
+  odataLookup;
   dataSource: any;
   order_statusSource: any;
   order_typeSource: any;
@@ -13,26 +35,22 @@ export class OrderComponent implements OnInit {
 
   filterDate = new Date(2008, 1, 1);
 
-    constructor() {
+    constructor(private http: Http) {
+      this.baseUrl = 'http://localhost:56543/odata/';
       this.createOrderDataSource();
-
-      this.order_statusSource = [
-      {char_mod: 'inq', description: 'Quote'},
-      {char_mod: 'inst', description: 'Invoiced'},
-      {char_mod: 'qtat', description: 'Quote/Artwork'},
-      {char_mod: 'ord', description: 'Order'},
-      {char_mod: 'com', description: 'Completed'},
-      {char_mod: 'clos', description: 'Closed'},
-      {char_mod: 'can', description: 'Cancelled'} ];
-     // this.createStatusDataSource();
+      this.createStatusDataSource();
       this.createOrderTypeDataSource();
     }
 
+  checkValues() {
+    console.log('order_statusSource', this.order_statusSource );
+    console.log('order_typeSource', this.order_typeSource );
+  }
   createOrderDataSource() {
     this.dataSource = {
       store: {
           type: 'odata',
-          url: 'http://localhost:56543/odata/orders'
+          url: this.baseUrl + 'orders'
       },
       expand: ['customer'],
       select: [
@@ -86,41 +104,35 @@ export class OrderComponent implements OnInit {
         'contact_phone2_type',
         'customer/customer_name'
       ],
-       //filter: ['order_date', '>', this.filterDate]
+       // filter: ['order_date', '>', this.filterDate]
    };
   }
 
   createStatusDataSource() {
-    this.order_statusSource = {
-      store: {
-          type: 'odata',
-          url: 'http://localhost:56543/odata/LookupItems'
-      },
-      select: [
-        'id',
-        'class',
-        'description',
-        'char_mod'
-      ],
-      filter: ['class', 'eq', 'ord']
-    };
+
+    this.order_statusSource = [
+      {char_mod: 'inq', description: 'Quote'},
+      {char_mod: 'inst', description: 'Invoiced'},
+      {char_mod: 'qtat', description: 'Quote/Artwork'},
+      {char_mod: 'ord', description: 'Order'},
+      {char_mod: 'com', description: 'Completed'},
+      {char_mod: 'clos', description: 'Closed'},
+      {char_mod: 'can', description: 'Cancelled'} ];
+
   }
 
   createOrderTypeDataSource() {
-    this.order_typeSource = {
-      store: {
-          type: 'odata',
-          url: 'http://localhost:56543/odata/LookupItems'
-      },
-      select: [
-        'id',
-        'class',
-        'description',
-        'char_mod'
-      ],
-      filter: ['class', 'eq', 'otyps']
-    };
+    this.http.get(this.baseUrl + 'LookupItems', {headers: this.getHeaders('rwflowers')})
+            .map(data => this.order_typeSource = data);
+    console.log('order_typeSource', this.order_typeSource);
   }
+
+  private getHeaders(userId) {
+    const headers = new Headers({ 'Accept': 'application/json' });
+    headers.append('Content-Type', 'application/json; charset=UTF-8');
+    headers.append('userid', userId);
+    return headers;
+}
   convertToBooleanDisplay(value) {
     return value === 'Y';
   }

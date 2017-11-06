@@ -36,6 +36,12 @@ namespace SIMSDataService
                 defaults: new { id = RouteParameter.Optional }
             );
 
+           
+            config.Routes.MapODataServiceRoute("odata", "odata", BuildODataModels());
+        }
+
+        private static Microsoft.Data.Edm.IEdmModel BuildODataModels()
+        {
             ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
             builder.EntitySet<order>("orders");
             builder.EntitySet<customer>("customers");
@@ -45,7 +51,7 @@ namespace SIMSDataService
             builder.EntitySet<customer_address>("customer_address");
             builder.EntitySet<task>("Tasks");
             builder.EntitySet<lookup_items>("LookupItems");
-            config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
+            return builder.GetEdmModel();
         }
     }
 }
