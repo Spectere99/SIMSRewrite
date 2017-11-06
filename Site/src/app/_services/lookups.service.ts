@@ -1,54 +1,32 @@
 import { Injectable } from '@angular/core';
-
+import { Http } from '@angular/http';
 import { ODataService } from '../_odata/odata.service';
 import { RequestTypes } from '../_odata/odata.model';
 import { IUrlOptions } from '../_odata/odata.model';
 
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+
+export class LookupItem {
+    id: number;
+    className: string;
+    chr_mod: string;
+    description: string;
+}
+
 @Injectable()
 export class LookupService {
+    lookupService: ODataService;
+    public requestResult: any;
 
-        public requestResult: any;
+    constructor( private odata: ODataService ) { }
 
-        constructor(
-            private odata: ODataService
-        ) { }
-
-        testGet() {
-            let urlOptions: IUrlOptions = <IUrlOptions>{};
-            urlOptions.restOfUrl = 'LookupItems';
-            this.odata.Request(RequestTypes.get, urlOptions).subscribe(
-                data => this.requestResult = data,
-                error => alert(error)
-            );
-        }
-
-        testPost() {
-            let urlOptions: IUrlOptions = <IUrlOptions>{};
-            this.odata.Request(RequestTypes.post, urlOptions).subscribe(
-                data => this.requestResult = data,
-                error => alert(error)
-            );
-        }
-
-        testPut() {
-            let urlOptions: IUrlOptions = <IUrlOptions>{};
-            this.odata.Request(RequestTypes.put, urlOptions).subscribe(
-                data => this.requestResult = data,
-                error => alert(error)
-            );
-        }
-
-        testPatch() {
-            let urlOptions: IUrlOptions = <IUrlOptions>{};
-            this.odata.Request(RequestTypes.patch, urlOptions).subscribe(
-                data => this.requestResult = data,
-                error => alert(error)
-            );
-        }
-
-        testDelete() {
-            let urlOptions: IUrlOptions = <IUrlOptions>{};
-            this.requestResult = this.odata.Request(RequestTypes.delete, urlOptions);
-        }
-
+    Get(className: string) {
+        let urlOptions: IUrlOptions = <IUrlOptions>{};
+        urlOptions.restOfUrl = 'Tasks';
+        this.odata.Request(RequestTypes.get, urlOptions).subscribe(
+            data => this.requestResult = data,
+            error => alert(error)
+        );
     }
+}

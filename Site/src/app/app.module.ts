@@ -2,8 +2,9 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
-
-
+import { Injectable } from '@angular/core';
+import { HttpClientModule } from '@angular/common/http';
+import { Http, HttpModule, Headers, RequestMethod, RequestOptions } from '@angular/http';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './_shared/navbar/navbar.component';
@@ -44,6 +45,7 @@ const appRoutes: Routes = [
   imports: [
     NgbModule.forRoot(),
     RouterModule.forRoot(appRoutes),
+    HttpModule,
     BrowserModule,
     DevExtremeModule
   ],
