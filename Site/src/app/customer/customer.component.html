@@ -12,21 +12,11 @@
     [rowAlternationEnabled]="true"
     [height]="500">
     <dxo-selection mode="single"></dxo-selection>
-      <dxi-column dataField="reorder_ind" caption="Reorder?" datatype="boolean" [width]="100" [allowFiltering]="false"> ></dxi-column>
-      <dxi-column dataField="order_number" caption="Order #" [width]="110" [allowSearch]="true" [allowFiltering]="false"></dxi-column>
-      <dxi-column dataField="order_status" caption="Status" [width]="125">
-        <dxo-lookup
-          [dataSource]="order_statusSource"
-          valueExpr="char_mod"
-          displayExpr="description"></dxo-lookup>
-      </dxi-column>
-      <dxi-column dataField="ship_attn" caption="Customer Name" [width]="400"></dxi-column>
-      <dxi-column dataField="order_date" caption="Order Date" dataType="date" [width]="100"></dxi-column>
-      <dxi-column dataField="order_due_date" caption="Due Date" dataType="date" [width]="100"></dxi-column>
-      <dxi-column dataField="purchase_order" caption="Purchase Order" [width]="250"></dxi-column>
-      <!--<dxi-column dataField="order_type" caption="Order Type" [width]="100"></dxi-column>
-      <dxi-column dataField="assigned_user_id" caption="Assigned To" [width]="100"></dxi-column> -->
-      <!--<dxi-column dataField="" caption="Items" [width]="100"></dxi-column> -->
+      <dxi-column dataField="customer_name" caption="Customer Name" [width]="350" [allowFiltering]="true"></dxi-column>
+      <dxi-column dataField="status_code" caption="Status" [width]="150"></dxi-column>
+      <dxi-column dataField="setup_date" caption="Setup Date" dataType="date" [width]="150"></dxi-column>
+      <dxi-column dataField="setup_by" caption="Setup By" [width]="150"></dxi-column>
+      <dxi-column dataField="parent_ind" caption="Is Parent?" dataType="boolean" [width]="150"></dxi-column>
       <dxo-search-panel [visible]="true"></dxo-search-panel>
       <dxo-header-filter [visible]="true"></dxo-header-filter>
       <dxo-sorting mode="single"> <!-- or "multiple" | "none" --></dxo-sorting>
