@@ -5,6 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { Http, HttpModule, Headers, RequestMethod, RequestOptions } from '@angular/http';
+import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './_shared/navbar/navbar.component';
@@ -47,7 +48,8 @@ const appRoutes: Routes = [
     RouterModule.forRoot(appRoutes),
     HttpModule,
     BrowserModule,
-    DevExtremeModule
+    DevExtremeModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

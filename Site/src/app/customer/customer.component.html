@@ -9,14 +9,19 @@
     [showRowLines]="true"
     [showBorders]="true"
     [hoverStateEnabled]="true"
-    [rowAlternationEnabled]="true"
+    [rowAlternationEnabled]="false"
+    (onEditingStart) = "showEditPopup($event)"
     [height]="500">
     <dxo-selection mode="single"></dxo-selection>
       <dxi-column dataField="customer_name" caption="Customer Name" [width]="350" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="status_code" caption="Status" [width]="150"></dxi-column>
-      <dxi-column dataField="setup_date" caption="Setup Date" dataType="date" [width]="150"></dxi-column>
-      <dxi-column dataField="setup_by" caption="Setup By" [width]="150"></dxi-column>
-      <dxi-column dataField="parent_ind" caption="Is Parent?" dataType="boolean" [width]="150"></dxi-column>
+      <dxi-column dataField="customer_person.first_name" caption="Contact Name" [width]="170" [allowFiltering]="true" [calculateCellValue]="buildCustomerFirstName"></dxi-column>
+      <dxi-column dataField="customer_person.phone_1" caption="Phone 1" [width]="150" [calculateCellValue]="buildPhoneNumber1"></dxi-column>
+      <dxi-column dataField="customer_person.phone_2" caption="Phone 2" [width]="150" [calculateCellValue]="buildPhoneNumber2"></dxi-column>
+      <dxi-column dataField="customer_address.address_1" caption="Address" [width]="150"></dxi-column>
+      <dxi-column dataField="customer_address.city" caption="City" [width]="150"></dxi-column>
+      <dxi-column dataField="customer_address.state" caption="State" [width]="75"></dxi-column>
+      <dxi-column dataField="customer_address.zip" caption="Zip" [width]="75"></dxi-column>
+      
       <dxo-search-panel [visible]="true"></dxo-search-panel>
       <dxo-header-filter [visible]="true"></dxo-header-filter>
       <dxo-sorting mode="single"> <!-- or "multiple" | "none" --></dxo-sorting>
@@ -25,43 +30,19 @@
         [showPageSizeSelector]="true"
         [allowedPageSizes]="[10, 20, 50]"></dxo-pager>
   <dxo-editing 
-  mode="popup"
+  mode="form"
   [allowUpdating]="true"
   [allowDeleting]="false"
   [allowAdding]="true">
       <dxo-popup
-      title="User Info"
+      title="Customer Info"
       [showTitle]="true"
       [width]="700"
       [height]="450"
       [position]="{ my: 'top', at: 'top', of: window }">
       </dxo-popup>
-</dxo-editing>
+  </dxo-editing>
   </dx-data-grid>
-    </div>
-  </div>
-  
-  <div class="row">
-    <div class="col-xs-12">
-        <dx-tab-panel
-        #tabPanel
-        [selectedIndex]="0"
-        [loop]="false"
-        [animationEnabled]="true"
-        [swipeEnabled]="true">
-          <dxi-item title='Info'>
-            <div class="panel panel-default xs-md-12">
-                <div class="panel-heading">Panel Heading</div>
-                <div class="panel-body">Panel Content</div>
-              </div>
-          </dxi-item>
-          <dxi-item title='Details'>
-            <app-orderdetails></app-orderdetails>
-          </dxi-item>
-          <dxi-item title='History'>
-            History
-          </dxi-item>
-      </dx-tab-panel>
     </div>
   </div>
 </div>

@@ -1,6 +1,8 @@
 import { Component, Injectable, OnInit } from '@angular/core';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { NgModel } from '@angular/forms';
+
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
@@ -32,6 +34,7 @@ export class OrderComponent implements OnInit {
   order_statusSource: any;
   order_typeSource: any;
   user_Source: any;
+  selectedOrder = {};
 
   filterDate = new Date(2008, 1, 1);
 
@@ -132,9 +135,14 @@ export class OrderComponent implements OnInit {
     headers.append('Content-Type', 'application/json; charset=UTF-8');
     headers.append('userid', userId);
     return headers;
-}
-  convertToBooleanDisplay(value) {
-    return value === 'Y';
+  }
+
+  selectionChanged(e) {
+    this.selectedOrder = e.selectedRowsData[0];
+  }
+  setReorderInd(data) {
+    if (data === undefined) { return false; }
+    return data.reorder_ind === 'Y';
   }
   ngOnInit() {
   }
