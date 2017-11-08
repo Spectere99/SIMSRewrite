@@ -18,7 +18,8 @@ import { GarmentComponent } from './garment/garment.component';
 import { ReportComponent } from './report/report.component';
 import { LoginComponent } from './login/login.component';
 
-import { DevExtremeModule } from 'devextreme-angular';
+import { DevExtremeModule, DxTemplateModule } from 'devextreme-angular';
+import { CustomerInfoComponent } from './customer/customer-info/customer-info.component';
 
 const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -41,7 +42,8 @@ const appRoutes: Routes = [
     TaskComponent,
     GarmentComponent,
     ReportComponent,
-    LoginComponent
+    LoginComponent,
+    CustomerInfoComponent,
   ],
   imports: [
     NgbModule.forRoot(),
@@ -49,7 +51,8 @@ const appRoutes: Routes = [
     HttpModule,
     BrowserModule,
     DevExtremeModule,
-    FormsModule
+    FormsModule,
+    DxTemplateModule
   ],
   providers: [],
   bootstrap: [AppComponent]

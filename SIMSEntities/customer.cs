@@ -28,6 +28,8 @@ public partial class customer
 
         this.correspondence = new HashSet<correspondence>();
 
+        this.customer_person = new HashSet<customer_person>();
+
         this.parent = new HashSet<customer>();
 
     }
@@ -69,7 +71,9 @@ public partial class customer
 
     public virtual ICollection<correspondence> correspondence { get; set; }
 
-    public virtual customer_person customer_person { get; set; }
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+
+    public virtual ICollection<customer_person> customer_person { get; set; }
 
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
 

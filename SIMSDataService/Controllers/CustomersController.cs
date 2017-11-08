@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using System.Data;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Http.ModelBinding;
 using System.Web.Http.OData;
-using System.Web.Http.OData.Routing;
 using SIMSEntities;
 
 namespace SIMSDataService.Controllers
@@ -189,9 +183,23 @@ namespace SIMSDataService.Controllers
 
         // GET: odata/Customers(5)/customer_person
         [EnableQuery]
-        public SingleResult<customer_person> Getcustomer_person([FromODataUri] int key)
+        public IQueryable<customer_person> Getcustomer_person([FromODataUri] int key)
         {
-            return SingleResult.Create(db.customers.Where(m => m.customer_id == key).Select(m => m.customer_person));
+            return db.customers.Where(m => m.customer_id == key).SelectMany(m => m.customer_person);
+        }
+
+        // GET: odata/Customers(5)/parent
+        [EnableQuery]
+        public IQueryable<customer> Getparent([FromODataUri] int key)
+        {
+            return db.customers.Where(m => m.customer_id == key).SelectMany(m => m.parent);
+        }
+
+        // GET: odata/Customers(5)/child_customers
+        [EnableQuery]
+        public SingleResult<customer> Getchild_customers([FromODataUri] int key)
+        {
+            return SingleResult.Create(db.customers.Where(m => m.customer_id == key).Select(m => m.child_customers));
         }
 
         protected override void Dispose(bool disposing)

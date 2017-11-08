@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
+import { CustomerInfoComponent } from './customer-info/customer-info.component';
 
 @Component({
   selector: 'app-customer',
@@ -6,11 +8,51 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./customer.component.css']
 })
 export class CustomerComponent implements OnInit {
+@ViewChild(DxDataGridComponent) gridCustomers: DxDataGridComponent;
 dataSource: any;
+defaultPageSize: number;
+currentPageSize: number;
+defaultAllowedPageSizes = [10, 20, 50];
+allowedPageSizes;
+scrollMode: string;
+pagingEnabled: boolean;
+gridHeight;
+disableExpand: boolean;
+expandedResults: boolean;
 
   constructor() {
+    this.pagingEnabled = true;
+    this.disableExpand = true;
+    this.expandedResults = false;
+    this.gridHeight = 525;
+    this.allowedPageSizes = this.defaultAllowedPageSizes;
+    this.defaultPageSize = 10;
+    this.currentPageSize = this.defaultPageSize;
     this.CreateCustomerDataSource();
    }
+
+  ExpandGrid() {
+    console.log('expanding Grid');
+    console.log(this.gridCustomers.instance.pageCount());
+    this.expandedResults = !this.expandedResults;
+
+    const currentPageCount = this.gridCustomers.instance.pageCount();
+
+    if (!this.expandedResults) {
+      this.currentPageSize = this.defaultPageSize;
+      this.allowedPageSizes = this.defaultAllowedPageSizes;
+      this.gridHeight = 525;
+    } else {
+      this.currentPageSize = currentPageCount * this.defaultPageSize;
+      this.defaultAllowedPageSizes = [this.currentPageSize];
+      this.gridHeight = 800; // 5 * this.currentPageSize;
+    }
+    this.scrollMode = 'virtual';
+    console.log('gridHeight', this.gridHeight);
+    
+    // this.pagingEnabled = !this.pagingEnabled;
+    // console.log('pagingEnabled', this.pagingEnabled);
+  }
 
   CreateCustomerDataSource() {
     this.dataSource = {
@@ -43,6 +85,12 @@ dataSource: any;
       //  filter: ['customer_address/type_code', '=', 'bill']
        // filter: ['order_date', '>', this.filterDate]
    };
+  }
+  contentReady(e) {
+    const filter = this.gridCustomers.instance.getCombinedFilter();
+    console.log('filter', filter);
+    this.disableExpand = (filter === undefined);
+    console.log('disableExpand', this.disableExpand);
   }
 
   showEditPopup(e) {

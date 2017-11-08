@@ -877,13 +877,13 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="customer_personcustomer">
-          <End Type="SimsModel.customer_person" Role="customer_person" Multiplicity="1" />
-          <End Type="SimsModel.customer" Role="customer" Multiplicity="1" />
+          <End Type="SimsModel.customer_person" Role="customer_person" Multiplicity="*" />
+          <End Type="SimsModel.customer" Role="customer" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="customer_person">
-              <PropertyRef Name="customer_person_id" />
+            <Principal Role="customer">
+              <PropertyRef Name="customer_id" />
             </Principal>
-            <Dependent Role="customer">
+            <Dependent Role="customer_person">
               <PropertyRef Name="customer_id" />
             </Dependent>
           </ReferentialConstraint>
