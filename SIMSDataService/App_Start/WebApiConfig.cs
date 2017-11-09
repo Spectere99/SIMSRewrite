@@ -51,6 +51,7 @@ namespace SIMSDataService
             builder.EntitySet<customer_address>("customer_address");
             builder.EntitySet<task>("Tasks");
             builder.EntitySet<lookup_items>("LookupItems");
+            builder.EntitySet<user>("Users");
             return builder.GetEdmModel();
         }
     }

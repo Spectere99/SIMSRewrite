@@ -5,7 +5,7 @@ using System.Web;
 
 namespace SIMSDataService
 {
-    public class MicksSecurity
+    public class SecurityHelper
     {
         public static string Base64Encode(string plainText)
         {

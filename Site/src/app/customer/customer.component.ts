@@ -1,15 +1,20 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { CustomerInfoComponent } from './customer-info/customer-info.component';
+import { LookupService } from '../_services/lookups.service';
+import { UserService } from '../_services/user.service';
 
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',
+  providers: [LookupService, UserService],
   styleUrls: ['./customer.component.css']
 })
 export class CustomerComponent implements OnInit {
 @ViewChild(DxDataGridComponent) gridCustomers: DxDataGridComponent;
 dataSource: any;
+lookupDataSource: any;
+userDataSource: any;
 defaultPageSize: number;
 currentPageSize: number;
 defaultAllowedPageSizes = [10, 20, 50];
@@ -20,7 +25,7 @@ gridHeight;
 disableExpand: boolean;
 expandedResults: boolean;
 
-  constructor() {
+  constructor(lookupService: LookupService, userService: UserService) {
     this.pagingEnabled = true;
     this.disableExpand = true;
     this.expandedResults = false;
@@ -29,6 +34,12 @@ expandedResults: boolean;
     this.defaultPageSize = 10;
     this.currentPageSize = this.defaultPageSize;
     this.CreateCustomerDataSource();
+    // lookupService.loadLookupData('').subscribe(res => this.lookupDataSource = res.value);
+    userService.getUsers('').subscribe(res => {
+      this.userDataSource = res.value;
+      console.log(this.userDataSource);
+    });
+
    }
 
   ExpandGrid() {
@@ -45,7 +56,7 @@ expandedResults: boolean;
     } else {
       this.currentPageSize = currentPageCount * this.defaultPageSize;
       this.defaultAllowedPageSizes = [this.currentPageSize];
-      this.gridHeight = 800; // 5 * this.currentPageSize;
+      this.gridHeight = 5 * this.currentPageSize;
     }
     this.scrollMode = 'virtual';
     console.log('gridHeight', this.gridHeight);
@@ -53,7 +64,9 @@ expandedResults: boolean;
     // this.pagingEnabled = !this.pagingEnabled;
     // console.log('pagingEnabled', this.pagingEnabled);
   }
-
+  LoadLookupData() {
+    
+  }
   CreateCustomerDataSource() {
     this.dataSource = {
       store: {
@@ -110,7 +123,8 @@ expandedResults: boolean;
   buildPhoneNumber1(data) {
         // console.log('columnValue:', data.customer_person.phone_1);
         if (data.customer_person === undefined) { return ''; }
-        let rawNumber = (data.customer_person.phone_1 === undefined) || (data.customer_person.phone_1 === null) ? '' : data.customer_person.phone_1.toString();
+        let rawNumber = (data.customer_person.phone_1 === undefined) ||
+                          (data.customer_person.phone_1 === null) ? '' : data.customer_person.phone_1.toString();
         // console.log('rawNumber:', rawNumber);
         rawNumber = String(rawNumber);
         rawNumber = rawNumber.replace(/[^0-9]*/g, '');
@@ -131,7 +145,8 @@ expandedResults: boolean;
 
   buildPhoneNumber2(data) {
       if (data.customer_person === undefined) { return ''; }
-      let rawNumber = (data.customer_person.phone_2 === undefined) || (data.customer_person.phone_2 === null) ? '' : data.customer_person.phone_2.toString();
+      let rawNumber = (data.customer_person.phone_2 === undefined) ||
+                      (data.customer_person.phone_2 === null) ? '' : data.customer_person.phone_2.toString();
       // console.log('rawNumber:', rawNumber);
       rawNumber = String(rawNumber);
       rawNumber = rawNumber.replace(/[^0-9]*/g, '');

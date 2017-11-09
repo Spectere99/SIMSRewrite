@@ -2,6 +2,8 @@ import { Component, Injectable, OnInit } from '@angular/core';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { NgModel } from '@angular/forms';
+import { LookupService } from '../_services/lookups.service';
+import { UserService } from '../_services/user.service';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
@@ -23,6 +25,7 @@ import 'rxjs/add/operator/map';
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
+  providers: [LookupService, UserService],
   styleUrls: ['./order.component.css']
 })
 
@@ -35,14 +38,25 @@ export class OrderComponent implements OnInit {
   order_typeSource: any;
   user_Source: any;
   selectedOrder = {};
+  lookupDataSource: any;
 
   filterDate = new Date(2008, 1, 1);
 
-    constructor(private http: Http) {
+    constructor(private http: Http, lookupService: LookupService, userService: UserService) {
       this.baseUrl = 'http://localhost:56543/odata/';
+      lookupService.loadLookupData('').subscribe(res => {
+        this.lookupDataSource = res.value;
+        console.log('lookupDataSource', this.lookupDataSource);
+        this.createStatusDataSource();
+        this.createOrderTypeDataSource();
+      });
+
+      userService.getUsers('').subscribe(res => {
+        this.user_Source = res.value;
+        console.log('userDataSource', this.user_Source);
+      });
+
       this.createOrderDataSource();
-      this.createStatusDataSource();
-      this.createOrderTypeDataSource();
     }
 
   checkValues() {
@@ -113,21 +127,11 @@ export class OrderComponent implements OnInit {
 
   createStatusDataSource() {
 
-    this.order_statusSource = [
-      {char_mod: 'inq', description: 'Quote'},
-      {char_mod: 'inst', description: 'Invoiced'},
-      {char_mod: 'qtat', description: 'Quote/Artwork'},
-      {char_mod: 'ord', description: 'Order'},
-      {char_mod: 'com', description: 'Completed'},
-      {char_mod: 'clos', description: 'Closed'},
-      {char_mod: 'can', description: 'Cancelled'} ];
-
+    this.order_statusSource = this.lookupDataSource.filter(item => item.class === 'ord');
   }
 
   createOrderTypeDataSource() {
-    this.http.get(this.baseUrl + 'LookupItems', {headers: this.getHeaders('rwflowers')})
-            .map(data => this.order_typeSource = data);
-    console.log('order_typeSource', this.order_typeSource);
+    this.order_typeSource = this.lookupDataSource.filter(item => item.class === 'otyps');
   }
 
   private getHeaders(userId) {

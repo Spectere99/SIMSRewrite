@@ -7,7 +7,7 @@ import { IUrlOptions } from '../_odata/odata.model';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
-export class LookupItem {
+export class User {
     id: number;
     className: string;
     chr_mod: string;
@@ -15,7 +15,7 @@ export class LookupItem {
 }
 
 @Injectable()
-export class LookupService {
+export class UserService {
     private baseURL = 'http://localhost:56543/odata';
     public requestResult: Array<any>;
 
@@ -28,8 +28,8 @@ export class LookupService {
         // headers.append('showInactive', this.showInactive.toString());
         return headers;
     }
-    loadLookupData(userId): Observable<any> {
-        return this.http.get(this.baseURL + '/LookupItems', {headers: this.getHeaders(userId)})
+    getUsers(userId): Observable<any> {
+        return this.http.get(this.baseURL + '/Users', {headers: this.getHeaders(userId)})
         .map((res: Response) => {
             // console.log(res.json());
             return res.json();
