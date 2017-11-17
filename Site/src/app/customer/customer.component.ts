@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Output } from '@angular/core';
 import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { CustomerInfoComponent } from './customer-info/customer-info.component';
 import { LookupService } from '../_services/lookups.service';
@@ -11,6 +11,7 @@ import { CustomerContactsComponent } from './customer-contacts/customer-contacts
   styleUrls: ['./customer.component.css']
 })
 export class CustomerComponent implements OnInit {
+selectedCustomer: any;
 @ViewChild(DxDataGridComponent) gridCustomers: DxDataGridComponent;
 dataSource: any;
 lookupDataSource: any;
@@ -24,6 +25,7 @@ pagingEnabled: boolean;
 gridHeight;
 disableExpand: boolean;
 expandedResults: boolean;
+
 
   constructor(lookupService: LookupService, userService: UserService) {
     this.pagingEnabled = true;
@@ -60,12 +62,17 @@ expandedResults: boolean;
     }
     this.scrollMode = 'virtual';
     console.log('gridHeight', this.gridHeight);
-    
+
     // this.pagingEnabled = !this.pagingEnabled;
     // console.log('pagingEnabled', this.pagingEnabled);
   }
+
+  selectCustomer(e) {
+    console.log(e);
+    this.selectedCustomer = e.selectedRowsData[0];
+  }
   LoadLookupData() {
-    
+
   }
   CreateCustomerDataSource() {
     this.dataSource = {

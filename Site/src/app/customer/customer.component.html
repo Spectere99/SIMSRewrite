@@ -19,6 +19,7 @@
     [rowAlternationEnabled]="false"
     (onEditingStart) = "showEditPopup($event)"
     (onContentReady) = "contentReady($event)"
+    (onSelectionChanged) = "selectCustomer($event)"
     [height]="gridHeight">
 <!--     [masterDetail]="{ enabled: true, template: 'contactPerson' }"> -->
     <dxo-selection mode="single"></dxo-selection>
@@ -72,8 +73,32 @@
     </div> -->
     </div>
   </div>
+</div>
+<ngb-tabset>
+    <ngb-tab title="Info">
+      <ng-template ngbTabContent>
+          <app-customer-info></app-customer-info>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Contacts">
+      <ng-template ngbTabContent>
+          <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Notes" [disabled]="true">
+      <ng-template ngbTabContent>
+        
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Orders" [disabled]="true">
+        <ng-template ngbTabContent>
+          
+        </ng-template>
+      </ngb-tab>
+  </ngb-tabset>
+<!-- <div class="container col-md-12">
   <div class="row">
-      <div class="col-xs-12">
+      <div class="col-sm-10">
           <dx-tab-panel
           #tabPanel
           [selectedIndex]="0"
@@ -81,12 +106,10 @@
           [animationEnabled]="true"
           [swipeEnabled]="true">
             <dxi-item title='Info'>
-              <div class="col-md-12">
                   <app-customer-info></app-customer-info>
-              </div>
             </dxi-item>
             <dxi-item title='Contacts'>
-                <app-customer-contacts></app-customer-contacts>
+                <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts>
             </dxi-item>
             <dxi-item title='Orders'>
                 <app-orderdetails></app-orderdetails>
@@ -94,7 +117,5 @@
         </dx-tab-panel>
       </div>
     </div>
-  <div class="row">
-    
-  </div>
-</div>
+</div> -->
+

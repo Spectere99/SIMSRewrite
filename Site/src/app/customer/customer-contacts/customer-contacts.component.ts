@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CustomerContacts, Service } from './customer-contacts.service';
+
 @Component({
   selector: 'app-customer-contacts',
   templateUrl: './customer-contacts.component.html',
@@ -7,6 +8,7 @@ import { CustomerContacts, Service } from './customer-contacts.service';
   providers: [ Service ]
 })
 export class CustomerContactsComponent implements OnInit {
+@Input() customer: any;
 customerContact: CustomerContacts;
   constructor(private customerService: Service) {
     const customerReturn = customerService.getCustomerContacts();
