@@ -3,7 +3,7 @@ import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { CustomerInfoComponent } from './customer-info/customer-info.component';
 import { LookupService } from '../_services/lookups.service';
 import { UserService } from '../_services/user.service';
-
+import { CustomerContactsComponent } from './customer-contacts/customer-contacts.component';
 @Component({
   selector: 'app-customer',
   templateUrl: './customer.component.html',

@@ -1,0 +1,81 @@
+<div class="container col-md-12">
+  <div class="row">
+    
+        <div class ='mx-auto card card-inverse'>
+       <div class = 'card-header'>
+         <h5>Customer Contact Info</h5>
+        </div>
+        <table class="table table-sm card-body">
+          <tbody>
+            <tr>
+              <td>First Name:</td>
+              <td><input type="text" [(ngModel)]="customerContact.first_name" ></td>
+            </tr>
+            <tr>
+              <td>Last Name:</td>
+              <td><input type="text" [(ngModel)]="customerContact.last_name"></td>
+            </tr>
+            <tr>
+              <td>Email</td>
+              <td><input type="text" class="card-text" [(ngModel)]="customerContact.email_address"></td>
+            </tr>
+          <tr>
+              <td>Phone 1:</td>
+              <td>
+                <table class= "table table-sm table-striped">
+                  <tbody>
+                    <tr>
+                        <td>Number</td>                        
+                        <td><input type="text" [(ngModel)]="customerContact.phone_1"></td>
+                    </tr>
+                    <tr>
+                        <td>Extension:</td>
+                        <td><input type="text" [(ngModel)]="customerContact.phone_1_ext"></td>
+                    </tr>
+                    <tr>
+                        <td>Phone Type:</td>
+                        <td><input type="text" [(ngModel)]="customerContact.phone_1_type"></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td> 
+              
+            </tr>
+            <tr>
+                <td>Phone 2:</td>
+                <td>
+                  <table class= "table table-sm table-striped">
+                    <tbody>
+                      <tr>
+                          <td>Number</td>                        
+                          <td><input type="text" [(ngModel)]="customerContact.phone_2"></td>
+                      </tr>
+                      <tr>
+                          <td>Extension:</td>
+                          <td><input type="text" [(ngModel)]="customerContact.phone_2_ext"></td>
+                      </tr>
+                      <tr>
+                          <td>Phone Type:</td>
+                          <td><input type="text" [(ngModel)]="customerContact.phone_2_type"></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </td> 
+                
+              </tr>
+           
+          </tbody>
+        </table>
+        <div class="card-footer"> 
+          <button type="button" class="btn btn-secondary btn-sm float-right"> Edit Contact</button>
+        </div>   
+     
+    </div>
+  </div>
+</div>
+  
+  
+
+
+
+

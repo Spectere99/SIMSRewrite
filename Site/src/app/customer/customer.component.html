@@ -81,16 +81,15 @@
           [animationEnabled]="true"
           [swipeEnabled]="true">
             <dxi-item title='Info'>
-                <app-customer-info></app-customer-info>
+              <div class="col-md-12">
+                  <app-customer-info></app-customer-info>
+              </div>
             </dxi-item>
             <dxi-item title='Contacts'>
-              
-            </dxi-item>
-            <dxi-item title='Notes'>
-              Notes
+                <app-customer-contacts></app-customer-contacts>
             </dxi-item>
             <dxi-item title='Orders'>
-              <app-orderdetails></app-orderdetails>
+                <app-orderdetails></app-orderdetails>
             </dxi-item>
         </dx-tab-panel>
       </div>

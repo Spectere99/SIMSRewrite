@@ -20,6 +20,7 @@ import { LoginComponent } from './login/login.component';
 
 import { DevExtremeModule, DxTemplateModule } from 'devextreme-angular';
 import { CustomerInfoComponent } from './customer/customer-info/customer-info.component';
+import { CustomerContactsComponent } from './customer/customer-contacts/customer-contacts.component';
 
 const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -44,6 +45,7 @@ const appRoutes: Routes = [
     ReportComponent,
     LoginComponent,
     CustomerInfoComponent,
+    CustomerContactsComponent,
   ],
   imports: [
     NgbModule.forRoot(),
