@@ -48,32 +48,51 @@
   <dxo-editing 
   mode="form"
   [allowUpdating]="true"
-  [allowDeleting]="false"
+  [allowDeleting]="true"
   [allowAdding]="true">
-      <dxo-popup
-      title="Customer Info"
-      [showTitle]="true"
-      [width]="700"
-      [height]="450"
-      [position]="{ my: 'top', at: 'top', of: window }">
-      </dxo-popup>
   </dxo-editing>
   </dx-data-grid>
-<!--     <div *dxTemplate="let person of 'contactPerson'">
-        <div class="internal-grid-container">
-            <div>{{customer.data.customer_name + "'s Contacts:"}}</div>
-            <dx-data-grid class="internal-grid"
-                [dataSource]="customer.data.customer_person"
-                [showBorders]="true"
-                [columnAutoWidth]="true">
-                    <dxi-column dataField="first_name"></dxi-column>
-                    <dxi-column dataField="last_name"></dxi-column>
-            </dx-data-grid>
-        </div>
-    </div> -->
+
     </div>
   </div>
 </div>
+<dx-popup
+class="popup"
+[width]="1200"
+[height]="800"
+[showTitle]="true"
+title="Details"
+[dragEnabled]="false"
+[closeOnOutsideClick]="true"
+[(visible)]="popupVisible">
+<div *dxTemplate="let data of 'content'">
+    <h6>{{selectedCustomer.customer_name}}</h6>
+    <ngb-tabset>
+        <ngb-tab title="Info">
+          <ng-template ngbTabContent>
+              <app-customer-info></app-customer-info>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Contacts">
+          <ng-template ngbTabContent>
+            <div>
+                <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts>
+            </div>
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Notes" [disabled]="false">
+          <ng-template ngbTabContent>
+              {{selectedCustomer}}
+          </ng-template>
+        </ngb-tab>
+        <ngb-tab title="Orders" [disabled]="true">
+            <ng-template ngbTabContent>
+              
+            </ng-template>
+          </ngb-tab>
+      </ngb-tabset>
+</div>
+</dx-popup>
 <ngb-tabset>
     <ngb-tab title="Info">
       <ng-template ngbTabContent>

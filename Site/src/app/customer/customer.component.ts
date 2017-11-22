@@ -25,6 +25,7 @@ pagingEnabled: boolean;
 gridHeight;
 disableExpand: boolean;
 expandedResults: boolean;
+popupVisible = false;
 
 
   constructor(lookupService: LookupService, userService: UserService) {
@@ -122,8 +123,10 @@ expandedResults: boolean;
 
   showEditPopup(e) {
     e.cancel = true;
-    console.log('e:', e);
-    alert('Editing!');
+    this.selectedCustomer = e.data;
+    console.log('SelectedCustomer', this.selectedCustomer);
+    // alert('Editing!');
+    this.popupVisible = true;
   }
 
   buildCustomerFirstName(data) {

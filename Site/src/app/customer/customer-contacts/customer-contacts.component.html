@@ -1,10 +1,10 @@
 <div class="container col-md-12">
-    <input type="button" text="Show Values!" (click)="showValues()">
+    <!-- <input type="button" text="Show Values!" (click)="showValues()"> -->
     <div class="card" *ngIf="customer!==undefined">
         <div class="card-header">
-            <h5 class="card-title">{{customer.customer_name}} Contact Info</h5>
+            <button type="button" class="btn btn-primary btn-sm float-right" (click)="addContact()">Add</button>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="overflow-y: scroll; height:550px">
           <div class="card" *ngFor="let customerContact of customer.customer_person">
             <div class="card-body">
                 <div class="form-group row">
@@ -18,7 +18,7 @@
                       </div>
                       <div class="col-md-3">
                         <label for="first_name" class="col-form-label-sm">First Name</label>
-                        <input type="text" class="form-control-sm" [(ngModel)]="customerContact.first_name">
+                        <input type="text" class="form-control-sm" [(ngModel)]="customerContact.first_name" placeholder="Enter First Name">
                       </div>
                       <div class="col-md-3">
                         <label for="last_name" class="col-form-label-sm">Last Name</label>
@@ -48,12 +48,14 @@
                         <input type="text" class="form-control-sm" [(ngModel)]="customerContact.phone_1_ext">
                       </div>
                 </div>
+                <button type="button" class="btn btn-warning btn-sm float-right" (click)="removeContact(customerContact)"> Remove Contact</button>
+                <button type="button" class="btn btn-primary btn-sm float-right"> Apply Changes</button>
             </div>
           </div>
           
         </div>
         <div class="card-footer"> 
-            <button type="button" class="btn btn-primary btn-sm float-right"> Edit Contact</button>
+            
         </div> 
     </div>
 </div>

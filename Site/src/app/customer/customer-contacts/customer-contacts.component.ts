@@ -26,6 +26,29 @@ personTypes: any;
     showValues() {
       console.log('customer', this.customer);
     }
+
+    addContact() {
+      const newCustomer = {'customer_id': 1,
+      'person_type': '',
+      'first_name': '',
+      'last_name': '',
+      'email_address': '',
+      'phone_1': '',
+      'phone_1_ext':  null,
+      'phone_1_type': '',
+      'phone_2': '',
+      'phone_2_ext': '',
+      'phone_2_type': ''};
+      this.customer.customer_person.unshift(newCustomer);
+    }
+
+    removeContact(customer) {
+      const index: number = this.customer.customer_person.indexOf(customer);
+      console.log('index found:', index);
+      if (index !== -1) {
+        this.customer.customer_person.splice(index, 1);
+      }
+    }
   ngOnInit() {
   }
 
