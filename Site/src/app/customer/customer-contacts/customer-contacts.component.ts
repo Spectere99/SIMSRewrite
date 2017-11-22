@@ -12,9 +12,11 @@ export class CustomerContactsComponent implements OnInit {
 @Input() customer: any;
 customerContacts: Array<CustomerContacts>;
 phoneTypes: any;
+personTypes: any;
 
   constructor(private customerService: Service, private lookupService: LookupService) {
     this.phoneTypes = lookupService.getPhoneTypes();
+    this.personTypes = lookupService.getPersonTypes();
     const customerReturn = customerService.getCustomerContacts();
     if (customerReturn) {
       this.customerContacts = customerReturn;

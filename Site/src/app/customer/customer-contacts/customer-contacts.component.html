@@ -10,7 +10,11 @@
                 <div class="form-group row">
                     <div class="col-md-3">
                         <label for="person_type" class="col-form-label-sm">Person Type</label>
-                        <input type="text" class="form-control-sm" [(ngModel)]="customerContact.person_type">
+                        <select class="form-control" id="phone1Type" [(ngModel)]="customerContact.person_type">
+                              <option *ngFor="let type of personTypes" value={{type.chr_mod}}>
+                              {{type.description}} 
+                              </option>
+                        </select>
                       </div>
                       <div class="col-md-3">
                         <label for="first_name" class="col-form-label-sm">First Name</label>

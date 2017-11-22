@@ -58,4 +58,20 @@ export class LookupService {
 
         return returnPhoneTypes;
     }
-}
+
+    getPersonTypes(): Array<LookupItem> {
+    const returnPersonTypes = [{
+        id:85,
+        className: 'CONT',
+        chr_mod: 'prime',
+        description: 'Primary'
+    },
+    {
+        id: 74,
+        className: 'CONT',
+        chr_mod: 'sec',
+        description: 'Secondary'
+    }];
+
+    return returnPersonTypes;
+}}
