@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CustomerContacts, Service } from './customer-contacts.service';
+import { LookupService, LookupItem } from '../../_services/lookups.service';
 
 @Component({
   selector: 'app-customer-contacts',
@@ -9,14 +10,20 @@ import { CustomerContacts, Service } from './customer-contacts.service';
 })
 export class CustomerContactsComponent implements OnInit {
 @Input() customer: any;
-customerContact: CustomerContacts;
-  constructor(private customerService: Service) {
+customerContacts: Array<CustomerContacts>;
+phoneTypes: any;
+
+  constructor(private customerService: Service, private lookupService: LookupService) {
+    this.phoneTypes = lookupService.getPhoneTypes();
     const customerReturn = customerService.getCustomerContacts();
     if (customerReturn) {
-      this.customerContact = customerReturn[0];
-      console.log('customerContact', this.customerContact);
+      this.customerContacts = customerReturn;
+      console.log('customerContact', this.customerContacts);
     } }
 
+    showValues() {
+      console.log('customer', this.customer);
+    }
   ngOnInit() {
   }
 

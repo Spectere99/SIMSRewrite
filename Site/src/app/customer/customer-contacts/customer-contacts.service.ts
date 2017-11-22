@@ -20,15 +20,19 @@ const customerContact: CustomerContacts[] = [{
     'email_address': 'bobnewbie@mycompany.com',
     'phone_1': '803-111-2233',
     'phone_1_ext':  null,
-    'phone_1_type': 'cell phone',
+    'phone_1_type': 'cphon',
     'phone_2': '803-222-1133',
     'phone_2_ext': '1027',
-    'phone_2_type': 'work phone'
+    'phone_2_type': 'wphon'
 }];
 
 @Injectable()
 export class Service {
     getCustomerContacts() {
         return customerContact;
+    }
+
+    getPhoneTypes() {
+
     }
 }

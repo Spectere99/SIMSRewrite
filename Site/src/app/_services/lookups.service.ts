@@ -35,4 +35,27 @@ export class LookupService {
             return res.json();
         });
     }
+
+    getPhoneTypes(): Array<LookupItem> {
+        const returnPhoneTypes = [{
+            id: 59,
+            className: 'PHON',
+            chr_mod: 'hphon',
+            description: 'Home Phone'
+        },
+        {
+            id: 60,
+            className: 'PHON',
+            chr_mod: 'wphon',
+            description: 'Work Phone'
+        },
+        {
+            id: 61,
+            className: 'PHON',
+            chr_mod: 'cphon',
+            description: 'Cell Phone'
+        }];
+
+        return returnPhoneTypes;
+    }
 }
