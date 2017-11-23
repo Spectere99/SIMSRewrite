@@ -1,39 +1,66 @@
 <div class="container col-md-12">
   <h5><span class="material-icons" style="text-align: center;">group</span> Customers</h5>
   <hr>
-  <p>Filter by using the cooresponding column.  To add a new Customer, click on the Plus (+) button. </p>
+  <p>Filter by using the cooresponding column.  To add a new Customer, click on the Plus (+) button. {{disableExpand}} </p>
+  <div class="row">
+      <div class="dx-field col-lg-12">
+        <div class="dx-field-value">
+        <dx-text-box 
+              placeholder="Enter Contact Name To Search"
+              (onKeyUp)="filterByContactName($event)"
+              [(value)]="customerSearchValue"
+              [width]=300></dx-text-box>
+        </div>
+      </div>
+    </div>
   <div class="row">
     <div class="col-lg-12">
       <dx-button [disabled]="disableExpand" class="btn btn-default btn-sm pull-left" text="Toggle Expand" (onClick)="ExpandGrid();">
-      </dx-button>
+      </dx-button>      
     </div>
   </div>
+  
+ 
   <div class="row">
     <div class="col-lg-12">
       <dx-data-grid id="gridCustomers"
-    [dataSource]="dataSource"
-    [showColumnLines]="false"
-    [showRowLines]="true"
-    [showBorders]="true"
-    [hoverStateEnabled]="true"
-    [rowAlternationEnabled]="false"
-    (onEditingStart) = "showEditPopup($event)"
-    (onContentReady) = "contentReady($event)"
-    (onSelectionChanged) = "selectCustomer($event)"
-    [height]="gridHeight">
-<!--     [masterDetail]="{ enabled: true, template: 'contactPerson' }"> -->
-    <dxo-selection mode="single"></dxo-selection>
+      [dataSource]="dataSource"
+      [showColumnLines]="false"
+      [showRowLines]="true"
+      [showBorders]="true"
+      [hoverStateEnabled]="true"
+      [rowAlternationEnabled]="false"
+      [masterDetail]="{ enabled: true, template: 'contacts' }"
+      (onEditingStart) = "showEditPopup($event)"
+      (onContentReady) = "contentReady($event)"
+      (onSelectionChanged) = "selectCustomer($event)"
+      [height]="gridHeight">
+      <dxo-selection mode="single"></dxo-selection>
       <dxi-column dataField="customer_id" caption="Customer ID" [width]="100" [allowFiltering]="true"></dxi-column>
       <dxi-column dataField="customer_name" caption="Customer Name" [width]="350" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="customer_person.first_name" caption="Contact First Name" [width]="150" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="customer_person.last_name" caption="Contact Last Name" [width]="150" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="customer_person.phone_1" caption="Phone 1" [width]="150" [calculateCellValue]="buildPhoneNumber1"></dxi-column>
-      <dxi-column dataField="customer_person.phone_2" caption="Phone 2" [width]="150" [calculateCellValue]="buildPhoneNumber2"></dxi-column>
-<!--       <dxi-column dataField="customer_address.address_1" caption="Address" [width]="150"></dxi-column>
-      <dxi-column dataField="customer_address.city" caption="City" [width]="150"></dxi-column>
-      <dxi-column dataField="customer_address.state" caption="State" [width]="75"></dxi-column>
-      <dxi-column dataField="customer_address.zip" caption="Zip" [width]="75"></dxi-column> -->
-      
+      <!-- <dxi-column dataField="" caption="Contact Names" [width]="350" [allowFiltering]="true" [calculateCellValue]="setContactNames"></dxi-column> -->
+      <dxi-column dataField="" caption="No. of Contacts" [width]="200" [calculateCellValue]="getContactCount" [allowFiltering]="true"></dxi-column>
+      <dxi-column dataField="" caption="No. of Orders" [width]="200" [calculateCellValue]="getOrderCount" [allowFiltering]="true"></dxi-column>
+      <div *dxTemplate="let contact of 'contacts'">
+        <div class="master-detail-caption">{{contact.data.customer_name + "'s Contacts:"}}</div>
+        <dx-data-grid
+            [dataSource]="contact.data.customer_person"
+            [showBorders]="true"
+            [columnAutoWidth]="true">
+                <dxi-column dataField="person_type" sortOrder="asc">
+                  <dxo-lookup
+                  [dataSource]="personTypes"
+                  valueExpr="char_mod"
+                  displayExpr="description"></dxo-lookup>
+                </dxi-column>
+                <dxi-column dataField="first_name"></dxi-column>
+                <dxi-column dataField="last_name"></dxi-column>
+                <dxi-column dataField="email"></dxi-column>
+                <dxi-column dataField="phone_1" [calculateCellValue]="buildPhoneNumber1"></dxi-column>
+                <dxi-column dataField="phone_2" [calculateCellValue]="buildPhoneNumber2"></dxi-column>
+                <dxo-header-filter [visible]="true"></dxo-header-filter>
+        </dx-data-grid>
+      </div>
       <dxo-search-panel [visible]="false"></dxo-search-panel>
       <dxo-header-filter [visible]="true"></dxo-header-filter>
       <dxo-filter-row [visible]="true"></dxo-filter-row>
@@ -45,17 +72,17 @@
         [allowedPageSizes]="allowedPageSizes"
         [showInfo]="true"></dxo-pager>
       <dxo-scrolling mode="scrollMode"></dxo-scrolling>
-  <dxo-editing 
-  mode="form"
-  [allowUpdating]="true"
-  [allowDeleting]="true"
-  [allowAdding]="true">
-  </dxo-editing>
+      <dxo-editing 
+      mode="form"
+      [allowUpdating]="true"
+      [allowDeleting]="true"
+      [allowAdding]="true">
+      </dxo-editing>
   </dx-data-grid>
-
     </div>
   </div>
 </div>
+
 <dx-popup
 class="popup"
 [width]="1200"

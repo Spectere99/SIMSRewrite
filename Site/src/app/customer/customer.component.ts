@@ -26,9 +26,12 @@ gridHeight;
 disableExpand: boolean;
 expandedResults: boolean;
 popupVisible = false;
+personTypes: any;
+customerSearchValue: any;
 
+filterDate = new Date(2008, 1, 1);
 
-  constructor(lookupService: LookupService, userService: UserService) {
+constructor(lookupService: LookupService, userService: UserService) {
     this.pagingEnabled = true;
     this.disableExpand = true;
     this.expandedResults = false;
@@ -37,17 +40,19 @@ popupVisible = false;
     this.defaultPageSize = 10;
     this.currentPageSize = this.defaultPageSize;
     this.CreateCustomerDataSource();
-    // lookupService.loadLookupData('').subscribe(res => this.lookupDataSource = res.value);
+    lookupService.loadLookupData('').subscribe(res => {
+      this.lookupDataSource = res.value;
+      this.createPersonTypeDataSource();
+    });
     userService.getUsers('').subscribe(res => {
       this.userDataSource = res.value;
       console.log(this.userDataSource);
     });
-
    }
 
   ExpandGrid() {
-    console.log('expanding Grid');
-    console.log(this.gridCustomers.instance.pageCount());
+    // console.log('expanding Grid');
+    // console.log(this.gridCustomers.instance.pageCount());
     this.expandedResults = !this.expandedResults;
 
     const currentPageCount = this.gridCustomers.instance.pageCount();
@@ -62,16 +67,30 @@ popupVisible = false;
       this.gridHeight = 5 * this.currentPageSize;
     }
     this.scrollMode = 'virtual';
-    console.log('gridHeight', this.gridHeight);
+    // console.log('gridHeight', this.gridHeight);
 
     // this.pagingEnabled = !this.pagingEnabled;
     // console.log('pagingEnabled', this.pagingEnabled);
   }
 
+  filterByContactName(e) {
+    const searchCriteria = e.component.option('text');
+    const grid = this.gridCustomers.instance;
+    console.log('valueChanged', grid);
+
+  }
+  getPersonTypes() {
+    console.log('In Get Person Types', this.personTypes);
+    return this.personTypes;
+  }
   selectCustomer(e) {
-    console.log(e);
+    // console.log(e);
     this.selectedCustomer = e.selectedRowsData[0];
   }
+  createPersonTypeDataSource() {
+    this.personTypes = this.lookupDataSource.filter(item => item.class === 'CONT');
+  }
+
   LoadLookupData() {
 
   }
@@ -81,7 +100,7 @@ popupVisible = false;
           type: 'odata',
           url: 'http://localhost:56543/odata/customers'
       },
-      expand: ['customer_person', 'customer_address'],
+      expand: ['customer_person', 'customer_address', 'orders'],
       select: [
         'customer_id',
         'customer_name',
@@ -109,22 +128,24 @@ popupVisible = false;
         'customer_address/city',
         'customer_address/state',
         'customer_address/zip',
+        'orders/order_number'
       ],
       //  filter: ['customer_address/type_code', '=', 'bill']
-       // filter: ['order_date', '>', this.filterDate]
+      // filter: ['order_date', '>', this.filterDate]
    };
   }
+
   contentReady(e) {
     const filter = this.gridCustomers.instance.getCombinedFilter();
-    console.log('filter', filter);
+    // console.log('filter', filter);
     this.disableExpand = (filter === undefined);
-    console.log('disableExpand', this.disableExpand);
+    // console.log('disableExpand', this.disableExpand);
   }
 
   showEditPopup(e) {
     e.cancel = true;
     this.selectedCustomer = e.data;
-    console.log('SelectedCustomer', this.selectedCustomer);
+    // console.log('SelectedCustomer', this.selectedCustomer);
     // alert('Editing!');
     this.popupVisible = true;
   }
@@ -136,12 +157,41 @@ popupVisible = false;
     return '';
   }
 
+  getContactCount(data) {
+    // console.log('ContactData', data);
+    if (data.customer_person !== undefined) {
+      return data.customer_person.length;
+    }
+    return 0;
+
+  }
+  setContactNames(data) {
+    let outputNames = '';
+    if (data.customer_person !== undefined) {
+      for (let x = 0; x < data.customer_person.length; x++) {
+        console.log('Customer', data.customer_person[x]);
+        outputNames = outputNames.concat(data.customer_person[x].first_name);
+        outputNames = outputNames.concat(' ');
+        outputNames = outputNames.concat(data.customer_person[x].last_name);
+        outputNames = outputNames.concat(' ');
+      }
+    }
+    console.log('OutputNames', outputNames);
+    return outputNames;
+  }
+
+  getOrderCount(data) {
+    if (data.orders !== undefined) {
+      return data.orders.length;
+    }
+    return 0;
+  }
 
   buildPhoneNumber1(data) {
-        // console.log('columnValue:', data.customer_person.phone_1);
-        if (data.customer_person === undefined) { return ''; }
-        let rawNumber = (data.customer_person.phone_1 === undefined) ||
-                          (data.customer_person.phone_1 === null) ? '' : data.customer_person.phone_1.toString();
+        // console.log('columnValue:', data.phone_1);
+        if (data === undefined) { return ''; }
+        let rawNumber = (data.phone_1 === undefined) ||
+                          (data.phone_1 === null) ? '' : data.phone_1.toString();
         // console.log('rawNumber:', rawNumber);
         rawNumber = String(rawNumber);
         rawNumber = rawNumber.replace(/[^0-9]*/g, '');
@@ -161,9 +211,10 @@ popupVisible = false;
   }
 
   buildPhoneNumber2(data) {
-      if (data.customer_person === undefined) { return ''; }
-      let rawNumber = (data.customer_person.phone_2 === undefined) ||
-                      (data.customer_person.phone_2 === null) ? '' : data.customer_person.phone_2.toString();
+    // console.log('columnValue:', data.phone_2);
+      if (data === undefined) { return ''; }
+      let rawNumber = (data.phone_2 === undefined) ||
+                      (data.phone_2 === null) ? '' : data.phone_2.toString();
       // console.log('rawNumber:', rawNumber);
       rawNumber = String(rawNumber);
       rawNumber = rawNumber.replace(/[^0-9]*/g, '');

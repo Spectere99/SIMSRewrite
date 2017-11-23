@@ -18,7 +18,8 @@ import { GarmentComponent } from './garment/garment.component';
 import { ReportComponent } from './report/report.component';
 import { LoginComponent } from './login/login.component';
 
-import { DevExtremeModule, DxTemplateModule, DxPopupModule } from 'devextreme-angular';
+import { DevExtremeModule, DxTemplateModule, DxPopupModule,
+         DxFilterBuilderModule, DxTextBoxModule } from 'devextreme-angular';
 import { CustomerInfoComponent } from './customer/customer-info/customer-info.component';
 import { CustomerContactsComponent } from './customer/customer-contacts/customer-contacts.component';
 
