@@ -1,0 +1,31 @@
+<div class="row">
+  <dx-button [disabled]="disableExpand" class="btn btn-default btn-sm pull-left" text="Toggle Expand" (onClick)="ExpandGrid();">
+  </dx-button>  
+</div>
+<div class="row">
+  <div class="col-lg-12">
+    <dx-data-grid id="gridContacts"
+    [dataSource]="dataSource"
+    [showColumnLines]="false"
+    [showRowLines]="true"
+    [showBorders]="true"
+    [hoverStateEnabled]="true"
+    [rowAlternationEnabled]="false"
+    [height]="gridHeight">
+    <dxo-selection mode="single"></dxo-selection>
+    <dxi-column dataField="customer_person_id" caption="Contact ID" [width]="100" [allowFiltering]="true"></dxi-column>
+    <dxi-column dataField="customers.customer_name" caption="Customer Name" [width]="350" [allowFiltering]="true"></dxi-column>
+    <dxi-column dataField="first_name" caption="First Name" [width]="350" [allowFiltering]="true"></dxi-column>
+    <dxi-column dataField="last_name" caption="Last Name" [width]="350" [allowFiltering]="true"></dxi-column>
+    <dxo-search-panel [visible]="false"></dxo-search-panel>
+    <dxo-header-filter [visible]="true"></dxo-header-filter>
+    <dxo-filter-row [visible]="true"></dxo-filter-row>
+    <dxo-sorting mode="single"> <!-- or "multiple" | "none" --></dxo-sorting>
+    <dxo-paging [pageSize]="currentPageSize"
+                [enabled]="pagingEnabled"></dxo-paging>
+    <dxo-pager
+      [showPageSizeSelector]="true"
+      [allowedPageSizes]="allowedPageSizes"
+      [showInfo]="true"></dxo-pager>
+    <dxo-scrolling mode="scrollMode"></dxo-scrolling>
+</dx-data-grid>

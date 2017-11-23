@@ -1,26 +1,24 @@
 <div class="container col-md-12">
   <h5><span class="material-icons" style="text-align: center;">group</span> Customers</h5>
   <hr>
-  <p>Filter by using the cooresponding column.  To add a new Customer, click on the Plus (+) button. {{disableExpand}} </p>
-  <div class="row">
-      <div class="dx-field col-lg-12">
-        <div class="dx-field-value">
-        <dx-text-box 
-              placeholder="Enter Contact Name To Search"
-              (onKeyUp)="filterByContactName($event)"
-              [(value)]="customerSearchValue"
-              [width]=300></dx-text-box>
-        </div>
-      </div>
-    </div>
-  <div class="row">
-    <div class="col-lg-12">
-      <dx-button [disabled]="disableExpand" class="btn btn-default btn-sm pull-left" text="Toggle Expand" (onClick)="ExpandGrid();">
-      </dx-button>      
-    </div>
-  </div>
+  <ngb-tabset>
+    <ngb-tab title="Contacts">
+      <ng-template ngbTabContent>
+        <app-contact-list></app-contact-list>  
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab title="Customers">
+      <ng-template ngbTabContent>
+              
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
   
- 
+  <p>Filter by using the cooresponding column.  To add a new Customer, click on the Plus (+) button. {{disableExpand}} </p>
+    <div class="col-lg-12">
+        <dx-button [disabled]="disableExpand" class="btn btn-default btn-sm pull-left" text="Toggle Expand" (onClick)="ExpandGrid();">
+        </dx-button>      
+    </div>
   <div class="row">
     <div class="col-lg-12">
       <dx-data-grid id="gridCustomers"
@@ -79,10 +77,7 @@
       [allowAdding]="true">
       </dxo-editing>
   </dx-data-grid>
-    </div>
-  </div>
-</div>
-
+  <!-- START POPUP EDITOR MARKUP -->
 <dx-popup
 class="popup"
 [width]="1200"
@@ -120,7 +115,10 @@ title="Details"
       </ngb-tabset>
 </div>
 </dx-popup>
-<ngb-tabset>
+    </div>
+  </div>
+</div>
+<!-- <ngb-tabset>
     <ngb-tab title="Info">
       <ng-template ngbTabContent>
           <app-customer-info></app-customer-info>
@@ -141,7 +139,7 @@ title="Details"
           
         </ng-template>
       </ngb-tab>
-  </ngb-tabset>
+  </ngb-tabset> -->
 <!-- <div class="container col-md-12">
   <div class="row">
       <div class="col-sm-10">
