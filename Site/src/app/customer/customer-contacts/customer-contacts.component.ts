@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CustomerContacts, Service } from './customer-contacts.service';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
+import { Customer, CustomerPerson } from '../../_services/customer.service';
 
 @Component({
   selector: 'app-customer-contacts',
@@ -20,7 +21,7 @@ personTypes: any;
     const customerReturn = customerService.getCustomerContacts();
     if (customerReturn) {
       this.customerContacts = customerReturn;
-      console.log('customerContact', this.customerContacts);
+      console.log('customerContact', this.customer);
     } }
 
     showValues() {
@@ -28,18 +29,12 @@ personTypes: any;
     }
 
     addContact() {
-      const newCustomer = {'customer_id': 1,
-      'person_type': '',
-      'first_name': '',
-      'last_name': '',
-      'email_address': '',
-      'phone_1': '',
-      'phone_1_ext':  null,
-      'phone_1_type': '',
-      'phone_2': '',
-      'phone_2_ext': '',
-      'phone_2_type': ''};
-      this.customer.customer_person.unshift(newCustomer);
+      const newCustomerPerson = new CustomerPerson;
+      if (this.customer.customer_person !== undefined) {
+        this.customer.customer_person.unshift(newCustomerPerson);
+      } else {
+        this.customer.customer_person = [newCustomerPerson];
+      }
     }
 
     removeContact(customer) {

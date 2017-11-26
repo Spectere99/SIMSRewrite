@@ -1,19 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { LookupService } from '../../_services/lookups.service';
+import { CustomerService, Customer } from '../../_services/customer.service';
 
 @Component({
   selector: 'app-contact-list',
   templateUrl: './contact-list.component.html',
-  providers: [LookupService],
+  providers: [LookupService, CustomerService],
   styleUrls: ['./contact-list.component.css']
 })
 export class ContactListComponent implements OnInit {
+@Output() onContactCustomerSelect = new EventEmitter<any>();
+customerService: CustomerService;
+
+selectedCustomer: Customer;
 dataSource: any;
 lookupDataSource: any;
 personTypes: any;
+gridHeight;
+popupVisible = false;
 
-  constructor(lookupService: LookupService) {
+  constructor(lookupService: LookupService, customerSvc: CustomerService) {
+    this.customerService = customerSvc;
     this.CreateContactDataSource();
+    this.gridHeight = 525;
     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.createPersonTypeDataSource();
@@ -57,10 +66,32 @@ personTypes: any;
    };
   }
 
+  onCellPrepared(e) {
+   // console.log('cell data', e);
+  }
   createPersonTypeDataSource() {
     this.personTypes = this.lookupDataSource.filter(item => item.class === 'CONT');
   }
 
+  showEditPopup(e) {
+    // e.cancel = true;
+    console.log('ShowPopup', e);
+
+    this.customerService.loadCustomerData('', e.customer_id).subscribe(res => {
+      this.selectedCustomer = res;
+      console.log('Returned Customer', res);
+    });
+    // console.log('SelectedCustomer', this.selectedCustomer);
+    // alert('Editing!');
+    this.popupVisible = true;
+  }
+
+  loadCustomerEdit(customer: any) {
+    console.log('Customer', customer);
+    this.onContactCustomerSelect.emit(customer);
+
+    // alert(customerId);
+  }
   ngOnInit() {
   }
 

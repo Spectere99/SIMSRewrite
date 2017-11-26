@@ -1,122 +1,18 @@
 <div class="container col-md-12">
   <h5><span class="material-icons" style="text-align: center;">group</span> Customers</h5>
   <hr>
-  <ngb-tabset>
-    <ngb-tab title="Contacts">
+  <ngb-tabset #customerTabs>
+    <ngb-tab id='tbContacts' title="Contacts">
       <ng-template ngbTabContent>
         <app-contact-list></app-contact-list>  
       </ng-template>
     </ngb-tab>
-    <ngb-tab title="Customers">
+    <ngb-tab id='tbCustomers' title="Customers">
       <ng-template ngbTabContent>
-              
+        <app-customer-list></app-customer-list>
       </ng-template>
     </ngb-tab>
   </ngb-tabset>
-  
-  <p>Filter by using the cooresponding column.  To add a new Customer, click on the Plus (+) button. {{disableExpand}} </p>
-    <div class="col-lg-12">
-        <dx-button [disabled]="disableExpand" class="btn btn-default btn-sm pull-left" text="Toggle Expand" (onClick)="ExpandGrid();">
-        </dx-button>      
-    </div>
-  <div class="row">
-    <div class="col-lg-12">
-      <dx-data-grid id="gridCustomers"
-      [dataSource]="dataSource"
-      [showColumnLines]="false"
-      [showRowLines]="true"
-      [showBorders]="true"
-      [hoverStateEnabled]="true"
-      [rowAlternationEnabled]="false"
-      [masterDetail]="{ enabled: true, template: 'contacts' }"
-      (onEditingStart) = "showEditPopup($event)"
-      (onContentReady) = "contentReady($event)"
-      (onSelectionChanged) = "selectCustomer($event)"
-      [height]="gridHeight">
-      <dxo-selection mode="single"></dxo-selection>
-      <dxi-column dataField="customer_id" caption="Customer ID" [width]="100" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="customer_name" caption="Customer Name" [width]="350" [allowFiltering]="true"></dxi-column>
-      <!-- <dxi-column dataField="" caption="Contact Names" [width]="350" [allowFiltering]="true" [calculateCellValue]="setContactNames"></dxi-column> -->
-      <dxi-column dataField="" caption="No. of Contacts" [width]="200" [calculateCellValue]="getContactCount" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="" caption="No. of Orders" [width]="200" [calculateCellValue]="getOrderCount" [allowFiltering]="true"></dxi-column>
-      <div *dxTemplate="let contact of 'contacts'">
-        <div class="master-detail-caption">{{contact.data.customer_name + "'s Contacts:"}}</div>
-        <dx-data-grid
-            [dataSource]="contact.data.customer_person"
-            [showBorders]="true"
-            [columnAutoWidth]="true">
-                <dxi-column dataField="person_type" sortOrder="asc">
-                  <dxo-lookup
-                  [dataSource]="personTypes"
-                  valueExpr="char_mod"
-                  displayExpr="description"></dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="first_name"></dxi-column>
-                <dxi-column dataField="last_name"></dxi-column>
-                <dxi-column dataField="email"></dxi-column>
-                <dxi-column dataField="phone_1" [calculateCellValue]="buildPhoneNumber1"></dxi-column>
-                <dxi-column dataField="phone_2" [calculateCellValue]="buildPhoneNumber2"></dxi-column>
-                <dxo-header-filter [visible]="true"></dxo-header-filter>
-        </dx-data-grid>
-      </div>
-      <dxo-search-panel [visible]="false"></dxo-search-panel>
-      <dxo-header-filter [visible]="true"></dxo-header-filter>
-      <dxo-filter-row [visible]="true"></dxo-filter-row>
-      <dxo-sorting mode="single"> <!-- or "multiple" | "none" --></dxo-sorting>
-      <dxo-paging [pageSize]="currentPageSize"
-                  [enabled]="pagingEnabled"></dxo-paging>
-      <dxo-pager
-        [showPageSizeSelector]="true"
-        [allowedPageSizes]="allowedPageSizes"
-        [showInfo]="true"></dxo-pager>
-      <dxo-scrolling mode="scrollMode"></dxo-scrolling>
-      <dxo-editing 
-      mode="form"
-      [allowUpdating]="true"
-      [allowDeleting]="true"
-      [allowAdding]="true">
-      </dxo-editing>
-  </dx-data-grid>
-  <!-- START POPUP EDITOR MARKUP -->
-<dx-popup
-class="popup"
-[width]="1200"
-[height]="800"
-[showTitle]="true"
-title="Details"
-[dragEnabled]="false"
-[closeOnOutsideClick]="true"
-[(visible)]="popupVisible">
-<div *dxTemplate="let data of 'content'">
-    <h6>{{selectedCustomer.customer_name}}</h6>
-    <ngb-tabset>
-        <ngb-tab title="Info">
-          <ng-template ngbTabContent>
-              <app-customer-info></app-customer-info>
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab title="Contacts">
-          <ng-template ngbTabContent>
-            <div>
-                <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts>
-            </div>
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab title="Notes" [disabled]="false">
-          <ng-template ngbTabContent>
-              {{selectedCustomer}}
-          </ng-template>
-        </ngb-tab>
-        <ngb-tab title="Orders" [disabled]="true">
-            <ng-template ngbTabContent>
-              
-            </ng-template>
-          </ngb-tab>
-      </ngb-tabset>
-</div>
-</dx-popup>
-    </div>
-  </div>
 </div>
 <!-- <ngb-tabset>
     <ngb-tab title="Info">

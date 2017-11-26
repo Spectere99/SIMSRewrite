@@ -1,10 +1,10 @@
 <div class="container col-md-12">
     <!-- <input type="button" text="Show Values!" (click)="showValues()"> -->
-    <div class="card" *ngIf="customer!==undefined">
+    <div class="card">
         <div class="card-header">
             <button type="button" class="btn btn-primary btn-sm float-right" (click)="addContact()">Add</button>
         </div>
-        <div class="card-body" style="overflow-y: scroll; height:550px">
+        <div class="card-body"  *ngIf="customer!==undefined" style="overflow-y: scroll; height:550px">
           <div class="card" *ngFor="let customerContact of customer.customer_person">
             <div class="card-body">
                 <div class="form-group row">
