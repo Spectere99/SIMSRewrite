@@ -8,43 +8,57 @@
           <div class="card" *ngFor="let customerContact of customer.customer_person">
             <div class="card-body">
                 <div class="form-group row">
-                    <div class="col-md-3">
-                        <label for="person_type" class="col-form-label-sm">Person Type</label>
-                        <select class="form-control" id="phone1Type" [(ngModel)]="customerContact.person_type">
+                    <div class="col-md-1">
+                        <strong><label for="person_type" class="col-form-label-sm">Person Type</label></strong>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-control-sm" id="phone1Type" [(ngModel)]="customerContact.person_type">
                               <option *ngFor="let type of personTypes" value={{type.chr_mod}}>
                               {{type.description}} 
                               </option>
                         </select>
                       </div>
-                      <div class="col-md-3">
-                        <label for="first_name" class="col-form-label-sm">First Name</label>
+                      <div class="col-md-1">
+                        <strong><label for="first_name" class="col-form-label-sm">First Name</label></strong>
+                      </div>
+                      <div class="col-md-2 pull-left">
                         <input type="text" class="form-control-sm" [(ngModel)]="customerContact.first_name">
                       </div>
-                      <div class="col-md-3">
-                        <label for="last_name" class="col-form-label-sm">Last Name</label>
+                      <div class="col-md-1">
+                        <strong><label for="last_name" class="col-form-label-sm">Last Name</label></strong>
+                      </div>
+                      <div class="col-md-2">
                         <input type="text" class="form-control-sm" [(ngModel)]="customerContact.last_name">
                       </div>
-                      <div class="col-md-3">
-                          <label for="email_address" class="col-form-label-sm">Email</label>
+                      <div class="col-md-1">
+                         <strong> <label for="email_address" class="col-form-label-sm">Email</label></strong>
+                      </div>
+                      <div class="col-md-2">
                           <input type="text" class="form-control-sm" [(ngModel)]="customerContact.email_address">
                       </div>
                 </div>
                 <div class="form-group row">
-                      <div class="col-md-3">
-                        <label for="phone1Type" class="col-form-label-sm">Phone 1 Type</label>
-                        <select class="form-control" id="phone1Type" [(ngModel)]="customerContact.phone_1_type">
+                      <div class="col-md-1">
+                        <strong><label for="phone1Type" class="col-form-label-sm">Phone 1 Type</label></strong>
+                      </div>
+                      <div class="col-md-2">
+                        <select class="form-control-sm" id="phone1Type" [(ngModel)]="customerContact.phone_1_type">
                               <option *ngFor="let type of phoneTypes" value={{type.chr_mod}}>
                               {{type.description}} 
                               </option>
                         </select>
-                        <input type="text" class="form-control-sm" [(ngModel)]="customerContact.phone_1_type">
+                        
                       </div>
-                      <div class="col-md-3">
-                        <label for="phone1" class="col-form-label-sm">Phone 1</label>
-                        <input type="text" class="form-control-sm" [(ngModel)]="customerContact.phone_1">
+                      <div class="col-md-1">
+                        <strong><label for="phone1" class="col-form-label-sm">Phone 1</label></strong>
                       </div>
-                      <div class="col-md-3">
-                        <label for="phone1Ext" class="col-form-label-sm">Phone 1 Ext.</label>
+                      <div class="col-md-2">
+                        <input type="text" class="form-control-sm bfh-phone" [(ngModel)]="customerContact.phone_1">
+                      </div>
+                      <div class="col-md-1">
+                      <strong> <label for="phone1Ext" class="col-form-label-sm">Phone 1 Ext.</label></strong>
+                      </div>
+                      <div class="col-md-2">
                         <input type="text" class="form-control-sm" [(ngModel)]="customerContact.phone_1_ext">
                       </div>
                 </div>
