@@ -40,9 +40,8 @@
     [allowAdding]="false">
     </dxo-editing>
     <div *dxTemplate="let data of 'customerCell'">
-      <button type="button" class="btn btn-link btn-xs" (click)="showEditPopup(data.data.customers)">{{data.value}}</button> 
-  </div>
-
+      <button type="button" class="btn btn-outline-primary btn-xs" (click)="showEditPopup(data.data.customers)">{{data.value}}</button> 
+    </div>
 </dx-data-grid>
 <!-- START POPUP EDITOR MARKUP -->
 <dx-popup
@@ -56,28 +55,37 @@ title="Details"
 [(visible)]="popupVisible">
 <div *dxTemplate="let data of 'content'">
   <!-- <h6>{{selectedCustomer.customer_name ? 'A Customer':'New Customer' }}</h6> -->
-  <ngb-tabset>
-      <ngb-tab title="Info">
-        <ng-template ngbTabContent>
-            <app-customer-info></app-customer-info>
-        </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Contacts">
-        <ng-template ngbTabContent>
-          <div>
-              <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts>
-          </div>
-        </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Notes" [disabled]="false">
-        <ng-template ngbTabContent>
-        </ng-template>
-      </ngb-tab>
-      <ngb-tab title="Orders" [disabled]="true">
-          <ng-template ngbTabContent>
-            
-          </ng-template>
-        </ngb-tab>
-    </ngb-tabset>
+  <div class="col-md-12">
+      <ngb-tabset>
+          <ngb-tab title="Info">
+            <ng-template ngbTabContent>
+                <app-customer-info [customer]="selectedCustomer"></app-customer-info>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Contacts">
+            <ng-template ngbTabContent>
+              <div>
+                  <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts>
+              </div>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Notes" [disabled]="false">
+            <ng-template ngbTabContent>
+            </ng-template>
+          </ngb-tab>
+          <ngb-tab title="Orders" [disabled]="true">
+              <ng-template ngbTabContent>
+                
+              </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
+  </div>
+  
+    <div class="col-md-12">
+      <div class="col-md-2"></div>
+      <input type="button" class="btn btn-default pull-right" value="Cancel">
+      <input type="button" class="btn btn-primary pull-right" value="Apply">
+    </div>
 </div>
+
 </dx-popup>

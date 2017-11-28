@@ -7,6 +7,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { Http, HttpModule, Headers, RequestMethod, RequestOptions } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
+import { MDBBootstrapModule } from 'angular-bootstrap-md';
+
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './_shared/navbar/navbar.component';
 import { SidenavComponent } from './_shared/sidenav/sidenav.component';

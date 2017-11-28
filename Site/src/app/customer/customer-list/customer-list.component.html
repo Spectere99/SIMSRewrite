@@ -23,7 +23,7 @@
     [height]="gridHeight">
     <dxo-selection mode="single"></dxo-selection>
     <dxi-column dataField="customer_id" caption="Customer ID" [width]="100" [allowFiltering]="true"></dxi-column>
-    <dxi-column dataField="customer_name" caption="Customer Name" [width]="350" [allowFiltering]="true" cellTemplate="customerCell"></dxi-column>
+    <dxi-column dataField="customer_name" caption="Customer Name" [width]="450" [allowFiltering]="true" cellTemplate="customerCell"></dxi-column>
     <!-- <dxi-column dataField="" caption="Contact Names" [width]="350" [allowFiltering]="true" [calculateCellValue]="setContactNames"></dxi-column> -->
     <dxi-column dataField="" caption="No. of Contacts" [width]="200" [calculateCellValue]="getContactCount" [allowFiltering]="true"></dxi-column>
     <dxi-column dataField="" caption="No. of Orders" [width]="200" [calculateCellValue]="getOrderCount" [allowFiltering]="true"></dxi-column>
@@ -60,13 +60,13 @@
     <dxo-scrolling mode="scrollMode"></dxo-scrolling>
     <dxo-editing 
     mode="form"
-    [allowUpdating]="true"
-    [allowDeleting]="true"
+    [allowUpdating]="false"
+    [allowDeleting]="false"
     [allowAdding]="false">
     </dxo-editing>
     <div *dxTemplate="let data of 'customerCell'">
-      <button type="button" class="btn btn-link btn-xs" (click)="showEditPopup(data.data.customers)">{{data.value}}</button> 
-  </div>
+        <button type="button" class="btn btn-outline-primary btn-xs" (click)="showEditPopup(data)">{{data.value}}</button> 
+    </div>
 </dx-data-grid>
 <!-- START POPUP EDITOR MARKUP -->
 <dx-popup
@@ -83,7 +83,7 @@ title="Details"
   <ngb-tabset>
       <ngb-tab title="Info">
         <ng-template ngbTabContent>
-            <app-customer-info></app-customer-info>
+            <app-customer-info [customer]="selectedCustomer"></app-customer-info>
         </ng-template>
       </ngb-tab>
       <ngb-tab title="Contacts">

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { LookupService } from '../../_services/lookups.service';
 import { CustomerService, Customer } from '../../_services/customer.service';
 
@@ -9,6 +9,7 @@ import { CustomerService, Customer } from '../../_services/customer.service';
   styleUrls: ['./contact-list.component.css']
 })
 export class ContactListComponent implements OnInit {
+@Input() customer: any;
 @Output() onContactCustomerSelect = new EventEmitter<any>();
 customerService: CustomerService;
 
@@ -80,18 +81,16 @@ popupVisible = false;
     this.customerService.loadCustomerData('', e.customer_id).subscribe(res => {
       this.selectedCustomer = res;
       console.log('Returned Customer', res);
+      this.popupVisible = true;
     });
-    // console.log('SelectedCustomer', this.selectedCustomer);
-    // alert('Editing!');
-    this.popupVisible = true;
   }
 
-  loadCustomerEdit(customer: any) {
+/*   loadCustomerEdit(customer: any) {
     console.log('Customer', customer);
     this.onContactCustomerSelect.emit(customer);
 
     // alert(customerId);
-  }
+  } */
   ngOnInit() {
   }
 

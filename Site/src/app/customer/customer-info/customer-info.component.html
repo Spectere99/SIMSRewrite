@@ -1,13 +1,78 @@
+
 <div class="container col-md-12">
+        <div class="md-form">
+                <input mdbActive type="text" id="form1" class="form-control">
+                <label for="form1" class="">Example label</label>
+            </div>        
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-6">
           <label for="customerName">Customer Name</label>
-          <input type="text" [(ngModel)]="customerInfo.customer_name">
+          <input type="text" [(ngModel)]="customer.customer_name">
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <label for="customerSetupDate">Setup Date</label>
-            <input type="text" [(ngModel)]="customerInfo.setup_date">
+            <input type="text" [(ngModel)]="customer.setup_date">
         </div>
     </div>
     <input type="button" text="Show Values!" (click)="showValues()">
 </div>
+<div class="container">
+    <form class="form-horizontal form-custom">
+       <!-- BEGIN form-group line-1 -->
+       <div class="form-group">
+          <label class="col-sm-4 control-label">Words Go Here</label>
+          <div class="col-sm-8">
+             <div class="input-group">
+                <span class="input-group-addon" id="sizing-addon2">Line 1</span>
+                <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon2">
+             </div>
+          </div>
+          <!-- /.col-sm-8 -->
+       </div>
+       <!-- /.form-group -->
+       <!-- END form-group line-1 -->
+       <!-- BEGIN form-group city-state-zip -->
+       <div class="form-group">
+          <div class="col-sm-8 col-sm-offset-4">
+             <div class="form-group">
+                <!-- acts as .row -->
+                <div class="col-sm-5">
+                   <div class="input-group">
+                      <span class="input-group-addon" id="sizing-addon2">City</span>
+                      <input type="text" class="form-control" placeholder="Username" aria-describedby="sizing-addon2">
+                   </div>
+                   <!-- /.input-group -->
+                </div>
+                <!-- /.col-sm-5 (nested) -->
+                <div class="col-sm-3">
+                   <div class="input-group">
+                      <span class="input-group-addon" id="sizing-addon2">State</span>
+                      <input type="text" class="form-control" placeholder="State" aria-describedby="sizing-addon2">
+                   </div>
+                   <!-- /.input-group -->
+                </div>
+                <!-- /.col-sm-3 (nested) -->
+                <div class="col-sm-4">
+                   <div class="input-group">
+                      <span class="input-group-addon" id="sizing-addon2">Zip</span>
+                      <input type="text" class="form-control" placeholder="Zip" aria-describedby="sizing-addon2">
+                   </div>
+                   <!-- /.input-group -->
+                </div>
+                <!-- /.col-sm-4 (nested) -->
+             </div>
+             <!-- /.form-group (nested) -->
+          </div>
+          <!-- /.col-sm-8 .col-sm-offset-4 -->
+       </div>
+       <!-- /.form-group -->
+       <!-- END form-group city-state-zip -->
+       <div class="form-group">
+          <div class="col-sm-offset-4 col-sm-8">
+             <button type="submit" class="btn btn-default">Button</button>
+          </div>
+          <!-- /col-sm-offset-4.col-sm-8 -->
+       </div>
+       <!-- /.form-group -->
+    </form>
+ </div>

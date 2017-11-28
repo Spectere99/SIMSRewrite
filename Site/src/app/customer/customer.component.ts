@@ -15,20 +15,7 @@ import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 })
 export class CustomerComponent implements OnInit {
   @ViewChild('customerTabs') tabs: NgbTabset;
-  // @ViewChild(CustomerListComponent) customerListComponent: CustomerListComponent;
 
-  customerListComp;
-
-  /* onContactCustomerSelect(e) {
-    const tabSet = this.tabs;
-    console.log('TabSet', tabSet);
-    if (!tabSet) {return; }
-    tabSet.select('tbCustomers');
-    const customerListComp = this.customerListComponent;
-    alert(e);
-    console.log('CustomerComponent', customerListComp);
-    customerListComp.showEditPopup(e);
-  } */
   ngOnInit() {
   }
 
