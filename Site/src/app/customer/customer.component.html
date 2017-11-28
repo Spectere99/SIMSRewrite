@@ -1,80 +1,20 @@
 <div class="container col-md-12">
   <h5><span class="material-icons" style="text-align: center;">group</span> Customers</h5>
   <hr>
-  <p>Filter by using the cooresponding column.  To add a new Customer, click on the Plus (+) button. </p>
-  <div class="row">
-    <div class="col-lg-12">
-      <dx-button [disabled]="disableExpand" class="btn btn-default btn-sm pull-left" text="Toggle Expand" (onClick)="ExpandGrid();">
-      </dx-button>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-lg-12">
-      <dx-data-grid id="gridCustomers"
-    [dataSource]="dataSource"
-    [showColumnLines]="false"
-    [showRowLines]="true"
-    [showBorders]="true"
-    [hoverStateEnabled]="true"
-    [rowAlternationEnabled]="false"
-    (onEditingStart) = "showEditPopup($event)"
-    (onContentReady) = "contentReady($event)"
-    (onSelectionChanged) = "selectCustomer($event)"
-    [height]="gridHeight">
-<!--     [masterDetail]="{ enabled: true, template: 'contactPerson' }"> -->
-    <dxo-selection mode="single"></dxo-selection>
-      <dxi-column dataField="customer_id" caption="Customer ID" [width]="100" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="customer_name" caption="Customer Name" [width]="350" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="customer_person.first_name" caption="Contact First Name" [width]="150" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="customer_person.last_name" caption="Contact Last Name" [width]="150" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="customer_person.phone_1" caption="Phone 1" [width]="150" [calculateCellValue]="buildPhoneNumber1"></dxi-column>
-      <dxi-column dataField="customer_person.phone_2" caption="Phone 2" [width]="150" [calculateCellValue]="buildPhoneNumber2"></dxi-column>
-<!--       <dxi-column dataField="customer_address.address_1" caption="Address" [width]="150"></dxi-column>
-      <dxi-column dataField="customer_address.city" caption="City" [width]="150"></dxi-column>
-      <dxi-column dataField="customer_address.state" caption="State" [width]="75"></dxi-column>
-      <dxi-column dataField="customer_address.zip" caption="Zip" [width]="75"></dxi-column> -->
-      
-      <dxo-search-panel [visible]="false"></dxo-search-panel>
-      <dxo-header-filter [visible]="true"></dxo-header-filter>
-      <dxo-filter-row [visible]="true"></dxo-filter-row>
-      <dxo-sorting mode="single"> <!-- or "multiple" | "none" --></dxo-sorting>
-      <dxo-paging [pageSize]="currentPageSize"
-                  [enabled]="pagingEnabled"></dxo-paging>
-      <dxo-pager
-        [showPageSizeSelector]="true"
-        [allowedPageSizes]="allowedPageSizes"
-        [showInfo]="true"></dxo-pager>
-      <dxo-scrolling mode="scrollMode"></dxo-scrolling>
-  <dxo-editing 
-  mode="form"
-  [allowUpdating]="true"
-  [allowDeleting]="false"
-  [allowAdding]="true">
-      <dxo-popup
-      title="Customer Info"
-      [showTitle]="true"
-      [width]="700"
-      [height]="450"
-      [position]="{ my: 'top', at: 'top', of: window }">
-      </dxo-popup>
-  </dxo-editing>
-  </dx-data-grid>
-<!--     <div *dxTemplate="let person of 'contactPerson'">
-        <div class="internal-grid-container">
-            <div>{{customer.data.customer_name + "'s Contacts:"}}</div>
-            <dx-data-grid class="internal-grid"
-                [dataSource]="customer.data.customer_person"
-                [showBorders]="true"
-                [columnAutoWidth]="true">
-                    <dxi-column dataField="first_name"></dxi-column>
-                    <dxi-column dataField="last_name"></dxi-column>
-            </dx-data-grid>
-        </div>
-    </div> -->
-    </div>
-  </div>
+  <ngb-tabset #customerTabs>
+    <ngb-tab id='tbContacts' title="Contacts">
+      <ng-template ngbTabContent>
+        <app-contact-list></app-contact-list>  
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab id='tbCustomers' title="Customers">
+      <ng-template ngbTabContent>
+        <app-customer-list></app-customer-list>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
 </div>
-<ngb-tabset>
+<!-- <ngb-tabset>
     <ngb-tab title="Info">
       <ng-template ngbTabContent>
           <app-customer-info></app-customer-info>
@@ -95,7 +35,7 @@
           
         </ng-template>
       </ngb-tab>
-  </ngb-tabset>
+  </ngb-tabset> -->
 <!-- <div class="container col-md-12">
   <div class="row">
       <div class="col-sm-10">
