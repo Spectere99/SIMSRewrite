@@ -1,7 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CustomerContacts, Service } from './customer-contacts.service';
-import { LookupService, LookupItem } from '../../_services/lookups.service';
-import { Customer, CustomerPerson } from '../../_services/customer.service';
 
 @Component({
   selector: 'app-customer-contacts',
@@ -10,40 +8,15 @@ import { Customer, CustomerPerson } from '../../_services/customer.service';
   providers: [ Service ]
 })
 export class CustomerContactsComponent implements OnInit {
-@Input() customer: any;
-customerContacts: Array<CustomerContacts>;
-phoneTypes: any;
-personTypes: any;
+customerContact: CustomerContacts;
 
-  constructor(private customerService: Service, private lookupService: LookupService) {
-    this.phoneTypes = lookupService.getPhoneTypes();
-    this.personTypes = lookupService.getPersonTypes();
+  constructor(private customerService: Service) {
     const customerReturn = customerService.getCustomerContacts();
     if (customerReturn) {
-      this.customerContacts = customerReturn;
-      console.log('customerContact', this.customer);
+      this.customerContact = customerReturn[0];
+      console.log('customerContact', this.customerContact);
     } }
 
-    showValues() {
-      console.log('customer', this.customer);
-    }
-
-    addContact() {
-      const newCustomerPerson = new CustomerPerson;
-      if (this.customer.customer_person !== undefined) {
-        this.customer.customer_person.unshift(newCustomerPerson);
-      } else {
-        this.customer.customer_person = [newCustomerPerson];
-      }
-    }
-
-    removeContact(customer) {
-      const index: number = this.customer.customer_person.indexOf(customer);
-      console.log('index found:', index);
-      if (index !== -1) {
-        this.customer.customer_person.splice(index, 1);
-      }
-    }
   ngOnInit() {
   }
 
