@@ -9,9 +9,12 @@ import { CustomerInfo, Service } from './customer-info.service';
 })
 export class CustomerInfoComponent implements OnInit {
 @Input() customer: CustomerInfo;
+@Input() userList: Array<any>;
 
+ctrlHasFocus: string;
   constructor(private customerService: Service) {
     console.log(this.customer);
+    console.log('userList', this.userList);
     // const customerReturn = customerService.getCustomerInfo();
     // if (customerReturn) {
     //  this.customerInfo = customerReturn[0];
@@ -19,6 +22,9 @@ export class CustomerInfoComponent implements OnInit {
     // }
   }
 
+  onFocus() {
+    this.ctrlHasFocus = 'active';
+  }
   showValues() {
     alert(this.customer.customer_name);
   }

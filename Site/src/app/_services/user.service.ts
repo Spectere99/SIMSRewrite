@@ -8,10 +8,8 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 export class User {
-    id: number;
-    className: string;
-    chr_mod: string;
-    description: string;
+    userId: number;
+    loginId: string;
 }
 
 @Injectable()
