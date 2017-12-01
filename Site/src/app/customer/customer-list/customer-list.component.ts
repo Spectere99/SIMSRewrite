@@ -30,7 +30,7 @@ export class CustomerListComponent implements OnInit {
   popupVisible = false;
   personTypes: any;
   customerSearchValue: any;
-
+  buttonClass = 'btn-blue-grey';
   filterDate = new Date(2008, 1, 1);
 
   constructor(lookupService: LookupService, userService: UserService) {
@@ -60,19 +60,17 @@ export class CustomerListComponent implements OnInit {
       const currentPageCount = this.gridCustomers.instance.pageCount();
 
       if (!this.expandedResults) {
-        this.currentPageSize = this.defaultPageSize;
-        this.allowedPageSizes = this.defaultAllowedPageSizes;
         this.gridHeight = 525;
+        console.log('Page size-Collapse', this.currentPageSize);
+        console.log('gridHeight-Collapse', this.gridHeight);
       } else {
-        this.currentPageSize = currentPageCount * this.defaultPageSize;
-        this.defaultAllowedPageSizes = [this.currentPageSize];
-        this.gridHeight = 5 * this.currentPageSize;
+        this.gridHeight = this.gridHeight * currentPageCount;
+        console.log('Page size-Expand', this.currentPageSize);
+        console.log('gridHeight-Expand', this.gridHeight);
       }
+      this.pagingEnabled = !this.pagingEnabled;
       this.scrollMode = 'virtual';
-      // console.log('gridHeight', this.gridHeight);
 
-      // this.pagingEnabled = !this.pagingEnabled;
-      // console.log('pagingEnabled', this.pagingEnabled);
     }
 
     filterByContactName(e) {
@@ -150,7 +148,20 @@ export class CustomerListComponent implements OnInit {
     contentReady(e) {
       const filter = this.gridCustomers.instance.getCombinedFilter();
       // console.log('filter', filter);
-      this.disableExpand = (filter === undefined);
+      if (filter !== undefined) {
+        console.log('Filter', filter[2]);
+        this.disableExpand = filter[2].length < 3;
+        // this.disableExpand = (filter === undefined);
+        if (this.disableExpand) {
+          this.buttonClass = 'btn-blue-grey';
+        } else {
+          this.buttonClass = 'btn-primary';
+        }
+      }else {
+        this.buttonClass = 'btn-blue-grey';
+        this.disableExpand = true;
+      }
+
       // console.log('disableExpand', this.disableExpand);
     }
 

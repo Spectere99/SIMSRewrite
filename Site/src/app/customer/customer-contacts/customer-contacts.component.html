@@ -1,10 +1,9 @@
 <div class="container col-md-12">
-    <input type="button" text="Show Values!" (click)="showValues()">
     <div class="card" *ngIf="customer!==undefined">
         <div class="card-header">
             <h5 class="card-title">{{customer.customer_name}} Contact Info</h5>
         </div>
-        <div class="card-body">
+        <div class="card-body" style="overflow-y: auto; max-height:500px">
           <div class="card" *ngFor="let customerContact of customer.customer_person">
             <div class="card-body">
                 <div class="form-group row">
@@ -13,7 +12,7 @@
                     </div>
                     <div class="col-md-2">
                         <select class="form-control-sm" id="phone1Type" [(ngModel)]="customerContact.person_type">
-                              <option *ngFor="let type of personTypes" value={{type.chr_mod}}>
+                              <option *ngFor="let type of personTypes" value={{type.char_mod}}>
                               {{type.description}} 
                               </option>
                         </select>
@@ -61,13 +60,14 @@
                       <div class="col-md-2">
                         <input type="text" class="form-control-sm" [(ngModel)]="customerContact.phone_1_ext">
                       </div>
+                      <button type="button" class="btn btn-primary btn-sm float-right"> Save</button>
                 </div>
             </div>
           </div>
           
         </div>
         <div class="card-footer"> 
-            <button type="button" class="btn btn-primary btn-sm float-right"> Edit Contact</button>
+            
         </div> 
     </div>
 </div>
