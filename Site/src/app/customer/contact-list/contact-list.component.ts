@@ -1,18 +1,19 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { LookupService } from '../../_services/lookups.service';
 import { CustomerService, Customer } from '../../_services/customer.service';
+import { UserService } from '../../_services/user.service';
 
 @Component({
   selector: 'app-contact-list',
   templateUrl: './contact-list.component.html',
-  providers: [LookupService, CustomerService],
+  providers: [LookupService, CustomerService, UserService],
   styleUrls: ['./contact-list.component.css']
 })
 export class ContactListComponent implements OnInit {
 @Input() customer: any;
 @Output() onContactCustomerSelect = new EventEmitter<any>();
 customerService: CustomerService;
-
+userDataSource: any;
 selectedCustomer: Customer;
 dataSource: any;
 lookupDataSource: any;
@@ -20,13 +21,17 @@ personTypes: any;
 gridHeight;
 popupVisible = false;
 
-  constructor(lookupService: LookupService, customerSvc: CustomerService) {
+  constructor(lookupService: LookupService, customerSvc: CustomerService, userService: UserService) {
     this.customerService = customerSvc;
     this.CreateContactDataSource();
     this.gridHeight = 525;
     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.createPersonTypeDataSource();
+    });
+    userService.getUsers('').subscribe(res => {
+      this.userDataSource = res.value;
+      console.log(this.userDataSource);
     });
   }
 

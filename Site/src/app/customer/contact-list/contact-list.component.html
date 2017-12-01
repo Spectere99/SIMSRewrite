@@ -59,7 +59,7 @@ title="Details"
       <ngb-tabset>
           <ngb-tab title="Info">
             <ng-template ngbTabContent>
-                <app-customer-info [customer]="selectedCustomer"></app-customer-info>
+                <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
             </ng-template>
           </ngb-tab>
           <ngb-tab title="Contacts">
