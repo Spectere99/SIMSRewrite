@@ -1,15 +1,18 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Http, HttpModule, Headers, RequestMethod, RequestOptions } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { DevExtremeModule, DxTemplateModule, DxPopupModule,
   DxFilterBuilderModule, DxTextBoxModule } from 'devextreme-angular';
+import { MatIconModule, MatSelectModule, MatInputModule, MatButtonModule,
+  MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './_shared/navbar/navbar.component';
@@ -59,9 +62,16 @@ const appRoutes: Routes = [
     MDBBootstrapModule.forRoot(),
     HttpModule,
     BrowserModule,
+    BrowserAnimationsModule,
     DevExtremeModule,
     FormsModule,
-    DxTemplateModule
+    DxTemplateModule,
+    MatIconModule,
+    MatSelectModule,
+    MatInputModule,
+    MatButtonModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [],
   bootstrap: [AppComponent]
