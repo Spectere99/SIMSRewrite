@@ -1,5 +1,25 @@
 <div class="container pt-4">
-    <div class="md-form">
+    <mat-form-field class="name-form-field">
+        <input matInput type="text" placeholder="Customer Name" [(ngModel)]="customer.customer_name"/>
+        <button mat-button *ngIf="customer.customer_name" matSuffix mat-icon-button aria-label="Clear" (click)="customer.customer_name=''">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+    <mat-form-field class="date-form-field">
+            <input matInput [matDatepicker]="setupDate" placeholder="Setup Date" [value]="customer.setup_date">
+            <mat-datepicker-toggle matSuffix [for]="setupDate"></mat-datepicker-toggle>
+            <mat-datepicker #setupDate></mat-datepicker>
+    </mat-form-field>
+    <mat-form-field>
+       <mat-select placeholder="Setup By" [(ngModel)]="customer.setup_by">
+          <mat-option *ngFor="let user of userList" [value]="customer.setup_by">
+            {{user.first_name + ' ' + user.last_name}}
+          </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+    <!-- <div class="md-form">
         <div class="row">
             <div class="col-lg-3">
                 <input type="text" id="customerName" class="form-control" [(ngModel)]="customer.customer_name" mdbActive>
@@ -19,25 +39,9 @@
                                 {{user.first_name + ' ' + user.last_name}}
                     </option>                          
                 </select>
-                <!-- <input type="text" id="setupBy" class="form-control" [(ngModel)]="customer.setup_by" mdbActive> -->
                 <label for="setupBy">Customer Name</label>
             </div>
         </div>
-    </div>
+    </div> -->
 </div>
 
-                            
-    
-<!-- <div class="container col-md-12">      
-    <<div class="row">
-        <div class="col-md-6">
-          <label for="customerName">Customer Name</label>
-          <input type="text" [(ngModel)]="customer.customer_name">
-        </div>
-        <div class="col-md-6">
-            <label for="customerSetupDate">Setup Date</label>
-            <input type="text" [(ngModel)]="customer.setup_date">
-        </div>
-    </div>
-    <input type="button" text="Show Values!" (click)="showValues()">
-</div> -->
