@@ -1,10 +1,19 @@
+
 <div class="container pt-4">
+        <h6>General</h6>
+        <hr>
     <mat-form-field class="name-form-field">
         <input matInput type="text" placeholder="Customer Name" [(ngModel)]="customer.customer_name"/>
         <button mat-button *ngIf="customer.customer_name" matSuffix mat-icon-button aria-label="Clear" (click)="customer.customer_name=''">
             <mat-icon>close</mat-icon>
         </button>
     </mat-form-field>
+    <mat-form-field class="name-form-field">
+            <input matInput type="text" placeholder="Account #" [(ngModel)]="customer.account_number"/>
+            <button mat-button *ngIf="customer.account_number" matSuffix mat-icon-button aria-label="Clear" (click)="customer.account_number=''">
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-form-field>
     <mat-form-field class="date-form-field">
             <input matInput [matDatepicker]="setupDate" placeholder="Setup Date" [value]="customer.setup_date">
             <mat-datepicker-toggle matSuffix [for]="setupDate"></mat-datepicker-toggle>
@@ -17,31 +26,24 @@
           </mat-option>
         </mat-select>
     </mat-form-field>
+    <mat-form-field class="name-form-field">
+        <input matInput type="text" placeholder="Web Site URL" [(ngModel)]="customer.website_url"/>
+        <button mat-button *ngIf="customer.website_url" matSuffix mat-icon-button aria-label="Clear" (click)="customer.website_url=''">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-form-field>
+</div>
 
-
-    <!-- <div class="md-form">
-        <div class="row">
-            <div class="col-lg-3">
-                <input type="text" id="customerName" class="form-control" [(ngModel)]="customer.customer_name" mdbActive>
-                <label for="customerName" >Customer Name</label>
-            </div>
-            <div class="col-lg-3">
-                <input type="text" id="setupDate" class="form-control" 
-                    [ngModel]="customer.setup_date | date: 'MM-dd-yyyy'"
-                    (ngModelChange)="customer.setup_date = $event"
-                    mdbActive [disabled]="true">
-                <label for="setupDate" >Setup Date</label>
-            </div>
-            <div class="col-lg-3">
-                <select class="form-control" id="setupBy" [(ngModel)]="customer.setup_by" 
-                style="margin-top:13px;" mdbActive [disabled]="true">
-                    <option *ngFor='let user of userList' [value]="user.user_id">
-                                {{user.first_name + ' ' + user.last_name}}
-                    </option>                          
-                </select>
-                <label for="setupBy">Customer Name</label>
-            </div>
+<div class="container pt-4">
+        <h6>Addresses</h6>
+        <hr>
+        <div class="row" *ngFor="let address of customer.customer_address">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Address" [(ngModel)]="address.address_1"/>
+                <button mat-button *ngIf="address.address_1" matSuffix mat-icon-button aria-label="Clear" (click)="address.address_1=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
         </div>
-    </div> -->
 </div>
 
