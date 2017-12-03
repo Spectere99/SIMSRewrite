@@ -8,11 +8,13 @@ import { HttpClient } from '@angular/common/http';
 import { Http, HttpModule, Headers, RequestMethod, RequestOptions } from '@angular/http';
 import { FormsModule } from '@angular/forms';
 
+
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { DevExtremeModule, DxTemplateModule, DxPopupModule,
   DxFilterBuilderModule, DxTextBoxModule } from 'devextreme-angular';
 import { MatIconModule, MatSelectModule, MatInputModule, MatButtonModule,
-  MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+  MatDatepickerModule, MatNativeDateModule, MatCheckboxModule } from '@angular/material';
+
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './_shared/navbar/navbar.component';
@@ -71,7 +73,8 @@ const appRoutes: Routes = [
     MatInputModule,
     MatButtonModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

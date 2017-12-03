@@ -1,3 +1,14 @@
 .name-form-field {
     width: 300px;
   }
+
+  .form-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+  }
+  
+  .full-width {
+    width: 100%;
+  }
