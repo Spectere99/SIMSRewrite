@@ -18,6 +18,7 @@ selectedCustomer: Customer;
 dataSource: any;
 lookupDataSource: any;
 personTypes: any;
+phoneTypes: any;
 gridHeight;
 popupVisible = false;
 
@@ -28,6 +29,7 @@ popupVisible = false;
     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.createPersonTypeDataSource();
+      this.createPhoneTypeDataSource();
     });
     userService.getUsers('').subscribe(res => {
       this.userDataSource = res.value;
@@ -77,6 +79,9 @@ popupVisible = false;
   }
   createPersonTypeDataSource() {
     this.personTypes = this.lookupDataSource.filter(item => item.class === 'CONT');
+  }
+  createPhoneTypeDataSource() {
+    this.phoneTypes = this.lookupDataSource.filter(item => item.class === 'PHON');
   }
 
   showEditPopup(e) {

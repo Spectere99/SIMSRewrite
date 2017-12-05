@@ -13,6 +13,7 @@ export class CustomerContactsComponent implements OnInit {
 customerContact: CustomerContacts;
 lookupDataSource: Array<any>;
 personTypes: any;
+phoneTypes: any;
 
   constructor(private customerService: Service, lookupService: LookupService) {
     /* const customerReturn = customerService.getCustomerContacts();
@@ -24,6 +25,7 @@ personTypes: any;
     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.createPersonTypeDataSource();
+      this.createPhoneTypeDataSource();
     });
   }
 
@@ -33,6 +35,10 @@ personTypes: any;
       return obj1.order_by - obj2.order_by;
     });
     console.log('PersonTypes', this.personTypes);
+  }
+  createPhoneTypeDataSource() {
+    this.phoneTypes = this.lookupDataSource.filter(item => item.class === 'PHON');
+    console.log('PhoneTypes', this.phoneTypes);
   }
   ngOnInit() {
   }

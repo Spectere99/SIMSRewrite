@@ -29,6 +29,7 @@ export class CustomerListComponent implements OnInit {
   expandedResults: boolean;
   popupVisible = false;
   personTypes: any;
+  phoneTypes: any;
   customerSearchValue: any;
   buttonClass = 'btn-blue-grey';
   filterDate = new Date(2008, 1, 1);
@@ -45,6 +46,7 @@ export class CustomerListComponent implements OnInit {
       lookupService.loadLookupData('').subscribe(res => {
         this.lookupDataSource = res.value;
         this.createPersonTypeDataSource();
+        this.createPhoneTypeDataSource();
       });
       userService.getUsers('').subscribe(res => {
         this.userDataSource = res.value;
@@ -89,6 +91,9 @@ export class CustomerListComponent implements OnInit {
     }
     createPersonTypeDataSource() {
       this.personTypes = this.lookupDataSource.filter(item => item.class === 'CONT');
+    }
+    createPhoneTypeDataSource() {
+      this.phoneTypes = this.lookupDataSource.filter(item => item.class === 'PHON');
     }
 
     LoadLookupData() {
