@@ -12,12 +12,14 @@
 namespace SIMSEntities
 {
 
-using System;
+    using System;
     using System.Collections.Generic;
-    
-public partial class customer_person
+    using System.ComponentModel.DataAnnotations.Schema;
+
+    public partial class customer_person
 {
 
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int customer_person_id { get; set; }
 
     public Nullable<int> customer_id { get; set; }

@@ -13,8 +13,10 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { DevExtremeModule, DxTemplateModule, DxPopupModule,
   DxFilterBuilderModule, DxTextBoxModule } from 'devextreme-angular';
 import { MatIconModule, MatSelectModule, MatInputModule, MatButtonModule,
-  MatDatepickerModule, MatNativeDateModule, MatCheckboxModule } from '@angular/material';
+  MatDatepickerModule, MatNativeDateModule, MatCheckboxModule,
+  MatExpansionModule, MatDialogModule, MatSnackBarModule} from '@angular/material';
 
+  import { ConfirmDialogComponent } from './_shared/confirm/confirm.component';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './_shared/navbar/navbar.component';
@@ -57,6 +59,7 @@ const appRoutes: Routes = [
     CustomerContactsComponent,
     ContactListComponent,
     CustomerListComponent,
+    ConfirmDialogComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -74,9 +77,13 @@ const appRoutes: Routes = [
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatCheckboxModule
-  ],
+    MatCheckboxModule,
+    MatExpansionModule,
+    MatDialogModule,
+    MatSnackBarModule
+    ],
   providers: [],
+  entryComponents: [ConfirmDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
