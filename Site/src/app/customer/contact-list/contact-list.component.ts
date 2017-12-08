@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, Input, EventEmitter } from '@angular/core';
+import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { LookupService } from '../../_services/lookups.service';
 import { CustomerService, Customer } from '../../_services/customer.service';
 import { UserService } from '../../_services/user.service';
@@ -12,6 +13,7 @@ import { UserService } from '../../_services/user.service';
 export class ContactListComponent implements OnInit {
 @Input() customer: any;
 @Output() onContactCustomerSelect = new EventEmitter<any>();
+@ViewChild(DxDataGridComponent) gridCustomers: DxDataGridComponent;
 customerService: CustomerService;
 userDataSource: any;
 selectedCustomer: Customer;
@@ -19,6 +21,12 @@ dataSource: any;
 lookupDataSource: any;
 personTypes: any;
 phoneTypes: any;
+scrollMode: string;
+pagingEnabled: boolean;
+expandedResults: boolean;
+currentPageSize: number;
+buttonClass = 'btn-blue-grey';
+disableExpand: boolean;
 gridHeight;
 popupVisible = false;
 
@@ -37,6 +45,26 @@ popupVisible = false;
     });
   }
 
+  ExpandGrid() {
+    // console.log('expanding Grid');
+    // console.log(this.gridCustomers.instance.pageCount());
+    this.expandedResults = !this.expandedResults;
+
+    const currentPageCount = this.gridCustomers.instance.pageCount();
+
+    if (!this.expandedResults) {
+      this.gridHeight = 525;
+      console.log('Page size-Collapse', this.currentPageSize);
+      console.log('gridHeight-Collapse', this.gridHeight);
+    } else {
+      this.gridHeight = this.gridHeight * currentPageCount;
+      console.log('Page size-Expand', this.currentPageSize);
+      console.log('gridHeight-Expand', this.gridHeight);
+    }
+    this.pagingEnabled = !this.pagingEnabled;
+    this.scrollMode = 'virtual';
+
+  }
 
   CreateContactDataSource() {
     this.dataSource = {

@@ -1,8 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
-import { ODataService } from '../_odata/odata.service';
-import { RequestTypes } from '../_odata/odata.model';
-import { IUrlOptions } from '../_odata/odata.model';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
