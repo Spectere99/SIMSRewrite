@@ -33,6 +33,7 @@ import { CustomerContactsComponent } from './customer/customer-contacts/customer
 import { ContactListComponent } from './customer/contact-list/contact-list.component';
 import { CustomerListComponent } from './customer/customer-list/customer-list.component';
 
+import { DatePipe } from '@angular/common';
 import { PhoneFormat } from './_shared/pipes/phone.pipe';
 import { AddressLookup } from './_shared/pipes/addressType.pipe';
 
@@ -87,7 +88,7 @@ const appRoutes: Routes = [
     MatDialogModule,
     MatSnackBarModule
     ],
-  providers: [],
+  providers: [DatePipe],
   entryComponents: [ConfirmDialogComponent],
   bootstrap: [AppComponent]
 })

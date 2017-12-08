@@ -21,7 +21,7 @@
         </mat-form-field>
         <mat-form-field>
             <mat-select placeholder="Setup By" [(ngModel)]="customer.setup_by">
-                <mat-option *ngFor="let user of userList" [value]="customer.setup_by">
+                <mat-option *ngFor="let user of userList" [value]="user.user_id">
                     {{user.first_name + ' ' + user.last_name}}
                 </mat-option>
             </mat-select>
@@ -35,9 +35,14 @@
         <mat-checkbox [(ngModel)]="customer.ship_to_bill_ind">Ship to Billing Address</mat-checkbox>&nbsp;
         <mat-checkbox [(ngModel)]="customer.parent_ind">Is Parent Customer</mat-checkbox>
     </section>
+    <div class="pull-right">
+        <button mat-button color="primary" mat-icon-button aria-hidden="true" style="box-shadow: none; outline:none;" (click)="saveCustomer(customer);">
+            <mat-icon style="padding-bottom: 35px; padding-right: 33px;">save</mat-icon>
+        </button>
+    </div>
 </div>
 
-<div class="container pt-4" style="height:429px; overflow-y: auto; max-height:429px">
+<div class="container pt-4" style="height:389px; overflow-y: auto; max-height:389px">
     <h6>Addresses</h6>
     <hr>
     <button mat-mini-fab color="primary" aria-hidden="true" (click)="addAddress(customer.customer_id);" style="outline:none;">

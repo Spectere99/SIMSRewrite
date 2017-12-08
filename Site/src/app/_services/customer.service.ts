@@ -18,9 +18,9 @@ export class Customer {
     override_validation_ind: string;
     parent_id: number;
     parent_ind: string;
-    customer_address: CustomerAddress[];
-    customer_contacts: CustomerPerson[];
-    orders: Order[];
+    // customer_address: CustomerAddress[];
+    // customer_contacts: CustomerPerson[];
+    // orders: Order[];
 }
 export class CustomerPerson {
     customer_person_id: number;
@@ -85,7 +85,26 @@ export class CustomerService {
             return res.json();
         });
     }
-
+    addCustomer(userId, customer: Customer): Observable<any> {
+        // Build customer odata Options
+        // this.options = '(' + customerPersonId + ')';
+        console.log('Customer in addCustomer', customer);
+        return this.http.post(this.baseURL + '/customers', customer, {headers: this.getHeaders(userId) })
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+    updateCustomer(userId, customer: Customer): Observable<any> {
+        // Build customer odata Options
+        this.options = '(' + customer.customer_id + ')';
+        console.log('Customer in updateCustomer', customer);
+        return this.http.put(this.baseURL + '/customers' + this.options, customer, {headers: this.getHeaders(userId) })
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
     addCustomerContact(userId, customerPerson: CustomerPerson): Observable<any> {
         // Build customer odata Options
         // this.options = '(' + customerPersonId + ')';
@@ -96,7 +115,6 @@ export class CustomerService {
             return res.json();
         });
     }
-
     updateCustomerContact(userId, customerPerson: CustomerPerson): Observable<any> {
         // Build customer odata Options
         this.options = '(' + customerPerson.customer_person_id + ')';
@@ -107,7 +125,6 @@ export class CustomerService {
             return res.json();
         });
     }
-
     deleteCustomerContact(userId, customerPersonId: number): Observable<any> {
         // Build customer odata Options
         this.options = '(' + customerPersonId + ')';
@@ -118,7 +135,6 @@ export class CustomerService {
             return res.json();
         });
     }
-
     addCustomerAddress(userId, customerAddress: CustomerAddress): Observable<any> {
         // Build customer odata Options
         // this.options = '(' + customerPersonId + ')';
@@ -129,7 +145,6 @@ export class CustomerService {
             return res.json();
         });
     }
-
     updateCustomerAddress(userId, customerAddress: CustomerAddress): Observable<any> {
         // Build customer odata Options
         this.options = '(' + customerAddress.customer_address_id + ')';
@@ -140,7 +155,6 @@ export class CustomerService {
             return res.json();
         });
     }
-
     deleteCustomerAddress(userId, customerAddressId: number): Observable<any> {
         // Build customer odata Options
         this.options = '(' + customerAddressId + ')';
