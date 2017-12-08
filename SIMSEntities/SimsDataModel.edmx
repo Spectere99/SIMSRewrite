@@ -479,9 +479,9 @@
           <Property Name="state" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="zip" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="phone_1" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="phone_1" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
           <Property Name="phone_1_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="phone_2" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="phone_2" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
           <Property Name="phone_2_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="ccnum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ccexp_date" Type="DateTime" />

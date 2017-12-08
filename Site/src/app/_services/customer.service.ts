@@ -118,4 +118,37 @@ export class CustomerService {
             return res.json();
         });
     }
+
+    addCustomerAddress(userId, customerAddress: CustomerAddress): Observable<any> {
+        // Build customer odata Options
+        // this.options = '(' + customerPersonId + ')';
+        console.log('CustomerAddress in addCustomerAddress', customerAddress);
+        return this.http.post(this.baseURL + '/CustomerAddress', customerAddress, {headers: this.getHeaders(userId) })
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+
+    updateCustomerAddress(userId, customerAddress: CustomerAddress): Observable<any> {
+        // Build customer odata Options
+        this.options = '(' + customerAddress.customer_address_id + ')';
+
+        return this.http.put(this.baseURL + '/CustomerAddress' + this.options, customerAddress, {headers: this.getHeaders(userId) })
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+
+    deleteCustomerAddress(userId, customerAddressId: number): Observable<any> {
+        // Build customer odata Options
+        this.options = '(' + customerAddressId + ')';
+
+        return this.http.delete(this.baseURL + '/CustomerAddress' + this.options, {headers: this.getHeaders(userId)})
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
 }

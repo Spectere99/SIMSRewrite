@@ -16,7 +16,7 @@ import { MatIconModule, MatSelectModule, MatInputModule, MatButtonModule,
   MatDatepickerModule, MatNativeDateModule, MatCheckboxModule,
   MatExpansionModule, MatDialogModule, MatSnackBarModule} from '@angular/material';
 
-  import { ConfirmDialogComponent } from './_shared/confirm/confirm.component';
+import { ConfirmDialogComponent } from './_shared/confirm/confirm.component';
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from './_shared/navbar/navbar.component';
@@ -32,6 +32,9 @@ import { CustomerInfoComponent } from './customer/customer-info/customer-info.co
 import { CustomerContactsComponent } from './customer/customer-contacts/customer-contacts.component';
 import { ContactListComponent } from './customer/contact-list/contact-list.component';
 import { CustomerListComponent } from './customer/customer-list/customer-list.component';
+
+import { PhoneFormat } from './_shared/pipes/phone.pipe';
+import { AddressLookup } from './_shared/pipes/addressType.pipe';
 
 const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -59,7 +62,9 @@ const appRoutes: Routes = [
     CustomerContactsComponent,
     ContactListComponent,
     CustomerListComponent,
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
+    PhoneFormat,
+    AddressLookup
   ],
   imports: [
     NgbModule.forRoot(),

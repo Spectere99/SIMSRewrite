@@ -40,6 +40,7 @@ dirtyRecords: Array<CustomerPerson>;
     });
     console.log('PersonTypes', this.personTypes);
   }
+
   createPhoneTypeDataSource() {
     this.phoneTypes = this.lookupDataSource.filter(item => item.class === 'PHON');
     console.log('PhoneTypes', this.phoneTypes);
@@ -113,7 +114,14 @@ dirtyRecords: Array<CustomerPerson>;
           });
         });
       } else {
-        // Call UpdateCustomerContact Method
+        this.customerService.updateCustomerContact('rwflowers', customerContact)
+        .subscribe(res => {
+          console.log('Update contact Return', res);
+          this.snackBar.open('Customer Contact Updated!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
+        });
       }
   }
 

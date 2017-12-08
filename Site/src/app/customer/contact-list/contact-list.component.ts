@@ -69,14 +69,42 @@ popupVisible = false;
         'customers/parent_id',
         'customers/parent_ind'
       ],
+      filter: ['customers/customer_name', '<>', null]
       //  filter: ['customer_address/type_code', '=', 'bill']
       // filter: ['order_date', '>', this.filterDate]
    };
   }
+  onRowClick(e) {
+    console.log('rowClickEvent Param', e.data.items[0].customers);
+    if (e.rowType === 'group') {
+      this.showEditPopup(e.data.items[0].customers);
+    }
+  }
 
+  onToolbarPreparing(e) {
+      e.toolbarOptions.items.unshift({
+              location: 'after',
+              widget: 'dxButton',
+              options: {
+                  hint: 'Add New Customer',
+                  icon: 'plus',
+                  onClick: this.showAddPopup.bind(this)
+              }
+          });
+  }
   onCellPrepared(e) {
    // console.log('cell data', e);
   }
+
+  showAddPopup(e) {
+    console.log('Adding', e);
+    this.selectedCustomer = new Customer;
+
+    // console.log('SelectedCustomer', this.selectedCustomer);
+    // alert('Editing!');
+    this.popupVisible = true;
+  }
+
   createPersonTypeDataSource() {
     this.personTypes = this.lookupDataSource.filter(item => item.class === 'CONT');
   }

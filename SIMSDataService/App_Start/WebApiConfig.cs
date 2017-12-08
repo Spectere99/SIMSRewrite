@@ -46,10 +46,11 @@ namespace SIMSDataService
             builder.EntitySet<order>("orders");
             builder.EntitySet<customer>("customers");
             builder.EntitySet<customer_person>("CustomerPerson");
+            builder.EntitySet<customer_address>("CustomerAddress");
             //builder.EntitySet<customer_person>("customer_persons");
             builder.EntitySet<correspondence>("correspondences");
             builder.EntitySet<order_detail>("OrderDetails");
-            builder.EntitySet<customer_address>("customer_address");
+            //builder.EntitySet<customer_address>("customer_address");
             builder.EntitySet<task>("Tasks");
             builder.EntitySet<lookup_items>("LookupItems");
             builder.EntitySet<user>("Users");

@@ -1,23 +1,23 @@
 <div class="container pt-4">
     <section>
-            <h6>General</h6>
-            <hr>
+        <h6>General</h6>
+        <hr>
         <mat-form-field class="name-form-field">
-            <input matInput type="text" placeholder="Customer Name" [(ngModel)]="customer.customer_name"/>
+            <input matInput type="text" placeholder="Customer Name" [(ngModel)]="customer.customer_name" />
             <button mat-button *ngIf="customer.customer_name" matSuffix mat-icon-button aria-label="Clear" (click)="customer.customer_name=''">
                 <mat-icon>close</mat-icon>
             </button>
         </mat-form-field>
         <mat-form-field class="name-form-field">
-                <input matInput type="text" placeholder="Account #" [(ngModel)]="customer.account_number"/>
-                <button mat-button *ngIf="customer.account_number" matSuffix mat-icon-button aria-label="Clear" (click)="customer.account_number=''">
-                    <mat-icon>close</mat-icon>
-                </button>
+            <input matInput type="text" placeholder="Account #" [(ngModel)]="customer.account_number" />
+            <button mat-button *ngIf="customer.account_number" matSuffix mat-icon-button aria-label="Clear" (click)="customer.account_number=''">
+                <mat-icon>close</mat-icon>
+            </button>
         </mat-form-field>
         <mat-form-field class="date-form-field">
-                <input matInput [matDatepicker]="setupDate" placeholder="Setup Date" [value]="customer.setup_date">
-                <mat-datepicker-toggle matSuffix [for]="setupDate"></mat-datepicker-toggle>
-                <mat-datepicker #setupDate></mat-datepicker>
+            <input matInput [matDatepicker]="setupDate" placeholder="Setup Date" [value]="customer.setup_date">
+            <mat-datepicker-toggle matSuffix [for]="setupDate"></mat-datepicker-toggle>
+            <mat-datepicker #setupDate></mat-datepicker>
         </mat-form-field>
         <mat-form-field>
             <mat-select placeholder="Setup By" [(ngModel)]="customer.setup_by">
@@ -27,7 +27,7 @@
             </mat-select>
         </mat-form-field>
         <mat-form-field class="name-form-field">
-            <input matInput type="text" placeholder="Web Site URL" [(ngModel)]="customer.website_url"/>
+            <input matInput type="text" placeholder="Web Site URL" [(ngModel)]="customer.website_url" />
             <button mat-button *ngIf="customer.website_url" matSuffix mat-icon-button aria-label="Clear" (click)="customer.website_url=''">
                 <mat-icon>close</mat-icon>
             </button>
@@ -37,44 +37,61 @@
     </section>
 </div>
 
-<div class="container pt-4">
+<div class="container pt-4" style="height:429px; overflow-y: auto; max-height:429px">
     <h6>Addresses</h6>
     <hr>
-        <div class="row" *ngFor="let address of customer.customer_address">
-            <mat-form-field class="col-md-2">
-                <mat-select placeholder="Type" [(ngModel)]="address.type_code">
-                    <mat-option *ngFor="let adr of addressTypes" [value]="adr.char_mod">
-                        {{adr.description}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field class="col-md-6">
-                <input matInput placeholder="Address 1" [(ngModel)]="address.address_1"/>
-            </mat-form-field>
-            <mat-form-field class="col-md-4">
-                <input matInput placeholder="Address 2" [(ngModel)]="address.address_2"/>
-            </mat-form-field>
-            <mat-form-field class="col-md-5">
+    <button mat-mini-fab color="primary" aria-hidden="true" (click)="addAddress(customer.customer_id);" style="outline:none;">
+        Add
+    </button>
+    <mat-accordion>
+        <div class="container pt-4" *ngFor="let address of customer.customer_address">
+            <mat-expansion-panel [expanded]="address.customer_address_id === 0">
+                <mat-expansion-panel-header>
+                    <mat-panel-title class="col-md-6">
+                        <div class="col-md-2 pull-left">
+                            <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;" (click)="removeAddress(address.customer_address_id);">
+                                <mat-icon style="padding-bottom: 35px; padding-right: 33px;">delete</mat-icon>
+                            </button>
+                        </div>
+                        <div class="col-md-8" style="padding-top:10px;">
+                            <h6>{{ address.type_code | addressLookup: addressTypes }} {{ address.address_1 }}</h6>
+                        </div>
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <hr>
+                <mat-form-field class="col-md-2">
+                    <mat-select placeholder="Type" [(ngModel)]="address.type_code">
+                        <mat-option *ngFor="let adr of addressTypes" [value]="adr.char_mod">
+                            {{adr.description}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                    <input matInput placeholder="Address 1" [(ngModel)]="address.address_1" />
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
+                    <input matInput placeholder="Address 2" [(ngModel)]="address.address_2" />
+                </mat-form-field>
+                <mat-form-field class="col-md-4">
                     <input matInput placeholder="City" [(ngModel)]="address.city">
-            </mat-form-field>
-            <mat-form-field class="col-md-3">
-                <mat-select placeholder="State" [(ngModel)]="address.state">
-                    <mat-option *ngFor="let state of stateList" [value]="state.abbreviation">
-                        {{state.name}}
-                    </mat-option>
-                </mat-select>
-            </mat-form-field>
-            <mat-form-field class="col-md-2">
-                <input matInput #postalCode maxlength="5" placeholder="Postal Code" [(ngModel)]="address.zip">
-                <mat-hint align="end">{{postalCode.value.length}} / 5</mat-hint>
-            </mat-form-field>
-                    
-           <!--  <mat-form-field>
-                <input matInput type="text" placeholder="Address" [(ngModel)]="address.address_1"/>
-                <button mat-button *ngIf="address.address_1" matSuffix mat-icon-button aria-label="Clear" (click)="address.address_1=''">
-                    <mat-icon>close</mat-icon>
-                </button>
-            </mat-form-field> -->
+                </mat-form-field>
+                <mat-form-field class="col-md-3">
+                    <mat-select placeholder="State" [(ngModel)]="address.state">
+                        <mat-option *ngFor="let state of stateList" [value]="state.abbreviation">
+                            {{state.name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="col-md-2">
+                    <input matInput #postalCode maxlength="10" placeholder="Postal Code" [(ngModel)]="address.zip">
+                    <mat-hint align="end">{{postalCode.value.length}} / 10</mat-hint>
+                </mat-form-field>
+                <div class="pull-right">
+                    <button mat-button color="primary" mat-icon-button aria-hidden="true" style="box-shadow: none; outline:none;" (click)="saveAddress(address);">
+                        <mat-icon style="padding-bottom: 35px; padding-right: 33px;">save</mat-icon>
+                    </button>
+                </div>
+            </mat-expansion-panel>
         </div>
+    </mat-accordion>
 </div>
-

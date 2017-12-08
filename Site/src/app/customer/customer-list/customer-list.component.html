@@ -27,8 +27,8 @@
     <dxi-column dataField="customer_id" caption="Customer ID" [width]="100" [allowFiltering]="true"></dxi-column>
     <dxi-column dataField="customer_name" caption="Customer Name" [width]="450" [allowFiltering]="true" cellTemplate="customerCell"></dxi-column>
     <!-- <dxi-column dataField="" caption="Contact Names" [width]="350" [allowFiltering]="true" [calculateCellValue]="setContactNames"></dxi-column> -->
-    <dxi-column dataField="" caption="No. of Contacts" [width]="200" [calculateCellValue]="getContactCount" [allowFiltering]="true"></dxi-column>
-    <dxi-column dataField="" caption="No. of Orders" [width]="200" [calculateCellValue]="getOrderCount" [allowFiltering]="true"></dxi-column>
+    <dxi-column dataField="" caption="No. of Contacts" [width]="200" [calculateCellValue]="getContactCount" [allowFiltering]="false"></dxi-column>
+    <dxi-column dataField="" caption="No. of Orders" [width]="200" [calculateCellValue]="getOrderCount" [allowFiltering]="false"></dxi-column>
     <div *dxTemplate="let contact of 'contacts'">
       <div class="master-detail-caption">{{contact.data.customer_name + "'s Contacts:"}}</div>
       <dx-data-grid

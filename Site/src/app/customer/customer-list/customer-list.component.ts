@@ -99,6 +99,7 @@ export class CustomerListComponent implements OnInit {
     LoadLookupData() {
 
     }
+
     CreateCustomerDataSource() {
       this.dataSource = {
         store: {
@@ -137,6 +138,7 @@ export class CustomerListComponent implements OnInit {
           'customer_address/zip',
           'orders/order_number'
         ],
+        filter: ['customer_name', '<>', null]
         //  filter: ['customer_address/type_code', '=', 'bill']
         // filter: ['order_date', '>', this.filterDate]
      };
