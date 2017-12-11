@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { DevExtremeModule, DxTemplateModule, DxPopupModule,
-  DxFilterBuilderModule, DxTextBoxModule } from 'devextreme-angular';
+  DxFilterBuilderModule, DxTextBoxModule, DxSelectBoxModule } from 'devextreme-angular';
 import { MatIconModule, MatSelectModule, MatInputModule, MatButtonModule,
   MatDatepickerModule, MatNativeDateModule, MatCheckboxModule,
   MatExpansionModule, MatDialogModule, MatSnackBarModule} from '@angular/material';
@@ -77,6 +77,7 @@ const appRoutes: Routes = [
     DevExtremeModule,
     FormsModule,
     DxTemplateModule,
+    DxSelectBoxModule,
     MatIconModule,
     MatSelectModule,
     MatInputModule,

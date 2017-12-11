@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 
 import { Order } from './order.service';
 
-export class Customer {
+export class CustomerDTO {
     customer_id: number;
     customer_name: string;
     setup_date: string;
@@ -21,6 +21,22 @@ export class Customer {
     // customer_address: CustomerAddress[];
     // customer_contacts: CustomerPerson[];
     // orders: Order[];
+}
+export class Customer {
+    customer_id: number;
+    customer_name: string;
+    setup_date: string;
+    setup_by: number;
+    status_code: string;
+    ship_to_bill_ind: string;
+    website_url: string;
+    account_number: string;
+    override_validation_ind: string;
+    parent_id: number;
+    parent_ind: string;
+    customer_address: CustomerAddress[];
+    customer_contacts: CustomerPerson[];
+    orders: Order[];
 }
 export class CustomerPerson {
     customer_person_id: number;
@@ -72,7 +88,21 @@ export class CustomerService {
         // headers.append('showInactive'; this.showInactive.toString());
         return headers;
     }
-    loadCustomerData(userId, customerId: number): Observable<any> {
+    getActiveCustomers(userId): Observable<any> {
+        // Build customer odata Options
+        // this.options = '(' + customerId + ')';
+        // this.options = this.options.concat(expandCmd, expandFields);
+
+        this.options = '?$filter=parent_ind eq %27Y%27';
+        // this.options = this.options + "&$top=100";
+
+        return this.http.get(this.baseURL + '/customers' + this.options, {headers: this.getHeaders(userId)})
+        .map((res: Response) => {
+            console.log(res.json());
+            return res.json();
+        });
+    }
+    getCustomerData(userId, customerId: number): Observable<any> {
         // Build customer odata Options
         const expandCmd = '?$expand=';
         const expandFields = 'customer_person,customer_address,orders';
@@ -85,7 +115,7 @@ export class CustomerService {
             return res.json();
         });
     }
-    addCustomer(userId, customer: Customer): Observable<any> {
+    addCustomer(userId, customer: CustomerDTO): Observable<any> {
         // Build customer odata Options
         // this.options = '(' + customerPersonId + ')';
         console.log('Customer in addCustomer', customer);
@@ -95,7 +125,7 @@ export class CustomerService {
             return res.json();
         });
     }
-    updateCustomer(userId, customer: Customer): Observable<any> {
+    updateCustomer(userId, customer: CustomerDTO): Observable<any> {
         // Build customer odata Options
         this.options = '(' + customer.customer_id + ')';
         console.log('Customer in updateCustomer', customer);

@@ -22,7 +22,7 @@
           <Key>
             <PropertyRef Name="customer_id" />
           </Key>
-          <Property Name="customer_id" Type="int" Nullable="false" />
+          <Property Name="customer_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="customer_name" Type="varchar" MaxLength="50" />
           <Property Name="setup_date" Type="datetime" Precision="0" />
           <Property Name="setup_by" Type="int" />
@@ -38,7 +38,7 @@
           <Key>
             <PropertyRef Name="customer_address_id" />
           </Key>
-          <Property Name="customer_address_id" Type="int" Nullable="false" />
+          <Property Name="customer_address_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="customer_id" Type="int" />
           <Property Name="type_code" Type="varchar" MaxLength="10" />
           <Property Name="address_1" Type="varchar" MaxLength="50" />
@@ -419,7 +419,7 @@
           <Key>
             <PropertyRef Name="customer_id" />
           </Key>
-          <Property Name="customer_id" Type="Int32" Nullable="false" />
+          <Property Name="customer_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="customer_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="setup_date" Type="DateTime" />
           <Property Name="setup_by" Type="Int32" />
@@ -441,7 +441,7 @@
           <Key>
             <PropertyRef Name="customer_address_id" />
           </Key>
-          <Property Name="customer_address_id" Type="Int32" Nullable="false" />
+          <Property Name="customer_address_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="customer_id" Type="Int32" />
           <Property Name="type_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="address_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />

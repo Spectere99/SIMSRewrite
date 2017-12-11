@@ -2,50 +2,59 @@
     <section>
         <h6>General</h6>
         <hr>
-        <mat-form-field class="name-form-field">
-            <input matInput type="text" placeholder="Customer Name" [(ngModel)]="customer.customer_name" />
-            <button mat-button *ngIf="customer.customer_name" matSuffix mat-icon-button aria-label="Clear" (click)="customer.customer_name=''">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-form-field>
-        <mat-form-field class="name-form-field">
-            <input matInput type="text" placeholder="Account #" [(ngModel)]="customer.account_number" />
-            <button mat-button *ngIf="customer.account_number" matSuffix mat-icon-button aria-label="Clear" (click)="customer.account_number=''">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-form-field>
-        <mat-form-field class="date-form-field">
-            <input matInput [matDatepicker]="setupDate" placeholder="Setup Date" [value]="customer.setup_date">
-            <mat-datepicker-toggle matSuffix [for]="setupDate"></mat-datepicker-toggle>
-            <mat-datepicker #setupDate></mat-datepicker>
-        </mat-form-field>
-        <mat-form-field>
-            <mat-select placeholder="Setup By" [(ngModel)]="customer.setup_by">
-                <mat-option *ngFor="let user of userList" [value]="user.user_id">
-                    {{user.first_name + ' ' + user.last_name}}
+        <div class="row">
+            <mat-form-field class="col-md-4">
+                <input matInput type="text" placeholder="Customer Name" [(ngModel)]="customer.customer_name" />
+                <button mat-button *ngIf="customer.customer_name" matSuffix mat-icon-button aria-label="Clear" (click)="customer.customer_name=''">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </mat-form-field>
+            <mat-form-field class="col-md-3">
+                    <input matInput placeholder="Setup Date" [value]="customer.setup_date" [disabled]="true">
+            </mat-form-field>
+            <mat-form-field class="col-md-3">
+                <mat-select placeholder="Setup By" [(ngModel)]="customer.setup_by" [disabled]="true">
+                    <mat-option *ngFor="let user of userList" [value]="user.user_id">
+                        {{user.first_name + ' ' + user.last_name}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="row">
+            <mat-checkbox class="col-md-2" [(ngModel)]="customer.ship_to_bill_ind">Ship to Billing Address</mat-checkbox>
+            <mat-checkbox class="col-md-2" [(ngModel)]="customer.parent_ind">Is Parent Customer</mat-checkbox>
+            <div class="form-group form-inline col-md-8" *ngIf="!customer.parent_ind">
+                <div class="col-md-1">Parent:</div>
+                <div class="col-md-6">
+                    <dx-select-box class="mat-select" [(ngModel)] = "customer.parent_id"
+                        [items]="customerList"
+                        displayExpr="customer_name"
+                        valueExpr="customer_id"
+                        [searchEnabled]="true">
+                    </dx-select-box>
+                </div>
+            </div>
+            <div class="col-md-1 pull-right">
+                <button mat-button color="primary" mat-icon-button aria-hidden="true" style="box-shadow: none; outline:none;" (click)="saveCustomer(customer);">
+                    <mat-icon style="padding-bottom: 35px; padding-right: 33px;">save</mat-icon>
+                </button>
+            </div>
+        </div>
+        <!-- <mat-form-field>
+             <mat-select placeholder="Parent Customer" [(ngModel)]="customer.parent_id">
+                <mat-option *ngFor="let cust of customerList" [value]="cust.customer_id" >
+                    {{cust.customer_name}}
                 </mat-option>
-            </mat-select>
-        </mat-form-field>
-        <mat-form-field class="name-form-field">
-            <input matInput type="text" placeholder="Web Site URL" [(ngModel)]="customer.website_url" />
-            <button mat-button *ngIf="customer.website_url" matSuffix mat-icon-button aria-label="Clear" (click)="customer.website_url=''">
-                <mat-icon>close</mat-icon>
-            </button>
-        </mat-form-field>
-        <mat-checkbox [(ngModel)]="customer.ship_to_bill_ind">Ship to Billing Address</mat-checkbox>&nbsp;
-        <mat-checkbox [(ngModel)]="customer.parent_ind">Is Parent Customer</mat-checkbox>
+            </mat-select> 
+        </mat-form-field> -->
     </section>
-    <div class="pull-right">
-        <button mat-button color="primary" mat-icon-button aria-hidden="true" style="box-shadow: none; outline:none;" (click)="saveCustomer(customer);">
-            <mat-icon style="padding-bottom: 35px; padding-right: 33px;">save</mat-icon>
-        </button>
-    </div>
 </div>
 
 <div class="container pt-4" style="height:389px; overflow-y: auto; max-height:389px">
     <h6>Addresses</h6>
     <hr>
-    <button mat-mini-fab color="primary" aria-hidden="true" (click)="addAddress(customer.customer_id);" style="outline:none;">
+    <button mat-mini-fab color="primary" aria-hidden="true" (click)="addAddress(customer.customer_id);" style="outline:none;"
+        [disabled]="customer.customer_address === undefined">
         Add
     </button>
     <mat-accordion>

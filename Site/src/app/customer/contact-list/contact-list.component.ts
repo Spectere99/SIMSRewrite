@@ -144,7 +144,7 @@ popupVisible = false;
     // e.cancel = true;
     console.log('ShowPopup', e);
 
-    this.customerService.loadCustomerData('', e.customer_id).subscribe(res => {
+    this.customerService.getCustomerData('', e.customer_id).subscribe(res => {
       this.selectedCustomer = res;
       console.log('Returned Customer', res);
       this.popupVisible = true;

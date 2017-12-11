@@ -16,6 +16,7 @@ export class CustomerListComponent implements OnInit {
   selectedCustomer: any;
   @ViewChild(DxDataGridComponent) gridCustomers: DxDataGridComponent;
   dataSource: any;
+  customerList: any;
   lookupDataSource: any;
   userDataSource: any;
   defaultPageSize: number;
@@ -34,7 +35,7 @@ export class CustomerListComponent implements OnInit {
   buttonClass = 'btn-blue-grey';
   filterDate = new Date(2008, 1, 1);
 
-  constructor(lookupService: LookupService, userService: UserService) {
+  constructor(lookupService: LookupService, userService: UserService, customerService: CustomerService) {
       this.pagingEnabled = true;
       this.disableExpand = true;
       this.expandedResults = false;
@@ -43,6 +44,7 @@ export class CustomerListComponent implements OnInit {
       this.defaultPageSize = 10;
       this.currentPageSize = this.defaultPageSize;
       this.CreateCustomerDataSource();
+      console.log('customerDataSource', this.dataSource);
       lookupService.loadLookupData('').subscribe(res => {
         this.lookupDataSource = res.value;
         this.createPersonTypeDataSource();
@@ -96,7 +98,7 @@ export class CustomerListComponent implements OnInit {
       this.phoneTypes = this.lookupDataSource.filter(item => item.class === 'PHON');
     }
 
-    LoadLookupData() {
+    LoadCustomerListData() {
 
     }
 
@@ -157,7 +159,7 @@ export class CustomerListComponent implements OnInit {
     contentReady(e) {
       const filter = this.gridCustomers.instance.getCombinedFilter();
       // console.log('filter', filter);
-      if (filter !== undefined) {
+      if (filter[2] !== null) {
         console.log('Filter', filter[2]);
         this.disableExpand = filter[2].length < 3;
         // this.disableExpand = (filter === undefined);

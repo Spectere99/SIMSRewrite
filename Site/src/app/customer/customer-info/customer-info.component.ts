@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { CustomerInfo, Service } from './customer-info.service';
 import { StateService, StateInfo } from '../../_shared/states.service';
 import { LookupService } from '../../_services/lookups.service';
-import { CustomerService, Customer, CustomerAddress } from '../../_services/customer.service';
+import { CustomerService, Customer, CustomerDTO, CustomerAddress } from '../../_services/customer.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar } from '@angular/material';
 import { ConfirmDialogComponent } from '../../_shared/confirm/confirm.component';
@@ -18,6 +18,7 @@ import { DatePipe } from '@angular/common';
 export class CustomerInfoComponent implements OnInit {
 @Input() customer: any;
 @Input() userList: Array<any>;
+customerList: Array<any>;
 lookupDataSource: any;
 addressTypes: any;
 stateList: any;
@@ -29,10 +30,32 @@ ctrlHasFocus: string;
     console.log('userList', this.userList);
     this.stateList = this.usStateService.getStateList();
     console.log('States', this.stateList);
+    console.log('customerList', this.customerList);
     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.createAddressTypeDataSource();
     });
+    customerService.getActiveCustomers('rwflowers').subscribe(res => {
+      this.customerList = res.value;
+      console.log('customerList', this.customerList);
+    });
+  }
+
+  selected(value: any): void {
+    console.log('Selected value is: ', value);
+  }
+
+  removed(value: any): void {
+    console.log('Removed value is: ', value);
+  }
+
+  typed(value: any): void {
+    console.log('New search input: ', value);
+  }
+
+  refreshValue(value: any): void {
+    console.log('refreshValue', value);
+    this.customer.parent_id = value;
   }
 
   createAddressTypeDataSource() {
@@ -109,7 +132,7 @@ ctrlHasFocus: string;
     if (customer.customer_id === undefined) {
       const currentDate = new Date();
       const formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd');
-      const saveCustomer: Customer = {
+      const saveCustomer: CustomerDTO = {
         customer_id: 0,
         customer_name: customer.customer_name === undefined ? null : customer.customer_name,
         setup_date: formattedDate,
@@ -126,13 +149,17 @@ ctrlHasFocus: string;
       this.customerService.addCustomer('rwflowers', saveCustomer)
       .subscribe(res => {
         console.log('Save customer Return', res);
+        customer = res;
+        customer.customer_address = [];
+        customer.customer_contacts = [];
+        customer.orders = [];
         this.snackBar.open('Customer Added!', '', {
           duration: 4000,
           verticalPosition: 'top'
         });
       });
     } else {
-      const updCustomer: Customer = {
+      const updCustomer: CustomerDTO = {
         customer_id: customer.customer_id,
         customer_name: customer.customer_name,
         setup_date: customer.setup_date,
