@@ -22,6 +22,7 @@ customerList: Array<any>;
 lookupDataSource: any;
 addressTypes: any;
 stateList: any;
+statusTypes: any;
 
 ctrlHasFocus: string;
   constructor(public dialog: MatDialog, public snackBar: MatSnackBar, private customerService: CustomerService,
@@ -34,8 +35,9 @@ ctrlHasFocus: string;
     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.createAddressTypeDataSource();
+      this.createStatusTypeDataSource();
     });
-    customerService.getActiveCustomers('rwflowers').subscribe(res => {
+    customerService.getActiveParentCustomers('rwflowers').subscribe(res => {
       this.customerList = res.value;
       console.log('customerList', this.customerList);
     });
@@ -61,6 +63,11 @@ ctrlHasFocus: string;
   createAddressTypeDataSource() {
     this.addressTypes = this.lookupDataSource.filter(item => item.class === 'addr');
     console.log('addr Types', this.addressTypes);
+  }
+
+  createStatusTypeDataSource() {
+    this.statusTypes = this.lookupDataSource.filter(item => item.class === 'comps');
+    console.log('status Types', this.statusTypes);
   }
 
   removeAddress(customerAddressId: number) {

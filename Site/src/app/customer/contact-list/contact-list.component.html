@@ -57,8 +57,8 @@
 <!-- START POPUP EDITOR MARKUP -->
 <dx-popup
 class="popup"
-[width]="1200"
-[height]="800"
+[width]="1400"
+[height]="700"
 [showTitle]="true"
 title="Details"
 [dragEnabled]="false"
@@ -68,18 +68,20 @@ title="Details"
   <!-- <h6>{{selectedCustomer.customer_name ? 'A Customer':'New Customer' }}</h6> -->
   <div class="col-md-12">
       <ngb-tabset>
-          <ngb-tab title="Info">
+          <ngb-tab title="Info" >
             <ng-template ngbTabContent>
-                <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
-            </ng-template>
-          </ngb-tab>
-          <ngb-tab title="Contacts">
-            <ng-template ngbTabContent>
-              <div>
+              <div class="row" style="max-height: 600px; overflow: auto;">
+                  <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
                   <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts>
               </div>
             </ng-template>
           </ngb-tab>
+          <!-- <ngb-tab title="Contacts">
+            <ng-template ngbTabContent>
+              <div> 
+              </div>
+            </ng-template>
+          </ngb-tab> -->
           <ngb-tab title="Notes" [disabled]="false">
             <ng-template ngbTabContent>
             </ng-template>

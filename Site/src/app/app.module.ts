@@ -14,7 +14,7 @@ import { DevExtremeModule, DxTemplateModule, DxPopupModule,
   DxFilterBuilderModule, DxTextBoxModule, DxSelectBoxModule } from 'devextreme-angular';
 import { MatIconModule, MatSelectModule, MatInputModule, MatButtonModule,
   MatDatepickerModule, MatNativeDateModule, MatCheckboxModule,
-  MatExpansionModule, MatDialogModule, MatSnackBarModule} from '@angular/material';
+  MatExpansionModule, MatDialogModule, MatSnackBarModule, MatCardModule} from '@angular/material';
 
 import { ConfirmDialogComponent } from './_shared/confirm/confirm.component';
 
@@ -87,7 +87,8 @@ const appRoutes: Routes = [
     MatCheckboxModule,
     MatExpansionModule,
     MatDialogModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatCardModule
     ],
   providers: [DatePipe],
   entryComponents: [ConfirmDialogComponent],

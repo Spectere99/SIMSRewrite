@@ -88,13 +88,14 @@ export class CustomerService {
         // headers.append('showInactive'; this.showInactive.toString());
         return headers;
     }
-    getActiveCustomers(userId): Observable<any> {
+    getActiveParentCustomers(userId): Observable<any> {
         // Build customer odata Options
         // this.options = '(' + customerId + ')';
         // this.options = this.options.concat(expandCmd, expandFields);
 
         this.options = '?$filter=parent_ind eq %27Y%27';
-        // this.options = this.options + "&$top=100";
+        this.options = this.options + '&$orderby=customer_name asc';
+        // this.options =  this.options + "&$top=100";
 
         return this.http.get(this.baseURL + '/customers' + this.options, {headers: this.getHeaders(userId)})
         .map((res: Response) => {

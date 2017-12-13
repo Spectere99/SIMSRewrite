@@ -86,15 +86,15 @@ title="Details"
       <ngb-tab title="Info">
         <ng-template ngbTabContent>
             <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
+            <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts>
         </ng-template>
       </ngb-tab>
-      <ngb-tab title="Contacts">
+      <!-- <ngb-tab title="Contacts">
         <ng-template ngbTabContent>
           <div>
-              <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts>
           </div>
         </ng-template>
-      </ngb-tab>
+      </ngb-tab> -->
       <ngb-tab title="Notes" [disabled]="false">
         <ng-template ngbTabContent>
         </ng-template>
