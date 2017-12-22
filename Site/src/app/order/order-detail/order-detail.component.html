@@ -1,0 +1,92 @@
+<div class="container col-md-12 pt-4">
+  <section>
+    <h6>Customer: INSERT CUSTOMER HERE</h6>
+    <hr>
+    <div class="row col-md-12">
+      <mat-card class="col-md-12">
+        <mat-card-header>
+          <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;">
+            <mat-icon style="padding-bottom: 35px; padding-right: 33px; font-size:20px;">delete</mat-icon>
+          </button>
+          <div class="col-md-0">
+            <h5 style="padding-top:15px;">1</h5>
+          </div>
+          <div class="col-md-1">
+            <button mat-raised-button>Copy</button>
+          </div>
+        </mat-card-header>
+        <div class="row">
+          <div class="col-md-1">
+            <div>
+              <input type="checkbox" id="checkedin_ind" name="interest" value="Y">
+              <label for="checkedin_ind">In</label>
+            </div>
+            <div>
+              <input type="checkbox" id="checkedout_ind" name="interest" value="Y">
+              <label for="checkedout_ind">Out</label>
+            </div>
+          </div>
+          <mat-form-field class="col-md-2">
+            <mat-select placeholder="Item">
+              <mat-option *ngFor="let itm of itemTypes" [value]="itm.char_mod">
+                {{itm.description}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="col-md-1">
+            <input matInput type="text" placeholder="Color" [(ngModel)]="order.color" />
+            <button mat-button *ngIf="order.color" matSuffix mat-icon-button aria-label="Clear">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-form-field class="col-md-1">
+            <mat-select placeholder="Y/A">
+              <mat-option *ngFor="let itm of styleTypes" [value]="itm.char_mod">
+                {{itm.description}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="col-md-1">
+            <input matInput type="text" placeholder="XS" [(ngModel)]="order.xsmall_qty" />
+            <button mat-button *ngIf="order.xsmall_qty" matSuffix mat-icon-button aria-label="Clear">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-form-field class="col-md-1">
+            <input matInput type="text" placeholder="S" [(ngModel)]="order.small_qty" />
+            <button mat-button *ngIf="order.small_qty" matSuffix mat-icon-button aria-label="Clear">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-form-field class="col-md-1">
+            <input matInput type="text" placeholder="M" [(ngModel)]="order.med_qty" />
+            <button mat-button *ngIf="order.med_qty" matSuffix mat-icon-button aria-label="Clear">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-form-field class="col-md-1">
+            <input matInput type="text" placeholder="L" [(ngModel)]="order.large_qty" />
+            <button mat-button *ngIf="order.large_qty" matSuffix mat-icon-button aria-label="Clear">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="row">
+          <mat-form-field class="col-md-1">
+            <input matInput type="text" placeholder="XL" [(ngModel)]="order.xl_qty" />
+            <button mat-button *ngIf="order.xl_qty" matSuffix mat-icon-button aria-label="Clear">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+          <mat-form-field class="col-md-1">
+            <input matInput type="text" placeholder="XXL" [(ngModel)]="order.xxl_qty" />
+            <button mat-button *ngIf="order.xxl_qty" matSuffix mat-icon-button aria-label="Clear">
+              <mat-icon>close</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+
+      </mat-card>
+    </div>
+  </section>
+</div>
