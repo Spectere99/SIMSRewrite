@@ -11,7 +11,7 @@ export class OrderDetailComponent implements OnInit {
 itemTypes = [{char_mod: 'polo', description: 'Polo Shirt'}];
 styleTypes = [{char_mod: 'Y', description: 'Youth'},
               {char_mod: 'A', description: 'Adult'}];
-              
+
 order: OrderDetail;
 
   constructor() {

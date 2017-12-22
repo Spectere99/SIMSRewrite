@@ -23,7 +23,7 @@ import { NavbarComponent } from './_shared/navbar/navbar.component';
 import { SidenavComponent } from './_shared/sidenav/sidenav.component';
 import { CustomerComponent } from './customer/customer.component';
 import { OrderComponent } from './order/order.component';
-import { OrderDetailsComponent } from './orderDetails/orderDetails.component';
+import { OrderDetailComponent } from './order/order-detail/order-detail.component';
 import { TaskComponent } from './task/task.component';
 import { GarmentComponent } from './garment/garment.component';
 import { ReportComponent } from './report/report.component';
@@ -36,6 +36,8 @@ import { CustomerListComponent } from './customer/customer-list/customer-list.co
 import { DatePipe } from '@angular/common';
 import { PhoneFormat } from './_shared/pipes/phone.pipe';
 import { AddressLookup } from './_shared/pipes/addressType.pipe';
+
+import 'devextreme/data/odata/store';
 
 const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -54,7 +56,7 @@ const appRoutes: Routes = [
     SidenavComponent,
     CustomerComponent,
     OrderComponent,
-    OrderDetailsComponent,
+    OrderDetailComponent,
     TaskComponent,
     GarmentComponent,
     ReportComponent,

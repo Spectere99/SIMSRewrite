@@ -56,7 +56,7 @@ export class Order {
 }
 
 export class OrderDetail {
-
+    color: string;
 }
 
 @Injectable()
