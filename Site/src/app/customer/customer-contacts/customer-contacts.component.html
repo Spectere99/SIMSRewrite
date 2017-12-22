@@ -1,20 +1,25 @@
-<div *ngIf="customer!==undefined" class="container pt-4" style="height:425px; overflow-y: auto; max-height:425px">
-    <h6>Contacts</h6>
-    <hr>
-    <div class="col-md-10">
+<div *ngIf="customer!==undefined" class="container col-md-12"  style="height:425px; overflow-y: auto; max-height:425px">
+    <!-- <div class="col-md-10">
         <h6>{{customer.customer_name}} Contact Info</h6>
-    </div>
-    <div class="col-md-2 pull-right" style="padding-top:15px;">
+    </div> -->
+    <!-- <div class="col-md-2 pull-right" style="padding-top:15px;">
     </div>
     <hr>
-    <button mat-mini-fab color="primary" aria-hidden="true" (click)="addContact(customer.customer_id);" style="outline:none;">
-        Add
-    </button>
+     -->
     <mat-accordion>
-        <div class="container pt-4" *ngFor="let customerContact of customer.customer_person">
-            <mat-expansion-panel [expanded]="customerContact.customer_person_id === 0">
+        <div>
+            <mat-expansion-panel>
                 <mat-expansion-panel-header>
-                    <mat-panel-title class="col-md-6">
+                    <div class="col-md-2">
+                        <h6>Contacts</h6>
+                    </div>
+                    <div class="col-md-1">
+                        <button mat-button color="primary" aria-hidden="true" (click)="addContact(customer.customer_id);" style="outline:none;">
+                            Add
+                         </button>
+                    </div>
+
+                    <!-- <mat-panel-title class="col-md-6">
                         <div class="col-md-2 pull-left">
                             <button mat-button mat-icon-button aria-hidden="true" style="outline:none;" (click)="removeContact(customerContact.customer_person_id);">
                                 <mat-icon color="warn" style="padding-bottom: 35px; padding-right: 33px;">delete</mat-icon>
@@ -23,85 +28,91 @@
                         <div class="col-md-8" style="padding-top:10px;">
                             <h6>{{customerContact.first_name}} {{customerContact.last_name}}</h6>
                         </div>
-                    </mat-panel-title>
-                    <mat-panel-description class="col-md-6">
+                    </mat-panel-title> -->
+                    <!-- <mat-panel-description class="col-md-6">
                         <div style="padding-top:13px;">
                             {{customerContact.phone_1 | phoneFormat}}
                         </div>
-                    </mat-panel-description>
+                    </mat-panel-description> -->
                 </mat-expansion-panel-header>
-                <hr>
-                <mat-form-field class="col-md-2">
-                    <mat-select placeholder="Type" [(ngModel)]="customerContact.person_type">
-                        <mat-option *ngFor="let type of personTypes" [value]="type.char_mod">
-                            {{type.description}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="col-md-3 name-form-field">
-                    <input matInput type="text" placeholder="First Name" [(ngModel)]="customerContact.first_name" />
-                    <button mat-button *ngIf="customer.first_name" matSuffix mat-icon-button aria-label="Clear" (click)="customer.first_name=''">
+
+
+                <mat-card *ngFor="let customerContact of customer.customer_person">
+                    <mat-form-field class="col-md-2">
+                        <mat-select placeholder="Type" [(ngModel)]="customerContact.person_type">
+                            <mat-option *ngFor="let type of personTypes" [value]="type.char_mod">
+                                {{type.description}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-md-3 name-form-field">
+                        <input matInput type="text" placeholder="First Name" [(ngModel)]="customerContact.first_name" />
+                        <button mat-button *ngIf="customer.first_name" matSuffix mat-icon-button aria-label="Clear" (click)="customer.first_name=''">
                         <mat-icon style="padding-bottom:20px; padding-right:40px;">close</mat-icon>
                     </button>
-                </mat-form-field>
-                <mat-form-field class="col-md-3 name-form-field">
-                    <input matInput type="text" placeholder="Last Name" [(ngModel)]="customerContact.last_name" />
-                    <button mat-button *ngIf="customer.last_name" matSuffix mat-icon-button aria-label="Clear" (click)="customer.last_name=''">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-3 name-form-field">
+                        <input matInput type="text" placeholder="Last Name" [(ngModel)]="customerContact.last_name" />
+                        <button mat-button *ngIf="customer.last_name" matSuffix mat-icon-button aria-label="Clear" (click)="customer.last_name=''">
                         <mat-icon style="padding-bottom:20px; padding-right:40px;">close</mat-icon>
                     </button>
-                </mat-form-field>
-                <mat-form-field class="col-md-3 name-form-field">
-                    <input matInput type="text" placeholder="E-mail Address" [(ngModel)]="customerContact.email_address" />
-                    <button mat-button *ngIf="customer.email_address" matSuffix mat-icon-button aria-label="Clear" (click)="customer.email_address=''">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-3 name-form-field">
+                        <input matInput type="text" placeholder="E-mail Address" [(ngModel)]="customerContact.email_address" />
+                        <button mat-button *ngIf="customer.email_address" matSuffix mat-icon-button aria-label="Clear" (click)="customer.email_address=''">
                         <mat-icon style="padding-bottom:20px; padding-right:40px;">close</mat-icon>
                     </button>
-                </mat-form-field>
-                <mat-form-field class="col-md-3">
-                    <mat-select placeholder="Phone 1 Type" [(ngModel)]="customerContact.phone_1_type">
-                        <mat-option *ngFor="let type of phoneTypes" [value]="type.char_mod">
-                            {{type.description}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="col-md-3 name-form-field">
-                    <input matInput type="text" placeholder="Phone 1" [ngModel]="customerContact.phone_1 | phoneFormat" (ngModelChange)="customerContact.phone_1=$event"
-                    />
-                    <button mat-button *ngIf="customerContact.phone_1" matSuffix mat-icon-button aria-label="Clear" (click)="customerContact.phone_1=''">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-3">
+                        <mat-select placeholder="Phone 1 Type" [(ngModel)]="customerContact.phone_1_type">
+                            <mat-option *ngFor="let type of phoneTypes" [value]="type.char_mod">
+                                {{type.description}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-md-3 name-form-field">
+                        <input matInput type="text" placeholder="Phone 1" [ngModel]="customerContact.phone_1 | phoneFormat" (ngModelChange)="customerContact.phone_1=$event"
+                        />
+                        <button mat-button *ngIf="customerContact.phone_1" matSuffix mat-icon-button aria-label="Clear" (click)="customerContact.phone_1=''">
                         <mat-icon style="padding-bottom:20px; padding-right:40px;">close</mat-icon>
                     </button>
-                </mat-form-field>
-                <mat-form-field class="col-md-3 name-form-field">
-                    <input matInput type="text" placeholder="Phone 1 Ext" [(ngModel)]="customerContact.phone_1_ext" />
-                    <button mat-button *ngIf="customerContact.phone_1_ext" matSuffix mat-icon-button aria-label="Clear" (click)="customerContact.phone_1_ext=''">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-3 name-form-field">
+                        <input matInput type="text" placeholder="Phone 1 Ext" [(ngModel)]="customerContact.phone_1_ext" />
+                        <button mat-button *ngIf="customerContact.phone_1_ext" matSuffix mat-icon-button aria-label="Clear" (click)="customerContact.phone_1_ext=''">
                         <mat-icon style="padding-bottom:20px; padding-right:40px;">close</mat-icon>
                     </button>
-                </mat-form-field>
-                <mat-form-field class="col-md-3">
-                    <mat-select placeholder="Phone 2 Type" [(ngModel)]="customerContact.phone_2_type">
-                        <mat-option *ngFor="let type of phoneTypes" [value]="type.char_mod">
-                            {{type.description}}
-                        </mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field class="col-md-3 name-form-field">
-                    <input matInput type="text" placeholder="Phone 2" [ngModel]="customerContact.phone_2 | phoneFormat" (ngModelChange)="customerContact.phone_2=$event"
-                    />
-                    <button mat-button *ngIf="customerContact.phone_2" matSuffix mat-icon-button aria-label="Clear" (click)="customerContact.phone_2=''">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-3">
+                        <mat-select placeholder="Phone 2 Type" [(ngModel)]="customerContact.phone_2_type">
+                            <mat-option *ngFor="let type of phoneTypes" [value]="type.char_mod">
+                                {{type.description}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="col-md-3 name-form-field">
+                        <input matInput type="text" placeholder="Phone 2" [ngModel]="customerContact.phone_2 | phoneFormat" (ngModelChange)="customerContact.phone_2=$event"
+                        />
+                        <button mat-button *ngIf="customerContact.phone_2" matSuffix mat-icon-button aria-label="Clear" (click)="customerContact.phone_2=''">
                         <mat-icon style="padding-bottom:20px; padding-right:40px;">close</mat-icon>
                     </button>
-                </mat-form-field>
-                <mat-form-field class="col-md-3 name-form-field">
-                    <input matInput type="text" placeholder="Phone 2 Ext" [(ngModel)]="customerContact.phone_2_ext" />
-                    <button mat-button *ngIf="customerContact.phone_2_ext" matSuffix mat-icon-button aria-label="Clear" (click)="customerContact.phone_2_ext=''">
+                    </mat-form-field>
+                    <mat-form-field class="col-md-3 name-form-field">
+                        <input matInput type="text" placeholder="Phone 2 Ext" [(ngModel)]="customerContact.phone_2_ext" />
+                        <button mat-button *ngIf="customerContact.phone_2_ext" matSuffix mat-icon-button aria-label="Clear" (click)="customerContact.phone_2_ext=''">
                         <mat-icon style="padding-bottom:20px; padding-right:40px;">close</mat-icon>
                     </button>
-                </mat-form-field>
-                <div class="pull-right">
-                    <button mat-button mat-icon-button aria-hidden="true" style="box-shadow: none; outline:none;" (click)="saveContact(customerContact);">
+                    </mat-form-field>
+                    <div class="pull-right">
+                        <button mat-button mat-icon-button aria-hidden="true" style="box-shadow: none; outline:none;" (click)="saveContact(customerContact);">
                         <mat-icon color="primary" style="padding-bottom: 35px; padding-right: 33px;">save</mat-icon>
                     </button>
-                </div>
+                    </div>
+                </mat-card>
+
             </mat-expansion-panel>
         </div>
+        
     </mat-accordion>
+   
 </div>

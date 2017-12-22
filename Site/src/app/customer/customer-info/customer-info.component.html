@@ -56,15 +56,15 @@
     </section>
 </div>
 
-<div class="container pt-4" style="height:289px; overflow-y: auto; max-height:289px">
+<div class="container col-md-12 pt-4" style="height:auto; overflow-y: auto; max-height:325px">
     <mat-accordion>
         <!-- <mat-expansion-panel [expanded]="address.customer_address_id === 0"> -->
         <mat-expansion-panel>
             <mat-expansion-panel-header>
-                <div class="col-md-11">
+                <div class="col-md-2">
                     <h6>Addresses</h6>
                 </div>
-                <div class="col-md-1 float-right">
+                <div class="col-md-1 float-left">
                     <button mat-button color="primary" aria-hidden="true" (click)="addAddress(customer.customer_id);" style="outline:none; padding-bottom: 35px; font-size:14px; width:30px; height:20px;"
                         [disabled]="customer.customer_address === undefined">
                         Add
