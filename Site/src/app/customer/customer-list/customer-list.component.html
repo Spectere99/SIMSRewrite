@@ -46,7 +46,7 @@
       </div>
     </dx-data-grid>
     <!-- START POPUP EDITOR MARKUP -->
-    <dx-popup class="popup" [width]="1450" [height]="800" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false"
+    <dx-popup class="popup" [width]="1400" [height]="800" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false"
       [(visible)]="popupVisible">
       <div *dxTemplate="let data of 'content'">
         <!-- <h6>{{selectedCustomer.customer_name ? 'A Customer':'New Customer' }}</h6> -->
@@ -55,7 +55,7 @@
             <ngb-tab title="Info">
               <div class="col-md-10">
                 <ng-template ngbTabContent>
-                  <div class="row" style="max-height: 600px; overflow-y: auto;">
+                  <div class="row" style="max-height: 600px; overflow-y: auto; overflow-x: hidden;">
                     <div class="row">
                       <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
                     </div>
