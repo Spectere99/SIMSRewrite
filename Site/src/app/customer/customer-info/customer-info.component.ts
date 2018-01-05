@@ -111,6 +111,11 @@ ctrlHasFocus: string;
     this.customer.customer_address.unshift(newAddress);
   }
 
+  batchSave() {
+    // Save General Customer Information from the model.
+    // Loop throught this.customer.customer_address Array
+    // Call saveAddress for each address in array.
+  }
   saveAddress(customerAddress: CustomerAddress) {
     console.log('Customer Address on Save', customerAddress);
       if (customerAddress.customer_address_id === 0) {

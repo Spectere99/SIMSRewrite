@@ -151,6 +151,12 @@ popupVisible = false;
     });
   }
 
+  applyChanges() {
+    alert('Applying Customer-Info Changes');
+    // Call customer_info component's batchSave method.
+    alert('Applying Customer Contacts Changes');
+    // Call customer_contacts component's batchSave method.
+}
 /*   loadCustomerEdit(customer: any) {
     console.log('Customer', customer);
     this.onContactCustomerSelect.emit(customer);

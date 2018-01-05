@@ -276,6 +276,13 @@ export class CustomerListComponent implements OnInit {
       return formattedNumber;
     }
 
+    applyChanges() {
+        alert('Applying Customer-Info Changes');
+        // Call customer_info component's batchSave method.
+        alert('Applying Customer Contacts Changes');
+        // Call customer_contacts component's batchSave method.
+    }
+
   ngOnInit() {
   }
 

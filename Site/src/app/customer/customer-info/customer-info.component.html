@@ -10,7 +10,7 @@
                 </button>
             </mat-form-field>
             <mat-form-field class="col-md-2">
-                <mat-select placeholder="Status" [(ngModel)]="customer.status_code" [disabled]="false">
+                <mat-select placeholder="Status" [(ngModel)]="customer.status_code" [disabled]="false" style="padding-top:3px;">
                     <mat-option *ngFor="let stat of statusTypes" [value]="stat.char_mod">
                         {{stat.description}}
                     </mat-option>
@@ -20,46 +20,31 @@
                 <input matInput placeholder="Setup Date" [value]="customer.setup_date | date: 'MM/dd/yyyy'" [disabled]="true">
             </mat-form-field>
             <mat-form-field class="col-md-2">
-                <mat-select placeholder="Setup By" [(ngModel)]="customer.setup_by" [disabled]="true">
+                <mat-select placeholder="Setup By" [(ngModel)]="customer.setup_by" [disabled]="true" style="padding-top:2px;">
                     <mat-option *ngFor="let user of userList" [value]="user.user_id">
                         {{user.first_name + ' ' + user.last_name}}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
-            <mat-checkbox class="col-md-2" [(ngModel)]="customer.ship_to_bill_ind">Ship to Billing Address</mat-checkbox>
         </div>
         <div class="row col-md-12">
+            <mat-checkbox class="col-md-3" [(ngModel)]="customer.ship_to_bill_ind" style="padding-top:7px; padding-left:15px;">Ship to Billing Address</mat-checkbox>
             <mat-checkbox class="col-md-2" [(ngModel)]="customer.parent_ind" style="padding-top:7px; padding-left:15px;">Is Parent Customer</mat-checkbox>
-            <div class="form-group form-inline col-md-8">
-                <div class="col-md-1">Parent:</div>
+            <div class="form-group form-inline col-md-7">
+                <!-- <div class="col-md-1">Parent:</div> -->
                 <div class="col-md-7">
-                    <dx-select-box class="mat-select" [disabled]="!customer.parent_ind" [(ngModel)]="customer.parent_id" [items]="customerList"
+                    <dx-select-box class="mat-select" [disabled]="customer.parent_ind" [(ngModel)]="customer.parent_id" [items]="customerList"
                         displayExpr="customer_name" valueExpr="customer_id" [searchEnabled]="true">
                     </dx-select-box>
                 </div>
             </div>
-            <div class="col-md-1"></div>
-            <div class="col-md-1 float-right">
-                <button mat-raised-button color="primary" aria-hidden="true" style="box-shadow: none; outline:none;" (click)="saveCustomer(customer);">
-                    Save
-                    <!-- <mat-icon style="padding-bottom: 35px; padding-right: 33px;">save</mat-icon> -->
-                </button>
-            </div>
         </div>
-        <!-- <mat-form-field>
-             <mat-select placeholder="Parent Customer" [(ngModel)]="customer.parent_id">
-                <mat-option *ngFor="let cust of customerList" [value]="cust.customer_id" >
-                    {{cust.customer_name}}
-                </mat-option>
-            </mat-select> 
-        </mat-form-field> -->
     </section>
 </div>
-
-<div class="container col-md-12 pt-4" style="height:auto; overflow-y: auto; max-height:325px">
+<div class="container col-md-12 pt-4">
     <mat-accordion>
         <!-- <mat-expansion-panel [expanded]="address.customer_address_id === 0"> -->
-        <mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
             <mat-expansion-panel-header>
                 <div class="col-md-2">
                     <h6>Addresses</h6>
@@ -70,19 +55,7 @@
                         Add
                     </button>
                 </div>
-                <!-- <mat-panel-title class="col-md-6">
-                        <div class="col-md-2 pull-left">
-                            <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;" (click)="removeAddress(address.customer_address_id);">
-                                <mat-icon style="padding-bottom: 35px; padding-right: 33px; font-size:18px;">delete</mat-icon>
-                            </button>
-                        </div>
-                        <div class="col-md-8" style="padding-top:10px;">
-                            {{ address.address_1 }} -
-                            <strong>{{ address.type_code | addressLookup: addressTypes }}</strong>
-                        </div>
-                    </mat-panel-title> -->
             </mat-expansion-panel-header>
-            <hr>
             <div *ngFor="let address of customer.customer_address">
                 <mat-card>
                     <mat-form-field class="col-md-2">
@@ -113,8 +86,8 @@
                         <mat-hint align="end">{{postalCode.value.length}} / 10</mat-hint>
                     </mat-form-field>
                     <div class="pull-right">
-                        <button mat-button color="primary" mat-icon-button aria-hidden="true" style="box-shadow: none; outline:none;" (click)="saveAddress(address);">
-                            <mat-icon style="padding-bottom: 35px; padding-right: 33px;">save</mat-icon>
+                        <button mat-button color="primary" mat-icon-button aria-hidden="true" style="box-shadow: none; outline:none;" (click)="removeAddress(address.id);">
+                            <mat-icon color="warn" style="padding-bottom: 35px; padding-right: 33px;">delete</mat-icon>
                         </button>
                     </div>
                 </mat-card>
