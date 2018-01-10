@@ -6,7 +6,7 @@ import 'rxjs/add/operator/map';
 
 export class LookupItem {
     id: number;
-    className: string;
+    class: string;
     chr_mod: string;
     description: string;
 }
