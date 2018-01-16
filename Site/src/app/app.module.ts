@@ -25,6 +25,7 @@ import { SidenavComponent } from './_shared/sidenav/sidenav.component';
 import { CustomerComponent } from './customer/customer.component';
 import { OrderComponent } from './order/order.component';
 import { OrderDetailComponent } from './order/order-detail/order-detail.component';
+import { OrderInfoComponent } from './order/order-info/order-info.component';
 import { TaskComponent } from './task/task.component';
 import { GarmentComponent } from './garment/garment.component';
 import { ReportComponent } from './report/report.component';
@@ -58,6 +59,7 @@ const appRoutes: Routes = [
     CustomerComponent,
     OrderComponent,
     OrderDetailComponent,
+    OrderInfoComponent,
     TaskComponent,
     GarmentComponent,
     ReportComponent,
