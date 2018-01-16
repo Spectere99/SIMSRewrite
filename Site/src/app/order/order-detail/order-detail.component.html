@@ -34,9 +34,9 @@
           </tr>
           <tr>
             <td>
-              <!-- <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;">
-                    <mat-icon style="padding-bottom: 35px; padding-right: 30px; font-size:15px;">delete</mat-icon>
-                </button> -->
+              <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;">
+                <mat-icon style="padding-bottom: 35px; padding-right: 26px; font-size:15px;">close</mat-icon>
+              </button>
             </td>
             <td>
               <input type="checkbox" id="checkedin_ind" name="chkIn" value="Y">
@@ -150,434 +150,171 @@
             </td>
           </tr>
         </table>
-        <!--         <mat-card-header>
-            <div class="col-md-3">
-                <div>
-                  <input type="checkbox" id="checkedin_ind" name="interest" value="Y">
-                  <label for="checkedin_ind">In</label>
-                </div>
-                <div>
-                  <input type="checkbox" id="checkedout_ind" name="interest" value="Y">
-                  <label for="checkedout_ind">Out</label>
-                </div>
-              </div>
-        </mat-card-header> -->
-        <!-- <div class="row">
-          <div class="col-md-0">
-              <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;">
-                  <mat-icon style="padding-bottom: 35px; padding-right: 30px; font-size:20px;">delete</mat-icon>
-              </button>
-          </div>
-          <div class="col-md-2">
-            <div>
-              <input type="checkbox" id="checkedin_ind" name="interest" value="Y">
-              <label for="checkedin_ind">In</label>
-              <input type="checkbox" id="checkedout_ind" name="interest" value="Y">
-              <label for="checkedout_ind">Out</label>
-            </div>
-          </div>
-          <div class="col-md-1">
-              <button mat-raised-button>Copy</button>
-            </div>
-        </div>
-        <div class="row">
-          <mat-form-field class="col-md-3">
-            <mat-select placeholder="Item">
-              <mat-option *ngFor="let itm of itemTypes" [value]="itm.char_mod">
-                {{itm.description}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <mat-form-field class="col-md-2">
-            <input matInput type="text" placeholder="Color" [(ngModel)]="order.color" />
-            <button mat-button *ngIf="order.color" matSuffix mat-icon-button aria-label="Clear">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-          <mat-form-field class="col-md-1">
-            <mat-select placeholder="Y/A">
-              <mat-option *ngFor="let itm of sizeTypes" [value]="itm.char_mod">
-                {{itm.description}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <table>
-            <tr>
-              <td style="font-size:10px;">XS</td>
-              <td style="font-size:10px;">S</td>
-              <td style="font-size:10px;">M</td>
-              <td style="font-size:10px;">L</td>
-              <td style="font-size:10px;">XL</td>
-              <td style="font-size:10px;">2XL</td>
-              <td style="font-size:10px;">3XL</td>
-              <td style="font-size:10px;">4XL</td>
-              <td style="font-size:10px;">5XL</td>
-            </tr>
-            <tr>
-              <td><input type="text" size="1"></td>
-              <td><input type="text" size="1"></td>
-              <td><input type="text" size="1"></td>
-              <td><input type="text" size="1"></td>
-              <td><input type="text" size="1"></td>
-              <td><input type="text" size="1"></td>
-              <td><input type="text" size="1"></td>
-              <td><input type="text" size="1"></td>
-              <td><input type="text" size="1"></td>
-            </tr>
-          </table> -->
-        <!-- <mat-form-field class="col-md-1">
-            <input matInput type="text" placeholder="XS" [(ngModel)]="order.xsmall_qty" />
-            <button mat-button *ngIf="order.xsmall_qty" matSuffix mat-icon-button aria-label="Clear">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-          <mat-form-field class="col-md-1">
-            <input matInput type="text" placeholder="S" [(ngModel)]="order.small_qty" />
-            <button mat-button *ngIf="order.small_qty" matSuffix mat-icon-button aria-label="Clear">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-          <mat-form-field class="col-md-1">
-            <input matInput type="text" placeholder="M" [(ngModel)]="order.med_qty" />
-            <button mat-button *ngIf="order.med_qty" matSuffix mat-icon-button aria-label="Clear">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-          <mat-form-field class="col-md-1">
-            <input matInput type="text" placeholder="L" [(ngModel)]="order.large_qty" />
-            <button mat-button *ngIf="order.large_qty" matSuffix mat-icon-button aria-label="Clear">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-        </div>
-        <div class="row">
-          <mat-form-field class="col-md-1">
-            <input matInput type="text" placeholder="XL" [(ngModel)]="order.xl_qty" />
-            <button mat-button *ngIf="order.xl_qty" matSuffix mat-icon-button aria-label="Clear">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field>
-          <mat-form-field class="col-md-1">
-            <input matInput type="text" placeholder="XXL" [(ngModel)]="order.xxl_qty" />
-            <button mat-button *ngIf="order.xxl_qty" matSuffix mat-icon-button aria-label="Clear">
-              <mat-icon>close</mat-icon>
-            </button>
-          </mat-form-field> -->
-        <!-- </div>
-        <div class="row">
-          <mat-form-field class="col-md-2">
-            <mat-select placeholder="Option">
-              <mat-option *ngFor="let itm of sizeTypes" [value]="itm.char_mod">
-                {{itm.description}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-          <table>
-              <tr>
-                <td style="font-size:10px;">Qty</td>
-              </tr>
-              <tr>
-                <td><input type="text" size="1"></td>
-              </tr>
-            </table>
-        </div> -->
       </mat-card>
+      <br>
       <div class="row col-md-12">
-          <div class="col-md-3">
-            Art Placement
+        <div class="col-md-3">
+          Art Placement
+        </div>
+        <div class="col-md-1">
+          <button class="form-control" type="button" style="font-size:10px;">Add</button>
+        </div>
+      </div>
+      <mat-card>
+        <table>
+          <tr>
+            <td style="font-size:10px;"></td>
+            <td style="font-size:10px;">Art Placement</td>
+            <td style="font-size:10px;">Colors</td>
+            <td style="font-size:10px;">Color Codes</td>
+            <td style="font-size:10px;">Added By</td>
+            <td style="font-size:10px;">Added Date</td>
+          </tr>
+          <tr>
+            <td>
+              <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;">
+                <mat-icon style="padding-bottom: 35px; padding-right: 27px; font-size:15px;">close</mat-icon>
+              </button>
+            </td>
+            <td>
+              <select class="form-control form-control-sm" style="width:auto;">
+                <option *ngFor="let itm of itemTypes" [value]="itm.char_mod">
+                  {{itm.description}}
+                </option>
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="text" size="20" [(ngModel)]="order.color">
+            </td>
+            <td>
+              <input class="form-control" type="text" size="20">
+            </td>
+            <td>
+              <input class="form-control" type="text" size="10" readonly>
+            </td>
+            <td>
+              <input class="form-control" type="text" size="10" readonly>
+            </td>
+          </tr>
+        </table>
+        <table>
+          <tr>
+            <td></td>
+            <td style="font-size:10px;">Note:&nbsp;&nbsp;&nbsp;</td>
+            <td style="font-size:10px;">
+              <input class="form-control" type="text" size="132">
+            </td>
+          </tr>
+        </table>
+      </mat-card>
+      <br>
+      <div class="row col-md-12">
+        <div class="col-md-3">
+          Setup Charges
+        </div>
+        <div class="col-md-1">
+          <button class="form-control" type="button" style="font-size:10px;">Add</button>
+        </div>
+      </div>
+      <mat-card>
+        <table>
+          <tr>
+            <td style="font-size:10px;"></td>
+            <td style="font-size:10px;">#</td>
+            <td style="font-size:10px;">Quantity</td>
+            <td style="font-size:10px;">Item</td>
+            <td style="font-size:10px;">Each</td>
+            <td style="font-size:10px;">Ext</td>
+            <td style="font-size:10px;">Tax</td>
+            <td style="font-size:10px;">Note</td>
+          </tr>
+          <tr>
+            <td>
+              <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;">
+                <mat-icon style="padding-bottom: 35px; padding-right: 30px; font-size:15px;">close</mat-icon>
+              </button>
+            </td>
+            <td>1</td>
+            <td>
+              <input class="form-control" type="text" size="10">
+            </td>
+            <td>
+              <select class="form-control form-control-sm" style="width:auto;">
+                <option *ngFor="let itm of itemTypes" [value]="itm.char_mod">
+                  {{itm.description}}
+                </option>
+              </select>
+            </td>
+            <td>
+              <div class="input-group input-group-sm">
+                <span class="input-group-addon">$</span>
+                <input type="text" class="form-control" placeholder="0.00" size="4">
+              </div>
+            </td>
+            <td>
+              $00.00
+            </td>
+            <td>
+              <input type="checkbox" id="setupChgTax" name="chkSetupChgTax" value="N">
+            </td>
+            <td>
+              <input class="form-control" type="text" size="75">
+            </td>
+        </table>
+      </mat-card>
+      <br>
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-sm-3">
+            <table>
+              <tr>
+                <td>Subtotal:</td>
+                <td>$00.00</td>
+              </tr>
+              <tr>
+                <td>Tax Rate:</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Tax:</td>
+                <td></td>
+              </tr>
+              <tr>
+                <td>Shipping:</td>
+                <td>$.00</td>
+              </tr>
+              <tr>
+                <td>Total:</td>
+                <td>$00.00</td>
+              </tr>
+              <tr>
+                <td>Payments:</td>
+                <td>$00.00</td>
+              </tr>
+              <tr>
+                <td>
+                  <strong>Balance Due:</strong>
+                </td>
+                <td>$00.00</td>
+              </tr>
+            </table>
           </div>
-          <div class="col-md-1">
-            <button class="form-control" type="button" style="font-size:10px;">Add</button>
+          <div class="col-sm-6">
+            <div class="row">
+              <div class="col-sm-3">
+                Payments
+              </div>
+              <div class="col-sm-2">
+                  <button class="form-control" type="button" style="font-size:10px;">Add</button>
+              </div>
+            </div>
+
+            <mat-card>
+              No Payments.
+            </mat-card>
           </div>
         </div>
-        <mat-card>
-          <table>
-            <tr>
-              <td style="font-size:10px;"></td>
-              <td style="font-size:10px;">In</td>
-              <td style="font-size:10px;">Out</td>
-              <td style="font-size:10px;">Item</td>
-              <td style="font-size:10px;">Color</td>
-              <td style="font-size:10px;">Y/A</td>
-              <td style="font-size:10px;">XS</td>
-              <td style="font-size:10px;">S</td>
-              <td style="font-size:10px;">M</td>
-              <td style="font-size:10px;">L</td>
-              <td style="font-size:10px;">XL</td>
-              <td style="font-size:10px;">2XL</td>
-              <td style="font-size:10px;">3XL</td>
-              <td style="font-size:10px;">4XL</td>
-              <td style="font-size:10px;">5XL</td>
-              <td style="font-size:10px;">Option</td>
-              <td style="font-size:10px;">Qty</td>
-            </tr>
-            <tr>
-              <td>
-                <!-- <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;">
-                      <mat-icon style="padding-bottom: 35px; padding-right: 30px; font-size:15px;">delete</mat-icon>
-                  </button> -->
-              </td>
-              <td>
-                <input type="checkbox" id="checkedin_ind" name="chkIn" value="Y">
-              </td>
-              <td>
-                <input type="checkbox" id="checkedout_ind" name="chkOut" value="Y">
-              </td>
-              <td>
-                <select class="form-control form-control-sm" style="width:auto;">
-                  <option *ngFor="let itm of itemTypes" [value]="itm.char_mod">
-                    {{itm.description}}
-                  </option>
-                </select>
-              </td>
-              <td>
-                <input class="form-control" type="text" size="5" [(ngModel)]="order.color">
-              </td>
-              <td>
-                <select class="form-control form-control-sm" style="width:auto;">
-                  <option *ngFor="let itm of styleTypes" [value]="itm.char_mod">
-                    {{itm.description}}
-                  </option>
-                </select>
-              </td>
-              <td>
-                <input class="form-control" type="text" size="1">
-              </td>
-              <td>
-                <input class="form-control" type="text" size="1">
-              </td>
-              <td>
-                <input class="form-control" type="text" size="1">
-              </td>
-              <td>
-                <input class="form-control" type="text" size="1">
-              </td>
-              <td>
-                <input class="form-control" type="text" size="1">
-              </td>
-              <td>
-                <input class="form-control" type="text" size="1">
-              </td>
-              <td>
-                <input class="form-control" type="text" size="1">
-              </td>
-              <td>
-                <input class="form-control" type="text" size="1">
-              </td>
-              <td>
-                <input class="form-control" type="text" size="1">
-              </td>
-              <td>
-                <select class="form-control form-control-sm" style="width:auto;">
-                  <option></option>
-                  <option *ngFor="let itm of sizeTypes" [value]="itm.char_mod">
-                    {{itm.description}}
-                  </option>
-                </select>
-              </td>
-              <td>
-                <input class="form-control" type="text" size="2">
-              </td>
-            </tr>
-          </table>
-          <table>
-            <tr>
-              <td></td>
-              <td style="font-size:10px;">Total Qty</td>
-              <td style="font-size:10px;">Price Each</td>
-              <td style="font-size:10px;">Subtotal</td>
-              <td style="font-size:10px;">Tax</td>
-              <td style="font-size:10px;">Order Date</td>
-              <td style="font-size:10px;">Arrival Date</td>
-              <td style="font-size:10px;">Vendor</td>
-              <td style="font-size:10px;">Manufacturer</td>
-              <td style="font-size:10px;">Style #</td>
-            </tr>
-            <tr>
-              <td>
-                <button class="form-control" type="button" style="font-size:12px;">Copy</button>
-              </td>
-              <td style="text-align:center;">5</td>
-              <td>
-                <div class="input-group input-group-sm">
-                  <span class="input-group-addon">$</span>
-                  <input type="text" class="form-control" placeholder="0.00" size="4">
-                </div>
-              </td>
-              <td style="text-align:center;">$00.00</td>
-              <td>
-                <input type="checkbox" id="checkedin_ind" name="interest" value="Y">
-              </td>
-              <td>
-                <input class="form-control" type="date">
-              </td>
-              <td>
-                <input class="form-control" type="date">
-              </td>
-              <td>
-                <select class="form-control form-control-sm" style="width:auto;">
-                  <option *ngFor="let itm of vendorTypes" [value]="itm.char_mod">
-                    {{itm.description}}
-                  </option>
-                </select>
-              </td>
-              <td>
-                <input type="text" class="form-control" size="23">
-              </td>
-              <td>
-                <input type="text" class="form-control" size="16">
-              </td>
-            </tr>
-          </table>
-        </mat-card>
-        <div class="row col-md-12">
-            <div class="col-md-3">
-              Setup Charges
-            </div>
-            <div class="col-md-1">
-              <button class="form-control" type="button" style="font-size:10px;">Add</button>
-            </div>
-          </div>
-          <mat-card>
-            <table>
-              <tr>
-                <td style="font-size:10px;"></td>
-                <td style="font-size:10px;">In</td>
-                <td style="font-size:10px;">Out</td>
-                <td style="font-size:10px;">Item</td>
-                <td style="font-size:10px;">Color</td>
-                <td style="font-size:10px;">Y/A</td>
-                <td style="font-size:10px;">XS</td>
-                <td style="font-size:10px;">S</td>
-                <td style="font-size:10px;">M</td>
-                <td style="font-size:10px;">L</td>
-                <td style="font-size:10px;">XL</td>
-                <td style="font-size:10px;">2XL</td>
-                <td style="font-size:10px;">3XL</td>
-                <td style="font-size:10px;">4XL</td>
-                <td style="font-size:10px;">5XL</td>
-                <td style="font-size:10px;">Option</td>
-                <td style="font-size:10px;">Qty</td>
-              </tr>
-              <tr>
-                <td>
-                  <!-- <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;">
-                        <mat-icon style="padding-bottom: 35px; padding-right: 30px; font-size:15px;">delete</mat-icon>
-                    </button> -->
-                </td>
-                <td>
-                  <input type="checkbox" id="checkedin_ind" name="chkIn" value="Y">
-                </td>
-                <td>
-                  <input type="checkbox" id="checkedout_ind" name="chkOut" value="Y">
-                </td>
-                <td>
-                  <select class="form-control form-control-sm" style="width:auto;">
-                    <option *ngFor="let itm of itemTypes" [value]="itm.char_mod">
-                      {{itm.description}}
-                    </option>
-                  </select>
-                </td>
-                <td>
-                  <input class="form-control" type="text" size="5" [(ngModel)]="order.color">
-                </td>
-                <td>
-                  <select class="form-control form-control-sm" style="width:auto;">
-                    <option *ngFor="let itm of styleTypes" [value]="itm.char_mod">
-                      {{itm.description}}
-                    </option>
-                  </select>
-                </td>
-                <td>
-                  <input class="form-control" type="text" size="1">
-                </td>
-                <td>
-                  <input class="form-control" type="text" size="1">
-                </td>
-                <td>
-                  <input class="form-control" type="text" size="1">
-                </td>
-                <td>
-                  <input class="form-control" type="text" size="1">
-                </td>
-                <td>
-                  <input class="form-control" type="text" size="1">
-                </td>
-                <td>
-                  <input class="form-control" type="text" size="1">
-                </td>
-                <td>
-                  <input class="form-control" type="text" size="1">
-                </td>
-                <td>
-                  <input class="form-control" type="text" size="1">
-                </td>
-                <td>
-                  <input class="form-control" type="text" size="1">
-                </td>
-                <td>
-                  <select class="form-control form-control-sm" style="width:auto;">
-                    <option></option>
-                    <option *ngFor="let itm of sizeTypes" [value]="itm.char_mod">
-                      {{itm.description}}
-                    </option>
-                  </select>
-                </td>
-                <td>
-                  <input class="form-control" type="text" size="2">
-                </td>
-              </tr>
-            </table>
-            <table>
-              <tr>
-                <td></td>
-                <td style="font-size:10px;">Total Qty</td>
-                <td style="font-size:10px;">Price Each</td>
-                <td style="font-size:10px;">Subtotal</td>
-                <td style="font-size:10px;">Tax</td>
-                <td style="font-size:10px;">Order Date</td>
-                <td style="font-size:10px;">Arrival Date</td>
-                <td style="font-size:10px;">Vendor</td>
-                <td style="font-size:10px;">Manufacturer</td>
-                <td style="font-size:10px;">Style #</td>
-              </tr>
-              <tr>
-                <td>
-                  <button class="form-control" type="button" style="font-size:12px;">Copy</button>
-                </td>
-                <td style="text-align:center;">5</td>
-                <td>
-                  <div class="input-group input-group-sm">
-                    <span class="input-group-addon">$</span>
-                    <input type="text" class="form-control" placeholder="0.00" size="4">
-                  </div>
-                </td>
-                <td style="text-align:center;">$00.00</td>
-                <td>
-                  <input type="checkbox" id="checkedin_ind" name="interest" value="Y">
-                </td>
-                <td>
-                  <input class="form-control" type="date">
-                </td>
-                <td>
-                  <input class="form-control" type="date">
-                </td>
-                <td>
-                  <select class="form-control form-control-sm" style="width:auto;">
-                    <option *ngFor="let itm of vendorTypes" [value]="itm.char_mod">
-                      {{itm.description}}
-                    </option>
-                  </select>
-                </td>
-                <td>
-                  <input type="text" class="form-control" size="23">
-                </td>
-                <td>
-                  <input type="text" class="form-control" size="16">
-                </td>
-              </tr>
-            </table>
-          </mat-card>
       </div>
+    </div>
   </section>
-  </div>
+</div>
