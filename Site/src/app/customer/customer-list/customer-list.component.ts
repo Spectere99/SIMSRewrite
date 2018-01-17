@@ -187,7 +187,7 @@ export class CustomerListComponent implements OnInit {
     showEditPopup(e) {
       // e.cancel = true;
       console.log('E', e);
-      this.selectedCustomer = e;
+      this.selectedCustomer = e.data;
       console.log('SelectedCustomer', this.selectedCustomer);
       // alert('Editing!');
       this.popupVisible = true;

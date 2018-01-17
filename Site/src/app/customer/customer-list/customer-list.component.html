@@ -42,7 +42,8 @@
       <dxo-editing mode="form" [allowUpdating]="false" [allowDeleting]="false" [allowAdding]="false">
       </dxo-editing>
       <div *dxTemplate="let data of 'customerCell'">
-        <button type="button" class="btn btn-outline-primary btn-xs" (click)="showEditPopup(data)">{{data.value}}</button>
+        <a [routerLink]="" (click)="showEditPopup(data)">{{data.value}}</a>
+        <!-- <button type="button" class="btn btn-outline-primary btn-xs" (click)="showEditPopup(data)">{{data.value}}</button> -->
       </div>
     </dx-data-grid>
     <!-- START POPUP EDITOR MARKUP -->

@@ -27,7 +27,7 @@ statusTypes: any;
 ctrlHasFocus: string;
   constructor(public dialog: MatDialog, public snackBar: MatSnackBar, private customerService: CustomerService,
             private lookupService: LookupService, private usStateService: StateService, public datePipe: DatePipe) {
-    console.log(this.customer);
+    console.log('Customer in customer-info:', this.customer);
     console.log('userList', this.userList);
     this.stateList = this.usStateService.getStateList();
     console.log('States', this.stateList);

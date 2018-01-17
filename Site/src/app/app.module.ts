@@ -24,6 +24,7 @@ import { NavbarComponent } from './_shared/navbar/navbar.component';
 import { SidenavComponent } from './_shared/sidenav/sidenav.component';
 import { CustomerComponent } from './customer/customer.component';
 import { OrderComponent } from './order/order.component';
+import { OrderListComponent } from './order/order-list/order-list.component';
 import { OrderDetailComponent } from './order/order-detail/order-detail.component';
 import { OrderInfoComponent } from './order/order-info/order-info.component';
 import { TaskComponent } from './task/task.component';
@@ -58,6 +59,7 @@ const appRoutes: Routes = [
     SidenavComponent,
     CustomerComponent,
     OrderComponent,
+    OrderListComponent,
     OrderDetailComponent,
     OrderInfoComponent,
     TaskComponent,

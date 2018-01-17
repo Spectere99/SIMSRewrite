@@ -5,7 +5,7 @@
         [hoverStateEnabled]="true" [rowAlternationEnabled]="true" [height]="525" (onSelectionChanged)="selectionChanged($event)">
         <dxo-selection mode="single"></dxo-selection>
         <dxi-column dataField="reorder_ind" caption="Reorder?" [width]="100" [allowFiltering]="false" [calculateCellValue]="setReorderInd"></dxi-column>
-        <dxi-column dataField="order_number" caption="Order #" [width]="100" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
+        <dxi-column dataField="order_number" caption="Order #" [width]="100" [allowSearch]="true" [allowFiltering]="true" cellTemplate="orderCell"></dxi-column>
         <dxi-column dataField="order_status" caption="Status" [width]="125">
           <dxo-lookup [dataSource]="order_statusSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
         </dxi-column>
@@ -32,6 +32,10 @@
           <dxo-popup title="User Info" [showTitle]="true" [width]="700" [height]="450" [position]="{ my: 'top', at: 'top' }">
           </dxo-popup>
         </dxo-editing>
+        <div *dxTemplate="let data of 'orderCell'">
+            <a href="#" (click)="showEditPopup(data)">{{data.value}}</a>
+          <!-- <button type="button" class="btn btn-xs" (click)="showEditPopup(data)">{{data.value}}</button> -->
+        </div>
       </dx-data-grid>
     </div>
   </div>

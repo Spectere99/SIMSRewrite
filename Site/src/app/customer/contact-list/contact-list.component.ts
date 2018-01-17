@@ -141,10 +141,10 @@ popupVisible = false;
   }
 
   showEditPopup(e) {
-    // e.cancel = true;
-    console.log('ShowPopup', e);
+    // e.cancel = true;s
+    console.log('ShowPopup', e.data);
 
-    this.customerService.getCustomerData('', e.customer_id).subscribe(res => {
+    this.customerService.getCustomerData('', e.data.customers.customer_id).subscribe(res => {
       this.selectedCustomer = res;
       console.log('Returned Customer', res);
       this.popupVisible = true;
