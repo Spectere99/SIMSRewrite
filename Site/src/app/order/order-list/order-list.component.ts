@@ -37,10 +37,12 @@ export class OrderListComponent implements OnInit {
   order_statusSource: any;
   order_typeSource: any;
   user_Source: any;
-  selectedOrder = {};
+  selectedOrder: any;
   lookupDataSource: any;
 
   filterDate = new Date(2008, 1, 1);
+
+  popupVisible = false;
 
     constructor(private http: Http, lookupService: LookupService, userService: UserService) {
       this.baseUrl = 'http://localhost:56543/odata/';
@@ -148,6 +150,14 @@ export class OrderListComponent implements OnInit {
     if (data === undefined) { return false; }
     return data.reorder_ind === 'Y';
   }
+  showEditPopup(e) {
+    // e.cancel = true;
+    console.log('E', e);
+    this.selectedOrder = e.data;
+    // alert('Editing!');
+    this.popupVisible = true;
+  }
+
   ngOnInit() {
   }
 

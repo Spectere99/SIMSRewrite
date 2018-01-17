@@ -1,7 +1,5 @@
 <div class="container col-md-12 pt-4">
   <section>
-    <h6>Customer: INSERT CUSTOMER HERE</h6>
-    <hr>
     <div>
       <div class="row col-md-12">
         <div class="col-md-3">
@@ -29,7 +27,7 @@
             </td>
             <td>
               <select class="form-control form-control-sm" style="width:auto;">
-                <option *ngFor="let itm of styleTypes" [value]="itm.char_mod">
+                <option *ngFor="let itm of orderTypes" [value]="itm.char_mod">
                   {{itm.description}}
                 </option>
               </select>
@@ -54,7 +52,7 @@
           <tr>
             <td>
               <select class="form-control form-control-sm" style="width:auto;">
-                <option *ngFor="let itm of vendorTypes" [value]="itm.char_mod">
+                <option *ngFor="let itm of phoneTypes" [value]="itm.char_mod">
                   {{itm.description}}
                 </option>
               </select>
@@ -66,26 +64,26 @@
               <input class="form-control" type="tel" size="15">
             </td>
             <td>
-              <input class="form-control" type="text" size="5">
+              <input class="form-control" type="text" size="2">
             </td>
             <td>
               <select class="form-control form-control-sm" style="width:auto;">
-                <option *ngFor="let itm of vendorTypes" [value]="itm.char_mod">
+                <option *ngFor="let itm of phoneTypes" [value]="itm.char_mod">
                   {{itm.description}}
                 </option>
               </select>
             </td>
             <td>
-              <input class="form-control" type="tel" size="20">
+              <input class="form-control" type="tel" size="15">
             </td>
             <td>
-              <input class="form-control" type="text" size="15">
+              <input class="form-control" type="text" size="2">
             </td>
             <td>
               <select class="form-control form-control-sm" style="width:auto;">
-                <option *ngFor="let itm of vendorTypes" [value]="itm.char_mod">
-                  {{itm.description}}
-                </option>
+                  <option *ngFor="let itm of phoneTypes" [value]="itm.char_mod">
+                      {{itm.description}}
+                  </option>
               </select>
             </td>
           </tr>
@@ -101,23 +99,23 @@
           <tr>
             <td>
               <select class="form-control form-control-sm" style="width:auto;">
-                <option *ngFor="let itm of vendorTypes" [value]="itm.char_mod">
+                <option *ngFor="let itm of statusTypes" [value]="itm.char_mod">
                   {{itm.description}}
                 </option>
               </select>
             </td>
             <td>
                 <select class="form-control form-control-sm" style="width:auto;">
-                  <option *ngFor="let itm of vendorTypes" [value]="itm.char_mod">
-                    {{itm.description}}
+                  <option *ngFor="let user of userDataSource" [value]="user.user_id">
+                      {{user.first_name + ' ' + user.last_name}}
                   </option>
                 </select>
               </td>
             <td>
               <select class="form-control form-control-sm" style="width:auto;">
-                <option *ngFor="let itm of vendorTypes" [value]="itm.char_mod">
-                  {{itm.description}}
-                </option>
+                  <option *ngFor="let user of userDataSource" [value]="user.user_id">
+                      {{user.first_name + ' ' + user.last_name}}
+                  </option>
               </select>
             </td>
             <td>
