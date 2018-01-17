@@ -33,7 +33,7 @@
           </dxo-popup>
         </dxo-editing>
         <div *dxTemplate="let data of 'orderCell'">
-            <a href="#" (click)="showEditPopup(data)">{{data.value}}</a>
+            <a [routerLink]="" (click)="showEditPopup(data)">{{data.value}}</a>
           <!-- <button type="button" class="btn btn-xs" (click)="showEditPopup(data)">{{data.value}}</button> -->
         </div>
       </dx-data-grid>
