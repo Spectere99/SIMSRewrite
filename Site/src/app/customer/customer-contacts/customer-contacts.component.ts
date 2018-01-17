@@ -62,6 +62,7 @@ dirtyRecords: Array<CustomerPerson>;
         this.customer.customer_person = this.customer.customer_person.filter(p => p.customer_person_id !== customerPersonId);
 
         // Remove contact from the database using Web service call.
+        if (customerPersonId) {
         this.customerService.deleteCustomerContact('rwflowers', customerPersonId)
           .subscribe(res => {
             this.snackBar.open('Customer Contact Deleted!', '', {
@@ -69,9 +70,15 @@ dirtyRecords: Array<CustomerPerson>;
               verticalPosition: 'top'
             });
           });
-      }
-    });
+        }
+      }else {
+        this.snackBar.open('Customer Contact Deleted!', '', {
+        duration: 4000,
+        verticalPosition: 'top'
+      });
 
+  }
+ });
   }
 
   addContact(customerId: number) {

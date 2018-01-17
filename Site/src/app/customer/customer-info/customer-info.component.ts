@@ -23,6 +23,8 @@ lookupDataSource: any;
 addressTypes: any;
 stateList: any;
 statusTypes: any;
+panelExpanded: boolean;
+
 
 ctrlHasFocus: string;
   constructor(public dialog: MatDialog, public snackBar: MatSnackBar, private customerService: CustomerService,
@@ -41,6 +43,7 @@ ctrlHasFocus: string;
       this.customerList = res.value;
       console.log('customerList', this.customerList);
     });
+    this.panelExpanded = true;
   }
 
   selected(value: any): void {
@@ -84,7 +87,7 @@ ctrlHasFocus: string;
       console.log('The Result', result);
       if (result) {
         this.customer = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
-
+        if (customerAddressId) {
         // Remove contact from the database using Web service call.
         this.customerService.deleteCustomerAddress('rwflowers', customerAddressId)
           .subscribe(res => {
@@ -94,8 +97,14 @@ ctrlHasFocus: string;
             });
           });
       }
+    }else {
+      this.snackBar.open('Customer Contact Deleted!', '', {
+      duration: 4000,
+      verticalPosition: 'top'
     });
-  }
+    }
+  });
+}
 
   addAddress(customerId: number) {
     const newAddress: CustomerAddress = {
@@ -108,7 +117,11 @@ ctrlHasFocus: string;
       state: null,
       zip: null,
   };
-    this.customer.customer_address.unshift(newAddress);
+  if (!this.customer.customer_address) {
+    this.customer.customer_address = [];
+  }
+  this.customer.customer_address.unshift(newAddress);
+  this.panelExpanded = true;
   }
 
   batchSave() {
