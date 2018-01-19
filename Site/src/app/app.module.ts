@@ -36,9 +36,10 @@ import { CustomerContactsComponent } from './customer/customer-contacts/customer
 import { ContactListComponent } from './customer/contact-list/contact-list.component';
 import { CustomerListComponent } from './customer/customer-list/customer-list.component';
 
-import { DatePipe } from '@angular/common';
+import { DatePipe, UpperCasePipe } from '@angular/common';
 import { PhoneFormat } from './_shared/pipes/phone.pipe';
 import { AddressLookup } from './_shared/pipes/addressType.pipe';
+import { ArraySortPipe } from './_shared/pipes/orderBy.pipe';
 
 import 'devextreme/data/odata/store';
 
@@ -98,7 +99,7 @@ const appRoutes: Routes = [
     MatCardModule,
     MatChipsModule
     ],
-  providers: [DatePipe],
+  providers: [DatePipe, ArraySortPipe, UpperCasePipe],
   entryComponents: [ConfirmDialogComponent],
   bootstrap: [AppComponent]
 })

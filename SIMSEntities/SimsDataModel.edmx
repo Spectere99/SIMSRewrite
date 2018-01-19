@@ -542,6 +542,7 @@
           <Property Name="colors" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="color_codes" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="notes" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="order" Relationship="SimsModel.orderorder_art_placement" FromRole="order_art_placement" ToRole="order" />
         </EntityType>
         <EntityType Name="order_colors">
           <Key>
@@ -711,6 +712,7 @@
           <Property Name="contact_phone2_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="customer" Relationship="SimsModel.ordercustomer" FromRole="order" ToRole="customer" />
           <NavigationProperty Name="order_detail" Relationship="SimsModel.orderorder_detail" FromRole="order" ToRole="order_detail" />
+          <NavigationProperty Name="order_art_placement" Relationship="SimsModel.orderorder_art_placement" FromRole="order" ToRole="order_art_placement" />
         </EntityType>
         <EntityType Name="pricelist">
           <Key>
@@ -827,6 +829,10 @@
             <End Role="customer" EntitySet="customers" />
             <End Role="customer1" EntitySet="customers" />
           </AssociationSet>
+          <AssociationSet Name="orderorder_art_placement" Association="SimsModel.orderorder_art_placement">
+            <End Role="order" EntitySet="orders" />
+            <End Role="order_art_placement" EntitySet="order_art_placement" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="customer_customer_address">
           <End Type="SimsModel.customer" Role="customer" Multiplicity="0..1" />
@@ -897,6 +903,18 @@
             </Principal>
             <Dependent Role="customer1">
               <PropertyRef Name="parent_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="orderorder_art_placement">
+          <End Type="SimsModel.order" Role="order" Multiplicity="0..1" />
+          <End Type="SimsModel.order_art_placement" Role="order_art_placement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="order_art_placement">
+              <PropertyRef Name="order_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

@@ -7,7 +7,7 @@
 <div class="row">
   <div class="col-lg-12">
     <dx-data-grid id="gridCustomers" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
-      [hoverStateEnabled]="true" [rowAlternationEnabled]="true" [masterDetail]="{ enabled: true, template: 'contacts' }" (onRowInserting)="showAddPopup($event)"
+      [hoverStateEnabled]="true" [rowAlternationEnabled]="false" [masterDetail]="{ enabled: true, template: 'contacts' }" (onRowInserting)="showAddPopup($event)"
       (onEditingStart)="showEditPopup($event)" (onContentReady)="contentReady($event)" (onSelectionChanged)="selectCustomer($event)"
       (onToolbarPreparing)="onToolbarPreparing($event)" [height]="gridHeight">
       <dxo-selection mode="single"></dxo-selection>

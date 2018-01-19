@@ -275,8 +275,10 @@
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LookupItemsController.cs" />
+    <Compile Include="Controllers\OrderArtPlacementController.cs" />
     <Compile Include="Controllers\OrderDetailsController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
+    <Compile Include="Controllers\PricelistController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Controllers\UsersController.cs" />

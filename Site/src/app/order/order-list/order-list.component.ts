@@ -1,4 +1,4 @@
-import { Component, Injectable, OnInit } from '@angular/core';
+import { Component, Injectable, OnInit, Output } from '@angular/core';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { NgModel } from '@angular/forms';
@@ -39,6 +39,7 @@ export class OrderListComponent implements OnInit {
   user_Source: any;
   selectedOrder: any;
   lookupDataSource: any;
+  customerId: number;
 
   filterDate = new Date(2008, 1, 1);
 
@@ -65,6 +66,7 @@ export class OrderListComponent implements OnInit {
     console.log('order_statusSource', this.order_statusSource );
     console.log('order_typeSource', this.order_typeSource );
   }
+
   createOrderDataSource() {
     this.dataSource = {
       store: {
@@ -145,6 +147,7 @@ export class OrderListComponent implements OnInit {
 
   selectionChanged(e) {
     this.selectedOrder = e.selectedRowsData[0];
+    console.log('In selectionChanged', this.selectedOrder);
   }
   setReorderInd(data) {
     if (data === undefined) { return false; }
@@ -154,10 +157,15 @@ export class OrderListComponent implements OnInit {
     // e.cancel = true;
     console.log('E', e);
     this.selectedOrder = e.data;
+    console.log('Selected Order', this.selectedOrder);
     // alert('Editing!');
     this.popupVisible = true;
   }
 
+  closeEditor() {
+    // this.selectedOrder = undefined;
+    this.popupVisible = false;
+  }
   ngOnInit() {
   }
 

@@ -17,23 +17,24 @@
           </tr>
           <tr>
             <td>
-              <input class="form-control" type="text" size="25" readonly>
+              <input class="form-control" type="text" size="25" readonly [(ngModel)]="currentOrder.order_number" [disabled]="editMode">
             </td>
             <td>
-              <input class="form-control" type="text" size="20" readonly>
+              <input class="form-control" [ngModel]="currentOrder.order_date | date:'yyyy-MM-dd'" (ngModelChange)="currentOrder.order_date = $event" type="date" [disabled]="editMode" />
             </td>
             <td>
-              <input type="date" size="20">
+              <input class="form-control" 
+              type="date" [ngModel]="currentOrder.order_due_date | date:'yyyy-MM-dd'" (ngModelChange)="currentOrder.order_due_date = $event">
             </td>
             <td>
-              <select class="form-control form-control-sm" style="width:auto;">
+              <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.order_type">
                 <option *ngFor="let itm of orderTypes" [value]="itm.char_mod">
                   {{itm.description}}
                 </option>
               </select>
             </td>
             <td>
-              <input class="form-control" type="text" size="30" readonly>
+              <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.purchase_order">
             </td>
             <td>
           </tr>
@@ -51,36 +52,36 @@
           </tr>
           <tr>
             <td>
-              <select class="form-control form-control-sm" style="width:auto;">
+              <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.contact">
+                <option *ngFor="let person of contactPersons" [value]="getCustomerFullName(person)">
+                  {{getCustomerFullName(person)}}
+                </option>
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="email" size="25" [(ngModel)]="currentOrder.contact_email">
+            </td>
+            <td>
+              <input class="form-control" type="tel" size="15" [ngModel]="currentOrder.contact_phone1 | phoneFormat" (ngModelChange)="currentOrder.contact_phone1=$event">
+            </td>
+            <td>
+              <input class="form-control" type="text" size="1" [(ngModel)]="currentOrder.contact_phone1_ext">
+            </td>
+            <td>
+              <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.contact_phone1_type">
                 <option *ngFor="let itm of phoneTypes" [value]="itm.char_mod">
                   {{itm.description}}
                 </option>
               </select>
             </td>
             <td>
-              <input class="form-control" type="email" size="20">
+              <input class="form-control" type="tel" size="15"  [ngModel]="currentOrder.contact_phone2 | phoneFormat" (ngModelChange)="currentOrder.contact_phone2=$event">
             </td>
             <td>
-              <input class="form-control" type="tel" size="15">
+              <input class="form-control" type="text" size="1" [(ngModel)]="currentOrder.contact_phone2_ext">
             </td>
             <td>
-              <input class="form-control" type="text" size="2">
-            </td>
-            <td>
-              <select class="form-control form-control-sm" style="width:auto;">
-                <option *ngFor="let itm of phoneTypes" [value]="itm.char_mod">
-                  {{itm.description}}
-                </option>
-              </select>
-            </td>
-            <td>
-              <input class="form-control" type="tel" size="15">
-            </td>
-            <td>
-              <input class="form-control" type="text" size="2">
-            </td>
-            <td>
-              <select class="form-control form-control-sm" style="width:auto;">
+              <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.contact_phone2_type">
                   <option *ngFor="let itm of phoneTypes" [value]="itm.char_mod">
                       {{itm.description}}
                   </option>
@@ -98,31 +99,31 @@
           </tr>
           <tr>
             <td>
-              <select class="form-control form-control-sm" style="width:auto;">
+              <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.order_status">
                 <option *ngFor="let itm of statusTypes" [value]="itm.char_mod">
                   {{itm.description}}
                 </option>
               </select>
             </td>
             <td>
-                <select class="form-control form-control-sm" style="width:auto;">
+                <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.taken_user_id">
                   <option *ngFor="let user of userDataSource" [value]="user.user_id">
                       {{user.first_name + ' ' + user.last_name}}
                   </option>
                 </select>
               </td>
             <td>
-              <select class="form-control form-control-sm" style="width:auto;">
+              <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.assigned_user_id">
                   <option *ngFor="let user of userDataSource" [value]="user.user_id">
                       {{user.first_name + ' ' + user.last_name}}
                   </option>
               </select>
             </td>
             <td>
-              <input class="form-control" type="text" size="20">
+              <input class="form-control" type="text" size="20" [(ngModel)]="currentOrder.ship_carrier">
             </td>
             <td>
-              <input class="form-control" type="text" size="20">
+              <input class="form-control" type="text" size="20" [(ngModel)]="currentOrder.ship_tracking">
             </td>
           </tr>
         </table>
@@ -144,19 +145,23 @@
           </tr>
           <tr>
             <td>
-                <input class="form-control" type="text" size="30">
+                <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.BILL_ADDRESS_1">
             </td>
             <td>
-                <input class="form-control" type="text" size="25">
+                <input class="form-control" type="text" size="25" [(ngModel)]="currentOrder.BILL_ADDRESS_2">
             </td>
             <td>
-                <input class="form-control" type="text" size="15">
+                <input class="form-control" type="text" size="15" [(ngModel)]="currentOrder.BILL_ZIP">
             </td>
             <td>
-                <input class="form-control" type="text" size="30">
+                <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.BILL_CITY">
             </td>
             <td>
-                <input class="form-control" type="text" size="5">
+                <select class="form-control form-control-sm" placeholder="State" [(ngModel)]="currentOrder.BILL_STATE">
+                    <option *ngFor="let state of stateList" [value]="state.abbreviation">
+                        {{state.abbreviation}}
+                    </option>
+                </select>
             </td>
           </tr>
         </table>
@@ -173,7 +178,7 @@
               <td style="font-size:10px;">Attention</td>
           </tr>
           <tr>
-            <td><input class="form-control" type="text" size="35"></td>
+            <td><input class="form-control" type="text" size="35" [(ngModel)]="currentOrder.ship_attn"></td>
           </tr>
         </table>
         <table>
@@ -186,19 +191,23 @@
             </tr>
             <tr>
               <td>
-                  <input class="form-control" type="text" size="30">
+                  <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.SHIP_ADDRESS_1">
               </td>
               <td>
-                  <input class="form-control" type="text" size="25">
+                  <input class="form-control" type="text" size="25" [(ngModel)]="currentOrder.SHIP_ADDRESS_2">
               </td>
               <td>
-                  <input class="form-control" type="text" size="15">
+                  <input class="form-control" type="text" size="15" [(ngModel)]="currentOrder.SHIP_ZIP">
               </td>
               <td>
-                  <input class="form-control" type="text" size="30">
+                  <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.SHIP_CITY">
               </td>
               <td>
-                  <input class="form-control" type="text" size="5">
+                  <select class="form-control form-control-sm" placeholder="State" [(ngModel)]="currentOrder.SHIP_STATE">
+                      <option *ngFor="let state of stateList" [value]="state.abbreviation">
+                          {{state.abbreviation}}
+                      </option>
+                  </select>
               </td>
             </tr>
           </table>

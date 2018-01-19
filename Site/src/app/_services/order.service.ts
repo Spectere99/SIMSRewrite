@@ -60,7 +60,7 @@ export class OrderDetail {
 }
 
 @Injectable()
-export class CustomerService {
+export class OrderService {
     private baseURL = 'http://localhost:56543/odata';
     public requestResult: Array<any>;
     public options: string;
@@ -78,7 +78,21 @@ export class CustomerService {
     loadOrderData(userId, orderId: number): Observable<any> {
         // Build customer odata Options
         const expandCmd = '?$expand=';
-        const expandFields = 'order_details';
+        const expandFields = 'order_detail';
+        this.options = '(' + orderId + ')';
+        this.options = this.options.concat(expandCmd, expandFields);
+
+        return this.http.get(this.baseURL + '/orders' + this.options, {headers: this.getHeaders(userId)})
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+
+    loadArtPlacementData(userId, orderId: number): Observable<any> {
+        // Build customer odata Options
+        const expandCmd = '?$expand=';
+        const expandFields = 'order_art_placement';
         this.options = '(' + orderId + ')';
         this.options = this.options.concat(expandCmd, expandFields);
 
