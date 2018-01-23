@@ -16,6 +16,7 @@ import { MatIconModule, MatSelectModule, MatInputModule, MatButtonModule,
   MatDatepickerModule, MatNativeDateModule, MatCheckboxModule,
   MatExpansionModule, MatDialogModule, MatSnackBarModule, MatCardModule,
   MatChipsModule} from '@angular/material';
+import { Ng4FilesModule } from 'angular4-files-upload';
 
 import { ConfirmDialogComponent } from './_shared/confirm/confirm.component';
 
@@ -42,6 +43,7 @@ import { AddressLookup } from './_shared/pipes/addressType.pipe';
 import { ArraySortPipe } from './_shared/pipes/orderBy.pipe';
 
 import 'devextreme/data/odata/store';
+import { OrderArtComponent } from './order/order-art/order-art.component';
 
 const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -73,7 +75,8 @@ const appRoutes: Routes = [
     CustomerListComponent,
     ConfirmDialogComponent,
     PhoneFormat,
-    AddressLookup
+    AddressLookup,
+    OrderArtComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -97,7 +100,8 @@ const appRoutes: Routes = [
     MatDialogModule,
     MatSnackBarModule,
     MatCardModule,
-    MatChipsModule
+    MatChipsModule,
+    Ng4FilesModule
     ],
   providers: [DatePipe, ArraySortPipe, UpperCasePipe],
   entryComponents: [ConfirmDialogComponent],
