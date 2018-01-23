@@ -59,6 +59,39 @@ export class OrderDetail {
     color: string;
 }
 
+export class OrderArtPlacement {
+    order_art_placement_id: number;
+    order_id: number;
+    art_placement_code: string;
+    added_by: string;
+    added_date: string;
+    colors: string;
+    color_codes: string;
+    notes: string;
+}
+
+export class OrderFee  {
+    order_fee_id: number;
+    order_id: number;
+    fee_line_number: number;
+    fee_quantity: number;
+    pricelist_id: number;
+    fee_price_each: string;
+    fee_price_ext: string;
+    taxable_ind: string;
+    notes: string;
+}
+
+export class OrderPayment {
+    order_payment_id: number;
+    order_id: number;
+    payment_date: string;
+    payment_type_code: string;
+    check_number: string;
+    payment_amount: string;
+    entered_user_id: number;
+}
+
 @Injectable()
 export class OrderService {
     private baseURL = 'http://localhost:56543/odata';
@@ -93,6 +126,34 @@ export class OrderService {
         // Build customer odata Options
         const expandCmd = '?$expand=';
         const expandFields = 'order_art_placement';
+        this.options = '(' + orderId + ')';
+        this.options = this.options.concat(expandCmd, expandFields);
+
+        return this.http.get(this.baseURL + '/orders' + this.options, {headers: this.getHeaders(userId)})
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+
+    loadOrderFeeData(userId, orderId: number): Observable<any> {
+        // Build customer odata Options
+        const expandCmd = '?$expand=';
+        const expandFields = 'order_fees';
+        this.options = '(' + orderId + ')';
+        this.options = this.options.concat(expandCmd, expandFields);
+
+        return this.http.get(this.baseURL + '/orders' + this.options, {headers: this.getHeaders(userId)})
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+
+    loadOrderPaymentData(userId, orderId: number): Observable<any> {
+        // Build customer odata Options
+        const expandCmd = '?$expand=';
+        const expandFields = 'order_payments';
         this.options = '(' + orderId + ')';
         this.options = this.options.concat(expandCmd, expandFields);
 

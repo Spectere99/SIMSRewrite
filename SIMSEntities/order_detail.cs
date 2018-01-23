@@ -54,5 +54,6 @@ namespace SIMSEntities
         public Nullable<System.DateTime> garment_recvd_date { get; set; }
     
         public virtual order order { get; set; }
+        public virtual pricelist pricelists { get; set; }
     }
 }

@@ -26,5 +26,8 @@ namespace SIMSEntities
         public Nullable<System.DateTime> created_date { get; set; }
         public string updated_by { get; set; }
         public Nullable<System.DateTime> updated_date { get; set; }
+    
+        public virtual order_detail order_detail { get; set; }
+        public virtual order_fees order_fees { get; set; }
     }
 }

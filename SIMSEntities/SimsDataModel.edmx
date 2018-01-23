@@ -598,6 +598,7 @@
           <Property Name="garment_order_date" Type="DateTime" />
           <Property Name="garment_recvd_date" Type="DateTime" />
           <NavigationProperty Name="order" Relationship="SimsModel.orderorder_detail" FromRole="order_detail" ToRole="order" />
+          <NavigationProperty Name="pricelists" Relationship="SimsModel.order_detailpricelist" FromRole="order_detail" ToRole="pricelist" />
         </EntityType>
         <EntityType Name="order_fees">
           <Key>
@@ -612,6 +613,8 @@
           <Property Name="fee_price_ext" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="taxable_ind" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="notes" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="order" Relationship="SimsModel.orderorder_fees" FromRole="order_fees" ToRole="order" />
+          <NavigationProperty Name="pricelists" Relationship="SimsModel.order_feespricelist" FromRole="order_fees" ToRole="pricelist" />
         </EntityType>
         <EntityType Name="order_notes">
           <Key>
@@ -635,6 +638,7 @@
           <Property Name="check_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="payment_amount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="entered_user_id" Type="Int32" />
+          <NavigationProperty Name="order" Relationship="SimsModel.orderorder_payments" FromRole="order_payments" ToRole="order" />
         </EntityType>
         <EntityType Name="order_status_history">
           <Key>
@@ -713,6 +717,8 @@
           <NavigationProperty Name="customer" Relationship="SimsModel.ordercustomer" FromRole="order" ToRole="customer" />
           <NavigationProperty Name="order_detail" Relationship="SimsModel.orderorder_detail" FromRole="order" ToRole="order_detail" />
           <NavigationProperty Name="order_art_placement" Relationship="SimsModel.orderorder_art_placement" FromRole="order" ToRole="order_art_placement" />
+          <NavigationProperty Name="order_fees" Relationship="SimsModel.orderorder_fees" FromRole="order" ToRole="order_fees" />
+          <NavigationProperty Name="order_payments" Relationship="SimsModel.orderorder_payments" FromRole="order" ToRole="order_payments" />
         </EntityType>
         <EntityType Name="pricelist">
           <Key>
@@ -730,6 +736,8 @@
           <Property Name="created_date" Type="DateTime" />
           <Property Name="updated_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="updated_date" Type="DateTime" />
+          <NavigationProperty Name="order_detail" Relationship="SimsModel.order_detailpricelist" FromRole="pricelist" ToRole="order_detail" />
+          <NavigationProperty Name="order_fees" Relationship="SimsModel.order_feespricelist" FromRole="pricelist" ToRole="order_fees" />
         </EntityType>
         <EntityType Name="task">
           <Key>
@@ -833,6 +841,22 @@
             <End Role="order" EntitySet="orders" />
             <End Role="order_art_placement" EntitySet="order_art_placement" />
           </AssociationSet>
+          <AssociationSet Name="orderorder_fees" Association="SimsModel.orderorder_fees">
+            <End Role="order" EntitySet="orders" />
+            <End Role="order_fees" EntitySet="order_fees" />
+          </AssociationSet>
+          <AssociationSet Name="order_detailpricelist" Association="SimsModel.order_detailpricelist">
+            <End Role="order_detail" EntitySet="order_detail" />
+            <End Role="pricelist" EntitySet="pricelists" />
+          </AssociationSet>
+          <AssociationSet Name="order_feespricelist" Association="SimsModel.order_feespricelist">
+            <End Role="order_fees" EntitySet="order_fees" />
+            <End Role="pricelist" EntitySet="pricelists" />
+          </AssociationSet>
+          <AssociationSet Name="orderorder_payments" Association="SimsModel.orderorder_payments">
+            <End Role="order" EntitySet="orders" />
+            <End Role="order_payments" EntitySet="order_payments" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="customer_customer_address">
           <End Type="SimsModel.customer" Role="customer" Multiplicity="0..1" />
@@ -914,6 +938,54 @@
               <PropertyRef Name="order_id" />
             </Principal>
             <Dependent Role="order_art_placement">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="orderorder_fees">
+          <End Type="SimsModel.order" Role="order" Multiplicity="0..1" />
+          <End Type="SimsModel.order_fees" Role="order_fees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="order_fees">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="order_detailpricelist">
+          <End Type="SimsModel.order_detail" Role="order_detail" Multiplicity="1" />
+          <End Type="SimsModel.pricelist" Role="pricelist" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="order_detail">
+              <PropertyRef Name="order_detail_id" />
+            </Principal>
+            <Dependent Role="pricelist">
+              <PropertyRef Name="pricelist_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="order_feespricelist">
+          <End Type="SimsModel.order_fees" Role="order_fees" Multiplicity="1" />
+          <End Type="SimsModel.pricelist" Role="pricelist" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="order_fees">
+              <PropertyRef Name="order_fee_id" />
+            </Principal>
+            <Dependent Role="pricelist">
+              <PropertyRef Name="pricelist_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="orderorder_payments">
+          <End Type="SimsModel.order" Role="order" Multiplicity="0..1" />
+          <End Type="SimsModel.order_payments" Role="order_payments" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="order_payments">
               <PropertyRef Name="order_id" />
             </Dependent>
           </ReferentialConstraint>

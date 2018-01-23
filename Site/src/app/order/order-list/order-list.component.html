@@ -31,70 +31,66 @@
         <dxo-editing mode="form" [allowUpdating]="false" [allowDeleting]="false" [allowAdding]="false">
         </dxo-editing>
         <div *dxTemplate="let data of 'orderCell'">
-            <a [routerLink]="" (click)="showEditPopup(data)">{{data.value}}</a>
+          <a [routerLink]="" (click)="showEditPopup(data)">{{data.value}}</a>
           <!-- <button type="button" class="btn btn-xs" (click)="showEditPopup(data)">{{data.value}}</button> -->
         </div>
       </dx-data-grid>
-          <!-- START POPUP EDITOR MARKUP -->
-    <dx-popup class="popup" [width]="1250" [height]="550" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false"
-    [(visible)]="popupVisible">
-    <div *dxTemplate="let data of 'content'">
-      <div class="row">
-          <div class="col-md-3">
-              <strong>Customer:</strong>{{selectedOrder.customer.customer_name}} 
-          </div>
-          <div class="col-md-1">
+      <!-- START POPUP EDITOR MARKUP -->
+      <dx-popup class="popup" [width]="1250" [height]="550" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false"
+        [(visible)]="popupVisible">
+        <div *dxTemplate="let data of 'content'">
+          <div class="row">
+            <div class="col-md-3">
+              <strong>Customer:</strong>{{selectedOrder.customer.customer_name}}
+            </div>
+            <div class="col-md-1">
               <button class="form-control btn-primary" type="button" style="font-size:10px;">ReOrder</button>
-          </div>
-          <div class="col-md-2">
+            </div>
+            <div class="col-md-2">
               <button class="form-control btn-primary" type="button" style="font-size:10px;">Order Summary</button>
+            </div>
           </div>
-      </div>
-      <!-- <h6>{{selectedCustomer.customer_name ? 'A Customer':'New Customer' }}</h6> -->
-      <div class="col-md-12">
-        <ngb-tabset>
-          <ngb-tab title="Info">
-            <!-- <div class="col-md-10"> -->
-              <ng-template ngbTabContent>
-                  <div class="row" style="height: 360px; max-height: 400px; overflow-y: auto; overflow-x: hidden;">
-                  <app-order-info [currentOrder]="selectedOrder"></app-order-info>
-                  </div>
-              </ng-template>
-            <!-- </div> -->
-          </ngb-tab>
-          <ngb-tab title="Details">
-              <!-- <div class="col-md-10"> -->
+          <!-- <h6>{{selectedCustomer.customer_name ? 'A Customer':'New Customer' }}</h6> -->
+          <div class="col-md-12">
+            <ngb-tabset #orderTab>
+              <ngb-tab id="Info" title="Info">
+                <!-- <div class="col-md-10"> -->
                 <ng-template ngbTabContent>
-                    <div class="row" style="height: 360px; max-height: 400px; overflow-y: auto; overflow-x: hidden;">
-                    <app-order-detail  [currentOrder]="selectedOrder"></app-order-detail>
-                    </div>
+                  <div class="row" style="height: 360px; max-height: 400px; overflow-y: auto; overflow-x: hidden;">
+                    <app-order-info [currentOrder]="selectedOrder"></app-order-info>
+                  </div>
                 </ng-template>
-              <!-- </div> -->
-            </ngb-tab>
-            <ngb-tab title="Art" [disabled]="false">
-              <ng-template ngbTabContent>
-              </ng-template>
-            </ngb-tab>
-            <ngb-tab title="Tasks" [disabled]="false">
-              <ng-template ngbTabContent>
-              </ng-template>
-            </ngb-tab>
-          <ngb-tab title="History/Comments" [disabled]="false">
-            <ng-template ngbTabContent>
-            </ng-template>
-          </ngb-tab>
-<!--           <ngb-tab title="Oders" [disabled]="true">
-            <ng-template ngbTabContent>
-            </ng-template>
-          </ngb-tab> -->
-        </ngb-tabset>
-      </div>
-      <div class="col-md-3 float-right" style="padding-top:5px;">
-        <input type="button" class="btn btn-default" value="Cancel" (click)="closeEditor();">
-        <input type="button" class="btn btn-primary" value="Apply" (click)="applyChanges();">
-      </div>  
-    </div>
-  </dx-popup>
+                <!-- </div> -->
+              </ngb-tab>
+              <ngb-tab id="Details" title="Details">
+                <!-- <div class="col-md-10"> -->
+                <ng-template ngbTabContent>
+                  <div class="row" style="height: 360px; max-height: 400px; overflow-y: auto; overflow-x: hidden;">
+                    <app-order-detail [currentOrder]="selectedOrder"></app-order-detail>
+                  </div>
+                </ng-template>
+                <!-- </div> -->
+              </ngb-tab>
+              <ngb-tab id="Art" title="Art" [disabled]="false">
+                <ng-template ngbTabContent>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab id="Tasks" title="Tasks" [disabled]="false">
+                <ng-template ngbTabContent>
+                </ng-template>
+              </ngb-tab>
+              <ngb-tab id="History" title="History/Comments" [disabled]="false">
+                <ng-template ngbTabContent>
+                </ng-template>
+              </ngb-tab>
+            </ngb-tabset>
+          </div>
+          <div class="col-md-3 float-right" style="padding-top:5px;">
+            <input type="button" class="btn btn-default" value="Cancel" (click)="closeEditor();">
+            <input type="button" class="btn btn-primary" value="Apply" (click)="applyChanges();">
+          </div>
+        </div>
+      </dx-popup>
     </div>
   </div>
 </div>

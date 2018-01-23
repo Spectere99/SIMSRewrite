@@ -23,5 +23,8 @@ namespace SIMSEntities
         public string fee_price_ext { get; set; }
         public string taxable_ind { get; set; }
         public string notes { get; set; }
+    
+        public virtual order order { get; set; }
+        public virtual pricelist pricelists { get; set; }
     }
 }

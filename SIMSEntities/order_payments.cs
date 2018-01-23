@@ -21,5 +21,7 @@ namespace SIMSEntities
         public string check_number { get; set; }
         public string payment_amount { get; set; }
         public Nullable<int> entered_user_id { get; set; }
+    
+        public virtual order order { get; set; }
     }
 }

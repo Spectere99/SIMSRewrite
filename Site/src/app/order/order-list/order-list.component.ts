@@ -1,7 +1,8 @@
-import { Component, Injectable, OnInit, Output } from '@angular/core';
+import { Component, Injectable, OnInit, Output, ViewChild } from '@angular/core';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { NgModel } from '@angular/forms';
+import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { LookupService } from '../../_services/lookups.service';
 import { UserService } from '../../_services/user.service';
 
@@ -30,6 +31,7 @@ import 'rxjs/add/operator/map';
 })
 
 export class OrderListComponent implements OnInit {
+  @ViewChild('orderTab') listTab: NgbTabset;
   config;
   baseUrl: string;
   odataLookup;
@@ -159,6 +161,10 @@ export class OrderListComponent implements OnInit {
     this.selectedOrder = e.data;
     console.log('Selected Order', this.selectedOrder);
     // alert('Editing!');
+    console.log('Tab', this.listTab);
+    if (this.listTab) {
+      this.listTab.select('Info');
+    }
     this.popupVisible = true;
   }
 

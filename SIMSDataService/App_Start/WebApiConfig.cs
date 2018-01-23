@@ -51,6 +51,9 @@ namespace SIMSDataService
             builder.EntitySet<correspondence>("correspondences");
             builder.EntitySet<order_detail>("OrderDetails");
             builder.EntitySet<order_art_placement>("OrderArtPlacement");
+            builder.EntitySet<pricelist>("Pricelist");
+            builder.EntitySet<order_fees>("OrderFees");
+            builder.EntitySet<order_payments>("OrderPayments");
             //builder.EntitySet<customer_address>("customer_address");
             builder.EntitySet<task>("Tasks");
             builder.EntitySet<lookup_items>("LookupItems");
