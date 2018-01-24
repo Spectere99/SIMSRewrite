@@ -5,6 +5,7 @@ import { LookupService } from '../../_services/lookups.service';
 import { UserService } from '../../_services/user.service';
 import { Customer, CustomerService } from '../../_services/customer.service';
 import { CustomerContactsComponent } from '../customer-contacts/customer-contacts.component';
+import { CustomerInfo } from '../customer-info/customer-info.service';
 
 @Component({
   selector: 'app-customer-list',
@@ -15,6 +16,8 @@ import { CustomerContactsComponent } from '../customer-contacts/customer-contact
 export class CustomerListComponent implements OnInit {
   selectedCustomer: any;
   @ViewChild(DxDataGridComponent) gridCustomers: DxDataGridComponent;
+  @ViewChild(CustomerInfoComponent) customerInfo: CustomerInfoComponent;
+  @ViewChild(CustomerContactsComponent) customerContacts: CustomerContactsComponent;
   dataSource: any;
   customerList: any;
   lookupDataSource: any;
@@ -277,9 +280,12 @@ export class CustomerListComponent implements OnInit {
     }
 
     applyChanges() {
-        alert('Applying Customer-Info Changes');
+        // alert('Applying Customer-Info Changes');
+        console.log('CustomerInfo Child',  this.customerInfo);
+        this.customerInfo.batchSave();
         // Call customer_info component's batchSave method.
-        alert('Applying Customer Contacts Changes');
+        // alert('Applying Customer Contacts Changes');
+        this.customerContacts.batchSave();
         // Call customer_contacts component's batchSave method.
     }
 

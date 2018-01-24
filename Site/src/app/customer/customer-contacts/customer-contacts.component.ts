@@ -81,6 +81,13 @@ dirtyRecords: Array<CustomerPerson>;
  });
   }
 
+  batchSave() {
+    // Loop through the Customer Contacts and Save each.
+    for (let x = 0; x < this.customer.customer_person.length; x++) {
+      this.saveContact(this.customer.customer_person[x]);
+    }
+  }
+
   addContact(customerId: number) {
     const newContact: CustomerPerson = {
       'customer_person_id': 0,
