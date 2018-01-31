@@ -36,6 +36,7 @@ namespace SIMSEntities
         public string ccverfcode { get; set; }
         public string phone_1_ext { get; set; }
         public string phone_2_ext { get; set; }
+        public string status_code { get; set; }
     
         public virtual customer customers { get; set; }
     }
