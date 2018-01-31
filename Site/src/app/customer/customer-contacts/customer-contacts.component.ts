@@ -63,7 +63,8 @@ dirtyRecords: Array<CustomerPerson>;
 
         // Remove contact from the database using Web service call.
         if (customerPersonId) {
-        this.customerService.deleteCustomerContact('rwflowers', customerPersonId)
+        this.customer.customer_person.status_code = 'inact';
+        this.customerService.updateCustomerContact('', this.customer.customer_person)
           .subscribe(res => {
             this.snackBar.open('Customer Contact Deleted!', '', {
               duration: 4000,

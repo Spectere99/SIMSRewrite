@@ -157,16 +157,16 @@ export class CustomerService {
             return res.json();
         });
     }
-    deleteCustomerContact(userId, customerPerson: CustomerPerson): Observable<any> {
-        // Build customer odata Options
-        this.options = '(' + customerPerson.customer_person_id + ')';
+    // deleteCustomerContact(userId, customerPerson: CustomerPerson): Observable<any> {
+    //     // Build customer odata Options
+    //     this.options = '(' + customerPerson.customer_person_id + ')';
 
-        return this.http.put(this.baseURL + '/CustomerPerson' + this.options, {headers: this.getHeaders(userId)})
-        .map((res: Response) => {
-            // console.log(res.json());
-            return res.json();
-        });
-    }
+    //     return this.http.put(this.baseURL + '/CustomerPerson' + this.options, {headers: this.getHeaders(userId)})
+    //     .map((res: Response) => {
+    //         // console.log(res.json());
+    //         return res.json();
+    //     });
+    //
     addCustomerAddress(userId, customerAddress: CustomerAddress): Observable<any> {
         // Build customer odata Options
         // this.options = '(' + customerPersonId + ')';
