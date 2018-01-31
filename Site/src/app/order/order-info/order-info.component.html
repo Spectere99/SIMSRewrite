@@ -17,7 +17,13 @@
           </tr>
           <tr>
             <td>
-              <input class="form-control" type="text" size="25" readonly [(ngModel)]="currentOrder.order_number" [disabled]="editMode">
+              <div *ngIf="editMode">
+                <input class="form-control" type="text" size="25" readonly [(ngModel)]="currentOrder.order_number">  
+              </div>
+              <div *ngIf="!editMode">
+                  <input class="form-control" type="text" size="25" readonly [(ngModel)]="currentOrder.order_number" readonly>  
+              </div>
+              <!-- <input class="form-control" type="text" size="25" readonly [(ngModel)]="currentOrder.order_number" [disabled]="editMode"> -->
             </td>
             <td>
               <input class="form-control" [ngModel]="currentOrder.order_date | date:'yyyy-MM-dd'" (ngModelChange)="currentOrder.order_date = $event" type="date" [disabled]="editMode" />
