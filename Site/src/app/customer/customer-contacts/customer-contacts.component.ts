@@ -111,7 +111,8 @@ dirtyRecords: Array<CustomerPerson>;
       'ccexp_date': null,
       'ccverfcode': null,
       'phone_1_ext': null,
-      'phone_2_ext': null
+      'phone_2_ext': null,
+      'status_code': 'act'
   };
     this.customer.customer_person.unshift(newContact);
   }
