@@ -16,7 +16,7 @@ import { MatIconModule, MatSelectModule, MatInputModule, MatButtonModule,
   MatDatepickerModule, MatNativeDateModule, MatCheckboxModule,
   MatExpansionModule, MatDialogModule, MatSnackBarModule, MatCardModule,
   MatChipsModule} from '@angular/material';
-import { Ng4FilesModule } from 'angular4-files-upload';
+// import { Ng4FilesModule } from 'angular4-files-upload';
 
 import { ConfirmDialogComponent } from './_shared/confirm/confirm.component';
 
@@ -100,8 +100,8 @@ const appRoutes: Routes = [
     MatDialogModule,
     MatSnackBarModule,
     MatCardModule,
-    MatChipsModule,
-    Ng4FilesModule
+    MatChipsModule
+    // Ng4FilesModule
     ],
   providers: [DatePipe, ArraySortPipe, UpperCasePipe],
   entryComponents: [ConfirmDialogComponent],

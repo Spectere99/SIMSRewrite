@@ -47,9 +47,9 @@
       </div>
     </dx-data-grid>
     <!-- START POPUP EDITOR MARKUP -->
-    <dx-popup class="popup" [width]="1050" [height]="550" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false"
+    <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false"
     [(visible)]="popupVisible">
-    <div *dxTemplate="let data of 'content'">
+    <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
       <!-- <h6>{{selectedCustomer.customer_name ? 'A Customer':'New Customer' }}</h6> -->
       <div class="col-md-12">
         <ngb-tabset>

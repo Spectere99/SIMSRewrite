@@ -36,9 +36,8 @@
         </div>
       </dx-data-grid>
       <!-- START POPUP EDITOR MARKUP -->
-      <dx-popup class="popup" [width]="1250" [height]="550" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false"
-        [(visible)]="popupVisible">
-        <div *dxTemplate="let data of 'content'">
+      <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible">
+        <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
           <div class="row">
             <div class="col-md-3">
               <strong>Customer:</strong>{{selectedOrder.customer.customer_name}}
@@ -52,11 +51,11 @@
           </div>
           <!-- <h6>{{selectedCustomer.customer_name ? 'A Customer':'New Customer' }}</h6> -->
           <div class="col-md-12">
-            <ngb-tabset #orderTab>
+            <ngb-tabset #orderTab style="min-width: 1200px; min-height: 600px; overflow-y: scroll; overflow-x: hidden;">
               <ngb-tab id="Info" title="Info">
                 <!-- <div class="col-md-10"> -->
                 <ng-template ngbTabContent>
-                  <div class="row" style="height: 360px; max-height: 400px; overflow-y: auto; overflow-x: hidden;">
+                  <div class="row">
                     <app-order-info [currentOrder]="selectedOrder"></app-order-info>
                   </div>
                 </ng-template>
@@ -65,7 +64,7 @@
               <ngb-tab id="Details" title="Details">
                 <!-- <div class="col-md-10"> -->
                 <ng-template ngbTabContent>
-                  <div class="row" style="height: 360px; max-height: 400px; overflow-y: auto; overflow-x: hidden;">
+                  <div class="row">
                     <app-order-detail [currentOrder]="selectedOrder"></app-order-detail>
                   </div>
                 </ng-template>
@@ -73,6 +72,42 @@
               </ngb-tab>
               <ngb-tab id="Art" title="Art" [disabled]="false">
                 <ng-template ngbTabContent>
+                  <div>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
+                      <b>Lorem</b> Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum
+                      imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris
+                      <b>Praesent</b> massa. Vestibulum lacinia arcu eget nulla. Class aptent
+                      <b>massa.</b> taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur
+                      sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh.
+                      <b>Sed</b> Aenean quam. In scelerisque sem
+                      <b>lacinia</b> at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas
+                      <b>sem.</b> porttitor. Morbi lectus risus, iaculis vel, suscipit quis,
+                      <b>vel</b> luctus non, massa. Fusce ac turpis
+                      <b>quis,</b> quis ligula lacinia
+                      <b>vel,</b> aliquet. Mauris ipsum. Nulla
+                      <b>quis</b> metus metus, ullamcorper vel, tincidunt
+                      <b>aliquet.</b> sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu
+                      ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec
+                      <b>litora</b> ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum
+                      <b>tortor</b> ante quis turpis. Nulla facilisi. Ut
+                      <b>cursus</b> fringilla.
+                      <b>ante</b> Suspendisse potenti. Nunc feugiat mi a tellus
+                      <b>fringilla.</b> consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices.
+                      <b>mi</b> Suspendisse in justo eu
+                      <b>consequat</b> magna luctus
+                      <b>imperdiet.</b> suscipit. Sed lectus. Integer euismod
+                      <b>Suspendisse</b> lacus luctus magna. Quisque cursus,
+                      <b>lectus.</b> metus vitae pharetra auctor, sem massa
+                      <b>magna.</b> mattis sem,
+                      <b>metus</b> at interdum magna augue eget diam. Vestibulum ante ipsum
+                      <b>mattis</b> primis in faucibus orci luctus et ultrices
+                      <b>ipsum</b> posuere
+                      <b>in</b> cubilia Curae; Morbi lacinia molestie dui. Praesent
+                      <b>posuere</b> blandit
+                      <b>posuere</b> dolor. Sed non quam. In vel
+                      <b>lacinia</b> mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet. Donec
+                      lacus nunc, viverra nec.</p>
+                  </div>
                 </ng-template>
               </ngb-tab>
               <ngb-tab id="Tasks" title="Tasks" [disabled]="false">
