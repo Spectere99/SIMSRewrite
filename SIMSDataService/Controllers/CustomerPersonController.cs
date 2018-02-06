@@ -34,7 +34,7 @@ namespace SIMSDataService.Controllers
         [EnableQuery]
         public IQueryable<customer_person> GetCustomerPerson()
         {
-            return db.customer_person;
+            return db.customer_person.Where(q=>q.status_code=="act");
         }
 
         // GET: odata/CustomerPerson(5)

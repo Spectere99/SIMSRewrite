@@ -73,6 +73,12 @@ ctrlHasFocus: string;
     console.log('status Types', this.statusTypes);
   }
 
+  setParentInd(event) {
+    console.log('setParentInd', event.checked);
+    this.customer.parent_ind = event.checked ? 'Y' : 'N';
+    console.log('Customer ParentInd', this.customer.ship_to_bill_ind);
+
+  }
   removeAddress(customerAddressId: number) {
     console.log('Removing Address', customerAddressId);
     console.log('Customer List', this.customer);
@@ -86,22 +92,22 @@ ctrlHasFocus: string;
       console.log('The dialog was closed');
       console.log('The Result', result);
       if (result) {
-        this.customer = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
-        if (customerAddressId) {
+        // this.customer = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
+        console.log('CustomerAddressId', customerAddressId);
+        if (customerAddressId > 0) {
         // Remove contact from the database using Web service call.
+        console.log('Calling Delete Web Service');
         this.customerService.deleteCustomerAddress('rwflowers', customerAddressId)
           .subscribe(res => {
+            this.customer.customer_address = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
             this.snackBar.open('Customer Address Deleted!', '', {
               duration: 4000,
               verticalPosition: 'top'
             });
           });
+      } else {
+        this.customer.customer_address = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
       }
-    }else {
-      this.snackBar.open('Customer Contact Deleted!', '', {
-      duration: 4000,
-      verticalPosition: 'top'
-    });
     }
   });
 }
@@ -120,18 +126,26 @@ ctrlHasFocus: string;
   if (!this.customer.customer_address) {
     this.customer.customer_address = [];
   }
+  const tempNewAddr = this.customer.customer_address.filter(p => p.customer_address_id <= 0);
+  newAddress.customer_address_id = (tempNewAddr.length * -1);
   this.customer.customer_address.unshift(newAddress);
+  console.log('Customer Address List after add', this.customer.customer_address);
   this.panelExpanded = true;
   }
 
   batchSave() {
     // Save General Customer Information from the model.
+    this.saveCustomer(this.customer);
     // Loop throught this.customer.customer_address Array
+    for (let x = 0; x < this.customer.customer_address.length; x++) {
+      this.saveAddress(this.customer.customer_address[x]);
+    }
     // Call saveAddress for each address in array.
   }
   saveAddress(customerAddress: CustomerAddress) {
     console.log('Customer Address on Save', customerAddress);
-      if (customerAddress.customer_address_id === 0) {
+      if (customerAddress.customer_address_id <= 0) {
+        customerAddress.customer_address_id = 0;
         this.customerService.addCustomerAddress('rwflowers', customerAddress)
         .subscribe(res => {
           console.log('Save address Return', res);
@@ -163,7 +177,7 @@ ctrlHasFocus: string;
         setup_date: formattedDate,
         setup_by: customer.setup_by === undefined ? null : customer.setup_by,
         status_code: customer.status_code === undefined ? 'act' : customer.status_code,
-        ship_to_bill_ind: customer.ship_to_bill_ind === undefined ? 'N' : customer.ship_to_bill_ind,
+        ship_to_bill_ind: customer.ship_to_bill_ind === undefined ? 'N' : customer.ship_to_bill_ind ? 'Y' : 'N',
         website_url: customer.website_url === undefined ? null : customer.website_url,
         account_number: customer.account_number === undefined ? null : customer.account_number,
         override_validation_ind: customer.override_validation_ind === undefined ? 'N' : customer.override_validation_ind,
@@ -197,6 +211,7 @@ ctrlHasFocus: string;
         parent_id: customer.parent_id,
         parent_ind: customer.parent_ind
       };
+      console.log('Update Customer', updCustomer);
       this.customerService.updateCustomer('rwflowers', updCustomer)
       .subscribe(res => {
         console.log('Update customer Return', res);

@@ -3,6 +3,9 @@ import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { LookupService } from '../../_services/lookups.service';
 import { CustomerService, Customer } from '../../_services/customer.service';
 import { UserService } from '../../_services/user.service';
+import { CustomerContactsComponent } from '../customer-contacts/customer-contacts.component';
+import { CustomerInfoComponent } from '../customer-info/customer-info.component';
+import { CustomerInfo } from '../customer-info/customer-info.service';
 
 @Component({
   selector: 'app-contact-list',
@@ -13,6 +16,8 @@ import { UserService } from '../../_services/user.service';
 export class ContactListComponent implements OnInit {
 @Input() customer: any;
 @Output() onContactCustomerSelect = new EventEmitter<any>();
+@ViewChild(CustomerInfoComponent) customerInfo: CustomerInfoComponent;
+@ViewChild(CustomerContactsComponent) customerContacts: CustomerContactsComponent;
 @ViewChild(DxDataGridComponent) gridCustomers: DxDataGridComponent;
 customerService: CustomerService;
 userDataSource: any;
@@ -152,9 +157,12 @@ popupVisible = false;
   }
 
   applyChanges() {
-    alert('Applying Customer-Info Changes');
+    // alert('Applying Customer-Info Changes');
+    console.log('CustomerInfo Child',  this.customerInfo);
+    this.customerInfo.batchSave();
     // Call customer_info component's batchSave method.
-    alert('Applying Customer Contacts Changes');
+    // alert('Applying Customer Contacts Changes');
+    this.customerContacts.batchSave();
     // Call customer_contacts component's batchSave method.
 }
 /*   loadCustomerEdit(customer: any) {

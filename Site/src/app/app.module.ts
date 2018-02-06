@@ -101,7 +101,10 @@ const appRoutes: Routes = [
     MatSnackBarModule,
     MatCardModule,
     MatChipsModule
+<<<<<<< HEAD
     // Ng4FilesModule
+=======
+>>>>>>> 9ef072685ce385eb468512fe65a2649400dd8736
     ],
   providers: [DatePipe, ArraySortPipe, UpperCasePipe],
   entryComponents: [ConfirmDialogComponent],

@@ -58,10 +58,10 @@
               <ng-template ngbTabContent>
                 <div class="row" style="height: 400px; max-height: 400px; overflow-y: auto; overflow-x: hidden;">
                   <!-- <div class="row"> -->
-                    <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
+                    <app-customer-info id="custInfo" [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
                   <!-- </div> -->
                   <!-- <div class="row"> -->
-                    <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts>
+                    <app-customer-contacts id="custContacts" [customer]="selectedCustomer"></app-customer-contacts>
                   <!-- </div> -->
                 </div>
               </ng-template>

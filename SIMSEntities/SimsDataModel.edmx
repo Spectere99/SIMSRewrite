@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="SimsModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="SimsModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="correspondence">
           <Key>
             <PropertyRef Name="correspondence_id" />
@@ -22,7 +22,7 @@
           <Key>
             <PropertyRef Name="customer_id" />
           </Key>
-          <Property Name="customer_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="customer_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="customer_name" Type="varchar" MaxLength="50" />
           <Property Name="setup_date" Type="datetime" Precision="0" />
           <Property Name="setup_by" Type="int" />
@@ -38,7 +38,7 @@
           <Key>
             <PropertyRef Name="customer_address_id" />
           </Key>
-          <Property Name="customer_address_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="customer_address_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="customer_id" Type="int" />
           <Property Name="type_code" Type="varchar" MaxLength="10" />
           <Property Name="address_1" Type="varchar" MaxLength="50" />
@@ -62,7 +62,7 @@
           <Key>
             <PropertyRef Name="customer_person_id" />
           </Key>
-          <Property Name="customer_person_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="customer_person_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="customer_id" Type="int" />
           <Property Name="setup_date" Type="datetime" Precision="0" />
           <Property Name="person_type" Type="varchar" MaxLength="10" />
@@ -75,15 +75,16 @@
           <Property Name="state" Type="varchar" MaxLength="2" />
           <Property Name="zip" Type="varchar" MaxLength="10" />
           <Property Name="country" Type="varchar" MaxLength="50" />
-          <Property Name="phone_1" Type="varchar" MaxLength="10" />
+          <Property Name="phone_1" Type="varchar" MaxLength="14" />
           <Property Name="phone_1_type" Type="varchar" MaxLength="10" />
-          <Property Name="phone_2" Type="varchar" MaxLength="10" />
+          <Property Name="phone_2" Type="varchar" MaxLength="14" />
           <Property Name="phone_2_type" Type="varchar" MaxLength="10" />
           <Property Name="ccnum" Type="varchar" MaxLength="50" />
           <Property Name="ccexp_date" Type="datetime" Precision="0" />
           <Property Name="ccverfcode" Type="varchar" MaxLength="50" />
           <Property Name="phone_1_ext" Type="varchar" MaxLength="10" />
           <Property Name="phone_2_ext" Type="varchar" MaxLength="10" />
+          <Property Name="status_code" Type="varchar" MaxLength="5" Nullable="false" />
         </EntityType>
         <EntityType Name="lookup_items">
           <Key>
@@ -255,7 +256,7 @@
           <Key>
             <PropertyRef Name="order_id" />
           </Key>
-          <Property Name="order_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="order_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="customer_id" Type="int" />
           <Property Name="order_number" Type="varchar" MaxLength="50" />
           <Property Name="order_type" Type="varchar" MaxLength="10" />
@@ -396,8 +397,7 @@
           <EntitySet Name="task" EntityType="Self.task" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="printmgr" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SimsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -489,6 +489,7 @@
           <Property Name="phone_1_ext" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="phone_2_ext" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="customers" Relationship="SimsModel.customer_personcustomer" FromRole="customer_person" ToRole="customer" />
+          <Property Name="status_code" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="lookup_items">
           <Key>
@@ -1056,6 +1057,7 @@
           <EntitySetMapping Name="customer_person">
             <EntityTypeMapping TypeName="SimsModel.customer_person">
               <MappingFragment StoreEntitySet="customer_person">
+                <ScalarProperty Name="status_code" ColumnName="status_code" />
                 <ScalarProperty Name="customer_person_id" ColumnName="customer_person_id" />
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
                 <ScalarProperty Name="setup_date" ColumnName="setup_date" />

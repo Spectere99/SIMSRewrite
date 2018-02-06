@@ -28,12 +28,15 @@
             </mat-form-field>
         </div>
         <div class="row col-md-12">
-            <mat-checkbox class="col-md-3" [(ngModel)]="customer.ship_to_bill_ind" style="padding-top:7px; padding-left:15px;">Ship to Billing Address</mat-checkbox>
-            <mat-checkbox class="col-md-2" [(ngModel)]="customer.parent_ind" style="padding-top:7px; padding-left:15px;">Is Parent Customer</mat-checkbox>
+            <mat-checkbox class="col-md-3" [checked]="customer.ship_to_bill_ind === 'Y'" 
+                (change)="setShipToBillInd($event)"
+            style="padding-top:7px; padding-left:15px;">Ship to Billing Address</mat-checkbox>
+            <mat-checkbox class="col-md-2"[checked]="customer.parent_ind === 'Y'" 
+            (change)="setParentInd($event)" style="padding-top:7px; padding-left:15px;">Is Parent Customer</mat-checkbox>
             <div class="form-group form-inline col-md-7">
                 <!-- <div class="col-md-1">Parent:</div> -->
                 <div class="col-md-7">
-                    <dx-select-box class="mat-select" [disabled]="customer.parent_ind" [(ngModel)]="customer.parent_id" [items]="customerList"
+                    <dx-select-box class="mat-select" [disabled]="customer.parent_ind==='Y'" [(ngModel)]="customer.parent_id" [items]="customerList"
                         displayExpr="customer_name" valueExpr="customer_id" [searchEnabled]="true">
                     </dx-select-box>
                 </div>
@@ -85,7 +88,7 @@
                         <mat-hint align="end">{{postalCode.value.length}} / 10</mat-hint>
                     </mat-form-field>
                     <div class="pull-right">
-                        <button mat-button color="primary" mat-icon-button aria-hidden="true" style="box-shadow: none; outline:none;" (click)="removeAddress(address.id);">
+                        <button mat-button color="primary" mat-icon-button aria-hidden="true" style="box-shadow: none; outline:none;" (click)="removeAddress(address.customer_address_id);">
                             <mat-icon color="warn" style="padding-bottom: 35px; padding-right: 33px;">delete</mat-icon>
                         </button>
                     </div>

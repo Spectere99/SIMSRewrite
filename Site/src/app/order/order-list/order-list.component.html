@@ -1,3 +1,4 @@
+<p>Filter by using the cooresponding column.</p>
 <div class="container col-md-12">
   <div class="row">
     <div class="col-lg-12">
@@ -39,7 +40,7 @@
       <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible">
         <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-5">
               <strong>Customer:</strong>{{selectedOrder.customer.customer_name}}
             </div>
             <div class="col-md-1">
@@ -120,9 +121,16 @@
               </ngb-tab>
             </ngb-tabset>
           </div>
-          <div class="col-md-3 float-right" style="padding-top:5px;">
-            <input type="button" class="btn btn-default" value="Cancel" (click)="closeEditor();">
-            <input type="button" class="btn btn-primary" value="Apply" (click)="applyChanges();">
+          <div class="col-md-12 float-right" style="padding-top:5px;">
+            <div class="row col-md-4 float-right">
+              <div class="col-md-4">
+                <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="closeEditor();">
+              </div>
+              <div class="col-md-4">
+                <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Apply" (click)="applyChanges();">
+              </div>
+                  
+            </div>
           </div>
         </div>
       </dx-popup>
