@@ -51,25 +51,38 @@
             </div>
           </div>
           <!-- <h6>{{selectedCustomer.customer_name ? 'A Customer':'New Customer' }}</h6> -->
-          <div class="col-md-12">
-            <ngb-tabset #orderTab style="min-width: 1200px; min-height: 600px; overflow-y: scroll; overflow-x: hidden;">
+          <!-- <div class="col-md-12"> -->
+              <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%">
+                <mat-tab label="Info">
+                  <app-order-info [currentOrder]="selectedOrder"></app-order-info>
+                </mat-tab>
+                <mat-tab label="Details">
+                  <app-order-detail [currentOrder]="selectedOrder"></app-order-detail>
+                </mat-tab>
+                <mat-tab label="Art">
+                  
+                </mat-tab>
+                <mat-tab label="History/Comments">
+                  
+                </mat-tab>
+                <mat-tab label="Coorespondence">
+                  
+                </mat-tab>
+              </mat-tab-group>
+            <!-- <ngb-tabset #orderTab>
               <ngb-tab id="Info" title="Info">
-                <!-- <div class="col-md-10"> -->
-                <ng-template ngbTabContent>
+                <ng-template ngbTabContent style="height: 50%;">
                   <div class="row">
                     <app-order-info [currentOrder]="selectedOrder"></app-order-info>
                   </div>
                 </ng-template>
-                <!-- </div> -->
               </ngb-tab>
               <ngb-tab id="Details" title="Details">
-                <!-- <div class="col-md-10"> -->
                 <ng-template ngbTabContent>
                   <div class="row">
                     <app-order-detail [currentOrder]="selectedOrder"></app-order-detail>
                   </div>
                 </ng-template>
-                <!-- </div> -->
               </ngb-tab>
               <ngb-tab id="Art" title="Art" [disabled]="false">
                 <ng-template ngbTabContent>
@@ -119,9 +132,9 @@
                 <ng-template ngbTabContent>
                 </ng-template>
               </ngb-tab>
-            </ngb-tabset>
-          </div>
-          <div class="col-md-12 float-right" style="padding-top:5px;">
+            </ngb-tabset> -->
+          <!-- </div> -->
+          <div class="col-md-12 float-right">
             <div class="row col-md-4 float-right">
               <div class="col-md-4">
                 <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="closeEditor();">
