@@ -11,12 +11,12 @@ import { FormsModule } from '@angular/forms';
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { DevExtremeModule, DxTemplateModule, DxPopupModule,
-  DxFilterBuilderModule, DxTextBoxModule, DxSelectBoxModule } from 'devextreme-angular';
+  DxFilterBuilderModule, DxTextBoxModule, DxSelectBoxModule,
+  DxFileUploaderModule } from 'devextreme-angular';
 import { MatIconModule, MatSelectModule, MatInputModule, MatButtonModule,
   MatDatepickerModule, MatNativeDateModule, MatCheckboxModule,
   MatExpansionModule, MatDialogModule, MatSnackBarModule, MatCardModule,
   MatChipsModule, MatTabsModule} from '@angular/material';
-// import { Ng4FilesModule } from 'angular4-files-upload';
 
 import { ConfirmDialogComponent } from './_shared/confirm/confirm.component';
 
@@ -102,7 +102,6 @@ const appRoutes: Routes = [
     MatCardModule,
     MatChipsModule,
     MatTabsModule
-    // Ng4FilesModule
     ],
   providers: [DatePipe, ArraySortPipe, UpperCasePipe],
   entryComponents: [ConfirmDialogComponent],

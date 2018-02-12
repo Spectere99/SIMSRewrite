@@ -1,12 +1,24 @@
-<<<<<<< HEAD
-<p>
-</p>
-<!-- <ng4-files-click (filesSelect)="filesSelect($event)">
-    <span>Click me to upload</span>
-</ng4-files-click> -->
-=======
-<!-- <ng4-files-click (filesSelect)="filesSelect($event)">
-    <span>Click me to upload</span>
-</ng4-files-click>
- -->
->>>>>>> 9ef072685ce385eb468512fe65a2649400dd8736
+<!-- <form action="http://localhost:56543/api/ArtFile" method="post" enctype="multipart/form-data"> -->
+<dx-file-uploader
+        #fileUploader
+        uploadUrl="http://localhost:56543/api/ArtFile"
+        [multiple]="false"
+        accept="*"
+        [(value)]="value"
+        uploadMode="useButtons"
+    ></dx-file-uploader>
+    <div class="content">
+        <div *ngIf="value.length > 0">
+            <h4>Selected Files</h4>
+        </div>
+        <div *ngFor="let file of value">
+            <div class="selected-item">
+                Name:
+                <span>{{file.name}}</span><br /> Size:
+                <span>{{file.size}}</span>bytes<br /> Type:
+                <span>{{file.type}}</span><br /> Last Modified Date:
+                <span>{{file.lastModifiedDate}}</span>
+            </div>
+        </div>
+    </div>
+<!-- </form> -->
