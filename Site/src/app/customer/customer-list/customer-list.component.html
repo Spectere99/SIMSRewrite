@@ -52,21 +52,21 @@
     <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
       <!-- <h6>{{selectedCustomer.customer_name ? 'A Customer':'New Customer' }}</h6> -->
       <div class="col-md-12">
-        <ngb-tabset>
+        <!-- <ngb-tabset>
           <ngb-tab title="Info">
-            <!-- <div class="col-md-10"> -->
-              <ng-template ngbTabContent>
-                <div class="row" style="height: 400px; max-height: 400px; overflow-y: auto; overflow-x: hidden;">
+            <! <div class="col-md-10"> -->
+              <!-- <ng-template ngbTabContent> -->
+                <!-- <div class="row" style="height: 400px; max-height: 400px; overflow-y: auto; overflow-x: hidden;"> -->
                   <!-- <div class="row"> -->
-                    <app-customer-info id="custInfo" [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
+                    <!-- <app-customer-info id="custInfo" [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info> -->
                   <!-- </div> -->
                   <!-- <div class="row"> -->
-                    <app-customer-contacts id="custContacts" [customer]="selectedCustomer"></app-customer-contacts>
+                    <!-- <app-customer-contacts id="custContacts" [customer]="selectedCustomer"></app-customer-contacts> -->
                   <!-- </div> -->
-                </div>
+                <!-- </div>
               </ng-template>
-            <!-- </div> -->
-          </ngb-tab>
+            <!- </div> -->
+          <!-- </ngb-tab>
           <ngb-tab title="Notes" [disabled]="false">
             <ng-template ngbTabContent>
             </ng-template>
@@ -75,7 +75,17 @@
             <ng-template ngbTabContent>
             </ng-template>
           </ngb-tab>
-        </ngb-tabset>
+        </ngb-tabset> -->
+        <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%">
+          <mat-tab label="Info">
+            <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
+            <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts>
+          </mat-tab>
+          <mat-tab label="Notes" [disabled]="true">
+          </mat-tab>
+          <mat-tab label="Orders"[disabled]="true">
+          </mat-tab>
+        </mat-tab-group>
       </div>
       <div class="col-md-3 float-right" style="padding-top:5px;">
         <input type="button" class="btn btn-default" value="Cancel">
