@@ -1,13 +1,79 @@
-<!-- <form action="http://localhost:56543/api/ArtFile" method="post" enctype="multipart/form-data"> -->
-<dx-file-uploader
-        #fileUploader
-        uploadUrl="http://localhost:56543/api/ArtFile"
-        [multiple]="false"
-        accept="*"
-        [(value)]="value"
-        uploadMode="useButtons"
-    ></dx-file-uploader>
-    <div class="content">
+    <div class="row col-md-12">
+        <!-- <div class="col-md-2">
+            Art Placement
+        </div>-->
+        <div class="col-md-8">
+                <dx-file-uploader
+                #fileUploader
+                name="file"
+                uploadUrl="http://localhost:56543/api/ArtFile"
+                [multiple]="false"
+                accept="*"
+                [width]="300"
+                [(value)]="value"
+                uploadMode="useButtons"
+                [uploadHeaders]="uploadHeaders"
+                [showFileList]="false"
+                (onUploaded)="uploadComplete($event)"
+            ></dx-file-uploader>
+        </div> 
+        <div *ngFor="let artFile of orderArtFiles">
+          <mat-card>
+            <table width="900">
+              <tr>
+                <td style="font-size:10px;" width="50"></td>
+                <td style="font-size:10px;" width="300">Art File</td>
+                <td style="font-size:10px;" width="250">Art Folder</td>
+                <td style="font-size:10px;" width="350">Notes</td>
+              </tr>
+              <tr>
+                <td>
+                  <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;">
+                    <mat-icon style="padding-bottom: 35px; padding-right: 27px; font-size:15px;">close</mat-icon>
+                  </button>
+                </td>
+                <td>
+                  <a [href]="'assets/orderimage/' + artFile.image_file" target="_blank"><img [src]="'assets/orderimage/' + artFile.image_file" height="40px" width="40px"></a>
+                </td>
+                <td>
+                  <input class="form-control" type="text" size="40" [(ngModel)]="artFile.art_Folder">
+                </td>
+                <td>
+                  <input class="form-control" type="text" size="40" [(ngModel)]="artFile.note">
+                </td>
+              </tr>
+            </table>
+            <!-- <table>
+              <tr>
+                <td></td>
+                <td style="font-size:10px;">Note:&nbsp;&nbsp;&nbsp;</td>
+                <td style="font-size:10px;">
+                </td>
+              </tr>
+            </table> -->
+          </mat-card>
+        </div>
+</div>
+<!--     <dx-file-uploader
+        name="file"
+        uploadMode="useForm"></dx-file-uploader> -->
+<!--     <div class="row">
+        <table>
+            <tr>
+                <td>Art Folder</td>
+                <td>Notes</td>
+            </tr>
+            <tr>
+                <td><input type="text" name="artFolder" id="artFolder"></td>
+                <td><input type="text" name="artNotes" id="artNotes"></td>
+            </tr>
+        </table>
+    </div> -->
+<!--     <dx-button
+        text="Upload Art"
+        [useSubmitBehavior]="true">
+    </dx-button> -->
+    <!-- <div class="content">
         <div *ngIf="value.length > 0">
             <h4>Selected Files</h4>
         </div>
@@ -20,5 +86,4 @@
                 <span>{{file.lastModifiedDate}}</span>
             </div>
         </div>
-    </div>
-<!-- </form> -->
+    </div> -->

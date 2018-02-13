@@ -125,6 +125,7 @@ export class OrderDetailComponent implements OnInit {
     }); */
   }
 
+  // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
     // console.log('order-detail OnChanges', this.currentOrder);
     this.editMode = this.currentOrder !== undefined;

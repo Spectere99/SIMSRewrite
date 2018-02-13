@@ -14,11 +14,13 @@ namespace SIMSEntities
     
     public partial class order_art_file
     {
-        public long order_art_id { get; set; }
-        public Nullable<long> order_id { get; set; }
+        public int order_art_id { get; set; }
+        public Nullable<int> order_id { get; set; }
         public Nullable<int> order_by { get; set; }
         public string image_file { get; set; }
         public string art_folder { get; set; }
         public string note { get; set; }
+    
+        public virtual order order { get; set; }
     }
 }

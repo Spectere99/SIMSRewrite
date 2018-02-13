@@ -524,12 +524,13 @@
           <Key>
             <PropertyRef Name="order_art_id" />
           </Key>
-          <Property Name="order_art_id" Type="Int64" Nullable="false" />
-          <Property Name="order_id" Type="Int64" />
+          <Property Name="order_art_id" Type="Int32" Nullable="false" />
+          <Property Name="order_id" Type="Int32" />
           <Property Name="order_by" Type="Int32" />
           <Property Name="image_file" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="art_folder" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
           <Property Name="note" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="order" Relationship="SimsModel.orderorder_art_file" FromRole="order_art_file" ToRole="order" />
         </EntityType>
         <EntityType Name="order_art_placement">
           <Key>
@@ -720,6 +721,7 @@
           <NavigationProperty Name="order_art_placement" Relationship="SimsModel.orderorder_art_placement" FromRole="order" ToRole="order_art_placement" />
           <NavigationProperty Name="order_fees" Relationship="SimsModel.orderorder_fees" FromRole="order" ToRole="order_fees" />
           <NavigationProperty Name="order_payments" Relationship="SimsModel.orderorder_payments" FromRole="order" ToRole="order_payments" />
+          <NavigationProperty Name="order_art_file" Relationship="SimsModel.orderorder_art_file" FromRole="order" ToRole="order_art_file" />
         </EntityType>
         <EntityType Name="pricelist">
           <Key>
@@ -858,6 +860,10 @@
             <End Role="order" EntitySet="orders" />
             <End Role="order_payments" EntitySet="order_payments" />
           </AssociationSet>
+          <AssociationSet Name="orderorder_art_file" Association="SimsModel.orderorder_art_file">
+            <End Role="order" EntitySet="orders" />
+            <End Role="order_art_file" EntitySet="order_art_file" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="customer_customer_address">
           <End Type="SimsModel.customer" Role="customer" Multiplicity="0..1" />
@@ -987,6 +993,18 @@
               <PropertyRef Name="order_id" />
             </Principal>
             <Dependent Role="order_payments">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="orderorder_art_file">
+          <End Type="SimsModel.order" Role="order" Multiplicity="0..1" />
+          <End Type="SimsModel.order_art_file" Role="order_art_file" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="order_art_file">
               <PropertyRef Name="order_id" />
             </Dependent>
           </ReferentialConstraint>

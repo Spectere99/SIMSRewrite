@@ -21,6 +21,7 @@ namespace SIMSEntities
             this.order_art_placement = new HashSet<order_art_placement>();
             this.order_fees = new HashSet<order_fees>();
             this.order_payments = new HashSet<order_payments>();
+            this.order_art_file = new HashSet<order_art_file>();
         }
     
         public int order_id { get; set; }
@@ -81,5 +82,7 @@ namespace SIMSEntities
         public virtual ICollection<order_fees> order_fees { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<order_payments> order_payments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<order_art_file> order_art_file { get; set; }
     }
 }

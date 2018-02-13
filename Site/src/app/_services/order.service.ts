@@ -92,6 +92,14 @@ export class OrderPayment {
     entered_user_id: number;
 }
 
+export class OrderArtFile {
+    order_art_id: number;
+    order_id: number;
+    order_by: number;
+    image_file: string;
+    art_folder: string;
+    note: string;
+}
 @Injectable()
 export class OrderService {
     private baseURL = 'http://localhost:56543/odata';
@@ -154,6 +162,20 @@ export class OrderService {
         // Build customer odata Options
         const expandCmd = '?$expand=';
         const expandFields = 'order_payments';
+        this.options = '(' + orderId + ')';
+        this.options = this.options.concat(expandCmd, expandFields);
+
+        return this.http.get(this.baseURL + '/orders' + this.options, {headers: this.getHeaders(userId)})
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+
+    loadOrderArtFileData(userId, orderId: number): Observable<any> {
+        // Build customer odata Options
+        const expandCmd = '?$expand=';
+        const expandFields = 'order_art_file';
         this.options = '(' + orderId + ')';
         this.options = this.options.concat(expandCmd, expandFields);
 

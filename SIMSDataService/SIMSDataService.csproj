@@ -276,6 +276,7 @@
     <Compile Include="Controllers\CustomersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LookupItemsController.cs" />
+    <Compile Include="Controllers\OrderArtFileController.cs" />
     <Compile Include="Controllers\OrderArtPlacementController.cs" />
     <Compile Include="Controllers\OrderDetailsController.cs" />
     <Compile Include="Controllers\OrderFeesController.cs" />

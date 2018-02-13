@@ -12,6 +12,7 @@ namespace SIMSDataService.Controllers
     {
         public HttpResponseMessage Post()
         {
+            //Get the orderNumber from the header.  With this, we can prefix the name of the file and save it
             string saveFolder = System.Configuration.ConfigurationManager.AppSettings["ArtFileFolder"];
             HttpResponseMessage result = null;
 
