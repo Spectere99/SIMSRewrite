@@ -24,8 +24,8 @@ namespace SIMSDataService.Controllers
                 foreach (string file in httpRequest.Files)
                 {
                     var postedFile = httpRequest.Files[file];
-                    //var filePath = HttpContext.Current.Server.MapPath("~/" + postedFile.FileName);
-                    var filePath = saveFolder + postedFile.FileName;
+                    var filePath = HttpContext.Current.Server.MapPath("~/orderimage/" + postedFile.FileName);
+                    //var filePath = saveFolder + postedFile.FileName;
                     postedFile.SaveAs(filePath);
 
                     docfiles.Add(filePath);
