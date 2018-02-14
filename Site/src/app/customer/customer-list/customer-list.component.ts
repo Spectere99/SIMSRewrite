@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, Output } from '@angular/core';
+import { environment } from '../../../environments/environment';
 import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { CustomerInfoComponent } from '../customer-info/customer-info.component';
 import { LookupService } from '../../_services/lookups.service';
@@ -14,6 +15,8 @@ import { CustomerInfo } from '../customer-info/customer-info.service';
   styleUrls: ['./customer-list.component.css']
 })
 export class CustomerListComponent implements OnInit {
+  // baseURL = 'http://localhost:56543/odata/';
+  baseURL = environment.odataEndpoint;
   selectedCustomer: any;
   @ViewChild(DxDataGridComponent) gridCustomers: DxDataGridComponent;
   @ViewChild(CustomerInfoComponent) customerInfo: CustomerInfoComponent;
@@ -109,7 +112,7 @@ export class CustomerListComponent implements OnInit {
       this.dataSource = {
         store: {
             type: 'odata',
-            url: 'http://localhost:56543/odata/customers'
+            url: this.baseURL + 'customers'
         },
         expand: ['customer_person', 'customer_address', 'orders'],
         select: [

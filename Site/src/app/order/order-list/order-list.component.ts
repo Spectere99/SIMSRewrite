@@ -1,4 +1,5 @@
 import { Component, Injectable, OnInit, Output, ViewChild } from '@angular/core';
+import { environment } from '../../../environments/environment';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { NgModel } from '@angular/forms';
@@ -33,7 +34,8 @@ import 'rxjs/add/operator/map';
 export class OrderListComponent implements OnInit {
   @ViewChild('orderTab') listTab: NgbTabset;
   config;
-  baseUrl: string;
+  // baseUrl = 'http://localhost:56543/odata/';
+  baseUrl = environment.odataEndpoint;
   odataLookup;
   dataSource: any;
   order_statusSource: any;
@@ -48,7 +50,6 @@ export class OrderListComponent implements OnInit {
   popupVisible = false;
 
     constructor(private http: Http, lookupService: LookupService, userService: UserService) {
-      this.baseUrl = 'http://localhost:56543/odata/';
       lookupService.loadLookupData('').subscribe(res => {
         this.lookupDataSource = res.value;
         console.log('lookupDataSource', this.lookupDataSource);

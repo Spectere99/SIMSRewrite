@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import { Http, Headers, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
@@ -76,7 +77,8 @@ export class CustomerAddress {
 }
 @Injectable()
 export class CustomerService {
-    private baseURL = 'http://localhost:56543/odata';
+    // private baseURL = 'http://localhost:56543/odata';
+    private baseURL = environment.odataEndpoint;
     public requestResult: Array<any>;
     public options: string;
 

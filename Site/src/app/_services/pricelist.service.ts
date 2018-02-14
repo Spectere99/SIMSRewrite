@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http, Headers, Response } from '@angular/http';
 
 import { Observable } from 'rxjs/Observable';
+import { environment } from '../../environments/environment';
 import 'rxjs/add/operator/map';
 
 export class PriceListItem {
@@ -21,7 +22,8 @@ export class PriceListItem {
 
 @Injectable()
 export class PriceListService {
-    private baseURL = 'http://localhost:56543/odata';
+    // private baseURL = 'http://localhost:56543/odata';
+    private baseURL = environment.odataEndpoint;
     public requestResult: Array<any>;
 
     constructor( private http: Http ) { }

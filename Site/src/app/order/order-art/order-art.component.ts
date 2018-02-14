@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
+import { environment } from '../../../environments/environment';
 import { OrderService, OrderArtFile} from '../../_services/order.service';
 
 
@@ -11,9 +12,11 @@ import { OrderService, OrderArtFile} from '../../_services/order.service';
 export class OrderArtComponent {
   @Input() currentOrder: any;
   // orderUploadURL = 'http://localhost:56543/api/ArtFile';
-  orderUploadURL = 'http://localhost:8888/api/ArtFile'
+  // orderUploadURL = 'http://localhost:8888/api/ArtFile'
+  orderUploadURL = environment.artUploadURL;
   // defaultArtFolder = 'http://localhost:56543/orderimage/';
-  defaultArtFolder = 'http://localhost:8888/orderimage/';
+  // defaultArtFolder = 'http://localhost:8888/orderimage/';
+  defaultArtFolder = environment.defaultArtFolder;
   orderArtFiles: OrderArtFile[] = [];
   value: any[] = [];
   uploadHeaders: any;
