@@ -83,7 +83,8 @@
           </mat-tab>
           <mat-tab label="Notes" [disabled]="true">
           </mat-tab>
-          <mat-tab label="Orders"[disabled]="true">
+          <mat-tab label="Orders">
+            <app-customer-order-list [customer]="selectedCustomer"></app-customer-order-list>
           </mat-tab>
         </mat-tab-group>
       <!-- </div> -->

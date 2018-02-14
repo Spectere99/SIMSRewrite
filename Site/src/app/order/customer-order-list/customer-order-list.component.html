@@ -1,0 +1,85 @@
+<p>Filter by using the cooresponding column.</p>
+<div class="container col-md-12">
+  <div class="row">
+    <div class="col-lg-12">
+      <dx-data-grid id="gridOrders" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
+        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)">
+        <dxo-selection mode="single"></dxo-selection>
+        <!-- <dxi-column dataField="reorder_ind" caption="Reorder?" [width]="100" [allowFiltering]="false" [calculateCellValue]="setReorderInd"></dxi-column> -->
+        <dxi-column dataField="order_number" caption="Order #" [width]="100" [allowSearch]="true" [allowFiltering]="true" cellTemplate="orderCell"></dxi-column>
+        <dxi-column dataField="order_date" caption="Order Date" dataType="date" [width]="110"></dxi-column>
+        <dxi-column dataField="order_status" caption="Status" [width]="125">
+          <dxo-lookup [dataSource]="order_statusSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
+        </dxi-column>
+        <!-- <dxi-column dataField="customer.customer_name" caption="Customer Name" [width]="400"></dxi-column> 
+           <dxi-column dataField="order_due_date" caption="Due Date" dataType="date" [width]="110"></dxi-column>
+        <dxi-column dataField="purchase_order" caption="Purchase Order" [width]="175"></dxi-column>
+        <dxi-column dataField="order_type" caption="Order Type" [width]="225">
+          <dxo-lookup [dataSource]="order_typeSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="assigned_user_id" caption="Assigned To" [width]="100">
+          <dxo-lookup [dataSource]="user_Source" valueExpr="user_id" displayExpr="login_id"></dxo-lookup>
+        </dxi-column> -->
+        <!--<dxi-column dataField="" caption="Items" [width]="100"></dxi-column> -->
+        <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
+        <dxo-sorting mode="single">
+          <!-- or "multiple" | "none" -->
+        </dxo-sorting>
+        <dxo-paging [pageSize]="10"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 50]" [showInfo]="true"></dxo-pager>
+        <dxo-editing mode="form" [allowUpdating]="false" [allowDeleting]="false" [allowAdding]="false">
+        </dxo-editing>
+        <div *dxTemplate="let data of 'orderCell'">
+          <a [routerLink]="" (click)="showEditPopup(data)">{{data.value}}</a>
+          <!-- <button type="button" class="btn btn-xs" (click)="showEditPopup(data)">{{data.value}}</button> -->
+        </div>
+      </dx-data-grid>
+      <!-- START POPUP EDITOR MARKUP -->
+      <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible">
+        <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
+          <div class="row">
+            <div class="col-md-5">
+              <strong>Customer:</strong>{{selectedOrder.customer.customer_name}}
+            </div>
+            <div class="col-md-1">
+              <button class="form-control btn-primary" type="button" style="font-size:10px;">ReOrder</button>
+            </div>
+            <div class="col-md-2">
+              <button class="form-control btn-primary" type="button" style="font-size:10px;">Order Summary</button>
+            </div>
+          </div>
+              <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%">
+                <mat-tab label="Info">
+                  <app-order-info [currentOrder]="selectedOrder"></app-order-info>
+                </mat-tab>
+                <mat-tab label="Details">
+                  <app-order-detail [currentOrder]="selectedOrder"></app-order-detail>
+                </mat-tab>
+                <mat-tab label="Art">
+                  <app-order-art [currentOrder]="selectedOrder"></app-order-art>
+                </mat-tab>
+                <mat-tab label="History/Comments">
+                  
+                </mat-tab>
+                <mat-tab label="Coorespondence">
+                  
+                </mat-tab>
+              </mat-tab-group>
+          <div class="col-md-12 float-right">
+            <div class="row col-md-4 float-right">
+              <div class="col-md-4">
+                <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="closeEditor();">
+              </div>
+              <div class="col-md-4">
+                <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Apply" (click)="applyChanges();">
+              </div>
+                  
+            </div>
+          </div>
+        </div>
+      </dx-popup>
+    </div>
+  </div>
+</div>

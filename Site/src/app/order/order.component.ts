@@ -124,7 +124,6 @@ export class OrderComponent implements OnInit {
        // filter: ['order_date', '>', this.filterDate]
    };
   }
-
   createStatusDataSource() {
 
     this.order_statusSource = this.lookupDataSource.filter(item => item.class === 'ord');
