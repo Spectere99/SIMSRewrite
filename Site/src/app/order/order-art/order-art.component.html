@@ -6,14 +6,14 @@
                 <dx-file-uploader
                 #fileUploader
                 name="file"
-                uploadUrl="http://localhost:56543/api/ArtFile"
+                [uploadUrl]="orderUploadURL"
                 [multiple]="false"
                 accept="*"
                 [width]="300"
                 [(value)]="value"
-                uploadMode="useButtons"
+                uploadMode="instantly"
                 [uploadHeaders]="uploadHeaders"
-                [showFileList]="false"
+                [showFileList]="true"
                 (onUploaded)="uploadComplete($event)"
             ></dx-file-uploader>
         </div> 
@@ -33,7 +33,7 @@
                   </button>
                 </td>
                 <td>
-                  <a [href]="'assets/orderimage/' + artFile.image_file" target="_blank"><img [src]="'assets/orderimage/' + artFile.image_file" height="40px" width="40px"></a>
+                  <a [href]="defaultArtFolder + artFile.image_file" target="_blank"><img [src]="defaultArtFolder + artFile.image_file" height="40px" width="40px"></a>
                 </td>
                 <td>
                   <input class="form-control" type="text" size="40" [(ngModel)]="artFile.art_Folder">

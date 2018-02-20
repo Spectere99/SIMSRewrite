@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, Output, Input, EventEmitter } from '@angular/core';
+import { environment } from '../../../environments/environment';
 import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { LookupService } from '../../_services/lookups.service';
 import { CustomerService, Customer } from '../../_services/customer.service';
@@ -14,6 +15,8 @@ import { CustomerInfo } from '../customer-info/customer-info.service';
   styleUrls: ['./contact-list.component.css']
 })
 export class ContactListComponent implements OnInit {
+// baseURL = 'http://localhost:56543/odata/';
+baseURL = environment.odataEndpoint;
 @Input() customer: any;
 @Output() onContactCustomerSelect = new EventEmitter<any>();
 @ViewChild(CustomerInfoComponent) customerInfo: CustomerInfoComponent;
@@ -75,7 +78,7 @@ popupVisible = false;
     this.dataSource = {
       store: {
           type: 'odata',
-          url: 'http://localhost:56543/odata/CustomerPerson'
+          url: this.baseURL + 'CustomerPerson'
       },
       expand: ['customers'],
       select: [

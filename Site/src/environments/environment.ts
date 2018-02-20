@@ -4,5 +4,9 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  odataEndpoint: 'http://localhost:8888/odata/',
+  // odataEndpoint: 'http://localhost:56543/odata/',
+  artUploadURL: 'http://localhost:8888/api/ArtFile',  // DO NOT USE Slash at end!
+  defaultArtFolder: 'http://localhost:8888/orderimage/'
 };

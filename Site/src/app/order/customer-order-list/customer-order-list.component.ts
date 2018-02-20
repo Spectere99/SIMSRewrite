@@ -1,76 +1,45 @@
-import { Component, Injectable, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
-import { NgModel } from '@angular/forms';
-import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { LookupService } from '../../_services/lookups.service';
 import { UserService } from '../../_services/user.service';
 
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/map';
-import { Order } from '../../_services/order.service';
-
-/* export interface ILookup {
-  id: number;
-  class: string;
-  description: string;
-  char_mod: string;
-  is_active: string;
-  order_by: number;
-  filter_function: string;
-  created_by: string;
-  created_date: string;
-  updated_by: string;
-  updated_date: string;
-} */
-
 @Component({
-  selector: 'app-order-list',
-  templateUrl: './order-list.component.html',
-  providers: [LookupService, UserService],
-  styleUrls: ['./order-list.component.scss']
+  selector: 'app-customer-order-list',
+  templateUrl: './customer-order-list.component.html',
+  styleUrls: ['./customer-order-list.component.scss']
 })
+export class CustomerOrderListComponent implements OnInit {
+@Input() customer;
+baseUrl = environment.odataEndpoint;
+dataSource: any;
+popupVisible = false;
+order_statusSource: any;
+order_typeSource: any;
+user_Source: any;
+selectedOrder: any;
+lookupDataSource: any;
+customerId: number;
 
-export class OrderListComponent implements OnInit {
-  // @ViewChild('orderTab') listTab: NgbTabset;
-  // baseUrl = 'http://localhost:56543/odata/';
-  baseUrl = environment.odataEndpoint;
-  odataLookup;
-  dataSource: any;
-  order_statusSource: any;
-  order_typeSource: any;
-  user_Source: any;
-  selectedOrder: any;
-  lookupDataSource: any;
-  customerId: number;
 
-  filterDate = new Date(2008, 1, 1);
+  constructor(private http: Http, lookupService: LookupService, userService: UserService) {
 
-  popupVisible = false;
+    lookupService.loadLookupData('').subscribe(res => {
+      this.lookupDataSource = res.value;
+      console.log('lookupDataSource', this.lookupDataSource);
+      this.createStatusDataSource();
+      this.createOrderTypeDataSource();
+    });
 
-    constructor(private http: Http, lookupService: LookupService, userService: UserService) {
-      lookupService.loadLookupData('').subscribe(res => {
-        this.lookupDataSource = res.value;
-        console.log('lookupDataSource', this.lookupDataSource);
-        this.createStatusDataSource();
-        this.createOrderTypeDataSource();
-      });
+    userService.getUsers('').subscribe(res => {
+      this.user_Source = res.value;
+      console.log('userDataSource', this.user_Source);
+    });
 
-      userService.getUsers('').subscribe(res => {
-        this.user_Source = res.value;
-        console.log('userDataSource', this.user_Source);
-      });
-
-      this.createOrderDataSource();
-    }
-
-  checkValues() {
-    console.log('order_statusSource', this.order_statusSource );
-    console.log('order_typeSource', this.order_typeSource );
-  }
+   }
 
   createOrderDataSource() {
+    console.log('Current Customer for Order pull', this.customer);
     this.dataSource = {
       store: {
           type: 'odata',
@@ -128,10 +97,9 @@ export class OrderListComponent implements OnInit {
         'contact_phone2_type',
         'customer/customer_name'
       ],
-       // filter: ['order_date', '>', this.filterDate]
+      filter: ['customer_id', '=', this.customer.customer_id]
    };
   }
-
   createStatusDataSource() {
 
     this.order_statusSource = this.lookupDataSource.filter(item => item.class === 'ord');
@@ -140,14 +108,6 @@ export class OrderListComponent implements OnInit {
   createOrderTypeDataSource() {
     this.order_typeSource = this.lookupDataSource.filter(item => item.class === 'otyps');
   }
-
-  private getHeaders(userId) {
-    const headers = new Headers({ 'Accept': 'application/json' });
-    headers.append('Content-Type', 'application/json; charset=UTF-8');
-    headers.append('userid', userId);
-    return headers;
-  }
-
   selectionChanged(e) {
     this.selectedOrder = e.selectedRowsData[0];
     console.log('In selectionChanged', this.selectedOrder);
@@ -162,18 +122,16 @@ export class OrderListComponent implements OnInit {
     this.selectedOrder = e.data;
     console.log('Selected Order', this.selectedOrder);
     // alert('Editing!');
-    // console.log('Tab', this.listTab);
-    /* if (this.listTab) {
-      this.listTab.select('Info');
-    } */
+
     this.popupVisible = true;
   }
 
-  closeEditor() {
-    // this.selectedOrder = undefined;
-    this.popupVisible = false;
-  }
   ngOnInit() {
+  }
+
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnChanges() {
+    this.createOrderDataSource();
   }
 
 }

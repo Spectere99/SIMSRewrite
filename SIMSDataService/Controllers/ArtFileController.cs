@@ -24,8 +24,12 @@ namespace SIMSDataService.Controllers
                 foreach (string file in httpRequest.Files)
                 {
                     var postedFile = httpRequest.Files[file];
-                    //var filePath = HttpContext.Current.Server.MapPath("~/" + postedFile.FileName);
-                    var filePath = saveFolder + postedFile.FileName;
+                    if (!System.IO.Directory.Exists(HttpContext.Current.Server.MapPath("~/" + saveFolder + "/")))
+                    {
+                        System.IO.Directory.CreateDirectory(HttpContext.Current.Server.MapPath("~/" + saveFolder + "/"));
+                    }
+                    var filePath = HttpContext.Current.Server.MapPath("~/" + saveFolder + "/" + postedFile.FileName);
+                    //var filePath = saveFolder + postedFile.FileName;
                     postedFile.SaveAs(filePath);
 
                     docfiles.Add(filePath);

@@ -44,6 +44,7 @@ import { ArraySortPipe } from './_shared/pipes/orderBy.pipe';
 
 import 'devextreme/data/odata/store';
 import { OrderArtComponent } from './order/order-art/order-art.component';
+import { CustomerOrderListComponent } from './order/customer-order-list/customer-order-list.component';
 
 const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -76,7 +77,8 @@ const appRoutes: Routes = [
     ConfirmDialogComponent,
     PhoneFormat,
     AddressLookup,
-    OrderArtComponent
+    OrderArtComponent,
+    CustomerOrderListComponent
   ],
   imports: [
     NgbModule.forRoot(),
