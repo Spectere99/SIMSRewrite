@@ -6,18 +6,18 @@
     </div>
     <hr>
      -->
-    <mat-accordion>
+  
         <div>
-            <mat-expansion-panel>
+            <!-- <mat-expansion-panel>
                 <mat-expansion-panel-header>
-                    <div class="col-md-2">
-                        <h6>Contacts</h6>
-                    </div>
-                    <div class="col-md-1">
-                        <button mat-button color="primary" aria-hidden="true" (click)="addContact(customer.customer_id);" style="outline:none;">
-                            Add
-                         </button>
-                    </div>
+                    <div class="col-md-2"> -->
+                 <section>
+                                    
+                        <h6>Contacts<button mat-button color="primary" aria-hidden="true" (click)="addContact(customer.customer_id);" style="outline:none;">
+                                Add
+                                    </button>
+                    </h6>
+                    <hr>
 
                     <!-- <mat-panel-title class="col-md-6">
                         <div class="col-md-2 pull-left">
@@ -34,7 +34,7 @@
                             {{customerContact.phone_1 | phoneFormat}}
                         </div>
                     </mat-panel-description> -->
-                </mat-expansion-panel-header>
+                <!-- </mat-expansion-panel-header> -->
 
 
                 <mat-card *ngFor="let customerContact of customer.customer_person">
@@ -71,8 +71,7 @@
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="col-md-3 name-form-field">
-                        <input matInput type="text" placeholder="Phone 1" [ngModel]="customerContact.phone_1 | phoneFormat" (ngModelChange)="customerContact.phone_1=$event"
-                        />
+                        <input matInput type="text" placeholder="Phone 1" [ngModel]="customerContact.phone_1 | phoneFormat" (ngModelChange)="customerContact.phone_1=$event">
                         <button mat-button *ngIf="customerContact.phone_1" matSuffix mat-icon-button aria-label="Clear" (click)="customerContact.phone_1=''">
                         <mat-icon style="padding-bottom:20px; padding-right:40px;">close</mat-icon>
                     </button>
@@ -109,10 +108,12 @@
                     </button>
                     </div>
                 </mat-card>
-
-            </mat-expansion-panel>
-        </div>
-        
-    </mat-accordion>
+            
+<!-- 
+            </mat-expansion-panel> -->
+        <!-- </div> -->
+<!--         
+    </mat-accordion> -->
    
-</div>
+
+</section>

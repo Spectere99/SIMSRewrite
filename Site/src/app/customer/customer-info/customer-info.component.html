@@ -45,19 +45,17 @@
     </section>
 </div>
 <div class="container col-md-12 pt-4">
-    <mat-accordion>
+    <!-- <mat-accordion> -->
         <!-- <mat-expansion-panel [expanded]="address.customer_address_id === 0"> -->
-        <mat-expansion-panel [expanded]="true">
-            <mat-expansion-panel-header style= width:983px;>
-                <div class="col-md-2">
-                    <h6>Addresses</h6>
-                </div>
-                <div class="col-md-1 float-left">
-                    <button mat-button color="primary" aria-hidden="true" (click)="addAddress(customer.customer_id);" style="outline:none; padding-bottom: 35px; font-size:14px; width:30px; height:20px;">
-                        Add
-                    </button>
-                </div>
-            </mat-expansion-panel-header>
+        <!-- <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header> -->
+                <section>
+                
+                    <h6>Addresses <button mat-button color="primary" aria-hidden="true" (click)="addAddress(customer.customer_address.customer_id);" style="outline:none; padding-bottom: 35px; font-size:14px; width:30px; height:20px;">
+                            Add
+                        </button></h6>
+                <hr>
+            <!-- </mat-expansion-panel-header> -->
             <div *ngFor="let address of customer.customer_address">
                 <mat-card>
                     <mat-form-field class="col-md-2">
@@ -93,7 +91,8 @@
                         </button>
                     </div>
                 </mat-card>
-            </div>
-        </mat-expansion-panel>
-    </mat-accordion>
+            
+        <!-- </mat-expansion-panel> -->
+    <!-- </mat-accordion> -->
 </div>
+</section>

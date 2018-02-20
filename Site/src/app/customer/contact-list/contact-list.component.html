@@ -42,7 +42,7 @@
       [(visible)]="popupVisible">
       <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
         <!-- <h6>{{selectedCustomer.customer_name ? 'A Customer':'New Customer' }}</h6> -->
-        <div class="col-md-12">
+      
           <!-- <ngb-tabset>
             <ngb-tab title="Info">
               <!-<div class="col-md-10"> -->
@@ -78,7 +78,7 @@
           <mat-tab label="Orders"[disabled]="true">
           </mat-tab>
         </mat-tab-group>
-      </div>
+      
         <div class="col-md-3 float-right" style="padding-top:5px;">
           <input type="button" class="btn btn-default" value="Cancel">
           <input type="button" class="btn btn-primary" value="Apply" (click)="applyChanges();">
