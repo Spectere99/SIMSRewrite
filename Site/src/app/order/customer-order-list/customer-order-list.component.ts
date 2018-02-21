@@ -12,6 +12,7 @@ import { UserService } from '../../_services/user.service';
 export class CustomerOrderListComponent implements OnInit {
 @Input() customer;
 baseUrl = environment.odataEndpoint;
+defaultArtFolder = environment.defaultArtFolder;
 dataSource: any;
 popupVisible = false;
 order_statusSource: any;
@@ -45,7 +46,7 @@ customerId: number;
           type: 'odata',
           url: this.baseUrl + 'orders'
       },
-      expand: ['customer'],
+      expand: ['customer', 'order_art_file'],
       select: [
         'order_id',
         'customer_id',
@@ -95,18 +96,23 @@ customerId: number;
         'contact_phone2',
         'contact_phone2_ext',
         'contact_phone2_type',
-        'customer/customer_name'
+        'customer/customer_name',
+        'order_art_file/image_file'
       ],
       filter: ['customer_id', '=', this.customer.customer_id]
    };
   }
   createStatusDataSource() {
-
     this.order_statusSource = this.lookupDataSource.filter(item => item.class === 'ord');
   }
 
   createOrderTypeDataSource() {
     this.order_typeSource = this.lookupDataSource.filter(item => item.class === 'otyps');
+  }
+
+  createNewOrder(customer_id) {
+    console.log('Creating Order!!!', customer_id);
+    this.popupVisible = true;
   }
   selectionChanged(e) {
     this.selectedOrder = e.selectedRowsData[0];
@@ -127,10 +133,16 @@ customerId: number;
   }
 
   ngOnInit() {
+    if (this.customer) {
+      this.customerId = this.customer.customer_id;
+    }
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
+    if (this.customer) {
+      this.customerId = this.customer.customer_id;
+    }
     this.createOrderDataSource();
   }
 

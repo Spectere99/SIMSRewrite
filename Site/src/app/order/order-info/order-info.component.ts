@@ -58,6 +58,8 @@ export class OrderInfoComponent implements OnInit, OnChanges {
         this.contactPersons = this.orderCustomer.customer_person;
         console.log('pulled Customer', this.orderCustomer);
       });
+    } else {
+      this.currentOrder = new Order();
     }
   }
 
@@ -70,6 +72,8 @@ export class OrderInfoComponent implements OnInit, OnChanges {
         this.contactPersons = this.orderCustomer.customer_person;
         console.log('pulled Customer', this.orderCustomer);
       });
+    } else {
+      this.currentOrder = new Order();
     }
   }
 

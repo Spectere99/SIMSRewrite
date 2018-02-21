@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
-import { OrderService, OrderDetail, OrderArtPlacement, OrderFee, OrderPayment } from '../../_services/order.service';
+import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee, OrderPayment } from '../../_services/order.service';
 import { UserService } from '../../_services/user.service';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
@@ -35,8 +35,8 @@ export class OrderDetailComponent implements OnInit {
   orderTasks: any;
 
   constructor(private lookupService: LookupService, private priceListService: PriceListService, userService: UserService,
-              public orderService: OrderService) {
-    this.order = {};
+    public orderService: OrderService) {
+    this.order = new Order();
     this.order.order_detail = [];
     this.orderArtPlacement = [];
     this.orderFees = [];
@@ -129,22 +129,29 @@ export class OrderDetailComponent implements OnInit {
   ngOnChanges() {
     // console.log('order-detail OnChanges', this.currentOrder);
     this.editMode = this.currentOrder !== undefined;
-    this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
-      this.order = res;
-      // console.log('pulled order', this.order);
-    });
-    this.orderService.loadArtPlacementData('', this.currentOrder.order_id).subscribe(res => {
-      this.orderArtPlacement = res.order_art_placement;
-      // console.log('pulled Art Placement', this.orderArtPlacement);
-    });
-    this.orderService.loadOrderFeeData('', this.currentOrder.order_id).subscribe(res => {
-      this.orderFees = res.order_fees;
-      this.getShipping();
-      // console.log('pulled Order Fees', this.orderFees);
-    });
-    this.orderService.loadOrderPaymentData('', this.currentOrder.order_id).subscribe(res => {
-      this.orderPayments = res.order_payments;
-      // console.log('pulled Payment Data', this.orderPayments);
-    });
+    if (this.currentOrder) {
+      this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
+        this.order = res;
+        // console.log('pulled order', this.order);
+      });
+      this.orderService.loadArtPlacementData('', this.currentOrder.order_id).subscribe(res => {
+        this.orderArtPlacement = res.order_art_placement;
+        // console.log('pulled Art Placement', this.orderArtPlacement);
+      });
+      this.orderService.loadOrderFeeData('', this.currentOrder.order_id).subscribe(res => {
+        this.orderFees = res.order_fees;
+        this.getShipping();
+        // console.log('pulled Order Fees', this.orderFees);
+      });
+      this.orderService.loadOrderPaymentData('', this.currentOrder.order_id).subscribe(res => {
+        this.orderPayments = res.order_payments;
+        // console.log('pulled Payment Data', this.orderPayments);
+      });
+    } else {
+      this.currentOrder = new Order();
+      this.orderArtPlacement = new Array<OrderArtPlacement>();
+      this.orderFees = new Array<OrderFee>();
+      this.orderPayments = new Array<OrderPayment>();
+    }
   }
 }
