@@ -46,14 +46,14 @@ export class OrderComponent implements OnInit {
       this.baseUrl = 'http://localhost:56543/odata/';
       lookupService.loadLookupData('').subscribe(res => {
         this.lookupDataSource = res.value;
-        console.log('lookupDataSource', this.lookupDataSource);
+        // console.log('lookupDataSource', this.lookupDataSource);
         this.createStatusDataSource();
         this.createOrderTypeDataSource();
       });
 
       userService.getUsers('').subscribe(res => {
         this.user_Source = res.value;
-        console.log('userDataSource', this.user_Source);
+        // console.log('userDataSource', this.user_Source);
       });
 
       this.createOrderDataSource();

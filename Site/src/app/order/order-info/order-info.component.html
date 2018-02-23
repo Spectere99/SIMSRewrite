@@ -18,7 +18,7 @@
           <tr>
             <td>
               <div *ngIf="editMode">
-                <input class="form-control" type="text" size="25" readonly [(ngModel)]="currentOrder.order_number">  
+                <input class="form-control" type="text" size="25" [(ngModel)]="currentOrder.order_number">  
               </div>
               <div *ngIf="!editMode">
                   <input class="form-control" type="text" size="25" readonly [(ngModel)]="currentOrder.order_number" readonly>  
@@ -26,7 +26,7 @@
               <!-- <input class="form-control" type="text" size="25" readonly [(ngModel)]="currentOrder.order_number" [disabled]="editMode"> -->
             </td>
             <td>
-              <input class="form-control" [ngModel]="currentOrder.order_date | date:'yyyy-MM-dd'" (ngModelChange)="currentOrder.order_date = $event" type="date" [disabled]="editMode" />
+              <input class="form-control" [ngModel]="currentOrder.order_date | date:'yyyy-MM-dd'" (ngModelChange)="currentOrder.order_date = $event" type="date" />
             </td>
             <td>
               <input class="form-control" 
@@ -58,7 +58,7 @@
           </tr>
           <tr>
             <td>
-              <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.contact">
+              <select class="form-control form-control-sm" style="width:auto;" [ngModel]="currentOrder.contact" (ngModelChange)="onChange($event)">
                 <option *ngFor="let person of contactPersons" [value]="getCustomerFullName(person)">
                   {{getCustomerFullName(person)}}
                 </option>

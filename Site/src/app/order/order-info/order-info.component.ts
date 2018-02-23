@@ -37,7 +37,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     });
     userService.getUsers('').subscribe(res => {
       this.userDataSource = res.value;
-      console.log(this.userDataSource);
+      // console.log(this.userDataSource);
     });
    }
 
@@ -49,31 +49,42 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     return customer.first_name + ' ' + customer.last_name;
   }
 
+  onChange(e) {
+    console.log('order Contact before: ', this.currentOrder.contact);
+    console.log('contact selection changed:', e);
+    console.log('contactPersons', this.contactPersons);
+    const selectedContact = this.contactPersons.filter(item => (item.first_name + ' ' + item.last_name) === e);
+    console.log('selectedContact', selectedContact);
+    this.currentOrder.contact = selectedContact[0].first_name + ' ' + selectedContact[0].last_name;
+    console.log('new Order contact', this.currentOrder.contact);
+    this.currentOrder.contact_email = selectedContact[0].email_address;
+    console.log('order Contact after: ', this.currentOrder.contact);
+  }
   ngOnInit() {
-    console.log('OnInit currentOrder', this.currentOrder);
+    /* // console.log('OnInit currentOrder', this.currentOrder);
     this.editMode = this.currentOrder !== undefined;
     if (this.currentOrder) {
       this.customerService.getCustomerData('', this.currentOrder.customer_id).subscribe(res => {
         this.orderCustomer = res;
         this.contactPersons = this.orderCustomer.customer_person;
-        console.log('pulled Customer', this.orderCustomer);
+        // console.log('pulled Customer', this.orderCustomer);
       });
     } else {
       this.currentOrder = new Order();
-    }
+    } */
   }
 
   ngOnChanges() {
-    console.log('OnChanges currentOrder', this.currentOrder);
-    this.editMode = this.currentOrder !== undefined;
-    if (this.currentOrder) {
+    // console.log('order-info-component currentOrder', this.currentOrder);
+    this.editMode = this.currentOrder.order_id !== 0;
+    if (this.currentOrder.customer_id !== 0) {
       this.customerService.getCustomerData('', this.currentOrder.customer_id).subscribe(res => {
         this.orderCustomer = res;
         this.contactPersons = this.orderCustomer.customer_person;
         console.log('pulled Customer', this.orderCustomer);
       });
     } else {
-      this.currentOrder = new Order();
+      // this.currentOrder = new Order();
     }
   }
 

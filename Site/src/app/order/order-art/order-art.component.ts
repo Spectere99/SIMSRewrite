@@ -34,29 +34,22 @@ export class OrderArtComponent {
       image_file: e.file.name,
       order_by: this.orderArtFiles.length + 1
     };
-    console.log('newOrderArtFile', newOrderArtFile);
+    // console.log('newOrderArtFile', newOrderArtFile);
     this.orderArtFiles.push(newOrderArtFile);
-    console.log('After orderArtFiles.push');
+    // console.log('After orderArtFiles.push');
   }
+
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
     this.value = [];
-    console.log('current Order', this.currentOrder);
-    if (this.currentOrder) {
+    // console.log('order-art-component current Order', this.currentOrder);
+    if (this.currentOrder.order_id !== 0) {
       this.uploadHeaders = { 'orderNumber': this.currentOrder.orderNumber };
 
       this.orderService.loadOrderArtFileData('', this.currentOrder.order_id).subscribe(res => {
         this.orderArtFiles = res.order_art_file;
-        /* const newOrderArtFile: OrderArtFile = {
-          order_art_id: 0,
-          order_id: this.currentOrder.order_id,
-          art_folder: '',
-          note: '',
-          image_file: 'IMG_4005-R-X3.jpg',
-          order_by: this.orderArtFiles.length + 1
-        };
-        this.orderArtFiles.push(newOrderArtFile); */
-        console.log('pulled OrderArt Data', this.orderArtFiles);
+
+        // console.log('pulled OrderArt Data', this.orderArtFiles);
       });
     }
   }

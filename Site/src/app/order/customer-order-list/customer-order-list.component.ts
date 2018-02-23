@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
 import { LookupService } from '../../_services/lookups.service';
 import { UserService } from '../../_services/user.service';
+import { Order } from '../../_services/order.service';
 
 @Component({
   selector: 'app-customer-order-list',
@@ -27,26 +28,26 @@ customerId: number;
 
     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
-      console.log('lookupDataSource', this.lookupDataSource);
+      // console.log('lookupDataSource', this.lookupDataSource);
       this.createStatusDataSource();
       this.createOrderTypeDataSource();
     });
 
     userService.getUsers('').subscribe(res => {
       this.user_Source = res.value;
-      console.log('userDataSource', this.user_Source);
+      // console.log('userDataSource', this.user_Source);
     });
 
    }
 
   createOrderDataSource() {
-    console.log('Current Customer for Order pull', this.customer);
+    // console.log('Current Customer for Order pull', this.customer);
     this.dataSource = {
       store: {
           type: 'odata',
           url: this.baseUrl + 'orders'
       },
-      expand: ['customer', 'order_art_file'],
+      expand: ['customer'],
       select: [
         'order_id',
         'customer_id',
@@ -96,8 +97,7 @@ customerId: number;
         'contact_phone2',
         'contact_phone2_ext',
         'contact_phone2_type',
-        'customer/customer_name',
-        'order_art_file/image_file'
+        'customer/customer_name'
       ],
       filter: ['customer_id', '=', this.customer.customer_id]
    };
@@ -111,12 +111,37 @@ customerId: number;
   }
 
   createNewOrder(customer_id) {
-    console.log('Creating Order!!!', customer_id);
+    // console.log('Creating Order!!!', customer_id);
+    this.selectedOrder = new Order();
+    this.selectedOrder.order_id = 0;
+    this.selectedOrder.customer_id = customer_id;
+    const today = new Date();
+    this.selectedOrder.order_number = this.formatOrderNumber(today);
+    this.selectedOrder.order_date = today;
+    this.selectedOrder.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
+    this.selectedOrder.contact_email = this.customer.customer_person[0].email_address;
+    console.log('customer=', this.customer);
+    // this.selectedOrder.ship_attn = this.customer
     this.popupVisible = true;
+  }
+
+  formatOrderNumber(today): string {
+    let dd = today.getDate();
+    let mm = (today.getMonth() + 1); // January is 0!
+    const yyyy = today.getFullYear().toString();
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+
+    return mm + dd + yyyy;
+
   }
   selectionChanged(e) {
     this.selectedOrder = e.selectedRowsData[0];
-    console.log('In selectionChanged', this.selectedOrder);
+    // console.log('In selectionChanged', this.selectedOrder);
   }
   setReorderInd(data) {
     if (data === undefined) { return false; }
@@ -124,9 +149,9 @@ customerId: number;
   }
   showEditPopup(e) {
     // e.cancel = true;
-    console.log('E', e);
+    // console.log('E', e);
     this.selectedOrder = e.data;
-    console.log('Selected Order', this.selectedOrder);
+    // console.log('Selected Order', this.selectedOrder);
     // alert('Editing!');
 
     this.popupVisible = true;

@@ -52,14 +52,14 @@ export class OrderListComponent implements OnInit {
     constructor(private http: Http, lookupService: LookupService, userService: UserService) {
       lookupService.loadLookupData('').subscribe(res => {
         this.lookupDataSource = res.value;
-        console.log('lookupDataSource', this.lookupDataSource);
+        // console.log('lookupDataSource', this.lookupDataSource);
         this.createStatusDataSource();
         this.createOrderTypeDataSource();
       });
 
       userService.getUsers('').subscribe(res => {
         this.user_Source = res.value;
-        console.log('userDataSource', this.user_Source);
+        // console.log('userDataSource', this.user_Source);
       });
 
       this.createOrderDataSource();
@@ -76,7 +76,7 @@ export class OrderListComponent implements OnInit {
           type: 'odata',
           url: this.baseUrl + 'orders'
       },
-      expand: ['customer'],
+      expand: ['customer', 'order_art_file'],
       select: [
         'order_id',
         'customer_id',
@@ -126,12 +126,16 @@ export class OrderListComponent implements OnInit {
         'contact_phone2',
         'contact_phone2_ext',
         'contact_phone2_type',
-        'customer/customer_name'
+        'customer/customer_name',
+        'order_art_file/image_file'
       ],
        // filter: ['order_date', '>', this.filterDate]
    };
   }
 
+  showValues() {
+    console.log('Showing Order Values', this.selectedOrder);
+  }
   createStatusDataSource() {
 
     this.order_statusSource = this.lookupDataSource.filter(item => item.class === 'ord');
@@ -150,7 +154,7 @@ export class OrderListComponent implements OnInit {
 
   selectionChanged(e) {
     this.selectedOrder = e.selectedRowsData[0];
-    console.log('In selectionChanged', this.selectedOrder);
+    // console.log('In selectionChanged', this.selectedOrder);
   }
   setReorderInd(data) {
     if (data === undefined) { return false; }
@@ -158,9 +162,9 @@ export class OrderListComponent implements OnInit {
   }
   showEditPopup(e) {
     // e.cancel = true;
-    console.log('E', e);
+    // console.log('E', e);
     this.selectedOrder = e.data;
-    console.log('Selected Order', this.selectedOrder);
+    // console.log('Selected Order', this.selectedOrder);
     // alert('Editing!');
     // console.log('Tab', this.listTab);
     /* if (this.listTab) {

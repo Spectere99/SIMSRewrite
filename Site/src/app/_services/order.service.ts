@@ -57,7 +57,44 @@ export class Order {
 }
 
 export class OrderDetail {
-    color: string;
+    order_detail_id: number;
+    order_id: number;
+    item_type: string;
+    item_line_number: number;
+    item_quantity: number;
+    pricelist_id: number;
+    style_code: string;
+    color_code: string;
+    size_code: string;
+    vendor: string;
+    manufacturer: string;
+    product_code: number;
+    item_price_each: number;
+    item_price_ext: number;
+    taxable_ind: string;
+    shipping_po: string;
+    notes: string;
+    checked_in_ind: string;
+    checked_out_ind: string;
+    xsmall_qty: number;
+    small_qty: number;
+    med_qty: number;
+    large_qty: number;
+    xl_qty: number;
+    C2xl_qty: number;
+    C3xl_qty: number;
+    C4xl_qty: number;
+    C5xl_qty: number;
+    other1_type: number;
+    other1_qty: number;
+    other2_type: number;
+    other2_qty: number;
+    other3_type: number;
+    other3_qty: number;
+    order_number: number;
+    customer_name: string;
+    garment_order_date: string;
+    garment_recvd_date: string;
 }
 
 export class OrderArtPlacement {

@@ -127,9 +127,10 @@ export class OrderDetailComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    // console.log('order-detail OnChanges', this.currentOrder);
-    this.editMode = this.currentOrder !== undefined;
-    if (this.currentOrder) {
+    // console.log('order-detail-component currentOrder', this.currentOrder);
+    this.editMode = this.currentOrder.order_id !== 0;
+    console.log('Current Order', this.currentOrder);
+    if (this.currentOrder.order_id !== 0) {
       this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
         this.order = res;
         // console.log('pulled order', this.order);
@@ -148,7 +149,7 @@ export class OrderDetailComponent implements OnInit {
         // console.log('pulled Payment Data', this.orderPayments);
       });
     } else {
-      this.currentOrder = new Order();
+      /// this.currentOrder = new Order();
       this.orderArtPlacement = new Array<OrderArtPlacement>();
       this.orderFees = new Array<OrderFee>();
       this.orderPayments = new Array<OrderPayment>();

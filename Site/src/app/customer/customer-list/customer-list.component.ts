@@ -109,6 +109,7 @@ export class CustomerListComponent implements OnInit {
     }
 
     CreateCustomerDataSource() {
+      console.log('in CreateCustomerDataSource');
       this.dataSource = {
         store: {
             type: 'odata',
