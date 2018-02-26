@@ -50,15 +50,20 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   onChange(e) {
-    console.log('order Contact before: ', this.currentOrder.contact);
+    /* console.log('order Contact before: ', this.currentOrder.contact);
     console.log('contact selection changed:', e);
-    console.log('contactPersons', this.contactPersons);
+    console.log('contactPersons', this.contactPersons); */
     const selectedContact = this.contactPersons.filter(item => (item.first_name + ' ' + item.last_name) === e);
     console.log('selectedContact', selectedContact);
     this.currentOrder.contact = selectedContact[0].first_name + ' ' + selectedContact[0].last_name;
-    console.log('new Order contact', this.currentOrder.contact);
+
     this.currentOrder.contact_email = selectedContact[0].email_address;
-    console.log('order Contact after: ', this.currentOrder.contact);
+    this.currentOrder.contact_phone1 = selectedContact[0].phone_1;
+    this.currentOrder.contact_phone1_ext = selectedContact[0].phone_1_ext;
+    this.currentOrder.contact_phone1_type = selectedContact[0].phone_1_type;
+    this.currentOrder.contact_phone2 = selectedContact[0].phone_2;
+    this.currentOrder.contact_phone2_ext = selectedContact[0].phone_2_ext;
+    this.currentOrder.contact_phone2_type = selectedContact[0].phone_2_type;
   }
   ngOnInit() {
     /* // console.log('OnInit currentOrder', this.currentOrder);

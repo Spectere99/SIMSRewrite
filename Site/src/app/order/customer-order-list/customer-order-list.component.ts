@@ -118,11 +118,51 @@ customerId: number;
     const today = new Date();
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
-    this.selectedOrder.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
-    this.selectedOrder.contact_email = this.customer.customer_person[0].email_address;
-    console.log('customer=', this.customer);
+    this.setOrderContact();
+    this.setOrderBillAndShipAddresses();
     // this.selectedOrder.ship_attn = this.customer
     this.popupVisible = true;
+  }
+  setOrderContact() {
+    this.selectedOrder.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
+    this.selectedOrder.contact_email = this.customer.customer_person[0].email_address;
+    this.selectedOrder.contact_email = this.customer.customer_person[0].email_address;
+    this.selectedOrder.contact_phone1 = this.customer.customer_person[0].phone_1;
+    this.selectedOrder.contact_phone1_ext = this.customer.customer_person[0].phone_1_ext;
+    this.selectedOrder.contact_phone1_type = this.customer.customer_person[0].phone_1_type;
+    this.selectedOrder.contact_phone2 = this.customer.customer_person[0].phone_2;
+    this.selectedOrder.contact_phone2_ext = this.customer.customer_person[0].phone_2_ext;
+    this.selectedOrder.contact_phone2_type = this.customer.customer_person[0].phone_2_type;
+  }
+  setOrderBillAndShipAddresses() {
+    // Get the Billing Address if available
+    console.log('setBillingAndShipmentAddress', this.customer);
+    const billingAddress = this.customer.customer_address.filter(item => item.type_code === 'bill');
+    this.selectedOrder.ship_attn = this.customer.customer_name;
+    if (billingAddress) {
+      console.log('Billing Adr', billingAddress[0]);
+      this.selectedOrder.BILL_ADDRESS_1 = billingAddress[0].address_1;
+      this.selectedOrder.BILL_ADDRESS_2 = billingAddress[0].address_2;
+      this.selectedOrder.BILL_CITY = billingAddress[0].city;
+      this.selectedOrder.BILL_STATE = billingAddress[0].state;
+      this.selectedOrder.BILL_ZIP = billingAddress[0].zip;
+      if (this.customer.ship_to_bill_ind === 'Y') {
+        this.selectedOrder.SHIP_ADDRESS_1 = billingAddress[0].address_1;
+        this.selectedOrder.SHIP_ADDRESS_2 = billingAddress[0].address_2;
+        this.selectedOrder.SHIP_CITY = billingAddress[0].city;
+        this.selectedOrder.SHIP_STATE = billingAddress[0].state;
+        this.selectedOrder.SHIP_ZIP = billingAddress[0].zip;
+      } else {
+        const shippingAddress = this.customer.customer_address.filter(item => item.type_code === 'ship');
+        if (shippingAddress) {
+          this.selectedOrder.SHIP_ADDRESS_1 = shippingAddress[0].address_1;
+          this.selectedOrder.SHIP_ADDRESS_2 = shippingAddress[0].address_2;
+          this.selectedOrder.SHIP_CITY = shippingAddress[0].city;
+          this.selectedOrder.SHIP_STATE = shippingAddress[0].state;
+          this.selectedOrder.SHIP_ZIP = shippingAddress[0].zip;
+        }
+      }
+    }
   }
 
   formatOrderNumber(today): string {
@@ -135,10 +175,13 @@ customerId: number;
     if (mm < 10) {
       mm = '0' + mm;
     }
-
     return mm + dd + yyyy;
-
   }
+
+  showValues() {
+    console.log('Showing Order Values', this.selectedOrder);
+  }
+
   selectionChanged(e) {
     this.selectedOrder = e.selectedRowsData[0];
     // console.log('In selectionChanged', this.selectedOrder);

@@ -51,6 +51,8 @@ export class OrderArtComponent {
 
         // console.log('pulled OrderArt Data', this.orderArtFiles);
       });
+    } else {
+      this.orderArtFiles = new Array<OrderArtFile>();
     }
   }
 }

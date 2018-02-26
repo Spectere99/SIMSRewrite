@@ -112,6 +112,87 @@ export class OrderDetailComponent implements OnInit {
       this.currentOrder.shipping = totalShipping.toFixed(2);
     }
   }
+
+  addLineItem(e) {
+    const lineItem = new OrderDetail();
+    lineItem.order_detail_id = (this.order.order_detail.length + 1) * -1;
+    this.order.order_detail.unshift(lineItem);
+  }
+  deleteLineItem(e) {
+    console.log('deletingLineItem', e);
+    // See if the item has been saved to the database. (non-negative id)
+    // if it has not, then just remove it, otherwise, we need to call the web service
+    // to delete the item from the database first.
+    const index = this.order.order_detail.findIndex(x => x.order_detail_id === e.order_detail_id);
+    console.log('Del Line Item', index);
+    if (index > 0) {
+      if (e.order_detail_id > 0) {
+        // Call web service to delete here - passing in the order_detail_id.
+      }
+    }
+    this.order.order_detail.splice(index, 1);
+  }
+
+  addArtPlacement(e) {
+    const artPlacement = new OrderArtPlacement();
+    artPlacement.order_art_placement_id = (this.orderArtPlacement.length + 1) * -1;
+    this.orderArtPlacement.unshift(artPlacement);
+  }
+  deleteArtPlacement(e) {
+    console.log('deletingArtPlacement', e);
+    // See if the item has been saved to the database. (non-negative id)
+    // if it has not, then just remove it, otherwise, we need to call the web service
+    // to delete the item from the database first.
+    const index = this.orderArtPlacement.findIndex(x => x.order_art_placement_id === e.order_art_placement_id);
+    console.log('Del Art Plcmt', index);
+    if (index > 0) {
+      if (e.order_art_placement_id > 0) {
+        // Call web service to delete here.
+      }
+    }
+    this.orderArtPlacement.splice(index, 1);
+  }
+
+  addFee(e) {
+    const orderFee = new OrderFee();
+    orderFee.order_fee_id = (this.orderFees.length + 1) * -1;
+    this.orderFees.unshift(orderFee);
+  }
+  deleteFee(e) {
+    console.log('deletingFee', e);
+    // See if the item has been saved to the database. (non-negative id)
+    // if it has not, then just remove it, otherwise, we need to call the web service
+    // to delete the item from the database first.
+    const index = this.orderFees.findIndex(x => x.order_fee_id === e.order_fee_id);
+    console.log('Del Fee', index);
+    if (index > 0) {
+      if (e.order_fee_id > 0) {
+        // Call web service to delete here.
+      }
+    }
+    this.orderFees.splice(index, 1);
+  }
+
+  addPayment(e) {
+    const payment = new OrderPayment();
+    payment.order_payment_id = (this.orderPayments.length + 1) * -1;
+    this.orderPayments.push(payment);
+  }
+  deletePayment(e) {
+    console.log('deletingPayment', e);
+    // See if the item has been saved to the database. (non-negative id)
+    // if it has not, then just remove it, otherwise, we need to call the web service
+    // to delete the item from the database first.
+    const index = this.orderPayments.findIndex(x => x.order_payment_id === e.order_payment_id);
+    console.log('Del Payment', index);
+    if (index > 0) {
+      if (e.order_payment_id > 0) {
+        // Call web service to delete here.
+      }
+    }
+    this.orderPayments.splice(index, 1);
+  }
+
   ngOnInit() {
     /* console.log('order-detail OnInit', this.currentOrder);
     this.editMode = this.currentOrder !== undefined;
@@ -150,6 +231,7 @@ export class OrderDetailComponent implements OnInit {
       });
     } else {
       /// this.currentOrder = new Order();
+      this.order.order_detail = new Array<OrderDetail>();
       this.orderArtPlacement = new Array<OrderArtPlacement>();
       this.orderFees = new Array<OrderFee>();
       this.orderPayments = new Array<OrderPayment>();
