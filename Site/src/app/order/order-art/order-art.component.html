@@ -28,7 +28,7 @@
               </tr>
               <tr>
                 <td>
-                  <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;">
+                  <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;" (click)="deleteArtItem(artFile);">
                     <mat-icon style="padding-bottom: 35px; padding-right: 27px; font-size:15px;">close</mat-icon>
                   </button>
                 </td>
@@ -43,47 +43,6 @@
                 </td>
               </tr>
             </table>
-            <!-- <table>
-              <tr>
-                <td></td>
-                <td style="font-size:10px;">Note:&nbsp;&nbsp;&nbsp;</td>
-                <td style="font-size:10px;">
-                </td>
-              </tr>
-            </table> -->
           </mat-card>
         </div>
 </div>
-<!--     <dx-file-uploader
-        name="file"
-        uploadMode="useForm"></dx-file-uploader> -->
-<!--     <div class="row">
-        <table>
-            <tr>
-                <td>Art Folder</td>
-                <td>Notes</td>
-            </tr>
-            <tr>
-                <td><input type="text" name="artFolder" id="artFolder"></td>
-                <td><input type="text" name="artNotes" id="artNotes"></td>
-            </tr>
-        </table>
-    </div> -->
-<!--     <dx-button
-        text="Upload Art"
-        [useSubmitBehavior]="true">
-    </dx-button> -->
-    <!-- <div class="content">
-        <div *ngIf="value.length > 0">
-            <h4>Selected Files</h4>
-        </div>
-        <div *ngFor="let file of value">
-            <div class="selected-item">
-                Name:
-                <span>{{file.name}}</span><br /> Size:
-                <span>{{file.size}}</span>bytes<br /> Type:
-                <span>{{file.type}}</span><br /> Last Modified Date:
-                <span>{{file.lastModifiedDate}}</span>
-            </div>
-        </div>
-    </div> -->

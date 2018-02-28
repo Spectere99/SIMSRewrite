@@ -119,7 +119,7 @@
           <Key>
             <PropertyRef Name="order_art_id" />
           </Key>
-          <Property Name="order_art_id" Type="bigint" Nullable="false" />
+          <Property Name="order_art_id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="order_id" Type="bigint" />
           <Property Name="order_by" Type="int" />
           <Property Name="image_file" Type="varchar" MaxLength="250" />
@@ -524,7 +524,7 @@
           <Key>
             <PropertyRef Name="order_art_id" />
           </Key>
-          <Property Name="order_art_id" Type="Int32" Nullable="false" />
+          <Property Name="order_art_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="order_id" Type="Int32" />
           <Property Name="order_by" Type="Int32" />
           <Property Name="image_file" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />

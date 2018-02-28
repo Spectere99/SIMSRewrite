@@ -27,18 +27,35 @@ export class OrderArtComponent {
   uploadComplete(e) {
     console.log('Upload Complete!', e);
     const newOrderArtFile: OrderArtFile = {
-      order_art_id: 0,
+      order_art_id: (this.orderArtFiles.length + 1) * -1,
       order_id: this.currentOrder.order_id,
       art_folder: '',
       note: '',
       image_file: e.file.name,
       order_by: this.orderArtFiles.length + 1
     };
-    // console.log('newOrderArtFile', newOrderArtFile);
-    this.orderArtFiles.push(newOrderArtFile);
+    console.log('newOrderArtFile', newOrderArtFile);
+    this.orderService.updateOrderArtFile('', newOrderArtFile).subscribe(res => {
+      console.log('Response', res);
+      newOrderArtFile.order_art_id = res.order_art_id;
+      console.log('newOrderArtFile', newOrderArtFile);
+      this.orderArtFiles.push(newOrderArtFile);
+      });
     // console.log('After orderArtFiles.push');
   }
-
+  deleteArtItem(e) {
+    console.log('deletingArtItem', e);
+    // See if the item has been saved to the database. (non-negative id)
+    // if it has not, then just remove it, otherwise, we need to call the web service
+    // to delete the item from the database first.
+    const index = this.orderArtFiles.findIndex(x => x.order_art_id === e.order_art_id);
+    console.log('Del Art Item', index);
+    if (index >= 0) {
+      this.orderService.deleteOrderArtFile('', e.order_art_id).subscribe(res => {
+        this.orderArtFiles.splice(index, 1);
+      });
+    }
+  }
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
     this.value = [];

@@ -124,6 +124,7 @@ customerId: number;
     this.popupVisible = true;
   }
   setOrderContact() {
+    // Add logic to pull primary contact???
     this.selectedOrder.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
     this.selectedOrder.contact_email = this.customer.customer_person[0].email_address;
     this.selectedOrder.contact_email = this.customer.customer_person[0].email_address;
@@ -139,7 +140,7 @@ customerId: number;
     console.log('setBillingAndShipmentAddress', this.customer);
     const billingAddress = this.customer.customer_address.filter(item => item.type_code === 'bill');
     this.selectedOrder.ship_attn = this.customer.customer_name;
-    if (billingAddress) {
+    if (billingAddress && billingAddress.length > 0) {
       console.log('Billing Adr', billingAddress[0]);
       this.selectedOrder.BILL_ADDRESS_1 = billingAddress[0].address_1;
       this.selectedOrder.BILL_ADDRESS_2 = billingAddress[0].address_2;

@@ -12,7 +12,7 @@
       <div *ngIf="noOrderItems()">
         <div class="alert alert-warning">No line items.</div>
       </div>
-      <div *ngFor="let orderDetail of order.order_detail">
+      <div *ngFor="let orderDetail of order.order_detail; index as i">
         <mat-card>
           <table>
             <tr>
@@ -64,31 +64,31 @@
                 </select>
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.xsmall_qty">
+                <input type="text" size="1" [(ngModel)]="orderDetail.xsmall_qty" (change)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.small_qty">
+                <input type="text" size="1" [(ngModel)]="orderDetail.small_qty" (change)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.med_qty">
+                <input type="text" size="1" [(ngModel)]="orderDetail.med_qty" (change)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.large_qty">
+                <input type="text" size="1" [(ngModel)]="orderDetail.large_qty" (change)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.xl_qty">
+                <input type="text" size="1" [(ngModel)]="orderDetail.xl_qty" (change)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C2xl_qty">
+                <input type="text" size="1" [(ngModel)]="orderDetail.C2xl_qty" (change)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C3xl_qty">
+                <input type="text" size="1" [(ngModel)]="orderDetail.C3xl_qty" (change)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C4xl_qty">
+                <input type="text" size="1" [(ngModel)]="orderDetail.C4xl_qty" (change)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C5xl_qty">
+                <input type="text" size="1" [(ngModel)]="orderDetail.C5xl_qty" (change)="onQtyPriceChange($event, i)">
               </td>
               <td>
                 <select class="form-control form-control-sm" style="font-size: 1vw; width:auto;" [(ngModel)]="orderDetail.other1_type">
@@ -99,7 +99,7 @@
                 </select>
               </td>
               <td>
-                <input type="text" size="2" [(ngModel)]="orderDetail.other1_qty">
+                <input type="text" size="2" [(ngModel)]="orderDetail.other1_qty" (change)="onQtyPriceChange($event, i)">
               </td>
             </tr>
           </table>
@@ -127,7 +127,7 @@
               <td>
                 <div class="input-group input-group-sm">
                   <span class="input-group-addon">$</span>
-                  <input type="text" class="form-control" placeholder="0.00" size="4" [(ngModel)]="orderDetail.item_price_each">
+                  <input type="text" class="form-control" placeholder="0.00" size="4" [(ngModel)]="orderDetail.item_price_each" (change)="onQtyPriceChange($event, i)">
                 </div>
               </td>
               <td style="text-align:center;">${{orderDetail.item_price_ext}}</td>
@@ -306,7 +306,7 @@
             <table>
               <tr>
                 <td>Subtotal:</td>
-                <td>${{currentOrder.subtotal}}</td>
+                <td>${{order.subtotal}}</td>
               </tr>
               <tr>
                 <td>Tax Rate:</td>

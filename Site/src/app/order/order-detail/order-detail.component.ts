@@ -125,7 +125,7 @@ export class OrderDetailComponent implements OnInit {
     // to delete the item from the database first.
     const index = this.order.order_detail.findIndex(x => x.order_detail_id === e.order_detail_id);
     console.log('Del Line Item', index);
-    if (index > 0) {
+    if (index >= 0) {
       if (e.order_detail_id > 0) {
         // Call web service to delete here - passing in the order_detail_id.
       }
@@ -145,7 +145,7 @@ export class OrderDetailComponent implements OnInit {
     // to delete the item from the database first.
     const index = this.orderArtPlacement.findIndex(x => x.order_art_placement_id === e.order_art_placement_id);
     console.log('Del Art Plcmt', index);
-    if (index > 0) {
+    if (index >= 0) {
       if (e.order_art_placement_id > 0) {
         // Call web service to delete here.
       }
@@ -165,7 +165,7 @@ export class OrderDetailComponent implements OnInit {
     // to delete the item from the database first.
     const index = this.orderFees.findIndex(x => x.order_fee_id === e.order_fee_id);
     console.log('Del Fee', index);
-    if (index > 0) {
+    if (index >= 0) {
       if (e.order_fee_id > 0) {
         // Call web service to delete here.
       }
@@ -185,14 +185,41 @@ export class OrderDetailComponent implements OnInit {
     // to delete the item from the database first.
     const index = this.orderPayments.findIndex(x => x.order_payment_id === e.order_payment_id);
     console.log('Del Payment', index);
-    if (index > 0) {
+    if (index >= 0) {
       if (e.order_payment_id > 0) {
         // Call web service to delete here.
       }
     }
     this.orderPayments.splice(index, 1);
   }
-
+  onQtyPriceChange(e, idx) {
+    console.log('Order Detail onChange Event', e.target.value);
+    console.log('Order Index item', idx);
+    let totalItemQty = 0;
+    const orderLine = this.order.order_detail[idx];
+    console.log('orderLine', orderLine);
+    totalItemQty = totalItemQty + ((orderLine.xsmall_qty === undefined) ? 0 : +orderLine.xsmall_qty);
+    totalItemQty = totalItemQty + ((orderLine.small_qty === undefined) ? 0 : +orderLine.small_qty);
+    totalItemQty = totalItemQty + ((orderLine.med_qty === undefined) ? 0 : +orderLine.med_qty);
+    totalItemQty = totalItemQty + ((orderLine.large_qty === undefined) ? 0 : +orderLine.large_qty);
+    totalItemQty = totalItemQty + ((orderLine.xl_qty === undefined) ? 0 : +orderLine.xl_qty);
+    totalItemQty = totalItemQty + ((orderLine.C2xl_qty === undefined) ? 0 : +orderLine.C2xl_qty);
+    totalItemQty = totalItemQty + ((orderLine.C3xl_qty === undefined) ? 0 : +orderLine.C3xl_qty);
+    totalItemQty = totalItemQty + ((orderLine.C4xl_qty === undefined) ? 0 : +orderLine.C4xl_qty);
+    totalItemQty = totalItemQty + ((orderLine.C5xl_qty === undefined) ? 0 : +orderLine.C5xl_qty);
+    totalItemQty = totalItemQty + ((orderLine.other1_qty === undefined) ? 0 : +orderLine.other1_qty);
+    this.order.order_detail[idx].item_quantity = totalItemQty;
+    this.order.order_detail[idx].item_price_ext = totalItemQty * ((orderLine.item_price_each === undefined) ? 0
+                                                                    : +orderLine.item_price_each);
+    this.order.subtotal = 0;
+    let subTotal = 0;
+    console.log('order Details', this.order.order_detail);
+    for ( let x = 0; x < this.order.order_detail.length; x++) {
+      subTotal = subTotal + this.order.order_detail[x].item_price_ext;
+    }
+    console.log('subTotal', this.order);
+    this.order.subtotal = subTotal;
+  }
   ngOnInit() {
     /* console.log('order-detail OnInit', this.currentOrder);
     this.editMode = this.currentOrder !== undefined;
