@@ -40,6 +40,7 @@ export class CustomerListComponent implements OnInit {
   customerSearchValue: any;
   buttonClass = 'btn-blue-grey';
   filterDate = new Date(2008, 1, 1);
+  orderTabDisabled = false;
 
   constructor(lookupService: LookupService, userService: UserService, customerService: CustomerService) {
       this.pagingEnabled = true;
@@ -194,6 +195,9 @@ export class CustomerListComponent implements OnInit {
       // console.log('SelectedCustomer', this.selectedCustomer);
       // alert('Editing!');
       this.popupVisible = true;
+      if (this.selectedCustomer.customer_id < 0) {
+        this.orderTabDisabled = false; } else {this.orderTabDisabled = true;
+      }
     }
     showEditPopup(e) {
       // e.cancel = true;

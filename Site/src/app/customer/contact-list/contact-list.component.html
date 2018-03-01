@@ -75,7 +75,7 @@
           </mat-tab>
           <mat-tab label="Notes" [disabled]="true">
           </mat-tab>
-          <mat-tab label="Orders">
+          <mat-tab label="Orders" [disabled]="orderTabDisabled">
               <app-customer-order-list [customer]="selectedCustomer"></app-customer-order-list>
             </mat-tab>
         </mat-tab-group>

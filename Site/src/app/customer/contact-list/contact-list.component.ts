@@ -37,6 +37,7 @@ buttonClass = 'btn-blue-grey';
 disableExpand: boolean;
 gridHeight;
 popupVisible = false;
+orderTabDisabled = false;
 
   constructor(lookupService: LookupService, customerSvc: CustomerService, userService: UserService) {
     this.customerService = customerSvc;
@@ -135,10 +136,12 @@ popupVisible = false;
   showAddPopup(e) {
     console.log('Adding', e);
     this.selectedCustomer = new Customer;
-
     // console.log('SelectedCustomer', this.selectedCustomer);
     // alert('Editing!');
     this.popupVisible = true;
+    if (this.selectedCustomer.customer_id < 0) {
+      this.orderTabDisabled = false; } else {this.orderTabDisabled = true;
+    }
   }
 
   createPersonTypeDataSource() {
