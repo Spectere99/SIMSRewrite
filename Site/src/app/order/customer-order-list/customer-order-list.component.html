@@ -5,6 +5,9 @@
     <div style="padding:5px;">
         <input type="button" class="btn btn-primary" value="New Order" (click)="createNewOrder(customerId);">
     </div>
+    <!-- <div style="padding:5px;">
+        <input type="button" class="btn btn-primary" value="Refresh" (click)="refreshGrid();">
+    </div> -->
     <div class="row col-lg-12">
       <dx-data-grid id="gridOrders" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
         [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)"
@@ -66,13 +69,13 @@
           </div>
               <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%">
                 <mat-tab label="Info">
-                  <app-order-info [currentOrder]="selectedOrder"></app-order-info>
+                  <app-order-info [(currentOrder)]="selectedOrder"></app-order-info>
                 </mat-tab>
                 <mat-tab label="Details">
-                  <app-order-detail [currentOrder]="selectedOrder"></app-order-detail>
+                  <app-order-detail [(currentOrder)]="selectedOrder"></app-order-detail>
                 </mat-tab>
                 <mat-tab label="Art">
-                  <app-order-art [currentOrder]="selectedOrder"></app-order-art>
+                  <app-order-art [(currentOrder)]="selectedOrder"></app-order-art>
                 </mat-tab>
                 <mat-tab label="History/Comments">
                   

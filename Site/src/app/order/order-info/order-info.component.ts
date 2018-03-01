@@ -4,6 +4,8 @@ import { UserService } from '../../_services/user.service';
 import { CustomerService } from '../../_services/customer.service';
 import { OrderService, Order, OrderDetail } from '../../_services/order.service';
 import { StateService, StateInfo } from '../../_shared/states.service';
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
+  MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-order-info',
@@ -22,11 +24,11 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   statusTypes: any;
   userDataSource: any;
 
-  editMode: boolean;
+  newMode: boolean;
  // customerService: CustomerService;
 
   constructor(lookupService: LookupService, userService: UserService, public customerService: CustomerService,
-              private usStateService: StateService) {
+              private usStateService: StateService, public orderService: OrderService, public snackBar: MatSnackBar) {
 
     this.stateList = this.usStateService.getStateList();
       lookupService.loadLookupData('').subscribe(res => {
@@ -65,6 +67,93 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     this.currentOrder.contact_phone2_ext = selectedContact[0].phone_2_ext;
     this.currentOrder.contact_phone2_type = selectedContact[0].phone_2_type;
   }
+
+  batchSave() {
+    this.saveOrderInfo();
+    console.log('Order Info Saved');
+  }
+
+  convertOrderInfo(order: Order): Order {
+    const orderToSave = new Order();
+    orderToSave.order_id = order.order_id;
+    orderToSave.customer_id = order.customer_id;
+    orderToSave.order_number = order.order_number;
+    orderToSave.order_type =  order.order_type;
+    orderToSave.purchase_order =  order.purchase_order;
+    orderToSave.order_date =  order.order_date;
+    orderToSave.order_due_date =  order.order_due_date;
+    orderToSave.order_status =  order.order_status;
+    orderToSave.taken_user_id =  order.taken_user_id;
+    orderToSave.assigned_user_id =  order.assigned_user_id;
+    orderToSave.est_begin_date =  order.est_begin_date;
+    orderToSave.act_begin_date =  order.act_begin_date;
+    orderToSave.est_complete_date =  order.est_complete_date;
+    orderToSave.act_complete_date =  order.act_complete_date;
+    orderToSave.shipped_date =  order.shipped_date;
+    orderToSave.subtotal =  order.subtotal;
+    orderToSave.tax_rate =  order.tax_rate;
+    orderToSave.tax_amount =  order.tax_amount;
+    orderToSave.shipping =  order.shipping;
+    orderToSave.total =  order.total;
+    orderToSave.payments =  order.payments;
+    orderToSave.balance_due =  order.balance_due;
+    orderToSave.IMAGE_FILE =  order.IMAGE_FILE;
+    orderToSave.BILL_ADDRESS_1 =  order.BILL_ADDRESS_1;
+    orderToSave.BILL_ADDRESS_2 =  order.BILL_ADDRESS_2;
+    orderToSave.BILL_CITY =  order.BILL_CITY;
+    orderToSave.BILL_STATE =  order.BILL_STATE;
+    orderToSave.BILL_ZIP =  order.BILL_ZIP;
+    orderToSave.SHIP_ADDRESS_1 =  order.SHIP_ADDRESS_1;
+    orderToSave.SHIP_ADDRESS_2 =  order.SHIP_ADDRESS_2;
+    orderToSave.SHIP_CITY =  order.SHIP_CITY;
+    orderToSave.SHIP_STATE =  order.SHIP_STATE;
+    orderToSave.SHIP_ZIP =  order.SHIP_ZIP;
+    orderToSave.PRIORITY =  order.PRIORITY;
+    orderToSave.PERCENT_COMPLETE =  order.PERCENT_COMPLETE;
+    orderToSave.ship_carrier =  order.ship_carrier;
+    orderToSave.ship_tracking = order.ship_tracking;
+    orderToSave.previous_order = order.previous_order;
+    orderToSave.reorder_ind =  order.reorder_ind;
+    orderToSave.ship_attn =  order.ship_attn;
+    orderToSave.contact =  order.contact;
+    orderToSave.contact_email =  order.contact_email;
+    orderToSave.contact_phone1 =  order.contact_phone1;
+    orderToSave.contact_phone1_ext =  order.contact_phone1_ext;
+    orderToSave.contact_phone1_type =  order.contact_phone1_type;
+    orderToSave.contact_phone2 =  order.contact_phone2;
+    orderToSave.contact_phone2_ext =  order.contact_phone2_ext;
+    orderToSave.contact_phone2_type =  order.contact_phone2_type;
+
+    return orderToSave;
+  }
+  saveOrderInfo() {
+    console.log('Order on Save', this.currentOrder);
+      const insOrder = this.convertOrderInfo(this.currentOrder);
+    console.log('Converted Order on Save', insOrder);
+      if (this.currentOrder.order_id <= 0) {
+        this.currentOrder.order_id = 0;
+        this.orderService.addOrderInfo('rwflowers', insOrder)
+        .subscribe(res => {
+          console.log('Save orderInfo Return', res);
+          this.currentOrder.order_id = res.order_id;
+          this.snackBar.open('Order Added!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
+        });
+      } else {
+        const updOrder = this.convertOrderInfo(this.currentOrder);
+        this.orderService.updateOrderInfo('rwflowers', updOrder)
+        .subscribe(res => {
+          console.log('Update orderInfo Return', res);
+          this.snackBar.open('Order Added Updated!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
+        });
+      }
+  }
+
   ngOnInit() {
     /* // console.log('OnInit currentOrder', this.currentOrder);
     this.editMode = this.currentOrder !== undefined;
@@ -80,8 +169,8 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    // console.log('order-info-component currentOrder', this.currentOrder);
-    this.editMode = this.currentOrder.order_id !== 0;
+    console.log('order-info-component currentOrder', this.currentOrder);
+    this.newMode = this.currentOrder.order_id === 0;
     if (this.currentOrder.customer_id !== 0) {
       this.customerService.getCustomerData('', this.currentOrder.customer_id).subscribe(res => {
         this.orderCustomer = res;

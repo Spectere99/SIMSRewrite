@@ -22,7 +22,7 @@ export class Order {
     act_complete_date: string;
     shipped_date: string;
     subtotal: number;
-    tax_rate: number;
+    tax_rate: string;
     tax_amount: number;
     shipping: number;
     total: number;
@@ -69,8 +69,8 @@ export class OrderDetail {
     vendor: string;
     manufacturer: string;
     product_code: number;
-    item_price_each: number;
-    item_price_ext: number;
+    item_price_each: string;
+    item_price_ext: string;
     taxable_ind: string;
     shipping_po: string;
     notes: string;
@@ -146,12 +146,12 @@ export class OrderService {
     public requestResult: Array<any>;
     public options: string;
 
-    public _ORDER_ACTION = '/orders';
-    public _ORDER_DETAIL_ACTION = '/orderdetail';
-    public _ORDER_ART_PLACEMENT_ACTION = '/orderartplacement';
-    public _ORDER_FEE_ACTION = '/orderfee';
-    public _ORDER_PAYMENT_ACTION = '/orderpayment';
-    public _ORDER_ART_FILE_ACTION = '/orderartfile';
+    public _ORDER_ACTION = 'orders';
+    public _ORDER_DETAIL_ACTION = 'OrderDetails';
+    public _ORDER_ART_PLACEMENT_ACTION = 'OrderArtPlacement';
+    public _ORDER_FEE_ACTION = 'OrderFees';
+    public _ORDER_PAYMENT_ACTION = 'OrderPayments';
+    public _ORDER_ART_FILE_ACTION = 'orderartfile';
 
     constructor( private http: Http ) { }
 

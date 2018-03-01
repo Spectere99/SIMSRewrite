@@ -1,39 +1,49 @@
 <div class="container col-md-12 pt-4">
   <section>
-    <div>
-      <div class="row col-md-12">
-        <div class="col-md-3">
-          Order Info
+      <div>
+        <div class="row col-md-12">
+          <div class="col-md-3">
+            Order Info
+            <span class="text-muted">
+              <em>
+                <span style="color:red;">*</span> Indicates required field</em>
+            </span>
+          </div>
         </div>
-      </div>
-      <!-- <mat-card> -->
+        <!-- <mat-card> -->
         <table>
           <tr>
             <td style="font-size:10px;">Order Number</td>
             <td style="font-size:10px;">Order Date</td>
-            <td style="font-size:10px;">Due Date</td>
-            <td style="font-size:10px;">Order Type</td>
+            <td style="font-size:10px;">Due Date
+              <span style="color:red;font-size:12px;">*</span>
+            </td>
+            <td style="font-size:10px;">Order Type
+              <span style="color:red;font-size:12px;">*</span>
+            </td>
             <td style="font-size:10px;">P.O. #</td>
           </tr>
           <tr>
             <td>
-              <div *ngIf="editMode">
+              <!-- <div *ngIf="!editMode">
                 <input class="form-control" type="text" size="25" [(ngModel)]="currentOrder.order_number">  
               </div>
-              <div *ngIf="!editMode">
-                  <input class="form-control" type="text" size="25" readonly [(ngModel)]="currentOrder.order_number" readonly>  
-              </div>
+              <div *ngIf="editMode"> -->
+              <input class="form-control" type="text" size="25" readonly [(ngModel)]="currentOrder.order_number" readonly>
+              <!-- </div> -->
               <!-- <input class="form-control" type="text" size="25" readonly [(ngModel)]="currentOrder.order_number" [disabled]="editMode"> -->
             </td>
             <td>
-              <input class="form-control" [ngModel]="currentOrder.order_date | date:'yyyy-MM-dd'" (ngModelChange)="currentOrder.order_date = $event" type="date" />
+              <input class="form-control" [ngModel]="currentOrder.order_date | date:'yyyy-MM-dd'" (ngModelChange)="currentOrder.order_date = $event"
+                type="date" readonly />
             </td>
             <td>
-              <input class="form-control" 
-              type="date" [ngModel]="currentOrder.order_due_date | date:'yyyy-MM-dd'" (ngModelChange)="currentOrder.order_due_date = $event">
+              <input [ngClass]="{'empty':newMode}" class="form-control" type="date" [ngModel]="currentOrder.order_due_date | date:'yyyy-MM-dd'" (ngModelChange)="currentOrder.order_due_date = $event"
+                required>
             </td>
             <td>
-              <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.order_type">
+              <select class="form-control form-control-sm" 
+               [ngClass]="{'empty':newMode}" style="width:auto;" [(ngModel)]="currentOrder.order_type" required>
                 <option *ngFor="let itm of orderTypes" [value]="itm.char_mod">
                   {{itm.description}}
                 </option>
@@ -81,23 +91,25 @@
               </select>
             </td>
             <td>
-              <input class="form-control" type="tel" size="15"  [ngModel]="currentOrder.contact_phone2 | phoneFormat" (ngModelChange)="currentOrder.contact_phone2=$event">
+              <input class="form-control" type="tel" size="15" [ngModel]="currentOrder.contact_phone2 | phoneFormat" (ngModelChange)="currentOrder.contact_phone2=$event">
             </td>
             <td>
               <input class="form-control" type="text" size="1" [(ngModel)]="currentOrder.contact_phone2_ext">
             </td>
             <td>
               <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.contact_phone2_type">
-                  <option *ngFor="let itm of phoneTypes" [value]="itm.char_mod">
-                      {{itm.description}}
-                  </option>
+                <option *ngFor="let itm of phoneTypes" [value]="itm.char_mod">
+                  {{itm.description}}
+                </option>
               </select>
             </td>
           </tr>
         </table>
         <table>
           <tr>
-            <td style="font-size:10px;">Status</td>
+            <td style="font-size:10px;">Status
+              <span style="color:red;font-size:12px;">*</span>
+            </td>
             <td style="font-size:10px;">Taken by</td>
             <td style="font-size:10px;">Assigned to</td>
             <td style="font-size:10px;">Shipping Carrier</td>
@@ -105,24 +117,24 @@
           </tr>
           <tr>
             <td>
-              <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.order_status">
+              <select [ngClass]="{'empty':newMode}" class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.order_status" required>
                 <option *ngFor="let itm of statusTypes" [value]="itm.char_mod">
                   {{itm.description}}
                 </option>
               </select>
             </td>
             <td>
-                <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.taken_user_id">
-                  <option *ngFor="let user of userDataSource" [value]="user.user_id">
-                      {{user.first_name + ' ' + user.last_name}}
-                  </option>
-                </select>
-              </td>
+              <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.taken_user_id">
+                <option *ngFor="let user of userDataSource" [value]="user.user_id">
+                  {{user.first_name + ' ' + user.last_name}}
+                </option>
+              </select>
+            </td>
             <td>
               <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.assigned_user_id">
-                  <option *ngFor="let user of userDataSource" [value]="user.user_id">
-                      {{user.first_name + ' ' + user.last_name}}
-                  </option>
+                <option *ngFor="let user of userDataSource" [value]="user.user_id">
+                  {{user.first_name + ' ' + user.last_name}}
+                </option>
               </select>
             </td>
             <td>
@@ -133,14 +145,14 @@
             </td>
           </tr>
         </table>
-      <!-- </mat-card> -->
-      <br>
-      <div class="row col-md-12">
-        <div class="col-md-3">
-          Bill To
+        <!-- </mat-card> -->
+        <br>
+        <div class="row col-md-12">
+          <div class="col-md-3">
+            Bill To
+          </div>
         </div>
-      </div>
-      <!-- <mat-card> -->
+        <!-- <mat-card> -->
         <table>
           <tr>
             <td style="font-size:10px;">Address 1</td>
@@ -151,73 +163,75 @@
           </tr>
           <tr>
             <td>
-                <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.BILL_ADDRESS_1">
+              <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.BILL_ADDRESS_1">
             </td>
             <td>
-                <input class="form-control" type="text" size="25" [(ngModel)]="currentOrder.BILL_ADDRESS_2">
+              <input class="form-control" type="text" size="25" [(ngModel)]="currentOrder.BILL_ADDRESS_2">
             </td>
             <td>
-                <input class="form-control" type="text" size="15" [(ngModel)]="currentOrder.BILL_ZIP">
+              <input class="form-control" type="text" size="15" [(ngModel)]="currentOrder.BILL_ZIP">
             </td>
             <td>
-                <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.BILL_CITY">
+              <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.BILL_CITY">
             </td>
             <td>
-                <select class="form-control form-control-sm" placeholder="State" [(ngModel)]="currentOrder.BILL_STATE">
-                    <option *ngFor="let state of stateList" [value]="state.abbreviation">
-                        {{state.abbreviation}}
-                    </option>
-                </select>
+              <select class="form-control form-control-sm" placeholder="State" [(ngModel)]="currentOrder.BILL_STATE">
+                <option *ngFor="let state of stateList" [value]="state.abbreviation">
+                  {{state.abbreviation}}
+                </option>
+              </select>
             </td>
           </tr>
         </table>
-      <!-- </mat-card> -->
-      <br>
-      <div class="row col-md-12">
-        <div class="col-md-3">
-          Ship To
+        <!-- </mat-card> -->
+        <br>
+        <div class="row col-md-12">
+          <div class="col-md-3">
+            Ship To
+          </div>
         </div>
-      </div>
-      <!-- <mat-card> -->
+        <!-- <mat-card> -->
         <table>
           <tr>
-              <td style="font-size:10px;">Attention</td>
+            <td style="font-size:10px;">Attention</td>
           </tr>
           <tr>
-            <td><input class="form-control" type="text" size="35" [(ngModel)]="currentOrder.ship_attn"></td>
+            <td>
+              <input class="form-control" type="text" size="35" [(ngModel)]="currentOrder.ship_attn">
+            </td>
           </tr>
         </table>
         <table>
-            <tr>
-              <td style="font-size:10px;">Address 1</td>
-              <td style="font-size:10px;">Address 2</td>
-              <td style="font-size:10px;">Zip</td>
-              <td style="font-size:10px;">City</td>
-              <td style="font-size:10px;">State</td>
-            </tr>
-            <tr>
-              <td>
-                  <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.SHIP_ADDRESS_1">
-              </td>
-              <td>
-                  <input class="form-control" type="text" size="25" [(ngModel)]="currentOrder.SHIP_ADDRESS_2">
-              </td>
-              <td>
-                  <input class="form-control" type="text" size="15" [(ngModel)]="currentOrder.SHIP_ZIP">
-              </td>
-              <td>
-                  <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.SHIP_CITY">
-              </td>
-              <td>
-                  <select class="form-control form-control-sm" placeholder="State" [(ngModel)]="currentOrder.SHIP_STATE">
-                      <option *ngFor="let state of stateList" [value]="state.abbreviation">
-                          {{state.abbreviation}}
-                      </option>
-                  </select>
-              </td>
-            </tr>
-          </table>
-      <!-- </mat-card> -->
-    </div>
+          <tr>
+            <td style="font-size:10px;">Address 1</td>
+            <td style="font-size:10px;">Address 2</td>
+            <td style="font-size:10px;">Zip</td>
+            <td style="font-size:10px;">City</td>
+            <td style="font-size:10px;">State</td>
+          </tr>
+          <tr>
+            <td>
+              <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.SHIP_ADDRESS_1">
+            </td>
+            <td>
+              <input class="form-control" type="text" size="25" [(ngModel)]="currentOrder.SHIP_ADDRESS_2">
+            </td>
+            <td>
+              <input class="form-control" type="text" size="15" [(ngModel)]="currentOrder.SHIP_ZIP">
+            </td>
+            <td>
+              <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.SHIP_CITY">
+            </td>
+            <td>
+              <select class="form-control form-control-sm" placeholder="State" [(ngModel)]="currentOrder.SHIP_STATE">
+                <option *ngFor="let state of stateList" [value]="state.abbreviation">
+                  {{state.abbreviation}}
+                </option>
+              </select>
+            </td>
+          </tr>
+        </table>
+        <!-- </mat-card> -->
+      </div>
   </section>
 </div>

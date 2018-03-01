@@ -5,6 +5,9 @@
         <div class="col-md-2">
           Items
         </div>
+<!--         <div class="col-md-1">
+            <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showValues()">Show Values</button>
+          </div> -->
         <div class="col-md-1">
           <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="addLineItem($event)">Add</button>
         </div>
@@ -41,10 +44,10 @@
                 </button>
               </td>
               <td>
-                <input type="checkbox" id="checkedin_ind" name="chkIn" value="Y" [(ngModel)]="orderDetail.checked_in_ind">
+                <input type="checkbox" id="checkedin_ind" name="chkIn" [checked]="orderDetail.checked_in_ind === 'Y'" (change)="orderDetail.checked_in_ind = $event.target.checked ? 'Y' : 'N'">
               </td>
               <td>
-                <input type="checkbox" id="checkedout_ind" name="chkOut" value="Y" [(ngModel)]="orderDetail.checked_out_ind">
+                <input type="checkbox" id="checkedout_ind" name="chkOut" value="'Y'" [checked]="orderDetail.checked_out_ind === 'Y'" (change)="orderDetail.checked_out_ind = $event.target.checked ? 'Y' : 'N'">
               </td>
               <td>
                 <select class="form-control form-control-sm" style="font-size: 11px; width:auto;" [(ngModel)]="orderDetail.pricelist_id">
@@ -64,31 +67,31 @@
                 </select>
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.xsmall_qty" (change)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.xsmall_qty" (keyup)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.small_qty" (change)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.small_qty" (keyup)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.med_qty" (change)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.med_qty" (keyup)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.large_qty" (change)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.large_qty" (keyup)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.xl_qty" (change)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.xl_qty" (keyup)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C2xl_qty" (change)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.C2xl_qty" (keyup)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C3xl_qty" (change)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.C3xl_qty" (keyup)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C4xl_qty" (change)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.C4xl_qty" (keyup)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C5xl_qty" (change)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.C5xl_qty" (keyup)="onQtyPriceChange($event, i)">
               </td>
               <td>
                 <select class="form-control form-control-sm" style="font-size: 1vw; width:auto;" [(ngModel)]="orderDetail.other1_type">
@@ -99,7 +102,7 @@
                 </select>
               </td>
               <td>
-                <input type="text" size="2" [(ngModel)]="orderDetail.other1_qty" (change)="onQtyPriceChange($event, i)">
+                <input type="text" size="2" [(ngModel)]="orderDetail.other1_qty" (keyup)="onQtyPriceChange($event, i)">
               </td>
             </tr>
           </table>
@@ -127,12 +130,13 @@
               <td>
                 <div class="input-group input-group-sm">
                   <span class="input-group-addon">$</span>
-                  <input type="text" class="form-control" placeholder="0.00" size="4" [(ngModel)]="orderDetail.item_price_each" (change)="onQtyPriceChange($event, i)">
+                  <input type="text" class="form-control" placeholder="0.00" size="4" [(ngModel)]="orderDetail.item_price_each" (keyup)="onQtyPriceChange($event, i)">
                 </div>
               </td>
               <td style="text-align:center;">${{orderDetail.item_price_ext}}</td>
               <td>
-                <input type="checkbox" id="taxable_ind" name="interest" value="Y" [(ngModel)]="orderDetail.taxable_ind">
+                <input type="checkbox" id="taxable_ind" name="chkItemTaxable" [checked]="orderDetail.taxable_ind === 'Y'" 
+                      (change)="orderDetail.taxable_ind = $event.target.checked ? 'Y' : 'N';updateTotals();">
               </td>
               <td>
                 <input class="form-control" [ngModel]="orderDetail.garment_order_date | date:'MM-dd-yyyy'" (ngModelChange)="orderDetail.garment_order_date = $event">
@@ -251,7 +255,7 @@
       <div *ngIf="noOrderFees()">
         <div class="alert alert-warning">No items.</div>
       </div>
-      <div *ngFor="let fee of orderFees">
+      <div *ngFor="let fee of orderFees; index as i">
       <mat-card>
         <table>
           <tr>
@@ -272,11 +276,11 @@
             </td>
             <td>{{fee.fee_line_number}}</td>
             <td>
-              <input class="form-control" type="text" size="5" [(ngModel)]="fee.fee_quantity">
+              <input class="form-control" type="text" size="5" [(ngModel)]="fee.fee_quantity" (keyup)="onFeeChange($event, i);">
             </td>
             <td>
               <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="fee.pricelist_id">
-                <option *ngFor="let itm of setupItems" [value]="itm.pricelist_id">
+                <option *ngFor="let itm of setupItems" [ngValue]="itm.pricelist_id">
                   {{itm.pricelist_description}}
                 </option>
               </select>
@@ -284,14 +288,14 @@
             <td>
               <div class="input-group input-group-sm">
                 <span class="input-group-addon">$</span>
-                <input type="text" class="form-control" placeholder="0.00" size="4" [(ngModel)]="fee.fee_price_each">
+                <input type="text" class="form-control" placeholder="0.00" size="4" [(ngModel)]="fee.fee_price_each" (keyup)="onFeeChange($event, i);">
               </div>
             </td>
             <td>
               <input class="form-control" type="text" size="10" [(ngModel)]="fee.fee_price_ext" readonly>
             </td>
             <td>
-              <input type="checkbox" id="setupChgTax" name="chkSetupChgTax" value="N" [(ngModel)]="fee.taxable_ind">
+              <input type="checkbox" id="setupChgTax" name="chkSetupChgTax" [checked]="fee.taxable_ind === 'Y'" (change)="fee.taxable_ind = $event.target.checked ? 'Y' : 'N';updateTotals();">
             </td>
             <td>
               <input class="form-control" type="text" size="75" [(ngModel)]="fee.notes">
@@ -309,8 +313,12 @@
                 <td>${{order.subtotal}}</td>
               </tr>
               <tr>
+                <td>Non-taxable Subtotal:</td>
+                <td>${{nonTaxableSubTotal}}</td>
+              </tr>
+              <tr>
                 <td>Tax Rate:</td>
-                <td><input type="text" size="5" [(ngModel)]="currentOrder.tax_rate" style="height: 25px;">%</td>
+                <td><input type="text" size="5" [(ngModel)]="currentOrder.tax_rate" style="height: 25px;" (keyup)="onTaxRateChange($event)">%</td>
               </tr>
               <tr>
                 <td>Tax:</td>
@@ -332,7 +340,7 @@
                 <td>
                   <strong>Balance Due:</strong>
                 </td>
-                <td>${{currentOrder.balance_due}}</td>
+                <td><strong>${{currentOrder.balance_due}}</strong></td>
               </tr>
             </table>
           </div>
@@ -367,7 +375,7 @@
                     <td>
                       <div class="input-group input-group-sm">
                         <span class="input-group-addon">$</span>
-                        <input type="text" class="form-control" placeholder="0.00" size="8" [(ngModel)]="pmnt.payment_amount">
+                        <input type="text" class="form-control" placeholder="0.00" size="8" [(ngModel)]="pmnt.payment_amount" (keyup)="updateTotals();">
                       </div>
                     </td>
                     <td>

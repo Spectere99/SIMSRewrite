@@ -1,9 +1,14 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, OnChanges, Input } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
+import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { LookupService } from '../../_services/lookups.service';
 import { UserService } from '../../_services/user.service';
 import { Order } from '../../_services/order.service';
+import { OrderInfoComponent } from '../order-info/order-info.component';
+import { OrderDetailComponent } from '../order-detail/order-detail.component';
+import { OrderArtComponent } from '../order-art/order-art.component';
+
 
 @Component({
   selector: 'app-customer-order-list',
@@ -12,6 +17,10 @@ import { Order } from '../../_services/order.service';
 })
 export class CustomerOrderListComponent implements OnInit {
 @Input() customer;
+@ViewChild(DxDataGridComponent) gridOrders: DxDataGridComponent;
+@ViewChild(OrderInfoComponent) orderInfo: OrderInfoComponent;
+@ViewChild(OrderDetailComponent) orderDetail: OrderDetailComponent;
+@ViewChild(OrderArtComponent) orderArt: OrderArtComponent;
 baseUrl = environment.odataEndpoint;
 defaultArtFolder = environment.defaultArtFolder;
 dataSource: any;
@@ -114,8 +123,10 @@ customerId: number;
     // console.log('Creating Order!!!', customer_id);
     this.selectedOrder = new Order();
     this.selectedOrder.order_id = 0;
+    this.selectedOrder.tax_rate = '7.0';
     this.selectedOrder.customer_id = customer_id;
     const today = new Date();
+    today.setHours(0, 0, 0, 0);
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
     this.setOrderContact();
@@ -179,6 +190,20 @@ customerId: number;
     return mm + dd + yyyy;
   }
 
+  refreshGrid() {
+    this.gridOrders.instance.refresh();
+  }
+
+  applyChanges() {
+    this.orderInfo.batchSave();
+    this.orderDetail.batchSave();
+    // Still need art tab batch save.
+    // this.selectedOrder = null;
+    setTimeout(() => {
+      this.gridOrders.instance.refresh();
+    }, 1000);
+    this.popupVisible = false;
+  }
   showValues() {
     console.log('Showing Order Values', this.selectedOrder);
   }
@@ -200,7 +225,10 @@ customerId: number;
 
     this.popupVisible = true;
   }
-
+  closeEditor() {
+    this.selectedOrder = null;
+    this.popupVisible = false;
+  }
   ngOnInit() {
     if (this.customer) {
       this.customerId = this.customer.customer_id;

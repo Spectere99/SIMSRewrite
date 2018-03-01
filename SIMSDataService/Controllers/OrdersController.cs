@@ -97,6 +97,18 @@ namespace SIMSDataService.Controllers
             //            .order_id +
             //        1;
             //order.order_id = nextPk;
+
+            //Need to set the orderNumber
+            DateTime startDate = DateTime.Now.Date;
+            if (order.order_date != null)
+            {
+                startDate = order.order_date.Value.Date;
+            }
+
+            order.order_date = startDate;
+
+            List<order> todaysOrders = db.orders.Where(p => p.order_date == order.order_date).ToList();
+            order.order_number = order.order_number + (todaysOrders.Count + 1);
             db.orders.Add(order);
 
             try

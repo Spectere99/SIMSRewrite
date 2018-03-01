@@ -167,7 +167,15 @@ popupVisible = false;
     // alert('Applying Customer Contacts Changes');
     this.customerContacts.batchSave();
     // Call customer_contacts component's batchSave method.
-}
+    setTimeout(() => {
+      this.gridCustomers.instance.refresh();
+    },
+    1000);
+    this.popupVisible = false;
+  }
+  cancelChanges() {
+    this.popupVisible = false;
+  }
 /*   loadCustomerEdit(customer: any) {
     console.log('Customer', customer);
     this.onContactCustomerSelect.emit(customer);
