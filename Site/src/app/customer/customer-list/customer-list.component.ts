@@ -40,7 +40,7 @@ export class CustomerListComponent implements OnInit {
   customerSearchValue: any;
   buttonClass = 'btn-blue-grey';
   filterDate = new Date(2008, 1, 1);
-  orderTabDisabled = false;
+  orderTabDisabled = true;
 
   constructor(lookupService: LookupService, userService: UserService, customerService: CustomerService) {
       this.pagingEnabled = true;
@@ -196,7 +196,7 @@ export class CustomerListComponent implements OnInit {
       // alert('Editing!');
       this.popupVisible = true;
       if (this.selectedCustomer.customer_id < 0) {
-        this.orderTabDisabled = false; } else {this.orderTabDisabled = true;
+        this.orderTabDisabled = true; } else {this.orderTabDisabled = false;
       }
     }
     showEditPopup(e) {
@@ -206,6 +206,9 @@ export class CustomerListComponent implements OnInit {
       console.log('SelectedCustomer', this.selectedCustomer);
       // alert('Editing!');
       this.popupVisible = true;
+      if (this.selectedCustomer.customer_id < 0) {
+        this.orderTabDisabled = true; } else {this.orderTabDisabled = false;
+      }
     }
 
     buildCustomerFirstName(data) {
@@ -292,13 +295,15 @@ export class CustomerListComponent implements OnInit {
     }
 
     applyChanges() {
-        // alert('Applying Customer-Info Changes');
-        console.log('CustomerInfo Child',  this.customerInfo);
-        this.customerInfo.batchSave();
-        // Call customer_info component's batchSave method.
-        // alert('Applying Customer Contacts Changes');
-        this.customerContacts.batchSave();
-        // Call customer_contacts component's batchSave method.
+      // alert('Applying Customer-Info Changes');
+      console.log('CustomerInfo Child',  this.customerInfo);
+      this.customerInfo.batchSave(this.selectedCustomer.customer_id).subscribe(res => {
+      // Call customer_info component's batchSave method.
+      // alert('Applying Customer Contacts Changes');
+      console.log('Return from CustomerInfo Batch Save', res);
+      this.customerContacts.batchSave(res);
+      this.selectedCustomer.customer_id = res;
+    });
     }
 
   ngOnInit() {

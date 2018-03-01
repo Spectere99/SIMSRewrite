@@ -67,7 +67,7 @@
               </ng-template>
             </ngb-tab>
           </ngb-tabset> --> 
-        
+        {{orderTabDisabled}}
         <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%">
           <mat-tab label="Info">
             <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>

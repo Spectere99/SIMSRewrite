@@ -7,7 +7,8 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar } from '@angular/material';
 import { ConfirmDialogComponent } from '../../_shared/confirm/confirm.component';
 import { DatePipe } from '@angular/common';
-
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'app-customer-info',
@@ -133,35 +134,43 @@ ctrlHasFocus: string;
   this.panelExpanded = true;
   }
 
-  batchSave() {
+  batchSave(customer_id: number) {
     // Save General Customer Information from the model.
-    this.saveCustomer(this.customer);
-    // Loop throught this.customer.customer_address Array
-    for (let x = 0; x < this.customer.customer_address.length; x++) {
-      this.saveAddress(this.customer.customer_address[x]);
-    }
+    this.customer.customer_id = customer_id;
+    return this.saveCustomer(this.customer).map(res => {
+      console.log('return from Save Customer Subscribe', res);
+      // Loop throught this.customer.customer_address Array
+      for (let x = 0; x < this.customer.customer_address.length; x++) {
+        this.customer.customer_address[x].customer_id = res;
+        this.saveAddress(this.customer.customer_address[x]);
+      }
+      return res;
+    });
+
     // Call saveAddress for each address in array.
   }
   saveAddress(customerAddress: CustomerAddress) {
     console.log('Customer Address on Save', customerAddress);
       if (customerAddress.customer_address_id <= 0) {
         customerAddress.customer_address_id = 0;
-        this.customerService.addCustomerAddress('rwflowers', customerAddress)
-        .subscribe(res => {
+        return this.customerService.addCustomerAddress('rwflowers', customerAddress)
+        .map(res => {
           console.log('Save address Return', res);
           this.snackBar.open('Customer Address Added!', '', {
             duration: 4000,
             verticalPosition: 'top'
           });
+          return customerAddress.customer_id;
         });
       } else {
-        this.customerService.updateCustomerAddress('rwflowers', customerAddress)
+        return this.customerService.updateCustomerAddress('rwflowers', customerAddress)
         .subscribe(res => {
           console.log('Update address Return', res);
           this.snackBar.open('Customer Address Updated!', '', {
             duration: 4000,
             verticalPosition: 'top'
           });
+        return customerAddress.customer_id;
         });
       }
   }
@@ -185,8 +194,8 @@ ctrlHasFocus: string;
         parent_ind: customer.parent_ind === undefined ? 'N' : customer.parent_ind
       };
       console.log('SaveCustomer', saveCustomer);
-      this.customerService.addCustomer('rwflowers', saveCustomer)
-      .subscribe(res => {
+      return this.customerService.addCustomer('rwflowers', saveCustomer)
+      .map(res => {
         console.log('Save customer Return', res);
         customer = res;
         customer.customer_address = [];
@@ -196,6 +205,7 @@ ctrlHasFocus: string;
           duration: 4000,
           verticalPosition: 'top'
         });
+        return customer.customer_id;
       });
     } else {
       const updCustomer: CustomerDTO = {
@@ -212,13 +222,14 @@ ctrlHasFocus: string;
         parent_ind: customer.parent_ind
       };
       console.log('Update Customer', updCustomer);
-      this.customerService.updateCustomer('rwflowers', updCustomer)
-      .subscribe(res => {
+      return this.customerService.updateCustomer('rwflowers', updCustomer)
+      .map(res => {
         console.log('Update customer Return', res);
         this.snackBar.open('Customer Updated!', '', {
           duration: 4000,
           verticalPosition: 'top'
         });
+        return customer.customer_id;
       });
     }
   }

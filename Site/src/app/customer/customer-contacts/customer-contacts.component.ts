@@ -82,9 +82,10 @@ dirtyRecords: Array<CustomerPerson>;
  });
   }
 
-  batchSave() {
+  batchSave(customer_id: number) {
     // Loop through the Customer Contacts and Save each.
     for (let x = 0; x < this.customer.customer_person.length; x++) {
+      this.customer.customer_person[x].customer_id = customer_id;
       this.saveContact(this.customer.customer_person[x]);
     }
   }
@@ -115,6 +116,9 @@ dirtyRecords: Array<CustomerPerson>;
       'phone_2_ext': null,
       'status_code': 'act'
   };
+  if (this.customer.customer_person === undefined) {
+    this.customer.customer_person = new Array<CustomerPerson>();
+  }
     this.customer.customer_person.unshift(newContact);
   }
 

@@ -37,7 +37,7 @@ buttonClass = 'btn-blue-grey';
 disableExpand: boolean;
 gridHeight;
 popupVisible = false;
-orderTabDisabled = false;
+orderTabDisabled = true;
 
   constructor(lookupService: LookupService, customerSvc: CustomerService, userService: UserService) {
     this.customerService = customerSvc;
@@ -138,10 +138,11 @@ orderTabDisabled = false;
     this.selectedCustomer = new Customer;
     // console.log('SelectedCustomer', this.selectedCustomer);
     // alert('Editing!');
-    this.popupVisible = true;
     if (this.selectedCustomer.customer_id < 0) {
-      this.orderTabDisabled = false; } else {this.orderTabDisabled = true;
+      this.orderTabDisabled = true; } else {this.orderTabDisabled = false;
     }
+    this.popupVisible = true;
+
   }
 
   createPersonTypeDataSource() {
@@ -154,27 +155,35 @@ orderTabDisabled = false;
   showEditPopup(e) {
     // e.cancel = true;s
     console.log('ShowPopup', e.data);
-
     this.customerService.getCustomerData('', e.data.customers.customer_id).subscribe(res => {
       this.selectedCustomer = res;
       console.log('Returned Customer', res);
       this.popupVisible = true;
+      console.log('selectedCustomer for Tab Disble', this.selectedCustomer);
+      if (this.selectedCustomer.customer_id < 0) {
+        this.orderTabDisabled = true; } else {this.orderTabDisabled = false;
+      }
+      console.log('orderTabDisabled', this.orderTabDisabled);
     });
   }
 
   applyChanges() {
     // alert('Applying Customer-Info Changes');
     console.log('CustomerInfo Child',  this.customerInfo);
-    this.customerInfo.batchSave();
-    // Call customer_info component's batchSave method.
-    // alert('Applying Customer Contacts Changes');
-    this.customerContacts.batchSave();
+    this.customerInfo.batchSave(this.selectedCustomer.customer_id).subscribe(res => {
+      // Call customer_info component's batchSave method.
+      // alert('Applying Customer Contacts Changes');
+      console.log('Return from CustomerInfo Batch Save', res);
+      this.customerContacts.batchSave(res);
+      this.selectedCustomer.customer_id = res;
+    });
+
     // Call customer_contacts component's batchSave method.
     setTimeout(() => {
       this.gridCustomers.instance.refresh();
     },
     1000);
-    this.popupVisible = false;
+    // this.popupVisible = false;
   }
   cancelChanges() {
     this.popupVisible = false;
