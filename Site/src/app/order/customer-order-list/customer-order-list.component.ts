@@ -166,7 +166,7 @@ customerId: number;
         this.selectedOrder.SHIP_ZIP = billingAddress[0].zip;
       } else {
         const shippingAddress = this.customer.customer_address.filter(item => item.type_code === 'ship');
-        if (shippingAddress) {
+        if (shippingAddress && shippingAddress.length > 0) {
           this.selectedOrder.SHIP_ADDRESS_1 = shippingAddress[0].address_1;
           this.selectedOrder.SHIP_ADDRESS_2 = shippingAddress[0].address_2;
           this.selectedOrder.SHIP_CITY = shippingAddress[0].city;
