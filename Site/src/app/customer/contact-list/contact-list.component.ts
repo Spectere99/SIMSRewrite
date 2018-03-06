@@ -22,6 +22,7 @@ baseURL = environment.odataEndpoint;
 @ViewChild(CustomerInfoComponent) customerInfo: CustomerInfoComponent;
 @ViewChild(CustomerContactsComponent) customerContacts: CustomerContactsComponent;
 @ViewChild(DxDataGridComponent) gridCustomers: DxDataGridComponent;
+allowedPageSizes = [15, 25, 50];
 customerService: CustomerService;
 userDataSource: any;
 selectedCustomer: Customer;
@@ -32,7 +33,7 @@ phoneTypes: any;
 scrollMode: string;
 pagingEnabled: boolean;
 expandedResults: boolean;
-currentPageSize: number;
+currentPageSize = 10;
 buttonClass = 'btn-blue-grey';
 disableExpand: boolean;
 gridHeight;
@@ -52,6 +53,18 @@ orderTabDisabled = true;
       this.userDataSource = res.value;
       console.log(this.userDataSource);
     });
+  }
+  contentReady($e) {
+    this.allowedPageSizes = [15, 25, 50];
+    this.currentPageSize = 15;
+    if (Array.isArray(this.gridCustomers.instance.getCombinedFilter()[0])) {
+      if (this.gridCustomers.instance.totalCount() < 1000) {
+        this.allowedPageSizes = [15, 25, this.gridCustomers.instance.totalCount()];
+      } else {
+         this.currentPageSize = 15;
+         this.gridCustomers.instance.pageSize(this.currentPageSize);
+      }
+    }
   }
 
   ExpandGrid() {

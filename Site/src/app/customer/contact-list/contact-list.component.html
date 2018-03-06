@@ -8,8 +8,8 @@
 <div class="row">
   <div class="col-lg-12">
     <dx-data-grid id="gridContacts" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
-      [hoverStateEnabled]="true" [rowAlternationEnabled]="false" [height]="gridHeight" (onCellPrepared)="onCellPrepared($event)"
-      (onRowClick)="onRowClick($event)" (onToolbarPreparing)="onToolbarPreparing($event)">
+      [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onCellPrepared)="onCellPrepared($event)"
+      (onRowClick)="onRowClick($event)" (onToolbarPreparing)="onToolbarPreparing($event)" (onContentReady)="contentReady($event)">
       <dxo-selection mode="single"></dxo-selection>
       <dxi-column dataField="customer_person_id" caption="Contact ID" [width]="100" [allowFiltering]="true" [visible]="false"></dxi-column>
       <dxi-column dataField="customers.customer_name" caption="Customer Name" [width]="450" sortOrder="asc" [allowFiltering]="true"
@@ -26,7 +26,7 @@
         <!-- or "multiple" | "none" -->
       </dxo-sorting>
       <dxo-paging [pageSize]="currentPageSize" [enabled]="pagingEnabled"></dxo-paging>
-      <dxo-pager [showPageSizeSelector]="true" [showInfo]="true"></dxo-pager>
+      <dxo-pager [showPageSizeSelector]="true" [showInfo]="true" [allowedPageSizes]="allowedPageSizes"></dxo-pager>
       <dxo-group-panel [visible]="true"></dxo-group-panel>
       <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
       <dxo-scrolling mode="scrollMode"></dxo-scrolling>
