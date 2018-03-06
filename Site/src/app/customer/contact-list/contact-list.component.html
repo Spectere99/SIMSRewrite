@@ -30,6 +30,7 @@
       <dxo-group-panel [visible]="true"></dxo-group-panel>
       <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
       <dxo-scrolling mode="scrollMode"></dxo-scrolling>
+      <dxo-export [enabled]="true" fileName="Customers"></dxo-export>
       <dxo-editing mode="form" [allowUpdating]="false" [allowDeleting]="false" [allowAdding]="false">
       </dxo-editing>
       <div *dxTemplate="let data of 'customerCell'">

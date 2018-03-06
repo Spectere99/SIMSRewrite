@@ -54,9 +54,10 @@ orderTabDisabled = true;
       console.log(this.userDataSource);
     });
   }
-  contentReady($e) {
+  contentReady(e) {
     this.allowedPageSizes = [15, 25, 50];
     this.currentPageSize = 15;
+    console.log(this.gridCustomers.instance.getCombinedFilter());
     if (Array.isArray(this.gridCustomers.instance.getCombinedFilter()[0])) {
       if (this.gridCustomers.instance.totalCount() < 1000) {
         this.allowedPageSizes = [15, 25, this.gridCustomers.instance.totalCount()];
