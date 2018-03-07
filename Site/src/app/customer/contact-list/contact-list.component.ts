@@ -152,6 +152,8 @@ orderTabDisabled = true;
     this.selectedCustomer = new Customer;
     // console.log('SelectedCustomer', this.selectedCustomer);
     // alert('Editing!');
+    const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+    console.log('currentProfile', userProfile);
     if (this.selectedCustomer.customer_id < 0) {
       this.orderTabDisabled = true; } else {this.orderTabDisabled = false;
     }
@@ -183,17 +185,18 @@ orderTabDisabled = true;
 
   applyChanges() {
     // alert('Applying Customer-Info Changes');
-    console.log('CustomerInfo Child',  this.customerInfo);
+    // console.log('CustomerInfo Child',  this.customerInfo);
     this.customerInfo.batchSave(this.selectedCustomer.customer_id).subscribe(res => {
       // Call customer_info component's batchSave method.
       // alert('Applying Customer Contacts Changes');
-      console.log('Return from CustomerInfo Batch Save', res);
       this.customerContacts.batchSave(res);
-      this.selectedCustomer.customer_id = res;
+      this.customerService.getCustomerData('', res).subscribe(cust => {
+        this.selectedCustomer = cust;
+      });
     });
-
+    console.log('Selected Customer After Apply Changes', this.selectedCustomer);
     // Call customer_contacts component's batchSave method.
-    setTimeout(() => {
+    setTimeout( () => {
       this.gridCustomers.instance.refresh();
     },
     1000);

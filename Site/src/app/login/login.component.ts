@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
 baseURL = 'http://localhost:56543/api/Security';
 userName: string;
@@ -28,8 +29,11 @@ loginMsg = '';
     console.log('User:', this.userName);
       return this.http.get(this.baseURL, {headers: this.getHeaders(this.userName, this.password)})
       .subscribe(res => {
-          console.log('invalid login');
+          console.log('Return from login', res);
+          /* this.profile = res.json();
+          console.log('converted to profile', this.profile); */
           this.loginMsg = '';
+          localStorage.setItem('userProfile', res.json());
           this.router.navigateByUrl('Customer');
           // return res.json();
       },

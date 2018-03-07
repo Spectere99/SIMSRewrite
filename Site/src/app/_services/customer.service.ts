@@ -175,9 +175,10 @@ export class CustomerService {
         console.log('CustomerAddress in addCustomerAddress', customerAddress);
         return this.http.post(this.baseURL + '/CustomerAddress', customerAddress, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
-            // console.log(res.json());
+            console.log('Customer Address return', res.json());
             return res.json();
-        });
+        },
+        err => console.log(err));
     }
     updateCustomerAddress(userId, customerAddress: CustomerAddress): Observable<any> {
         // Build customer odata Options

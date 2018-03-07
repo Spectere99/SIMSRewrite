@@ -78,7 +78,10 @@ ctrlHasFocus: string;
     console.log('setParentInd', event.checked);
     this.customer.parent_ind = event.checked ? 'Y' : 'N';
     console.log('Customer ParentInd', this.customer.ship_to_bill_ind);
+  }
 
+  setShipToBillInd(event) {
+    this.customer.ship_to_bill_ind = event.checked ? 'Y' : 'N';
   }
   removeAddress(customerAddressId: number) {
     console.log('Removing Address', customerAddressId);
@@ -140,9 +143,11 @@ ctrlHasFocus: string;
     return this.saveCustomer(this.customer).map(res => {
       console.log('return from Save Customer Subscribe', res);
       // Loop throught this.customer.customer_address Array
-      for (let x = 0; x < this.customer.customer_address.length; x++) {
-        this.customer.customer_address[x].customer_id = res;
-        this.saveAddress(this.customer.customer_address[x]);
+      if (this.customer.customer_address) {
+        for (let x = 0; x < this.customer.customer_address.length; x++) {
+          this.customer.customer_address[x].customer_id = res;
+          this.saveAddress(this.customer.customer_address[x]);
+        }
       }
       return res;
     });
@@ -154,7 +159,7 @@ ctrlHasFocus: string;
       if (customerAddress.customer_address_id <= 0) {
         customerAddress.customer_address_id = 0;
         return this.customerService.addCustomerAddress('rwflowers', customerAddress)
-        .map(res => {
+        .subscribe(res => {
           console.log('Save address Return', res);
           this.snackBar.open('Customer Address Added!', '', {
             duration: 4000,
@@ -198,7 +203,7 @@ ctrlHasFocus: string;
       .map(res => {
         console.log('Save customer Return', res);
         customer = res;
-        customer.customer_address = [];
+        // customer.customer_address = [];
         customer.customer_contacts = [];
         customer.orders = [];
         this.snackBar.open('Customer Added!', '', {

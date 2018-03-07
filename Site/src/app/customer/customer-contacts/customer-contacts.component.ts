@@ -84,9 +84,11 @@ dirtyRecords: Array<CustomerPerson>;
 
   batchSave(customer_id: number) {
     // Loop through the Customer Contacts and Save each.
-    for (let x = 0; x < this.customer.customer_person.length; x++) {
-      this.customer.customer_person[x].customer_id = customer_id;
-      this.saveContact(this.customer.customer_person[x]);
+    if (this.customer.customer_person) {
+      for (let x = 0; x < this.customer.customer_person.length; x++) {
+        this.customer.customer_person[x].customer_id = customer_id;
+        this.saveContact(this.customer.customer_person[x]);
+      }
     }
   }
 

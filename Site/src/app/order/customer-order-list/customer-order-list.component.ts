@@ -230,6 +230,7 @@ customerId: number;
     this.popupVisible = false;
   }
   ngOnInit() {
+    // console.log('ngInit on customer-order-list', this.customer);
     if (this.customer) {
       this.customerId = this.customer.customer_id;
     }
@@ -237,6 +238,7 @@ customerId: number;
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
+    // console.log('ngChanges on customer-order-list', this.customer);
     if (this.customer) {
       this.customerId = this.customer.customer_id;
     }

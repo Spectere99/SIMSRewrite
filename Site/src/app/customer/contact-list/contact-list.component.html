@@ -42,33 +42,6 @@
     <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false"
       [(visible)]="popupVisible">
       <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
-        <!-- <h6>{{selectedCustomer.customer_name ? 'A Customer':'New Customer' }}</h6> -->
-      
-          <!-- <ngb-tabset>
-            <ngb-tab title="Info">
-              <!-<div class="col-md-10"> -->
-                <!-- <ng-template ngbTabContent>
-                  <div class="row" style="height: 400px; max-height: 400px; overflow-y: auto; overflow-x: hidden;"> -->
-                    <!-- <div class="row"> -->
-                      <!-- <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info> -->
-                    <!-- </div> -->
-                    <!-- <div class="row"> -->
-                      <!-- <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts> -->
-                    <!-- </div> -->
-                  <!-- </div>
-                </ng-template> -->
-              <!-- </div> -->
-            <!-- </ngb-tab> -->
-            <!-- <ngb-tab title="Notes" [disabled]="false">
-              <ng-template ngbTabContent>
-              </ng-template>
-            </ngb-tab>
-            <ngb-tab title="Orders" [disabled]="true">
-              <ng-template ngbTabContent>
-              </ng-template>
-            </ngb-tab>
-          </ngb-tabset> --> 
-        {{orderTabDisabled}}
         <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%">
           <mat-tab label="Info">
             <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
