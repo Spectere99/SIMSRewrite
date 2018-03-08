@@ -147,11 +147,7 @@
           <Key>
             <PropertyRef Name="order_art_placement_id" />
           </Key>
-<<<<<<< HEAD
           <Property Name="order_art_placement_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-=======
-          <Property Name="order_art_placement_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
->>>>>>> f34c662c88800df86a7cc40222ef9941feb308ec
           <Property Name="order_id" Type="int" />
           <Property Name="art_placement_code" Type="varchar" MaxLength="10" />
           <Property Name="added_by" Type="varchar" MaxLength="50" />
@@ -218,11 +214,7 @@
           <Key>
             <PropertyRef Name="order_fee_id" />
           </Key>
-<<<<<<< HEAD
           <Property Name="order_fee_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-=======
-          <Property Name="order_fee_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
->>>>>>> f34c662c88800df86a7cc40222ef9941feb308ec
           <Property Name="order_id" Type="int" />
           <Property Name="fee_line_number" Type="int" />
           <Property Name="fee_quantity" Type="int" />
@@ -247,11 +239,7 @@
           <Key>
             <PropertyRef Name="order_payment_id" />
           </Key>
-<<<<<<< HEAD
           <Property Name="order_payment_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-=======
-          <Property Name="order_payment_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
->>>>>>> f34c662c88800df86a7cc40222ef9941feb308ec
           <Property Name="order_id" Type="int" />
           <Property Name="payment_date" Type="datetime" Precision="0" />
           <Property Name="payment_type_code" Type="varchar" MaxLength="10" />

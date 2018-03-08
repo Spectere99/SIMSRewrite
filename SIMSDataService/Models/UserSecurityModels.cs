@@ -21,6 +21,9 @@ namespace SIMSDataService.Models
         public string LastName { get; set; }
 
         public string pwd { get; set; }
+        [JsonProperty("role")]
+        public string Role { get; set; }
+
 
     }
 }

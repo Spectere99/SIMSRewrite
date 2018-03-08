@@ -8,11 +8,13 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class AuthenticationService {
     public baseURL = environment.authEndpoint;
-    public token: string;
+    public token;
     constructor(private http: Http) {
         // set token if saved in local storage
-        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-        this.token = currentUser && currentUser.token;
+         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+         if (currentUser) {
+            this.token = currentUser.profile;
+         }
     }
 
     private getHeaders(userId, password) {
@@ -29,9 +31,10 @@ export class AuthenticationService {
         .map((response: Response) => {
             console.log('Return from login', response);
             const token = response.json();
+            console.log(token);
             if (token) {
                 this.token = token;
-                localStorage.setItem('currentUser', JSON.stringify({username: username, token: token}));
+                localStorage.setItem('currentUser', JSON.stringify(token));
                 return true;
             } else {
                 return false;

@@ -33,7 +33,8 @@ loginMsg = '';
     this.authenticationService.login(this.userName, this.password)
         .subscribe(result => {
             if (result === true) {
-                this.router.navigate(['/']);
+                this.router.navigate(['/Customer']);
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
             } else {
                 this.loginMsg = 'Username or password is incorrect';
             }
