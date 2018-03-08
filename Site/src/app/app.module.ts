@@ -46,6 +46,8 @@ import 'devextreme/data/odata/store';
 import { OrderArtComponent } from './order/order-art/order-art.component';
 import { CustomerOrderListComponent } from './order/customer-order-list/customer-order-list.component';
 
+import { AuthenticationService } from './_services/authentication.service';
+
 const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
   { path: 'Order', component: OrderComponent },
@@ -78,7 +80,7 @@ const appRoutes: Routes = [
     PhoneFormat,
     AddressLookup,
     OrderArtComponent,
-    CustomerOrderListComponent
+    CustomerOrderListComponent,
   ],
   imports: [
     NgbModule.forRoot(),
@@ -105,7 +107,7 @@ const appRoutes: Routes = [
     MatChipsModule,
     MatTabsModule
     ],
-  providers: [DatePipe, ArraySortPipe, UpperCasePipe],
+  providers: [DatePipe, ArraySortPipe, UpperCasePipe, AuthenticationService],
   entryComponents: [ConfirmDialogComponent],
   bootstrap: [AppComponent]
 })

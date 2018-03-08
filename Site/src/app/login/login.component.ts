@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Router } from '@angular/router';
 
+import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
   selector: 'app-login',
@@ -10,12 +11,14 @@ import { Router } from '@angular/router';
 })
 
 export class LoginComponent implements OnInit {
-baseURL = 'http://localhost:56543/api/Security';
+// baseURL = 'http://localhost:56543/api/Security';
 userName: string;
 password: string;
 loginMsg = '';
 
-  constructor(private http: Http, private router: Router) { }
+  constructor(
+        private router: Router,
+        private authenticationService: AuthenticationService) { }
 
   private getHeaders(userId, password) {
       const headers = new Headers({ 'Accept': 'application/json' });
@@ -27,23 +30,18 @@ loginMsg = '';
   }
   login() {
     console.log('User:', this.userName);
-      return this.http.get(this.baseURL, {headers: this.getHeaders(this.userName, this.password)})
-      .subscribe(res => {
-          console.log('Return from login', res);
-          /* this.profile = res.json();
-          console.log('converted to profile', this.profile); */
-          this.loginMsg = '';
-          localStorage.setItem('userProfile', res.json());
-          this.router.navigateByUrl('Customer');
-          // return res.json();
-      },
-      error => {
-          console.log('invalid login');
-          this.loginMsg = 'Invalid Login or Password.  Please try again.';
-      });
+    this.authenticationService.login(this.userName, this.password)
+        .subscribe(result => {
+            if (result === true) {
+                this.router.navigate(['/']);
+            } else {
+                this.loginMsg = 'Username or password is incorrect';
+            }
+        });
   }
 
   ngOnInit() {
+        this.authenticationService.logout();
   }
 
 }

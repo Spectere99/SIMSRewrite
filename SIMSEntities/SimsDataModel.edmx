@@ -130,7 +130,7 @@
           <Key>
             <PropertyRef Name="order_art_placement_id" />
           </Key>
-          <Property Name="order_art_placement_id" Type="int" Nullable="false" />
+          <Property Name="order_art_placement_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="order_id" Type="int" />
           <Property Name="art_placement_code" Type="varchar" MaxLength="10" />
           <Property Name="added_by" Type="varchar" MaxLength="50" />
@@ -197,7 +197,7 @@
           <Key>
             <PropertyRef Name="order_fee_id" />
           </Key>
-          <Property Name="order_fee_id" Type="int" Nullable="false" />
+          <Property Name="order_fee_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="order_id" Type="int" />
           <Property Name="fee_line_number" Type="int" />
           <Property Name="fee_quantity" Type="int" />
@@ -222,7 +222,7 @@
           <Key>
             <PropertyRef Name="order_payment_id" />
           </Key>
-          <Property Name="order_payment_id" Type="int" Nullable="false" />
+          <Property Name="order_payment_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="order_id" Type="int" />
           <Property Name="payment_date" Type="datetime" Precision="0" />
           <Property Name="payment_type_code" Type="varchar" MaxLength="10" />
@@ -536,7 +536,7 @@
           <Key>
             <PropertyRef Name="order_art_placement_id" />
           </Key>
-          <Property Name="order_art_placement_id" Type="Int32" Nullable="false" />
+          <Property Name="order_art_placement_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="order_id" Type="Int32" />
           <Property Name="art_placement_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="added_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
@@ -606,7 +606,7 @@
           <Key>
             <PropertyRef Name="order_fee_id" />
           </Key>
-          <Property Name="order_fee_id" Type="Int32" Nullable="false" />
+          <Property Name="order_fee_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="order_id" Type="Int32" />
           <Property Name="fee_line_number" Type="Int32" />
           <Property Name="fee_quantity" Type="Int32" />
@@ -633,7 +633,7 @@
           <Key>
             <PropertyRef Name="order_payment_id" />
           </Key>
-          <Property Name="order_payment_id" Type="Int32" Nullable="false" />
+          <Property Name="order_payment_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="order_id" Type="Int32" />
           <Property Name="payment_date" Type="DateTime" />
           <Property Name="payment_type_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
