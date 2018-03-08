@@ -86,6 +86,23 @@
           <Property Name="phone_2_ext" Type="varchar" MaxLength="10" />
           <Property Name="status_code" Type="varchar" MaxLength="5" Nullable="false" />
         </EntityType>
+        <EntityType Name="group_navigation">
+          <Key>
+            <PropertyRef Name="hotjas_group_id" />
+            <PropertyRef Name="navigation_id" />
+          </Key>
+          <Property Name="hotjas_group_id" Type="int" Nullable="false" />
+          <Property Name="navigation_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="hotjas_group">
+          <Key>
+            <PropertyRef Name="hotjas_group_id" />
+          </Key>
+          <Property Name="hotjas_group_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+          <Property Name="status_code" Type="varchar" MaxLength="10" />
+          <Property Name="type_code" Type="varchar" MaxLength="10" />
+        </EntityType>
         <EntityType Name="lookup_items">
           <Key>
             <PropertyRef Name="id" />
@@ -119,7 +136,7 @@
           <Key>
             <PropertyRef Name="order_art_id" />
           </Key>
-          <Property Name="order_art_id" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="order_art_id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="order_id" Type="bigint" />
           <Property Name="order_by" Type="int" />
           <Property Name="image_file" Type="varchar" MaxLength="250" />
@@ -130,7 +147,7 @@
           <Key>
             <PropertyRef Name="order_art_placement_id" />
           </Key>
-          <Property Name="order_art_placement_id" Type="int" Nullable="false" />
+          <Property Name="order_art_placement_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="order_id" Type="int" />
           <Property Name="art_placement_code" Type="varchar" MaxLength="10" />
           <Property Name="added_by" Type="varchar" MaxLength="50" />
@@ -154,7 +171,7 @@
           <Key>
             <PropertyRef Name="order_detail_id" />
           </Key>
-          <Property Name="order_detail_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="order_detail_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="order_id" Type="int" />
           <Property Name="item_type" Type="varchar" MaxLength="10" />
           <Property Name="item_line_number" Type="int" />
@@ -197,7 +214,7 @@
           <Key>
             <PropertyRef Name="order_fee_id" />
           </Key>
-          <Property Name="order_fee_id" Type="int" Nullable="false" />
+          <Property Name="order_fee_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="order_id" Type="int" />
           <Property Name="fee_line_number" Type="int" />
           <Property Name="fee_quantity" Type="int" />
@@ -222,7 +239,7 @@
           <Key>
             <PropertyRef Name="order_payment_id" />
           </Key>
-          <Property Name="order_payment_id" Type="int" Nullable="false" />
+          <Property Name="order_payment_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="order_id" Type="int" />
           <Property Name="payment_date" Type="datetime" Precision="0" />
           <Property Name="payment_type_code" Type="varchar" MaxLength="10" />
@@ -336,6 +353,14 @@
           <Property Name="updated_by" Type="varchar" MaxLength="50" />
           <Property Name="updated_date" Type="datetime" Precision="0" />
         </EntityType>
+        <EntityType Name="user_group">
+          <Key>
+            <PropertyRef Name="user_id" />
+            <PropertyRef Name="hotjas_group_id" />
+          </Key>
+          <Property Name="user_id" Type="int" Nullable="false" />
+          <Property Name="hotjas_group_id" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="users">
           <Key>
             <PropertyRef Name="user_id" />
@@ -381,6 +406,8 @@
           <EntitySet Name="customer_address" EntityType="Self.customer_address" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="customer_notes" EntityType="Self.customer_notes" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="customer_person" EntityType="Self.customer_person" Schema="printmgr" store:Type="Tables" />
+          <EntitySet Name="group_navigation" EntityType="Self.group_navigation" Schema="printmgr" store:Type="Tables" />
+          <EntitySet Name="hotjas_group" EntityType="Self.hotjas_group" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="lookup_items" EntityType="Self.lookup_items" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="navigation" EntityType="Self.navigation" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="order_art_file" EntityType="Self.order_art_file" Schema="printmgr" store:Type="Tables" />
@@ -395,6 +422,7 @@
           <EntitySet Name="orders" EntityType="Self.orders" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="pricelist" EntityType="Self.pricelist" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="task" EntityType="Self.task" Schema="printmgr" store:Type="Tables" />
+          <EntitySet Name="user_group" EntityType="Self.user_group" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="printmgr" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -864,6 +892,9 @@
             <End Role="order" EntitySet="orders" />
             <End Role="order_art_file" EntitySet="order_art_file" />
           </AssociationSet>
+          <EntitySet Name="group_navigation" EntityType="SimsModel.group_navigation" />
+          <EntitySet Name="hotjas_group" EntityType="SimsModel.hotjas_group" />
+          <EntitySet Name="user_group" EntityType="SimsModel.user_group" />
         </EntityContainer>
         <Association Name="customer_customer_address">
           <End Type="SimsModel.customer" Role="customer" Multiplicity="0..1" />
@@ -1009,6 +1040,31 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="group_navigation">
+          <Key>
+            <PropertyRef Name="hotjas_group_id" />
+            <PropertyRef Name="navigation_id" />
+          </Key>
+          <Property Name="hotjas_group_id" Type="Int32" Nullable="false" />
+          <Property Name="navigation_id" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="hotjas_group">
+          <Key>
+            <PropertyRef Name="hotjas_group_id" />
+          </Key>
+          <Property Name="hotjas_group_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="status_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="type_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="user_group">
+          <Key>
+            <PropertyRef Name="user_id" />
+            <PropertyRef Name="hotjas_group_id" />
+          </Key>
+          <Property Name="user_id" Type="Int32" Nullable="false" />
+          <Property Name="hotjas_group_id" Type="Int32" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1401,6 +1457,32 @@
                 <ScalarProperty Name="order_parent_search_for" ColumnName="order_parent_search_for" />
                 <ScalarProperty Name="order_type_search_for" ColumnName="order_type_search_for" />
                 <ScalarProperty Name="assigned_to_search_for" ColumnName="assigned_to_search_for" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="group_navigation">
+            <EntityTypeMapping TypeName="SimsModel.group_navigation">
+              <MappingFragment StoreEntitySet="group_navigation">
+                <ScalarProperty Name="navigation_id" ColumnName="navigation_id" />
+                <ScalarProperty Name="hotjas_group_id" ColumnName="hotjas_group_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="hotjas_group">
+            <EntityTypeMapping TypeName="SimsModel.hotjas_group">
+              <MappingFragment StoreEntitySet="hotjas_group">
+                <ScalarProperty Name="type_code" ColumnName="type_code" />
+                <ScalarProperty Name="status_code" ColumnName="status_code" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="hotjas_group_id" ColumnName="hotjas_group_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="user_group">
+            <EntityTypeMapping TypeName="SimsModel.user_group">
+              <MappingFragment StoreEntitySet="user_group">
+                <ScalarProperty Name="hotjas_group_id" ColumnName="hotjas_group_id" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

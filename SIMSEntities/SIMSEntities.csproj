@@ -74,6 +74,12 @@
     <Compile Include="customer_person.cs">
       <DependentUpon>SimsDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="group_navigation.cs">
+      <DependentUpon>SimsDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="hotjas_group.cs">
+      <DependentUpon>SimsDataModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="lookup_items.cs">
       <DependentUpon>SimsDataModel.tt</DependentUpon>
     </Compile>
@@ -133,6 +139,9 @@
       <DependentUpon>SimsDataModel.tt</DependentUpon>
     </Compile>
     <Compile Include="user.cs">
+      <DependentUpon>SimsDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="user_group.cs">
       <DependentUpon>SimsDataModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
