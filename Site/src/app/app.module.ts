@@ -6,7 +6,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Http, HttpModule, Headers, RequestMethod, RequestOptions } from '@angular/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
@@ -42,13 +42,16 @@ import { PhoneFormat } from './_shared/pipes/phone.pipe';
 import { AddressLookup } from './_shared/pipes/addressType.pipe';
 import { ArraySortPipe } from './_shared/pipes/orderBy.pipe';
 
+import { APP_ROUTES } from './app.routes';
 import 'devextreme/data/odata/store';
 import { OrderArtComponent } from './order/order-art/order-art.component';
 import { CustomerOrderListComponent } from './order/customer-order-list/customer-order-list.component';
 
 import { AuthenticationService } from './_services/authentication.service';
+import { AuthGuard } from './guards/auth.guard';
+import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 
-const appRoutes: Routes = [
+/* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
   { path: 'Order', component: OrderComponent },
   { path: 'Task', component: TaskComponent },
@@ -56,7 +59,7 @@ const appRoutes: Routes = [
   { path: 'Report', component: ReportComponent },
   { path: 'Login', component: LoginComponent },
   { path: '',   redirectTo: '/Login', pathMatch: 'full' },
-];
+]; */
 
 @NgModule({
   declarations: [
@@ -81,16 +84,19 @@ const appRoutes: Routes = [
     AddressLookup,
     OrderArtComponent,
     CustomerOrderListComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     NgbModule.forRoot(),
-    RouterModule.forRoot(appRoutes),
+    // RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(APP_ROUTES),
     MDBBootstrapModule.forRoot(),
     HttpModule,
     BrowserModule,
     BrowserAnimationsModule,
     DevExtremeModule,
     FormsModule,
+    ReactiveFormsModule,
     DxTemplateModule,
     DxSelectBoxModule,
     MatIconModule,
@@ -107,7 +113,7 @@ const appRoutes: Routes = [
     MatChipsModule,
     MatTabsModule
     ],
-  providers: [DatePipe, ArraySortPipe, UpperCasePipe, AuthenticationService],
+  providers: [DatePipe, ArraySortPipe, UpperCasePipe, AuthenticationService, AuthGuard],
   entryComponents: [ConfirmDialogComponent],
   bootstrap: [AppComponent]
 })
