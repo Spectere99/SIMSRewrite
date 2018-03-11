@@ -3,7 +3,7 @@
     <h6>Filter by using the cooresponding column.  (Expand each row to view associated image files).</h6>
     <hr>
     <div style="padding:5px;">
-        <input type="button" class="btn btn-primary" value="New Order" (click)="createNewOrder(customerId);">
+        <input *ngIf="enableSave" type="button" class="btn btn-primary" value="New Order" (click)="createNewOrder(customerId);">
     </div>
     <!-- <div style="padding:5px;">
         <input type="button" class="btn btn-primary" value="Refresh" (click)="refreshGrid();">
@@ -90,7 +90,7 @@
                 <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="closeEditor();">
               </div>
               <div class="col-md-4">
-                <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Apply" (click)="applyChanges();">
+                <input *ngIf="enableSave" type="button" style="font-size:10px;" class="form-control btn-primary" value="Apply" (click)="applyChanges();">
               </div>
                   
             </div>

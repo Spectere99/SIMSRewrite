@@ -10,7 +10,7 @@ export class NavbarComponent implements OnInit {
   collapse = true;
   isAdmin = true;
   constructor(public _authService: AuthenticationService, public _router: Router) {
-    console.log('User Token', _authService.token);
+    console.log('User Token', _authService.getUserToken);
   }
 
   ngOnInit() {

@@ -168,6 +168,13 @@ export class OrderDetailComponent implements OnInit {
 
     this.order.order_detail.unshift(lineItem);
   }
+
+  copyOrderLine(e, idx) {
+    const orderLine = this.order.order_detail[idx];
+
+    this.order.order_detail.unshift(orderLine);
+  }
+
   deleteLineItem(e) {
     console.log('deletingLineItem', e);
     // See if the item has been saved to the database. (non-negative id)
