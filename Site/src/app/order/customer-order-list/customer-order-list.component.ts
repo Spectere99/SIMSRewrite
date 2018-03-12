@@ -60,7 +60,7 @@ userProfile;
           type: 'odata',
           url: this.baseUrl + 'orders'
       },
-      expand: ['customer'],
+      expand: ['customer', 'order_art_file'],
       select: [
         'order_id',
         'customer_id',
@@ -110,7 +110,8 @@ userProfile;
         'contact_phone2',
         'contact_phone2_ext',
         'contact_phone2_type',
-        'customer/customer_name'
+        'customer/customer_name',
+        'order_art_file/image_file'
       ],
       filter: ['customer_id', '=', this.customer.customer_id]
    };
@@ -200,14 +201,16 @@ userProfile;
   }
 
   applyChanges() {
-    this.orderInfo.batchSave();
-    this.orderDetail.batchSave();
-    // Still need art tab batch save.
-    // this.selectedOrder = null;
-    setTimeout(() => {
-      this.gridOrders.instance.refresh();
-    }, 1000);
-    this.popupVisible = false;
+    this.orderInfo.batchSave().subscribe(res => {
+      this.orderDetail.batchSave(res);
+      // Still need art tab batch save.
+      this.orderArt.batchSave(res);
+      // this.selectedOrder = null;
+      setTimeout(() => {
+        this.gridOrders.instance.refresh();
+      }, 1000);
+      this.popupVisible = false;
+    });
   }
   showValues() {
     console.log('Showing Order Values', this.selectedOrder);

@@ -356,20 +356,25 @@ export class OrderDetailComponent implements OnInit {
     this.currentOrder.balance_due = this.order.balance_due;
   }
 
-  batchSave() {
+  batchSave(order_id: number) {
     for (let x = 0; x < this.order.order_detail.length; x++) {
+      console.log('Saving Order- Order ID= ', order_id);
+      this.order.order_detail[x].order_id = order_id;
       this.saveOrderLines(this.order.order_detail[x]);
     }
 
     for (let x = 0; x < this.orderArtPlacement.length; x++) {
+      this.orderArtPlacement[x].order_id = order_id;
       this.saveArtPlacement(this.orderArtPlacement[x]);
     }
 
     for (let x = 0; x < this.orderFees.length; x++) {
+      this.orderFees[x].order_id = order_id;
       this.saveFees(this.orderFees[x]);
     }
 
     for (let x = 0; x < this.orderPayments.length; x++) {
+      this.orderPayments[x].order_id = order_id;
       this.savePayments(this.orderPayments[x]);
     }
   }

@@ -43,6 +43,21 @@ export class OrderArtComponent {
       });
     // console.log('After orderArtFiles.push');
   }
+
+  batchSave(order_id: number) {
+    for (let x = 0; x < this.orderArtFiles.length; x++) {
+      this.orderArtFiles[x].order_id = order_id;
+      this.saveArtItem(this.orderArtFiles[x]);
+    }
+  }
+
+  saveArtItem(artItem: OrderArtFile) {
+    this.orderService.updateOrderArtFile('', artItem).subscribe(res => {
+      console.log('Response', res);
+      artItem.order_art_id = res.order_art_id;
+    });
+  }
+
   deleteArtItem(e) {
     console.log('deletingArtItem', e);
     // See if the item has been saved to the database. (non-negative id)
