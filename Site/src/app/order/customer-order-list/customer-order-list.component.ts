@@ -60,7 +60,7 @@ userProfile;
           type: 'odata',
           url: this.baseUrl + 'orders'
       },
-      expand: ['customer', 'order_art_file'],
+      expand: ['order_art_file', 'customer'],
       select: [
         'order_id',
         'customer_id',
@@ -111,10 +111,13 @@ userProfile;
         'contact_phone2_ext',
         'contact_phone2_type',
         'customer/customer_name',
+        'order_art_file/order_art_id',
+        'order_art_file/art_folder',
         'order_art_file/image_file'
       ],
       filter: ['customer_id', '=', this.customer.customer_id]
    };
+   console.log('Return from Order List', this.dataSource);
   }
   createStatusDataSource() {
     this.order_statusSource = this.lookupDataSource.filter(item => item.class === 'ord');

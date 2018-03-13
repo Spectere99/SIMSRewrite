@@ -63,8 +63,10 @@ namespace SIMSDataService.Controllers
                 var artFile = db.order_art_file.Find(orderArtFile.order_art_id);
                 if (artFile != null)
                 {
-                    artFile = orderArtFile;
+                    // artFile = orderArtFile;
+                    db.Entry(artFile).CurrentValues.SetValues(orderArtFile);
                     db.SaveChanges();
+                    result = Request.CreateResponse(HttpStatusCode.OK, orderArtFile);
                 }
             }
 

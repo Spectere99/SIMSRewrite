@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { OrderService, OrderArtFile } from '../../_services/order.service';
+import { AuthenticationService } from '../../_services/authentication.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -19,9 +20,10 @@ export class OrderArtComponent {
   orderArtFiles: OrderArtFile[] = [];
   value: any[] = [];
   uploadHeaders: any;
+  userProfile;
 
-  constructor(public orderService: OrderService) {
-
+  constructor(public orderService: OrderService, public authService: AuthenticationService) {
+    this.userProfile = JSON.parse(authService.getUserToken());
   }
 
   uploadComplete(e) {
@@ -81,7 +83,7 @@ export class OrderArtComponent {
       this.orderService.loadOrderArtFileData('', this.currentOrder.order_id).subscribe(res => {
         this.orderArtFiles = res.order_art_file;
 
-        // console.log('pulled OrderArt Data', this.orderArtFiles);
+        console.log('pulled OrderArt Data', this.orderArtFiles);
       });
     } else {
       this.orderArtFiles = new Array<OrderArtFile>();

@@ -11,7 +11,7 @@
     <div class="row col-lg-12">
       <dx-data-grid id="gridOrders" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
         [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)"
-        [masterDetail]="{ enabled: true, template: 'detail' }">
+        [masterDetail]="{ enabled: true, template: 'detail' }" [height]="400">
         <dxo-selection mode="single"></dxo-selection>
         <!-- <dxi-column dataField="reorder_ind" caption="Reorder?" [width]="100" [allowFiltering]="false" [calculateCellValue]="setReorderInd"></dxi-column> -->
         <dxi-column dataField="order_number" caption="Order #" [width]="100" [allowSearch]="true" [allowFiltering]="true" cellTemplate="orderCell"></dxi-column>
@@ -19,6 +19,7 @@
         <dxi-column dataField="order_status" caption="Status" [width]="125">
           <dxo-lookup [dataSource]="order_statusSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
         </dxi-column>
+        <dxi-column dataField="order_date" caption="Order Date" dataType="date" [width]="110"></dxi-column>
         <!-- <dxi-column dataField="order_art_file.image_file" caption="Art" [width]="200"></dxi-column> -->
         <!-- <dxi-column dataField="customer.customer_name" caption="Customer Name" [width]="400"></dxi-column>  -->
         <!--    <dxi-column dataField="order_due_date" caption="Due Date" dataType="date" [width]="110"></dxi-column>
@@ -46,8 +47,9 @@
         </div>
         <div *dxTemplate="let art of 'detail'">
             <div class="row">
+                {{art.data.order_art_file.length}}
                 <div class="col-sm-1" *ngFor="let artFile of art.data.order_art_file">
-                    <a [href]="defaultArtFolder + artFile.image_file" target="_blank"><img [src]="defaultArtFolder + artFile.image_file" height="100px" width="100px"></a>
+                    <a [href]="defaultArtFolder + artFile.image_file" target="_blank"><img [src]="defaultArtFolder + artFile.image_file" height="75px" width="75px"></a>
                 </div>
             </div>
         </div>

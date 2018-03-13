@@ -3,6 +3,7 @@ import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee, OrderPay
 import { UserService } from '../../_services/user.service';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
+import { AuthenticationService } from '../../_services/authentication.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar } from '@angular/material';
 
@@ -35,9 +36,11 @@ export class OrderDetailComponent implements OnInit {
   order: any;
   orderTasks: any;
   nonTaxableSubTotal: string;
+  userProfile;
 
   constructor(private lookupService: LookupService, private priceListService: PriceListService, userService: UserService,
-    public orderService: OrderService, public snackBar: MatSnackBar) {
+    public orderService: OrderService, public authService: AuthenticationService, public snackBar: MatSnackBar) {
+    this.userProfile = JSON.parse(authService.getUserToken());
     this.order = new Order();
     this.order.order_detail = [];
     this.orderArtPlacement = [];
@@ -171,7 +174,7 @@ export class OrderDetailComponent implements OnInit {
 
   copyOrderLine(e, idx) {
     const orderLine = this.order.order_detail[idx];
-
+    orderLine.order_detail_id = (this.order.order_detail.length + 1) * -1;
     this.order.order_detail.unshift(orderLine);
   }
 
@@ -185,6 +188,14 @@ export class OrderDetailComponent implements OnInit {
     if (index >= 0) {
       if (e.order_detail_id > 0) {
         // Call web service to delete here - passing in the order_detail_id.
+        console.log('OrderDetail on Delete', e.order_detail_id);
+        this.orderService.deleteOrderLineItem('rwflowers', e.order_detail_id)
+        .subscribe(res => {
+          this.snackBar.open('Order Line Deleted!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
+        });
       }
     }
     this.order.order_detail.splice(index, 1);
@@ -193,6 +204,12 @@ export class OrderDetailComponent implements OnInit {
   addArtPlacement(e) {
     const artPlacement = new OrderArtPlacement();
     artPlacement.order_art_placement_id = (this.orderArtPlacement.length + 1) * -1;
+    artPlacement.added_by = this.userProfile.profile.login_id;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    artPlacement.added_date = today.toLocaleDateString(); // this.formatOrderNumber(today);
+    console.log('ArtPlacement Added By', artPlacement.added_by);
+    console.log('UserList', this.userDataSource);
     this.orderArtPlacement.unshift(artPlacement);
   }
   deleteArtPlacement(e) {
@@ -205,6 +222,13 @@ export class OrderDetailComponent implements OnInit {
     if (index >= 0) {
       if (e.order_art_placement_id > 0) {
         // Call web service to delete here.
+        this.orderService.deleteOrderArtPlacement('rwflowers', e.order_art_placement_id)
+        .subscribe(res => {
+          this.snackBar.open('Art Placement Line Deleted!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
+        });
       }
     }
     this.orderArtPlacement.splice(index, 1);
@@ -233,6 +257,13 @@ export class OrderDetailComponent implements OnInit {
     if (index >= 0) {
       if (e.order_fee_id > 0) {
         // Call web service to delete here.
+        this.orderService.deleteOrderFee('rwflowers', e.order_fee_id)
+        .subscribe(res => {
+          this.snackBar.open('Order Charge Line Deleted!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
+        });
       }
     }
     this.orderFees.splice(index, 1);
@@ -241,6 +272,10 @@ export class OrderDetailComponent implements OnInit {
   addPayment(e) {
     const payment = new OrderPayment();
     payment.order_payment_id = (this.orderPayments.length + 1) * -1;
+    payment.entered_user_id = this.userProfile.profile.user_id;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    payment.payment_date = today.toLocaleDateString(); // this.formatOrderNumber(today);
     this.orderPayments.push(payment);
   }
   deletePayment(e) {
@@ -253,6 +288,13 @@ export class OrderDetailComponent implements OnInit {
     if (index >= 0) {
       if (e.order_payment_id > 0) {
         // Call web service to delete here.
+        this.orderService.deleteOrderPayment('rwflowers', e.order_payment_id)
+        .subscribe(res => {
+          this.snackBar.open('Order Payment Deleted!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
+        });
       }
     }
     this.orderPayments.splice(index, 1);
@@ -523,5 +565,19 @@ export class OrderDetailComponent implements OnInit {
       this.orderFees = new Array<OrderFee>();
       this.orderPayments = new Array<OrderPayment>();
     }
+  }
+  formatOrderNumber(today): string {
+    console.log('formatOrderNumber - today', today);
+    let dd = today.getDate();
+    let mm = (today.getMonth() + 1); // January is 0!
+    const yyyy = today.getFullYear().toString();
+    if (dd < 10) {
+      dd = '0' + dd;
+    }
+    if (mm < 10) {
+      mm = '0' + mm;
+    }
+    console.log('formattedDate', mm + dd + yyyy);
+    return mm + dd + yyyy;
   }
 }
