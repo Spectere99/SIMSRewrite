@@ -122,7 +122,7 @@
             </tr>
             <tr>
               <td>
-                <button class="btn-default" type="button" style="font-size:12px;">Copy</button>
+                <button class="btn-default" type="button" style="font-size:12px;" (click)="copyOrderLine($event, i)">Copy</button>
               </td>
               <td style="text-align:center;">
                 <input type="text" class="form-control" size="1" [(ngModel)]="orderDetail.item_quantity" readonly>
@@ -220,7 +220,7 @@
             </td>
             <td>
               <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="artPlacement.added_by">
-                  <option *ngFor="let user of userDataSource" [value]="user.login_id | uppercase">
+                  <option *ngFor="let user of userDataSource" [value]="user.login_id">
                       {{user.first_name + ' ' + user.last_name}}
                   </option>
                 </select>

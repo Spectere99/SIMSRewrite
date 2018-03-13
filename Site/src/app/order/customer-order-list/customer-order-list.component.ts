@@ -4,6 +4,7 @@ import { Http, HttpModule, Headers, Response } from '@angular/http';
 import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { LookupService } from '../../_services/lookups.service';
 import { UserService } from '../../_services/user.service';
+import { AuthenticationService } from '../../_services/authentication.service';
 import { Order } from '../../_services/order.service';
 import { OrderInfoComponent } from '../order-info/order-info.component';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
@@ -31,10 +32,13 @@ user_Source: any;
 selectedOrder: any;
 lookupDataSource: any;
 customerId: number;
+enableSave = false;
+userProfile;
+  constructor(private http: Http, lookupService: LookupService, userService: UserService, authService: AuthenticationService) {
 
-
-  constructor(private http: Http, lookupService: LookupService, userService: UserService) {
-
+    // Pull User Role to set activities
+    this.userProfile = JSON.parse(authService.getUserToken());
+    this.enableSave = this.userProfile.profile.role !== 'Readonly';
     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       // console.log('lookupDataSource', this.lookupDataSource);
@@ -56,7 +60,7 @@ customerId: number;
           type: 'odata',
           url: this.baseUrl + 'orders'
       },
-      expand: ['customer'],
+      expand: ['order_art_file', 'customer'],
       select: [
         'order_id',
         'customer_id',
@@ -106,10 +110,14 @@ customerId: number;
         'contact_phone2',
         'contact_phone2_ext',
         'contact_phone2_type',
-        'customer/customer_name'
+        'customer/customer_name',
+        'order_art_file/order_art_id',
+        'order_art_file/art_folder',
+        'order_art_file/image_file'
       ],
       filter: ['customer_id', '=', this.customer.customer_id]
    };
+   console.log('Return from Order List', this.dataSource);
   }
   createStatusDataSource() {
     this.order_statusSource = this.lookupDataSource.filter(item => item.class === 'ord');
@@ -129,6 +137,7 @@ customerId: number;
     today.setHours(0, 0, 0, 0);
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
+    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
     this.setOrderContact();
     this.setOrderBillAndShipAddresses();
     // this.selectedOrder.ship_attn = this.customer
@@ -195,14 +204,16 @@ customerId: number;
   }
 
   applyChanges() {
-    this.orderInfo.batchSave();
-    this.orderDetail.batchSave();
-    // Still need art tab batch save.
-    // this.selectedOrder = null;
-    setTimeout(() => {
-      this.gridOrders.instance.refresh();
-    }, 1000);
-    this.popupVisible = false;
+    this.orderInfo.batchSave().subscribe(res => {
+      this.orderDetail.batchSave(res);
+      // Still need art tab batch save.
+      this.orderArt.batchSave(res);
+      // this.selectedOrder = null;
+      setTimeout(() => {
+        this.gridOrders.instance.refresh();
+      }, 1000);
+      this.popupVisible = false;
+    });
   }
   showValues() {
     console.log('Showing Order Values', this.selectedOrder);
@@ -226,7 +237,17 @@ customerId: number;
     this.popupVisible = true;
   }
   closeEditor() {
-    this.selectedOrder = null;
+    // Need to reset the selected order so the child components to scream
+    //  about not having a reference value (undefined)
+    this.selectedOrder = new Order();
+    this.selectedOrder.order_id = 0;
+    this.selectedOrder.tax_rate = '7.0';
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    this.selectedOrder.customer_id = this.customer.customer_id;
+    this.selectedOrder.order_number = this.formatOrderNumber(today);
+    this.selectedOrder.order_date = today;
+    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
     this.popupVisible = false;
   }
   ngOnInit() {
@@ -238,7 +259,7 @@ customerId: number;
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    // console.log('ngChanges on customer-order-list', this.customer);
+    console.log('ngChanges on customer-order-list', this.customer);
     if (this.customer) {
       this.customerId = this.customer.customer_id;
     }

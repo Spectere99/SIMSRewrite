@@ -8,13 +8,14 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class AuthenticationService {
     public baseURL = environment.authEndpoint;
+    private redirectUrl: string;
+    public _isLoggedIn = false;
     public token;
+    public message: string;
+
     constructor(private http: Http) {
         // set token if saved in local storage
-         const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-         if (currentUser) {
-            this.token = currentUser.profile;
-         }
+        // this.isLoggedIn();
     }
 
     private getHeaders(userId, password) {
@@ -25,8 +26,8 @@ export class AuthenticationService {
         // headers.append('showInactive'; this.showInactive.toString());
         return headers;
     }
-    login(username: string, password: string): Observable<boolean> {
 
+    login(username: string, password: string): Observable<string> {
         return this.http.post(this.baseURL, null, { headers: this.getHeaders(username, password)})
         .map((response: Response) => {
             console.log('Return from login', response);
@@ -34,15 +35,15 @@ export class AuthenticationService {
             console.log(token);
             if (token) {
                 this.token = token;
-                localStorage.setItem('currentUser', JSON.stringify(token));
-                return true;
+                sessionStorage.setItem('currentUser', JSON.stringify(token));
+                JSON.stringify(token);
             } else {
-                return false;
+                return '';
             }
         },
         error => {
             console.log('Error returned', error);
-            return false;
+            return '';
         });
 
         /* return this.http.post('/api/authenticate', JSON.stringify({ username: username, password: password }))
@@ -68,6 +69,33 @@ export class AuthenticationService {
     logout(): void {
         // clear token remove user from local storage to log user out
         this.token = null;
-        localStorage.removeItem('currentUser');
+        this.clear();
+    }
+
+    isAuthenticated(): boolean {
+        const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
+        console.log('isAuthenticated - currentUser', currentUser);
+         this._isLoggedIn = false;
+         if (currentUser) {
+            this.token = currentUser.profile;
+            this._isLoggedIn = true;
+         }
+         return this._isLoggedIn;
+    }
+
+    setRedirectUrl(url: string): void {
+        this.redirectUrl = url;
+    }
+    getRedirectUrl(): string {
+        return this.redirectUrl;
+    }
+
+    public getUserToken(): string {
+        return sessionStorage.getItem('currentUser');
+    }
+
+    clear(): void {
+        console.log('Clearing Local Storage');
+        sessionStorage.removeItem('currentUser');
     }
 }

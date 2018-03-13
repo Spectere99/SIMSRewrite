@@ -69,8 +69,10 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   batchSave() {
-    this.saveOrderInfo();
-    console.log('Order Info Saved');
+    return this.saveOrderInfo().map(res => {
+      console.log('Order Info Saved');
+      return res;
+    });
   }
 
   convertOrderInfo(order: Order): Order {
@@ -126,30 +128,33 @@ export class OrderInfoComponent implements OnInit, OnChanges {
 
     return orderToSave;
   }
+
   saveOrderInfo() {
     console.log('Order on Save', this.currentOrder);
       const insOrder = this.convertOrderInfo(this.currentOrder);
     console.log('Converted Order on Save', insOrder);
       if (this.currentOrder.order_id <= 0) {
         this.currentOrder.order_id = 0;
-        this.orderService.addOrderInfo('rwflowers', insOrder)
-        .subscribe(res => {
+        return this.orderService.addOrderInfo('rwflowers', insOrder)
+        .map(res => {
           console.log('Save orderInfo Return', res);
           this.currentOrder.order_id = res.order_id;
           this.snackBar.open('Order Added!', '', {
             duration: 4000,
             verticalPosition: 'top'
           });
+          return res.order_id;
         });
       } else {
         const updOrder = this.convertOrderInfo(this.currentOrder);
-        this.orderService.updateOrderInfo('rwflowers', updOrder)
-        .subscribe(res => {
+        return this.orderService.updateOrderInfo('rwflowers', updOrder)
+        .map(res => {
           console.log('Update orderInfo Return', res);
           this.snackBar.open('Order Added Updated!', '', {
             duration: 4000,
             verticalPosition: 'top'
           });
+          return updOrder.order_id;
         });
       }
   }

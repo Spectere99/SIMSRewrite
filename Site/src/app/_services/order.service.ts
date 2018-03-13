@@ -138,6 +138,7 @@ export class OrderArtFile {
     art_folder: string;
     note: string;
 }
+
 @Injectable()
 export class OrderService {
     // private baseURL = 'http://localhost:56543/odata';
@@ -368,7 +369,7 @@ export class OrderService {
     // NOTE:  All Art File Actions use a Web API 2.0 back end insted of ODATA
     addOrderArtFile(userId, orderArtFile: OrderArtFile) {
         console.log('OrderArtFile in addOrderArtFile', orderArtFile);
-        return this.http.post(this.artBaseURL + this._ORDER_ART_FILE_ACTION, orderArtFile, {headers: this.getHeaders(userId) })
+        return this.http.post(this.artBaseURL + '/' + this._ORDER_ART_FILE_ACTION, orderArtFile, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
             return res.json();
@@ -377,7 +378,7 @@ export class OrderService {
     updateOrderArtFile(userId, orderArtFile: OrderArtFile) {
         this.options = '(' + orderArtFile.order_art_id + ')';
         console.log('OrderArtFile in updateOrderArtFile', orderArtFile);
-        return this.http.put(this.artBaseURL + this._ORDER_ART_FILE_ACTION + this.options, orderArtFile
+        return this.http.put(this.artBaseURL + '/' + this._ORDER_ART_FILE_ACTION + this.options, orderArtFile
                             , {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -387,7 +388,7 @@ export class OrderService {
     deleteOrderArtFile(userId, order_art_id: number) {
         this.options = '/?id=' + order_art_id;
         console.log('OrderArtFile ID in deleteOrderArtFile', order_art_id);
-        return this.http.delete(this.artBaseURL + this._ORDER_ART_FILE_ACTION + this.options
+        return this.http.delete(this.artBaseURL + '/' + this._ORDER_ART_FILE_ACTION + this.options
                             , {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());

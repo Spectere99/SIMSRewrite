@@ -1,5 +1,6 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { OrderService, OrderArtFile } from '../../_services/order.service';
+import { AuthenticationService } from '../../_services/authentication.service';
 import { environment } from '../../../environments/environment';
 
 @Component({
@@ -19,9 +20,10 @@ export class OrderArtComponent {
   orderArtFiles: OrderArtFile[] = [];
   value: any[] = [];
   uploadHeaders: any;
+  userProfile;
 
-  constructor(public orderService: OrderService) {
-
+  constructor(public orderService: OrderService, public authService: AuthenticationService) {
+    this.userProfile = JSON.parse(authService.getUserToken());
   }
 
   uploadComplete(e) {
@@ -43,6 +45,21 @@ export class OrderArtComponent {
       });
     // console.log('After orderArtFiles.push');
   }
+
+  batchSave(order_id: number) {
+    for (let x = 0; x < this.orderArtFiles.length; x++) {
+      this.orderArtFiles[x].order_id = order_id;
+      this.saveArtItem(this.orderArtFiles[x]);
+    }
+  }
+
+  saveArtItem(artItem: OrderArtFile) {
+    this.orderService.updateOrderArtFile('', artItem).subscribe(res => {
+      console.log('Response', res);
+      artItem.order_art_id = res.order_art_id;
+    });
+  }
+
   deleteArtItem(e) {
     console.log('deletingArtItem', e);
     // See if the item has been saved to the database. (non-negative id)
@@ -66,7 +83,7 @@ export class OrderArtComponent {
       this.orderService.loadOrderArtFileData('', this.currentOrder.order_id).subscribe(res => {
         this.orderArtFiles = res.order_art_file;
 
-        // console.log('pulled OrderArt Data', this.orderArtFiles);
+        console.log('pulled OrderArt Data', this.orderArtFiles);
       });
     } else {
       this.orderArtFiles = new Array<OrderArtFile>();

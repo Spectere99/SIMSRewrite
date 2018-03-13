@@ -7,6 +7,7 @@ import { UserService } from '../../_services/user.service';
 import { CustomerContactsComponent } from '../customer-contacts/customer-contacts.component';
 import { CustomerInfoComponent } from '../customer-info/customer-info.component';
 import { CustomerInfo } from '../customer-info/customer-info.service';
+import { AuthenticationService } from '../../_services/authentication.service';
 
 @Component({
   selector: 'app-contact-list',
@@ -40,7 +41,8 @@ gridHeight;
 popupVisible = false;
 orderTabDisabled = true;
 
-  constructor(lookupService: LookupService, customerSvc: CustomerService, userService: UserService) {
+  constructor(lookupService: LookupService, customerSvc: CustomerService, userService: UserService,
+              public authService: AuthenticationService) {
     this.customerService = customerSvc;
     this.CreateContactDataSource();
     this.gridHeight = 525;
@@ -133,15 +135,19 @@ orderTabDisabled = true;
   }
 
   onToolbarPreparing(e) {
+    const userRole = JSON.parse(this.authService.getUserToken());
+    // console.log('Toolbar Preparing', userRole.profile.role);
+    if (userRole.profile.role !== 'Readonly') {
       e.toolbarOptions.items.unshift({
-              location: 'after',
-              widget: 'dxButton',
-              options: {
-                  hint: 'Add New Customer',
-                  icon: 'plus',
-                  onClick: this.showAddPopup.bind(this)
-              }
-          });
+        location: 'after',
+        widget: 'dxButton',
+        options: {
+            hint: 'Add New Customer',
+            icon: 'plus',
+            onClick: this.showAddPopup.bind(this)
+        }
+    });
+    }
   }
   onCellPrepared(e) {
    // console.log('cell data', e);
