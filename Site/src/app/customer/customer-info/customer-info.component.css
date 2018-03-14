@@ -1,14 +1,25 @@
-.name-form-field {
-    width: 300px;
-  }
+.form-control {
+  font-size: 12px;
+  height: 32px;
+}
 
-  .form-section {
-    display: flex;
-    align-content: center;
-    align-items: center;
-    height: 60px;
-  }
-  
-  .full-width {
-    width: 100%;
-  }
+.input-group-addon
+{
+  font-size: 12px;
+  height: 32px;
+}
+
+input {
+  font-size: 12px;
+  height:32px;
+}
+
+select {
+  font-size: 12px;
+  height:32px;
+}
+
+td {
+  padding-right:2px;
+  padding-left:2px;
+}

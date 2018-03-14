@@ -5,125 +5,86 @@
                     Add
                 </button>
             </h6>
-            <table *ngFor="let customerContact of customer.customer_person">
-                <tr> 
-                    <td style="font-size:10px;">Type</td>
-                    <td style="font-size:10px;">First Name</td>
-                    <td style="font-size:10px;">Last Name</td>
-                    <td style="font-size:10px;">E-mail Address</td>   
-                </tr>
-                <tr>
-                    <td>
-                        <select class="form-control form-control-sm" 
-                         [ngClass]="{'empty':newMode}" [(ngModel)]="customerContact.person_type">
-                              <option *ngFor="let type of personTypes" [value]="type.char_mod">
+            <hr>
+            <div *ngFor="let customerContact of customer.customer_person">
+                <table>
+                    <tr> 
+                        <td></td>
+                        <td style="font-size:10px;">Type</td>
+                        <td style="font-size:10px;">First Name</td>
+                        <td style="font-size:10px;">Last Name</td>
+                        <td style="font-size:10px;">E-mail Address</td>   
+                    </tr>
+                    <tr>
+                        <td>
+                            <button mat-button mat-icon-button aria-hidden="true" style="box-shadow: none; outline:none;" (click)="removeContact(customerContact.customer_person_id);">
+                            <mat-icon color="warn" style="padding-bottom: 35px; padding-right: 33px;">delete</mat-icon>
+                            </button>
+                        </td>
+                        <td>
+                            <select class="form-control form-control-sm" 
+                                [ngClass]="{'empty':newMode}" [(ngModel)]="customerContact.person_type">
+                                <option *ngFor="let type of personTypes" [value]="type.char_mod">
                                     {{type.description}}
-                              </option>
-                        </select>
-                    </td>
-                    <td>
-                        <input class="form-control" type="text" size="35" [(ngModel)]="customerContact.first_name">           
-                    </td>
-                    <td>
-                        <input class="form-control" type="text" size="35" [(ngModel)]="customerContact.last_name"> 
-                    </td>
-                    <td>
-                        <input class="form-control" type="text" size="45" [(ngModel)]="customerContact.email_address"> 
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size:10px;">Phone 1 Type</td>
-                    <td style="font-size:10px;">Phone 1</td>
-                    <td style="font-size:10px;">Phone 1 Ext</td>    
-                </tr>
-                <tr>
-                    <td>
-                        <select class="form-control form-control-sm" 
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" size="25" [(ngModel)]="customerContact.first_name">           
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" size="25" [(ngModel)]="customerContact.last_name"> 
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" size="35" [(ngModel)]="customerContact.email_address"> 
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <tr>
+                        <td style="font-size:10px;">Phone 1 Type</td>
+                        <td style="font-size:10px;">Phone 1</td>
+                        <td style="font-size:10px;">Phone 1 Ext</td>    
+                        <td style="font-size:10px;">Phone 2 Type</td>
+                        <td style="font-size:10px;">Phone 2 </td>
+                        <td style="font-size:10px;">Phone 2 Ext</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <select class="form-control form-control-sm" 
                             [ngClass]="{'empty':newMode}" [(ngModel)]="customerContact.phone_1_type">
                                 <option *ngFor="let type of phoneTypes" [value]="type.char_mod">
                                     {{type.description}}
                                 </option>
-                        </select>
-                    </td>
-                    <td>
-                        <input class="form-control" type="text" size="15"  [ngModel]="customerContact.phone_1 | phoneFormat" (ngModelChange)="customerContact.phone_1=$event">           
-                    </td>
-                    <td>
-                        <input class="form-control" type="text" size="5"[(ngModel)]="customerContact.phone_1_ext" >           
-                    </td>
-                </tr>
-                <tr>
-                    <td style="font-size:10px;">Phone 2 Type</td>
-                    <td style="font-size:10px;">Phone 2 </td>
-                    <td style="font-size:10px;">Phone 2 Ext</td>
-                </tr>
-                <tr>
+                            </select>
+                        </td>
                         <td>
-                                <select class="form-control form-control-sm" 
-                                    [ngClass]="{'empty':newMode}" [(ngModel)]="customerContact.phone_2_type">
-                                        <option *ngFor="let type of phoneTypes" [value]="type.char_mod">
-                                            {{type.description}}
-                                        </option>
-                                </select>
-                            </td>
-                            <td>
-                                <input class="form-control" type="text" size="35"  [ngModel]="customerContact.phone_2 | phoneFormat" (ngModelChange)="customerContact.phone_1=$event">           
-                            </td>
-                            <td>
-                                <input class="form-control" type="text" size="35"[(ngModel)]="customerContact.phone_2_ext" >           
-                            </td>
-                </tr>
-                    <!-- <mat-form-field class="col-md-3">
-                        <mat-select placeholder="Phone 1 Type" [(ngModel)]="customerContact.phone_1_type">
-                            <mat-option *ngFor="let type of phoneTypes" [value]="type.char_mod">
-                                {{type.description}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field> -->
-                    <!-- <mat-form-field class="col-md-3 name-form-field">
-                        <input matInput type="text" placeholder="Phone 1" [ngModel]="customerContact.phone_1 | phoneFormat" (ngModelChange)="customerContact.phone_1=$event">
-                        <button mat-button *ngIf="customerContact.phone_1" matSuffix mat-icon-button aria-label="Clear" (click)="customerContact.phone_1=''">
-                        <mat-icon style="padding-bottom:20px; padding-right:40px;">close</mat-icon>
-                    </button>
-                    </mat-form-field> -->
-                    <!-- <mat-form-field class="col-md-3 name-form-field">
-                        <input matInput type="text" placeholder="Phone 1 Ext" [(ngModel)]="customerContact.phone_1_ext" />
-                        <button mat-button *ngIf="customerContact.phone_1_ext" matSuffix mat-icon-button aria-label="Clear" (click)="customerContact.phone_1_ext=''">
-                        <mat-icon style="padding-bottom:20px; padding-right:40px;">close</mat-icon>
-                    </button>
-                    </mat-form-field>
-                    <mat-form-field class="col-md-3">
-                        <mat-select placeholder="Phone 2 Type" [(ngModel)]="customerContact.phone_2_type">
-                            <mat-option *ngFor="let type of phoneTypes" [value]="type.char_mod">
-                                {{type.description}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field> -->
-                    <!-- <mat-form-field class="col-md-3 name-form-field">
-                        <input matInput type="text" placeholder="Phone 2" [ngModel]="customerContact.phone_2 | phoneFormat" (ngModelChange)="customerContact.phone_2=$event"
-                        />
-                        <button mat-button *ngIf="customerContact.phone_2" matSuffix mat-icon-button aria-label="Clear" (click)="customerContact.phone_2=''">
-                        <mat-icon style="padding-bottom:20px; padding-right:40px;">close</mat-icon>
-                    </button>
-                    </mat-form-field>
-                    <mat-form-field class="col-md-3 name-form-field">
-                        <input matInput type="text" placeholder="Phone 2 Ext" [(ngModel)]="customerContact.phone_2_ext" />
-                        <button mat-button *ngIf="customerContact.phone_2_ext" matSuffix mat-icon-button aria-label="Clear" (click)="customerContact.phone_2_ext=''">
-                        <mat-icon style="padding-bottom:20px; padding-right:40px;">close</mat-icon>
-                    </button> -->
-                    <!-- </mat-form-field> -->
-                    <div class="pull-right">
-                        <button mat-button mat-icon-button aria-hidden="true" style="box-shadow: none; outline:none;" (click)="removeContact(customerContact.customer_person_id);">
-                        <mat-icon color="warn" style="padding-bottom: 35px; padding-right: 33px;">delete</mat-icon>
-                    </button>
-                    </div>
-            </table>
-            
-<!-- 
-            </mat-expansion-panel> -->
-        <!-- </div> -->
-<!--         
-    </mat-accordion> -->
-   
+                            <input class="form-control" type="text" size="15"  [ngModel]="customerContact.phone_1 | phoneFormat" (ngModelChange)="customerContact.phone_1=$event">           
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" size="5"[(ngModel)]="customerContact.phone_1_ext" >           
+                        </td>
+                        <td>
+                            <select class="form-control form-control-sm" 
+                                [ngClass]="{'empty':newMode}" [(ngModel)]="customerContact.phone_2_type">
+                                    <option *ngFor="let type of phoneTypes" [value]="type.char_mod">
+                                        {{type.description}}
+                                    </option>
+                            </select>
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" size="15"  [ngModel]="customerContact.phone_2 | phoneFormat" (ngModelChange)="customerContact.phone_1=$event">           
+                        </td>
+                        <td>
+                            <input class="form-control" type="text" size="5"[(ngModel)]="customerContact.phone_2_ext" >           
+                        </td>
+                    </tr>
+                 </table>               
+            <br />
+            <hr>
+        </div>
+        </section>
+    </div>
+</div>
+    
 
-</section>
