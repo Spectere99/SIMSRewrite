@@ -139,6 +139,15 @@ export class OrderArtFile {
     note: string;
 }
 
+export class OrderTask {
+    order_id: number;
+    task_code: string;
+    order_by: number;
+    is_complete: string;
+    completed_by: string;
+    completed_date: string;
+}
+
 @Injectable()
 export class OrderService {
     // private baseURL = 'http://localhost:56543/odata';
@@ -224,6 +233,20 @@ export class OrderService {
         // Build customer odata Options
         const expandCmd = '?$expand=';
         const expandFields = 'order_art_file';
+        this.options = '(' + orderId + ')';
+        this.options = this.options.concat(expandCmd, expandFields);
+
+        return this.http.get(this.baseURL + this._ORDER_ACTION + this.options, {headers: this.getHeaders(userId)})
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+
+    loadOrderTaskData(userId, orderId: number): Observable<any> {
+        // Build customer odata Options
+        const expandCmd = '?$expand=';
+        const expandFields = 'order_task';
         this.options = '(' + orderId + ')';
         this.options = this.options.concat(expandCmd, expandFields);
 

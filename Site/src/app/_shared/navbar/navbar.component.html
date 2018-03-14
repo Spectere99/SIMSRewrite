@@ -24,7 +24,7 @@
     </ul>
     <ul class="navbar-nav pull-right">
         <li class="nav-item pull-right" *ngIf="isAdmin">
-            <a class="nav-link" href="#"><span class="material-icons">settings</span> Admin</a>
+            <a class="nav-link"[routerLink] = "['/Admin']"><span class="material-icons">settings</span> Admin</a>
         </li>
         <li class="nav-item pull-right">
           <a class="nav-link" href="#" (click)="logout();"><span class="material-icons">exit_to_app</span> Log Off</a>

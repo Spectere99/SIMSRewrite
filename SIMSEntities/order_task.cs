@@ -20,5 +20,7 @@ namespace SIMSEntities
         public string is_complete { get; set; }
         public string completed_by { get; set; }
         public Nullable<System.DateTime> completed_date { get; set; }
+    
+        public virtual order order { get; set; }
     }
 }

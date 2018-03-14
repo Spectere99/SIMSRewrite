@@ -73,6 +73,9 @@
                 <mat-tab label="Info">
                   <app-order-info [(currentOrder)]="selectedOrder"></app-order-info>
                 </mat-tab>
+                <mat-tab label="Tasks">
+                  <app-order-task-list [currentOrder]="selectedOrder"></app-order-task-list>
+                </mat-tab>
                 <mat-tab label="Details">
                   <app-order-detail [(currentOrder)]="selectedOrder"></app-order-detail>
                 </mat-tab>

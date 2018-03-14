@@ -9,6 +9,7 @@ import { Order } from '../../_services/order.service';
 import { OrderInfoComponent } from '../order-info/order-info.component';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { OrderArtComponent } from '../order-art/order-art.component';
+import { OrderTaskListComponent } from '../order-task-list/order-task-list.component';
 
 
 @Component({

@@ -19,8 +19,8 @@
         <EntityTypeShape EntityType="SimsModel.order_fees" Width="1.5" PointX="3.375" PointY="14.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SimsModel.order_notes" Width="1.5" PointX="8.75" PointY="7.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SimsModel.order_payments" Width="1.5" PointX="3.375" PointY="8" IsExpanded="true" />
-        <EntityTypeShape EntityType="SimsModel.order_status_history" Width="2.875" PointX="5.75" PointY="12.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="SimsModel.order_task" Width="2.5" PointX="9.75" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.order_status_history" Width="2.875" PointX="9" PointY="10.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.order_task" Width="2.5" PointX="6" PointY="13.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SimsModel.order" Width="1.875" PointX="0.75" PointY="13.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SimsModel.pricelist" Width="1.5" PointX="5.625" PointY="23.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SimsModel.task" Width="1.5" PointX="9.75" PointY="13.125" IsExpanded="true" />
@@ -42,6 +42,7 @@
         <EntityTypeShape EntityType="SimsModel.group_navigation" Width="1.5" PointX="0.75" PointY="0.75" />
         <EntityTypeShape EntityType="SimsModel.hotjas_group" Width="1.5" PointX="6.75" PointY="0.75" />
         <EntityTypeShape EntityType="SimsModel.user_group" Width="1.5" PointX="0.75" PointY="7.75" />
+        <AssociationConnector Association="SimsModel.orderorder_task" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -691,6 +691,7 @@
           <Property Name="is_complete" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="completed_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="completed_date" Type="DateTime" />
+          <NavigationProperty Name="order" Relationship="SimsModel.orderorder_task" FromRole="order_task" ToRole="order" />
         </EntityType>
         <EntityType Name="order">
           <Key>
@@ -750,6 +751,7 @@
           <NavigationProperty Name="order_fees" Relationship="SimsModel.orderorder_fees" FromRole="order" ToRole="order_fees" />
           <NavigationProperty Name="order_payments" Relationship="SimsModel.orderorder_payments" FromRole="order" ToRole="order_payments" />
           <NavigationProperty Name="order_art_file" Relationship="SimsModel.orderorder_art_file" FromRole="order" ToRole="order_art_file" />
+          <NavigationProperty Name="order_task" Relationship="SimsModel.orderorder_task" FromRole="order" ToRole="order_task" />
         </EntityType>
         <EntityType Name="pricelist">
           <Key>
@@ -895,6 +897,10 @@
           <EntitySet Name="group_navigation" EntityType="SimsModel.group_navigation" />
           <EntitySet Name="hotjas_group" EntityType="SimsModel.hotjas_group" />
           <EntitySet Name="user_group" EntityType="SimsModel.user_group" />
+          <AssociationSet Name="orderorder_task" Association="SimsModel.orderorder_task">
+            <End Role="order" EntitySet="orders" />
+            <End Role="order_task" EntitySet="order_task" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="customer_customer_address">
           <End Type="SimsModel.customer" Role="customer" Multiplicity="0..1" />
@@ -1065,6 +1071,18 @@
           <Property Name="user_id" Type="Int32" Nullable="false" />
           <Property Name="hotjas_group_id" Type="Int32" Nullable="false" />
         </EntityType>
+        <Association Name="orderorder_task">
+          <End Type="SimsModel.order" Role="order" Multiplicity="1" />
+          <End Type="SimsModel.order_task" Role="order_task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="order_task">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->

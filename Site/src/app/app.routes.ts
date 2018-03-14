@@ -5,6 +5,7 @@ import { OrderComponent } from './order/order.component';
 import { TaskComponent } from './task/task.component';
 import { GarmentComponent } from './garment/garment.component';
 import { ReportComponent } from './report/report.component';
+import { AdminComponent } from './admin/admin.component';
 import {Routes} from '@angular/router';
 import { AuthGuard } from '../app/guards/auth.guard';
 
@@ -15,6 +16,7 @@ export const APP_ROUTES: Routes = [
     { path: 'Task', component: TaskComponent, canActivate: [AuthGuard] },
     { path: 'Garment', component: GarmentComponent, canActivate: [AuthGuard] },
     { path: 'Report', component: ReportComponent, canActivate: [AuthGuard] },
+    { path: 'Admin', component: AdminComponent, canActivate: [AuthGuard] },
     { path: '', redirectTo: 'Customer', pathMatch: 'full'},
     { path: '**', component: PageNotFoundComponent }
 ];

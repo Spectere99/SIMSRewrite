@@ -116,15 +116,17 @@ export class OrderDetailComponent implements OnInit {
     // console.log('getShipping');
     if (!this.noOrderFees()) {
       // Get the order fee for Shipping
-      const shippingLookup = this.setupItems.filter(item => item.pricelist_description === 'Shipping');
-      if (shippingLookup.length > 0) {
-        let totalShipping = 0;
-        const shippingFees = this.orderFees.filter(fee => fee.pricelist_id === shippingLookup[0].pricelist_id);
-        for (let x = 0; x < shippingFees.length; x++) {
-          totalShipping = +(totalShipping + shippingFees[x].fee_price_ext);
-        }
-        this.currentOrder.shipping = totalShipping.toFixed(2);
-      } // Need to set an error?
+      if (this.setupItems) {
+        const shippingLookup = this.setupItems.filter(item => item.pricelist_description === 'Shipping');
+        if (shippingLookup.length > 0) {
+          let totalShipping = 0;
+          const shippingFees = this.orderFees.filter(fee => fee.pricelist_id === shippingLookup[0].pricelist_id);
+          for (let x = 0; x < shippingFees.length; x++) {
+            totalShipping = +(totalShipping + shippingFees[x].fee_price_ext);
+          }
+          this.currentOrder.shipping = totalShipping.toFixed(2);
+        } // Need to set an error?
+      }
     }
   }
 

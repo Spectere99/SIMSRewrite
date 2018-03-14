@@ -1,0 +1,18 @@
+<div>
+  <div>
+    <table>
+      <tr>
+        <td style="font-size:10px;">Completed</td>
+        <td style="font-size:10px;">Task</td>
+        <td style="font-size:10px;">Completed By</td>
+        <td style="font-size:10px;">Completed Date</td>
+      </tr>
+      <tr *ngFor="let task of orderTask">
+        <td>{{task.is_complete}}</td>
+        <td>{{task.task_code}}</td>
+        <td>{{task.completed_by}}</td>
+        <td>{{task.completed_date}}</td>
+      </tr>
+    </table>
+  </div>
+</div>

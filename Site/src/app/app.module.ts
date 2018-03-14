@@ -50,6 +50,8 @@ import { CustomerOrderListComponent } from './order/customer-order-list/customer
 import { AuthenticationService } from './_services/authentication.service';
 import { AuthGuard } from './guards/auth.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
+import { AdminComponent } from './admin/admin.component';
+import { OrderTaskListComponent } from './order/order-task-list/order-task-list.component';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -85,6 +87,8 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
     OrderArtComponent,
     CustomerOrderListComponent,
     PageNotFoundComponent,
+    AdminComponent,
+    OrderTaskListComponent,
   ],
   imports: [
     NgbModule.forRoot(),
