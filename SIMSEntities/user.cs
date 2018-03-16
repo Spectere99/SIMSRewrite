@@ -14,6 +14,12 @@ namespace SIMSEntities
     
     public partial class user
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public user()
+        {
+            this.user_group = new HashSet<user_group>();
+        }
+    
         public int user_id { get; set; }
         public string login_id { get; set; }
         public Nullable<int> manager_id { get; set; }
@@ -48,5 +54,8 @@ namespace SIMSEntities
         public string order_parent_search_for { get; set; }
         public string order_type_search_for { get; set; }
         public Nullable<int> assigned_to_search_for { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<user_group> user_group { get; set; }
     }
 }

@@ -1,18 +1,38 @@
-<div>
-  <div>
-    <table>
+<div class="container col-md-12 pt-4">
+  <section>
+    Order Tasks
+    <hr>
+    <table *ngIf="orderTask !== undefined && orderTask.length > 0">
       <tr>
-        <td style="font-size:10px;">Completed</td>
-        <td style="font-size:10px;">Task</td>
-        <td style="font-size:10px;">Completed By</td>
-        <td style="font-size:10px;">Completed Date</td>
+        <td style="font-size:12px;">Completed</td>
+        <td style="font-size:12px;text-align:center;">Task</td>
+        <td style="font-size:12px;">Completed By</td>
+        <td style="font-size:12px;">Completed Date</td>
       </tr>
-      <tr *ngFor="let task of orderTask">
-        <td>{{task.is_complete}}</td>
-        <td>{{task.task_code}}</td>
-        <td>{{task.completed_by}}</td>
-        <td>{{task.completed_date}}</td>
+      <tr class="alert alert-warning" [ngClass]="{'alert-primary':task.is_complete === 'Y',
+                                            'alert-warning':task.is_complete === 'N'}" *ngFor="let task of orderTask | sort: 'order_by'; index as i">
+        <td style="text-align: center;">
+          <input type="checkbox" id="isComplete" name="chkIsComplete" [checked]="task.is_complete === 'Y'" 
+            (change)="task.is_complete = $event.target.checked ? 'Y' : 'N';setTaskComplete($event.target.checked, task, i);">
+        </td>
+        <td>
+          <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="task.task_code" [disabled]="true">
+            <option *ngFor="let tsk of taskLookup" [value]="tsk.char_mod">
+              {{tsk.description}}
+            </option>
+          </select>
+        </td>
+        <td>
+          <input type="text" class="form-control" size="15" [(ngModel)]="task.completed_by" [disabled]="true">
+        </td>
+        <td>
+          <input class="form-control" [ngModel]="task.completed_date | date:'MM/dd/yyyy'" (ngModelChange)="task.completed_date = $event"
+            [disabled]="true">
+        </td>
       </tr>
     </table>
-  </div>
+    <div class="alert alert-warning" *ngIf="orderTask === undefined || orderTask.length === 0">
+      Please select an order type from the Info tab to generate your Task list.
+    </div>
+    </section>
 </div>

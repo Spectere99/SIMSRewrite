@@ -59,7 +59,10 @@ namespace SIMSDataService
             //builder.EntitySet<customer_address>("customer_address");
             builder.EntitySet<task>("Tasks");
             builder.EntitySet<lookup_items>("LookupItems");
+            builder.EntitySet<hotjas_group>("Roles");
             builder.EntitySet<user>("Users");
+            builder.EntitySet<user_group>("UserGroup");
+            builder.EntitySet<hotjas_group>("Group");
             return builder.GetEdmModel();
         }
     }

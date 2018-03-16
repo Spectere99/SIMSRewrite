@@ -43,7 +43,7 @@
             </td>
             <td>
               <select class="form-control form-control-sm" 
-               [ngClass]="{'empty':newMode}" style="width:auto;" [(ngModel)]="currentOrder.order_type" required>
+               [ngClass]="{'empty':newMode}" style="width:auto;" [ngModel]="currentOrder.order_type" (ngModelChange)="setDefaultTaskList($event);" required>
                 <option *ngFor="let itm of orderTypes" [value]="itm.char_mod">
                   {{itm.description}}
                 </option>

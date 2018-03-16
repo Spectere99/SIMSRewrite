@@ -10,6 +10,13 @@ export class User {
     loginId: string;
 }
 
+export class Group {
+    hotjas_group_id: number;
+    name: string;
+    status_code: string;
+    type_code: string;
+}
+
 @Injectable()
 export class UserService {
     // private baseURL = 'http://localhost:56543/odata';
@@ -29,6 +36,13 @@ export class UserService {
         return this.http.get(this.baseURL + '/Users', {headers: this.getHeaders(userId)})
         .map((res: Response) => {
             // console.log(res.json());
+            return res.json();
+        });
+    }
+
+    getGroups(userId): Observable<any> {
+        return this.http.get(this.baseURL + '/Group', {headers: this.getHeaders(userId)})
+        .map((res: Response) => {
             return res.json();
         });
     }

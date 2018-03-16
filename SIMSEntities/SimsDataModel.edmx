@@ -824,6 +824,7 @@
           <Property Name="order_parent_search_for" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="order_type_search_for" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="assigned_to_search_for" Type="Int32" />
+          <NavigationProperty Name="user_group" Relationship="SimsModel.useruser_group" FromRole="user" ToRole="user_group" />
         </EntityType>
         <EntityContainer Name="simsEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="correspondences" EntityType="Self.correspondence" />
@@ -900,6 +901,10 @@
           <AssociationSet Name="orderorder_task" Association="SimsModel.orderorder_task">
             <End Role="order" EntitySet="orders" />
             <End Role="order_task" EntitySet="order_task" />
+          </AssociationSet>
+          <AssociationSet Name="useruser_group" Association="SimsModel.useruser_group">
+            <End Role="user" EntitySet="users" />
+            <End Role="user_group" EntitySet="user_group" />
           </AssociationSet>
         </EntityContainer>
         <Association Name="customer_customer_address">
@@ -1070,6 +1075,7 @@
           </Key>
           <Property Name="user_id" Type="Int32" Nullable="false" />
           <Property Name="hotjas_group_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="SimsModel.useruser_group" FromRole="user_group" ToRole="user" />
         </EntityType>
         <Association Name="orderorder_task">
           <End Type="SimsModel.order" Role="order" Multiplicity="1" />
@@ -1080,6 +1086,18 @@
             </Principal>
             <Dependent Role="order_task">
               <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="useruser_group">
+          <End Type="SimsModel.user" Role="user" Multiplicity="1" />
+          <End Type="SimsModel.user_group" Role="user_group" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user">
+              <PropertyRef Name="user_id" />
+            </Principal>
+            <Dependent Role="user_group">
+              <PropertyRef Name="user_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

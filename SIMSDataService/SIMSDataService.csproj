@@ -287,6 +287,7 @@
     <Compile Include="Controllers\CustomerAddressController.cs" />
     <Compile Include="Controllers\CustomerPersonController.cs" />
     <Compile Include="Controllers\CustomersController.cs" />
+    <Compile Include="Controllers\GroupController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LookupItemsController.cs" />
     <Compile Include="Controllers\OrderArtFileController.cs" />
@@ -297,8 +298,10 @@
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\OrderTaskController.cs" />
     <Compile Include="Controllers\PricelistController.cs" />
+    <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\TasksController.cs" />
+    <Compile Include="Controllers\UserGroupController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="DataActions\IActions.cs" />

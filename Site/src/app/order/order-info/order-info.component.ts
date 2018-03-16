@@ -1,9 +1,10 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ViewChild } from '@angular/core';
 import { LookupService } from '../../_services/lookups.service';
 import { UserService } from '../../_services/user.service';
 import { CustomerService } from '../../_services/customer.service';
 import { OrderService, Order, OrderDetail } from '../../_services/order.service';
 import { StateService, StateInfo } from '../../_shared/states.service';
+import { OrderTaskListComponent } from '../order-task-list/order-task-list.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar } from '@angular/material';
 
@@ -15,6 +16,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
 })
 export class OrderInfoComponent implements OnInit, OnChanges {
   @Input() currentOrder: Order;
+  @Input() taskList: OrderTaskListComponent;
   orderCustomer: any;
   lookupDataSource: any;
   contactPersons: any;
@@ -157,6 +159,11 @@ export class OrderInfoComponent implements OnInit, OnChanges {
           return updOrder.order_id;
         });
       }
+  }
+
+  setDefaultTaskList(orderType: string) {
+    console.log('setDefaultTaskList: orderType', orderType);
+    this.taskList.buildDefaultTaskList(this.currentOrder.order_id, orderType);
   }
 
   ngOnInit() {

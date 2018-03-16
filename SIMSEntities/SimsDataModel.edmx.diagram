@@ -23,7 +23,7 @@
         <EntityTypeShape EntityType="SimsModel.order_task" Width="2.5" PointX="6" PointY="13.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SimsModel.order" Width="1.875" PointX="0.75" PointY="13.625" IsExpanded="true" />
         <EntityTypeShape EntityType="SimsModel.pricelist" Width="1.5" PointX="5.625" PointY="23.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SimsModel.task" Width="1.5" PointX="9.75" PointY="13.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="SimsModel.task" Width="1.5" PointX="9.375" PointY="13.125" IsExpanded="true" />
         <EntityTypeShape EntityType="SimsModel.user" Width="1.5" PointX="11.75" PointY="13.125" IsExpanded="true" />
         <AssociationConnector Association="SimsModel.customer_customer_address" />
         <AssociationConnector Association="SimsModel.ordercustomer" />
@@ -43,6 +43,7 @@
         <EntityTypeShape EntityType="SimsModel.hotjas_group" Width="1.5" PointX="6.75" PointY="0.75" />
         <EntityTypeShape EntityType="SimsModel.user_group" Width="1.5" PointX="0.75" PointY="7.75" />
         <AssociationConnector Association="SimsModel.orderorder_task" />
+        <AssociationConnector Association="SimsModel.useruser_group" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

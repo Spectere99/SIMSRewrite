@@ -8,7 +8,6 @@ import { HttpClient } from '@angular/common/http';
 import { Http, HttpModule, Headers, RequestMethod, RequestOptions } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { DevExtremeModule, DxTemplateModule, DxPopupModule,
   DxFilterBuilderModule, DxTextBoxModule, DxSelectBoxModule,
@@ -83,6 +82,7 @@ import { OrderTaskListComponent } from './order/order-task-list/order-task-list.
     CustomerListComponent,
     ConfirmDialogComponent,
     PhoneFormat,
+    ArraySortPipe,
     AddressLookup,
     OrderArtComponent,
     CustomerOrderListComponent,

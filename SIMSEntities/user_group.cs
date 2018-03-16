@@ -16,5 +16,7 @@ namespace SIMSEntities
     {
         public int user_id { get; set; }
         public int hotjas_group_id { get; set; }
+    
+        public virtual user user { get; set; }
     }
 }
