@@ -295,6 +295,7 @@
     <Compile Include="Controllers\OrderDetailsController.cs" />
     <Compile Include="Controllers\OrderFeesController.cs" />
     <Compile Include="Controllers\OrderPaymentsController.cs" />
+    <Compile Include="Controllers\OrderReportingController.cs" />
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\OrderTaskController.cs" />
     <Compile Include="Controllers\PricelistController.cs" />
@@ -400,6 +401,10 @@
     <ProjectReference Include="..\SIMSEntities\SIMSEntities.csproj">
       <Project>{cb3fdf23-04be-4526-bd1f-7312a44a3857}</Project>
       <Name>SIMSEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SIMSReporting\SIMSReporting.csproj">
+      <Project>{006b35c1-2f82-46ea-958d-9e01fd1d816a}</Project>
+      <Name>SIMSReporting</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

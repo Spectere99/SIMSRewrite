@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ReportingModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="orders">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="customer_id" Type="int" />
+          <Property Name="order_number" Type="varchar" MaxLength="50" />
+          <Property Name="order_type" Type="varchar" MaxLength="10" />
+          <Property Name="purchase_order" Type="varchar" MaxLength="50" />
+          <Property Name="order_date" Type="datetime" Precision="0" />
+          <Property Name="order_due_date" Type="datetime" Precision="0" />
+          <Property Name="order_status" Type="varchar" MaxLength="10" />
+          <Property Name="taken_user_id" Type="int" />
+          <Property Name="assigned_user_id" Type="int" />
+          <Property Name="est_begin_date" Type="datetime" Precision="0" />
+          <Property Name="act_begin_date" Type="datetime" Precision="0" />
+          <Property Name="est_complete_date" Type="datetime" Precision="0" />
+          <Property Name="act_complete_date" Type="datetime" Precision="0" />
+          <Property Name="shipped_date" Type="datetime" Precision="0" />
+          <Property Name="subtotal" Type="varchar" MaxLength="50" />
+          <Property Name="tax_rate" Type="varchar" MaxLength="50" />
+          <Property Name="tax_amount" Type="varchar" MaxLength="50" />
+          <Property Name="shipping" Type="varchar" MaxLength="50" />
+          <Property Name="total" Type="varchar" MaxLength="50" />
+          <Property Name="payments" Type="varchar" MaxLength="50" />
+          <Property Name="balance_due" Type="varchar" MaxLength="50" />
+          <Property Name="IMAGE_FILE" Type="varchar" MaxLength="50" />
+          <Property Name="BILL_ADDRESS_1" Type="varchar" MaxLength="50" />
+          <Property Name="BILL_ADDRESS_2" Type="varchar" MaxLength="50" />
+          <Property Name="BILL_CITY" Type="varchar" MaxLength="50" />
+          <Property Name="BILL_STATE" Type="varchar" MaxLength="2" />
+          <Property Name="BILL_ZIP" Type="varchar" MaxLength="10" />
+          <Property Name="SHIP_ADDRESS_1" Type="varchar" MaxLength="50" />
+          <Property Name="SHIP_ADDRESS_2" Type="varchar" MaxLength="50" />
+          <Property Name="SHIP_CITY" Type="varchar" MaxLength="50" />
+          <Property Name="SHIP_STATE" Type="varchar" MaxLength="2" />
+          <Property Name="SHIP_ZIP" Type="varchar" MaxLength="10" />
+          <Property Name="PRIORITY" Type="int" />
+          <Property Name="PERCENT_COMPLETE" Type="varchar" MaxLength="10" />
+          <Property Name="ship_carrier" Type="varchar" MaxLength="50" />
+          <Property Name="ship_tracking" Type="varchar" MaxLength="50" />
+          <Property Name="previous_order" Type="varchar" MaxLength="50" />
+          <Property Name="reorder_ind" Type="varchar" MaxLength="1" />
+          <Property Name="ship_attn" Type="varchar" MaxLength="100" />
+          <Property Name="contact" Type="varchar" MaxLength="100" />
+          <Property Name="contact_email" Type="varchar" MaxLength="100" />
+          <Property Name="contact_phone1" Type="varchar" MaxLength="10" />
+          <Property Name="contact_phone1_ext" Type="varchar" MaxLength="10" />
+          <Property Name="contact_phone1_type" Type="varchar" MaxLength="10" />
+          <Property Name="contact_phone2" Type="varchar" MaxLength="10" />
+          <Property Name="contact_phone2_ext" Type="varchar" MaxLength="10" />
+          <Property Name="contact_phone2_type" Type="varchar" MaxLength="10" />
+        </EntityType>
+        <EntityContainer Name="ReportingModelStoreContainer">
+          <EntitySet Name="orders" EntityType="Self.orders" Schema="printmgr" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ReportingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="order_rpt">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="customer_id" Type="Int32" />
+          <Property Name="order_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="order_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="purchase_order" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="order_date" Type="DateTime" />
+          <Property Name="order_due_date" Type="DateTime" />
+          <Property Name="order_status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="taken_user_id" Type="Int32" />
+          <Property Name="assigned_user_id" Type="Int32" />
+          <Property Name="est_begin_date" Type="DateTime" />
+          <Property Name="act_begin_date" Type="DateTime" />
+          <Property Name="est_complete_date" Type="DateTime" />
+          <Property Name="act_complete_date" Type="DateTime" />
+          <Property Name="shipped_date" Type="DateTime" />
+          <Property Name="subtotal" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tax_rate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="tax_amount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="shipping" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="total" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="payments" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="balance_due" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="IMAGE_FILE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BILL_ADDRESS_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BILL_ADDRESS_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BILL_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BILL_STATE" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="BILL_ZIP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SHIP_ADDRESS_1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SHIP_ADDRESS_2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SHIP_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SHIP_STATE" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <Property Name="SHIP_ZIP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="PRIORITY" Type="Int32" />
+          <Property Name="PERCENT_COMPLETE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ship_carrier" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ship_tracking" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="previous_order" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="reorder_ind" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="ship_attn" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="contact" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="contact_email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="contact_phone1" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="contact_phone1_ext" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="contact_phone1_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="contact_phone2" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="contact_phone2_ext" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="contact_phone2_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityContainer Name="ReportingEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="order_rpt" EntityType="ReportingModel.order_rpt" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ReportingModelStoreContainer" CdmEntityContainer="ReportingEntities">
+          <EntitySetMapping Name="order_rpt">
+            <EntityTypeMapping TypeName="ReportingModel.order_rpt">
+              <MappingFragment StoreEntitySet="orders">
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="order_number" ColumnName="order_number" />
+                <ScalarProperty Name="order_type" ColumnName="order_type" />
+                <ScalarProperty Name="purchase_order" ColumnName="purchase_order" />
+                <ScalarProperty Name="order_date" ColumnName="order_date" />
+                <ScalarProperty Name="order_due_date" ColumnName="order_due_date" />
+                <ScalarProperty Name="order_status" ColumnName="order_status" />
+                <ScalarProperty Name="taken_user_id" ColumnName="taken_user_id" />
+                <ScalarProperty Name="assigned_user_id" ColumnName="assigned_user_id" />
+                <ScalarProperty Name="est_begin_date" ColumnName="est_begin_date" />
+                <ScalarProperty Name="act_begin_date" ColumnName="act_begin_date" />
+                <ScalarProperty Name="est_complete_date" ColumnName="est_complete_date" />
+                <ScalarProperty Name="act_complete_date" ColumnName="act_complete_date" />
+                <ScalarProperty Name="shipped_date" ColumnName="shipped_date" />
+                <ScalarProperty Name="subtotal" ColumnName="subtotal" />
+                <ScalarProperty Name="tax_rate" ColumnName="tax_rate" />
+                <ScalarProperty Name="tax_amount" ColumnName="tax_amount" />
+                <ScalarProperty Name="shipping" ColumnName="shipping" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="payments" ColumnName="payments" />
+                <ScalarProperty Name="balance_due" ColumnName="balance_due" />
+                <ScalarProperty Name="IMAGE_FILE" ColumnName="IMAGE_FILE" />
+                <ScalarProperty Name="BILL_ADDRESS_1" ColumnName="BILL_ADDRESS_1" />
+                <ScalarProperty Name="BILL_ADDRESS_2" ColumnName="BILL_ADDRESS_2" />
+                <ScalarProperty Name="BILL_CITY" ColumnName="BILL_CITY" />
+                <ScalarProperty Name="BILL_STATE" ColumnName="BILL_STATE" />
+                <ScalarProperty Name="BILL_ZIP" ColumnName="BILL_ZIP" />
+                <ScalarProperty Name="SHIP_ADDRESS_1" ColumnName="SHIP_ADDRESS_1" />
+                <ScalarProperty Name="SHIP_ADDRESS_2" ColumnName="SHIP_ADDRESS_2" />
+                <ScalarProperty Name="SHIP_CITY" ColumnName="SHIP_CITY" />
+                <ScalarProperty Name="SHIP_STATE" ColumnName="SHIP_STATE" />
+                <ScalarProperty Name="SHIP_ZIP" ColumnName="SHIP_ZIP" />
+                <ScalarProperty Name="PRIORITY" ColumnName="PRIORITY" />
+                <ScalarProperty Name="PERCENT_COMPLETE" ColumnName="PERCENT_COMPLETE" />
+                <ScalarProperty Name="ship_carrier" ColumnName="ship_carrier" />
+                <ScalarProperty Name="ship_tracking" ColumnName="ship_tracking" />
+                <ScalarProperty Name="previous_order" ColumnName="previous_order" />
+                <ScalarProperty Name="reorder_ind" ColumnName="reorder_ind" />
+                <ScalarProperty Name="ship_attn" ColumnName="ship_attn" />
+                <ScalarProperty Name="contact" ColumnName="contact" />
+                <ScalarProperty Name="contact_email" ColumnName="contact_email" />
+                <ScalarProperty Name="contact_phone1" ColumnName="contact_phone1" />
+                <ScalarProperty Name="contact_phone1_ext" ColumnName="contact_phone1_ext" />
+                <ScalarProperty Name="contact_phone1_type" ColumnName="contact_phone1_type" />
+                <ScalarProperty Name="contact_phone2" ColumnName="contact_phone2" />
+                <ScalarProperty Name="contact_phone2_ext" ColumnName="contact_phone2_ext" />
+                <ScalarProperty Name="contact_phone2_type" ColumnName="contact_phone2_type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

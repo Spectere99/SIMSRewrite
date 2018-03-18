@@ -8,8 +8,10 @@ export const environment = {
   // authEndpoint: 'http://localhost:56543/api/Security',
   authEndpoint: 'http://localhost:8888/api/Security',
   odataEndpoint: 'http://localhost:8888/odata/',
+  reportingEndpoint: 'http://localhost:56543/odata/',
   // odataEndpoint: 'http://localhost:56543/odata/',
   artUploadURL: 'http://localhost:8888/api/ArtFile',  // DO NOT USE Slash at end!
   // artUploadURL: 'http://localhost:56543/api/ArtFile',
   defaultArtFolder: 'http://localhost:8888/orderimage/'
+
 };

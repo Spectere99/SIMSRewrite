@@ -51,6 +51,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { AdminComponent } from './admin/admin.component';
 import { OrderTaskListComponent } from './order/order-task-list/order-task-list.component';
+import { OrderBalanceComponent } from './report/order-balance/order-balance.component';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -89,6 +90,7 @@ import { OrderTaskListComponent } from './order/order-task-list/order-task-list.
     PageNotFoundComponent,
     AdminComponent,
     OrderTaskListComponent,
+    OrderBalanceComponent,
   ],
   imports: [
     NgbModule.forRoot(),

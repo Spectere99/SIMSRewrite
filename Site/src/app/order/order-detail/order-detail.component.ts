@@ -1,10 +1,11 @@
-import { Component, OnInit, OnChanges, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ViewChild, HostListener } from '@angular/core';
 import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee, OrderPayment } from '../../_services/order.service';
 import { UserService } from '../../_services/user.service';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { OrderTaskListComponent } from '../order-task-list/order-task-list.component';
+
 
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar } from '@angular/material';
@@ -40,6 +41,10 @@ export class OrderDetailComponent implements OnInit {
   nonTaxableSubTotal: string;
   userProfile;
 
+  @HostListener('mousewheel', ['$event']) onMousewheel(event) {
+    // console.log('mouseWheelEvent: ', event);
+    // console.log('sourceElement', event.sourceElement);
+  }
   constructor(private lookupService: LookupService, private priceListService: PriceListService, userService: UserService,
     public orderService: OrderService, public authService: AuthenticationService, public snackBar: MatSnackBar) {
     this.userProfile = JSON.parse(authService.getUserToken());

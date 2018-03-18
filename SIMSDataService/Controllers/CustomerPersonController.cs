@@ -93,7 +93,7 @@ namespace SIMSDataService.Controllers
 
             try
             {
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
             catch (DbUpdateException)
             {

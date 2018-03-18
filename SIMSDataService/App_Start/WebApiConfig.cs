@@ -9,6 +9,7 @@ using System.Web.Http.OData.Extensions;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using SIMSEntities;
+using SIMSReporting;
 
 namespace SIMSDataService
 {
@@ -63,6 +64,8 @@ namespace SIMSDataService
             builder.EntitySet<user>("Users");
             builder.EntitySet<user_group>("UserGroup");
             builder.EntitySet<hotjas_group>("Group");
+
+            builder.EntitySet<order_rpt>("OrderReporting");
             return builder.GetEdmModel();
         }
     }
