@@ -1,0 +1,37 @@
+<div class="container col-md-12 pt-4">
+  <section>
+    Order Status History
+    <hr>
+    <table *ngIf="orderStatusHistory !== undefined && orderStatusHistory.length > 0">
+      <tr>
+        <td style="font-size:12px;text-align:center;">Status</td>
+        <td style="font-size:12px;">Set On</td>
+        <td style="font-size:12px;">By</td>
+      </tr>
+      <tr *ngFor="let history of orderStatusHistory | sort: 'status_date'; index as i">
+        <td>
+          <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="history.order_status" [disabled]="true">
+            <option *ngFor="let status of statusTypes" [value]="status.char_mod">
+              {{status.description}}
+            </option>
+          </select>
+        </td>
+        <td>
+          <input class="form-control" [ngModel]="history.status_date | date:'MM/dd/yyyy'" (ngModelChange)="history.status_date = $event"
+            [disabled]="true">
+        </td>
+        <td>
+          <!-- <input type="text" class="form-control" size="15" [(ngModel)]="history.set_by_user_id" [disabled]="true"> -->
+          <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="history.set_by_user_id" [disabled]="true">
+            <option *ngFor="let user of userDataSource" [value]="user.user_id">
+              {{user.first_name + ' ' + user.last_name}}
+            </option>
+          </select>
+        </td>
+      </tr>
+    </table>
+    <div class="alert alert-warning" *ngIf="orderStatusHistory === undefined || orderStatusHistory.length === 0">
+      There is no history to show.
+    </div>
+    </section>
+</div>

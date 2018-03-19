@@ -51,7 +51,7 @@
           <Key>
             <PropertyRef Name="customer_notes_id" />
           </Key>
-          <Property Name="customer_notes_id" Type="int" Nullable="false" />
+          <Property Name="customer_notes_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="customer_id" Type="int" />
           <Property Name="user_id" Type="int" />
           <Property Name="entered_date" Type="datetime" Precision="0" />
@@ -75,16 +75,16 @@
           <Property Name="state" Type="varchar" MaxLength="2" />
           <Property Name="zip" Type="varchar" MaxLength="10" />
           <Property Name="country" Type="varchar" MaxLength="50" />
-          <Property Name="phone_1" Type="varchar" MaxLength="14" />
+          <Property Name="phone_1" Type="varchar" MaxLength="10" />
           <Property Name="phone_1_type" Type="varchar" MaxLength="10" />
-          <Property Name="phone_2" Type="varchar" MaxLength="14" />
+          <Property Name="phone_2" Type="varchar" MaxLength="10" />
           <Property Name="phone_2_type" Type="varchar" MaxLength="10" />
           <Property Name="ccnum" Type="varchar" MaxLength="50" />
           <Property Name="ccexp_date" Type="datetime" Precision="0" />
           <Property Name="ccverfcode" Type="varchar" MaxLength="50" />
           <Property Name="phone_1_ext" Type="varchar" MaxLength="10" />
           <Property Name="phone_2_ext" Type="varchar" MaxLength="10" />
-          <Property Name="status_code" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="status_code" Type="varchar" MaxLength="15" />
         </EntityType>
         <EntityType Name="group_navigation">
           <Key>
@@ -228,7 +228,7 @@
           <Key>
             <PropertyRef Name="order_notes_id" />
           </Key>
-          <Property Name="order_notes_id" Type="int" Nullable="false" />
+          <Property Name="order_notes_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="order_id" Type="int" />
           <Property Name="user_id" Type="int" />
           <Property Name="entered_date" Type="datetime" Precision="0" />
@@ -252,7 +252,7 @@
             <PropertyRef Name="order_status_history_id" />
           </Key>
           <Property Name="order_status_history_id" Type="int" Nullable="false" />
-          <Property Name="order_id" Type="varchar" MaxLength="50" />
+          <Property Name="order_id" Type="int" />
           <Property Name="order_status" Type="varchar" MaxLength="10" />
           <Property Name="status_date" Type="datetime" Precision="0" />
           <Property Name="set_by_user_id" Type="int" />
@@ -675,10 +675,11 @@
             <PropertyRef Name="order_status_history_id" />
           </Key>
           <Property Name="order_status_history_id" Type="Int32" Nullable="false" />
-          <Property Name="order_id" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="order_id" Type="Int32" />
           <Property Name="order_status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="status_date" Type="DateTime" />
           <Property Name="set_by_user_id" Type="Int32" />
+          <NavigationProperty Name="order" Relationship="SimsModel.orderorder_status_history" FromRole="order_status_history" ToRole="order" />
         </EntityType>
         <EntityType Name="order_task">
           <Key>
@@ -752,6 +753,7 @@
           <NavigationProperty Name="order_payments" Relationship="SimsModel.orderorder_payments" FromRole="order" ToRole="order_payments" />
           <NavigationProperty Name="order_art_file" Relationship="SimsModel.orderorder_art_file" FromRole="order" ToRole="order_art_file" />
           <NavigationProperty Name="order_task" Relationship="SimsModel.orderorder_task" FromRole="order" ToRole="order_task" />
+          <NavigationProperty Name="order_status_history" Relationship="SimsModel.orderorder_status_history" FromRole="order" ToRole="order_status_history" />
         </EntityType>
         <EntityType Name="pricelist">
           <Key>
@@ -905,6 +907,10 @@
           <AssociationSet Name="useruser_group" Association="SimsModel.useruser_group">
             <End Role="user" EntitySet="users" />
             <End Role="user_group" EntitySet="user_group" />
+          </AssociationSet>
+          <AssociationSet Name="orderorder_status_history" Association="SimsModel.orderorder_status_history">
+            <End Role="order" EntitySet="orders" />
+            <End Role="order_status_history" EntitySet="order_status_history" />
           </AssociationSet>
         </EntityContainer>
         <Association Name="customer_customer_address">
@@ -1098,6 +1104,18 @@
             </Principal>
             <Dependent Role="user_group">
               <PropertyRef Name="user_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="orderorder_status_history">
+          <End Type="SimsModel.order" Role="order" Multiplicity="0..1" />
+          <End Type="SimsModel.order_status_history" Role="order_status_history" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="order_status_history">
+              <PropertyRef Name="order_id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

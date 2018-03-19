@@ -15,9 +15,11 @@ namespace SIMSEntities
     public partial class order_status_history
     {
         public int order_status_history_id { get; set; }
-        public string order_id { get; set; }
+        public Nullable<int> order_id { get; set; }
         public string order_status { get; set; }
         public Nullable<System.DateTime> status_date { get; set; }
         public Nullable<int> set_by_user_id { get; set; }
+    
+        public virtual order order { get; set; }
     }
 }

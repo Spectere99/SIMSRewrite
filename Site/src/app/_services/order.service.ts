@@ -148,6 +148,14 @@ export class OrderTask {
     completed_date: string;
 }
 
+export class OrderStatusHistory {
+    order_status_history_id: number;
+    order_id: number;
+    order_status: string;
+    status_date: string;
+    set_by_user_id: number;
+}
+
 @Injectable()
 export class OrderService {
     // private baseURL = 'http://localhost:56543/odata';
@@ -163,6 +171,7 @@ export class OrderService {
     public _ORDER_PAYMENT_ACTION = 'OrderPayments';
     public _ORDER_ART_FILE_ACTION = 'orderartfile';
     public _ORDER_TASK_ACTION = 'OrderTask';
+    public _ORDER_STATUS_HISTORY_ACTION = 'OrderStatusHistory';
 
     constructor( private http: Http ) { }
 
@@ -248,6 +257,20 @@ export class OrderService {
         // Build customer odata Options
         const expandCmd = '?$expand=';
         const expandFields = 'order_task';
+        this.options = '(' + orderId + ')';
+        this.options = this.options.concat(expandCmd, expandFields);
+
+        return this.http.get(this.baseURL + this._ORDER_ACTION + this.options, {headers: this.getHeaders(userId)})
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+
+    loadOrderStatusHistoryData(userId, orderId: number): Observable<any> {
+        // Build customer odata Options
+        const expandCmd = '?$expand=';
+        const expandFields = 'order_status_history';
         this.options = '(' + orderId + ')';
         this.options = this.options.concat(expandCmd, expandFields);
 

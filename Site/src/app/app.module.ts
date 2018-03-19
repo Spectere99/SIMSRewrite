@@ -52,6 +52,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { AdminComponent } from './admin/admin.component';
 import { OrderTaskListComponent } from './order/order-task-list/order-task-list.component';
 import { OrderBalanceComponent } from './report/order-balance/order-balance.component';
+import { OrderNotesHistoryComponent } from './order/order-notes-history/order-notes-history.component';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -91,6 +92,7 @@ import { OrderBalanceComponent } from './report/order-balance/order-balance.comp
     AdminComponent,
     OrderTaskListComponent,
     OrderBalanceComponent,
+    OrderNotesHistoryComponent,
   ],
   imports: [
     NgbModule.forRoot(),
