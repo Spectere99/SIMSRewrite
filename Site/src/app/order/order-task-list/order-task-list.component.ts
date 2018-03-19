@@ -61,10 +61,16 @@ userProfile;
     console.log('setTaskComplete: userProfile', this.userProfile);
     const foundTask = this.orderTask.filter(item => item.task_code === task.task_code);
     if (foundTask.length > 0) {
-      foundTask[0].completed_by = isChecked ? this.userProfile.profile.login_id.toUpperCase() : '';
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      foundTask[0].completed_date =  isChecked ? today.toLocaleDateString() : undefined;
+      if (isChecked) {
+        foundTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        foundTask[0].completed_date =  today.toISOString();
+      }
+      // foundTask[0].completed_by = isChecked ? this.userProfile.profile.login_id.toUpperCase() : '';
+      // const today = new Date();
+      // today.setHours(0, 0, 0, 0);
+      // foundTask[0].completed_date =  isChecked ? today.toLocaleDateString() : undefined;
       // console.log('setTaskComplete: after set completed_by', foundTask[0]);
     }
   }
@@ -75,8 +81,31 @@ userProfile;
     this.orderTask = this.createOrderTaskList(orderId, taskTypeCode);
   }
 
-  saveOrderTasks() {
-      // Need to loop through the order tasks and save their values.
+  batchSave(orderId: number) {
+    console.log('Saving Order Tasks', this.orderTask);
+    console.log('Saving Order Task - OrderId:', orderId);
+    // Need to pull the existing tasks and loop through to delete them
+    // before adding the new task list updates.
+    this.orderService.loadOrderTaskData(this.userProfile.profile.login_id, orderId)
+      .subscribe(res => {
+        const toDelete = res;
+        this.orderService.deleteOrderTask(this.userProfile.profile.login_id, orderId)
+        .subscribe(delRes => {
+          console.log('Delete Response', delRes);
+          for (let x = 0; x < this.orderTask.length; x++) {
+            this.saveOrderTasks(orderId, this.orderTask[x]);
+          }
+        });
+      });
+  }
+
+  saveOrderTasks(orderId: number, orderTask: OrderTask) {
+    // Need to loop through the order tasks and save their values.
+    orderTask.order_id = orderId;
+    this.orderService.addOrderTask(this.userProfile.profile.log_id, orderTask)
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 
   ngOnInit() {

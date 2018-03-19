@@ -162,6 +162,7 @@ export class OrderService {
     public _ORDER_FEE_ACTION = 'OrderFees';
     public _ORDER_PAYMENT_ACTION = 'OrderPayments';
     public _ORDER_ART_FILE_ACTION = 'orderartfile';
+    public _ORDER_TASK_ACTION = 'OrderTask';
 
     constructor( private http: Http ) { }
 
@@ -257,6 +258,33 @@ export class OrderService {
         });
     }
 
+    addOrderTask(userId, orderTask: OrderTask) {
+        console.log('OrderTask in addOrderTask', orderTask);
+        return this.http.post(this.baseURL + this._ORDER_TASK_ACTION, orderTask, {headers: this.getHeaders(userId) })
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+    updateOrderTask(userId, orderTask: OrderTask) {
+        this.options = '(' + orderTask.order_id + ')';
+        console.log('OrderTask in updateOrderTask', orderTask);
+        return this.http.put(this.baseURL + this._ORDER_TASK_ACTION + this.options, orderTask, {headers: this.getHeaders(userId) })
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+    deleteOrderTask(userId, order_id: number) {
+        this.options = '(' + order_id + ')';
+        console.log('OrderTask in deleteOrderTask', order_id);
+        return this.http.delete(this.baseURL + this._ORDER_TASK_ACTION + this.options, {headers: this.getHeaders(userId) })
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+
     addOrderInfo(userId, order: Order) {
         console.log('OrderInfo in addOrderInfo', order);
         return this.http.post(this.baseURL + this._ORDER_ACTION, order, {headers: this.getHeaders(userId) })
@@ -283,6 +311,7 @@ export class OrderService {
             return res.json();
         });
     }
+
     addOrderLineItem(userId, lineItem: OrderDetail) {
         console.log('OrderDetail in addOrderLineItem', lineItem);
         return this.http.post(this.baseURL + this._ORDER_DETAIL_ACTION, lineItem, {headers: this.getHeaders(userId) })

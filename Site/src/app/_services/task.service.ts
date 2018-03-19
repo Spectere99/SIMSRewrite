@@ -49,4 +49,22 @@ export class TaskService {
             return res.json();
         });
     }
+
+    saveTaskData(userId, task: Task) {
+        console.log('Task in saveTaskData', task);
+        return this.http.post(this.baseURL + this._TASK_ACTION, task, {headers: this.getHeaders(userId) })
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+
+    deleteTaskData(userId, taskId): Observable<any> {
+
+        this.options = '(' + taskId + ')';
+        return this.http.delete(this.baseURL + this._TASK_ACTION + this.options, {headers: this.getHeaders(userId)})
+        .map((res: Response) => {
+            return res.json();
+        });
+    }
 }

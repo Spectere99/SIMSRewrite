@@ -12,17 +12,18 @@ export class ReportingService {
 
     constructor( private http: Http ) { }
 
-    private getHeaders(userId) {
+    private getHeaders(userId, orderDate) {
         const headers = new Headers({ 'Accept': 'application/json' });
         headers.append('Content-Type', 'application/json; charset=UTF-8');
         headers.append('userid', userId);
+        headers.append('orderDate', orderDate);
         // headers.append('showInactive', this.showInactive.toString());
         return headers;
     }
-    getOrderBalanceData(userId): Observable<any> {
-        return this.http.get(this.baseURL + 'OrderReporting', {headers: this.getHeaders(userId, )})
+    getOrderBalanceData(userId, orderDate): Observable<any> {
+        return this.http.get(this.baseURL + 'Reporting', {headers: this.getHeaders(userId, orderDate)})
         .map((res: Response) => {
-            // console.log(res.json());
+            console.log(res.json());
             return res.json();
         });
     }

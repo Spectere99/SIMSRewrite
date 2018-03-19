@@ -1,3 +1,9 @@
+<!-- <div class="row">
+  <div class="col-lg-3">
+    <input class="form-control" [ngModel]="orderStartDate | date:'yyyy-MM-dd'" (ngModelChange)="setOrderDate($event)"
+                type="date" />
+  </div>
+</div> -->
 <div class="row">
   <div class="col-lg-12">
     <dx-data-grid id="gridOrderBalance" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
@@ -6,7 +12,7 @@
       [columnAutoWidth]="true">
       <dxo-selection mode="single"></dxo-selection>
       <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
-    <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
+      <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
       <dxi-column dataField="order_id" caption="ID" [width]="100" [allowFiltering]="true" [visible]="false"></dxi-column>
       <dxi-column dataField="order_number" caption="Order Number" [width]="150" sortOrder="asc" [allowFiltering]="true"></dxi-column>
       <dxi-column dataField="contact" caption="Contact" [width]="200" [allowFiltering]="true"></dxi-column>

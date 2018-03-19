@@ -299,6 +299,7 @@
     <Compile Include="Controllers\OrdersController.cs" />
     <Compile Include="Controllers\OrderTaskController.cs" />
     <Compile Include="Controllers\PricelistController.cs" />
+    <Compile Include="Controllers\ReportingController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SecurityController.cs" />
     <Compile Include="Controllers\TasksController.cs" />

@@ -11,7 +11,6 @@ import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { OrderArtComponent } from '../order-art/order-art.component';
 import { OrderTaskListComponent } from '../order-task-list/order-task-list.component';
 
-
 @Component({
   selector: 'app-customer-order-list',
   templateUrl: './customer-order-list.component.html',
@@ -23,6 +22,8 @@ export class CustomerOrderListComponent implements OnInit {
 @ViewChild(OrderInfoComponent) orderInfo: OrderInfoComponent;
 @ViewChild(OrderDetailComponent) orderDetail: OrderDetailComponent;
 @ViewChild(OrderArtComponent) orderArt: OrderArtComponent;
+@ViewChild(OrderTaskListComponent) orderTaskList: OrderTaskListComponent;
+
 baseUrl = environment.odataEndpoint;
 defaultArtFolder = environment.defaultArtFolder;
 dataSource: any;
@@ -210,6 +211,7 @@ userProfile;
       // Still need art tab batch save.
       this.orderArt.batchSave(res);
       // this.selectedOrder = null;
+      this.orderTaskList.batchSave(res);
       setTimeout(() => {
         this.gridOrders.instance.refresh();
       }, 1000);

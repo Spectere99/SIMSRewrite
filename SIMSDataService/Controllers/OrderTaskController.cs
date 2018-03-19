@@ -150,16 +150,23 @@ namespace SIMSDataService.Controllers
         // DELETE: odata/OrderTask(5)
         public IHttpActionResult Delete([FromODataUri] int key)
         {
-            order_task order_task = db.order_task.Find(key);
-            if (order_task == null)
+            var delOrderTasks = db.order_task.Where(q => q.order_id == key);
+            
+            //order_task order_task = db.order_task.Find(key);
+            if (delOrderTasks.Any())
             {
-                return NotFound();
+                foreach (order_task item in delOrderTasks)
+                {
+                    db.order_task.Remove(item);
+                }
+                db.SaveChanges();
+                return Ok(key);
             }
 
-            db.order_task.Remove(order_task);
-            db.SaveChanges();
+            return Ok(key);
+            
 
-            return StatusCode(HttpStatusCode.NoContent);
+            
         }
 
         // GET: odata/OrderTask(5)/order
