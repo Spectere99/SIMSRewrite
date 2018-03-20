@@ -1,0 +1,58 @@
+th {
+    background-color:#eee;
+    font:  11px "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
+  }
+  td {
+    font:  10px "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
+  }
+  h5 {
+    font:  9px "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
+  }
+  h6 {
+    font:  6px "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
+  }
+  
+  .box1 {
+    background: url("/assets/boxtl.gif") no-repeat top left;
+    padding: 20px 0px 0px;
+    margin: 0;
+    height: 25px; 
+  }
+  .box2 {
+    background: url("/assets/boxtm.gif") repeat top left;
+    padding: 20px 0px 5px;
+    margin: 0;
+    color: white; 
+    width: 100%;
+  }
+  .box3 {
+    background: url("/assets/boxtr.gif") no-repeat top left;
+    margin: 0;
+  }
+  .box4 {
+    background: url("/assets/boxl.gif") repeat top left;
+    margin: 0;
+  }
+  .box5 {
+    background: url("/assets/boxr.gif") repeat top right;
+    margin: 0;
+  }
+  .box6 {
+    background: url("/assets/boxbl.gif") no-repeat top left;
+    margin: 0;
+    padding: 5px 15px 25px;
+    height: 30px; 
+  }
+  .box7 {
+    background: url("/assets/boxbm.gif") repeat top left;
+    margin: 0;
+    padding: 5px 15px 25px;
+  }
+  .box8 {
+    background: url("/assets/boxbr.gif") no-repeat top left;
+    padding: 5px 15px 25px;
+  }
+  .boxcontent {
+    background-color: #E6E6E6;
+    padding: 5px 0px 0px;
+  }

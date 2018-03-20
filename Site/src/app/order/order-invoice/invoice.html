@@ -1,0 +1,362 @@
+<html>
+<head>
+<style type="text/css">
+th {
+	background-color:#eee;
+	font:  11px "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
+}
+td {
+	font:  10px "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
+}
+h5 {
+	font:  9px "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
+}
+h6 {
+	font:  6px "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
+}
+
+.box1 {
+	background: url(html/img/boxtl.gif) no-repeat top left;
+	padding: 20px 0px 0px;
+	margin: 0;
+	height: 25px; 
+}
+.box2 {
+	background: url(html/img/boxtm.gif) repeat top left;
+	padding: 20px 0px 5px;
+	margin: 0;
+	color: white; 
+	width: 100%;
+}
+.box3 {
+	background: url(html/img/boxtr.gif) no-repeat top left;
+	margin: 0;
+}
+.box4 {
+	background: url(html/img/boxl.gif) repeat top left;
+	margin: 0;
+}
+.box5 {
+	background: url(html/img/boxr.gif) repeat top right;
+	margin: 0;
+}
+.box6 {
+	background: url(html/img/boxbl.gif) no-repeat top left;
+	margin: 0;
+	padding: 5px 15px 25px;
+	height: 30px; 
+}
+.box7 {
+	background: url(html/img/boxbm.gif) repeat top left;
+	margin: 0;
+	padding: 5px 15px 25px;
+}
+.box8 {
+	background: url(html/img/boxbr.gif) no-repeat top left;
+	padding: 5px 15px 25px;
+}
+.boxcontent {
+	background-color: #E6E6E6;
+	padding: 5px 0px 0px;
+}
+</style>
+</head>
+<body>
+
+
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+ <tr>
+  <td valign="top" cellspacing="0" cellpadding="0" width="100%">
+   <table border="0" cellspacing="0" cellpadding="2" width="100%">
+    <tr>
+     <td valign="top" cellpadding="0"><img src="html\img\splogo.gif"/></td>
+     <td>
+      <table border="0" cellspacing="0" cellpadding="0" width="100%">
+       <tr>
+		<td align="right" width="50%">
+
+         <table border="0" cellspacing="0" cellpadding="0" width="100%">
+          <tr>
+           <td class="box1">
+  </td>
+           <td class="box2" >
+            <center>
+    <i><b><font size="7">Work Order / Receipt</font></b></i>
+	        </center>
+           </td>
+           <td class="box3">
+  </td>
+          </tr>
+          <tr>
+           <td class="box4">
+  </td>
+           <td  class="boxcontent">
+            <table border="1" cellspacing="0" cellpadding="2" width="100%">
+		     <tr>
+              <th valign="middle" align="right" cellpadding="2" width="50%" ><b><i>Order Number</i></b></th>
+              <td width="50%" align="left">&lt;&lt;ORDERS$ORDER_NUMBER&gt;&gt;</td>
+             </tr>
+             <tr>
+              <th  valign="middle" align="right" cellpadding="2" width="50%"  ><b><i>Bill To</i></b></th>
+              <td valign="top" width="50%" >
+               <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                <tr>
+                 <td cellpadding="2" align="left">&lt;&lt;CUSTOMER$CUSTOMER_NAME&gt;&gt;</td>
+                </tr>
+                <tr>
+                 <td cellpadding="2" align="left">&lt;&lt;ORDERS$BILL_ADDRESS_1&gt;&gt;<br />&lt;&lt;ORDERS$BILL_ADDRESS_2&gt;&gt;</td>
+                </tr>
+                <tr>
+                 <td cellpadding="2" align="left">&lt;&lt;ORDERS$BILL_CITY&gt;&gt; &lt;&lt;ORDERS$BILL_STATE&gt;&gt; &lt;&lt;ORDERS$BILL_ZIP&gt;&gt;</td>
+                </tr>
+               </table>
+              </td>
+             </tr>
+             <tr>
+              <th valign="middle" align="right" cellpadding="2" width="50%"><b><i>Ship To</i></b></th>
+              <td valign="top" width="50%" >
+               <table border="0" cellspacing="0" cellpadding="0" width="100%">
+                <tr>
+                 <td cellpadding="2" align="left">&lt;&lt;CUSTOMER$CUSTOMER_NAME&gt;&gt;</td>
+                </tr>
+				<tr>
+                 <td cellpadding="2" align="left">Attn:  &lt;&lt;CUSTOMER$CUSTOMER_NAME&gt;&gt;</td>
+                </tr>
+                <tr>
+                 <td cellpadding="2" align="left">&lt;&lt;ORDERS$SHIP_ADDRESS_1&gt;&gt;<br/>&lt;&lt;ORDERS$SHIP_ADDRESS_2&gt;&gt;</td>
+                </tr>
+                <tr>
+                 <td cellpadding="2" align="left">&lt;&lt;ORDERS$SHIP_CITY&gt;&gt; &lt;&lt;ORDERS$SHIP_STATE&gt;&gt; &lt;&lt;ORDERS$SHIP_ZIP&gt;&gt;</td>
+                </tr>
+               </table>
+              </td>
+             </tr>
+		     <tr>
+              <th valign="middle" align="right" cellpadding="2" width="50%" ><b><i>Order Date</i></b></th>
+              <td width="50%" align="left">&lt;&lt;ORDERS$ORDER_DATE&gt;&gt;</td>
+             </tr>
+                     <tr>
+              <th valign="middle" align="right" cellpadding="2" width="50%" ><b><i>Due Date</i></b></th>
+              <td width="50%" align="left">&lt;&lt;ORDERS$ORDER_DUE_DATE&gt;&gt;</td>
+             </tr>
+		     <tr>
+              <th valign="middle" align="right" cellpadding="2" width="50%" ><b><i>PO #</i></b></th>
+              <td width="50%" align="left">&lt;&lt;ORDERS$PURCHASE_ORDER&gt;&gt;</td>
+             </tr>
+            </table>
+           </td>
+           <td class="box5">
+  </td>
+          </tr>
+          <tr>
+           <td class="box6">
+  </td>
+           <td class="box7">
+  </td>
+           <td class="box8">
+  </td>
+          </tr>
+         </table>
+        </td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+   </table>
+  </td>
+ </tr>
+</table>
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+ <tr>
+  <td class="box1">
+  </td>
+  <td class="box2" >
+  </td>
+  <td class="box3">
+  </td>
+ </tr>
+  
+ <tr>
+  <td class="box4">
+  </td>
+  <td  class="boxcontent">
+   <table border="1" cellpadding="2" cellspacing="0" width="100%">
+	<thead>
+	<tr>Items</tr>
+    <tr>
+     <th colspan="3"><center>Item</center></th>
+     <th><center>Style</center></th>
+     <th><center>Y/A</center></th>
+     <th><center>Color</center></th>
+     <th><center>XS</center></th>
+     <th><center>S</center></th>
+     <th><center>M</center></th>
+     <th><center>L</center></th>
+     <th><center>XL</center></th>
+     <th><center>2XL</center></th>
+     <th><center>3XL</center></th>
+     <th><center>4XL</center></th>
+     <th><center>5XL</center></th>
+     <th colspan="2"><center>Other1</center></th>
+     <th colspan="2"><center>Other2</center></th>
+     <th colspan="2"><center>Other3</center></th>
+     <th><center>Qty</center></th>
+     <th><center>Price</center></th>
+     <th><center>Sub</center></th>
+     <th><center>Tax</center></th>
+    </tr>
+	</thead>
+	<tbody>
+    <!--foreachrow table="ORDER_DETAIL"-->
+    <tr>
+     <td colspan="3"><center>&lt;&lt;ORDER_DETAIL$_LOOKUP$PRICELIST_ID&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$PRODUCT_CODE&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$_LOOKUP$STYLE_CODE&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$COLOR_CODE&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$XSMALL_QTY&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$SMALL_QTY&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$MED_QTY&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$LARGE_QTY&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$XL_QTY&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$2XL_QTY&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$3XL_QTY&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$4XL_QTY&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$5XL_QTY&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$_LOOKUP$OTHER1_TYPE&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$OTHER1_QTY&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$_LOOKUP$OTHER2_TYPE&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$OTHER2_QTY&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$_LOOKUP$OTHER3_TYPE&gt;&gt;</center></td>
+     <td><center>&lt;&lt;ORDER_DETAIL$OTHER3_QTY&gt;&gt;</center></td>
+     <td align="right"><center>&lt;&lt;ORDER_DETAIL$ITEM_QUANTITY&gt;&gt;</center></td>
+     <td align="right"><center>&lt;&lt;ORDER_DETAIL$ITEM_PRICE_EACH&gt;&gt;</center></td>
+     <td align="right"><center>&lt;&lt;ORDER_DETAIL$ITEM_PRICE_EXT&gt;&gt;</center></td>
+     <td align="right">
+      <center>
+       <!--includeif function="IS_TAXABLE"-->
+       <img src="html\img\checkmark.png"/>
+       <!--endincludeif-->
+      </center>
+     </td>
+    </tr>
+    <!--endforeachrow-->
+	<tr>Fees</tr>
+	<!--foreachrow table="ORDER_FEES"-->
+    <tr>
+     <td colspan="5"><center>&lt;&lt;ORDER_FEES$_LOOKUP$PRICELIST_ID&gt;&gt;</center></td>
+     <td colspan="16"><center></center></td>
+     <td align="right"><center>&lt;&lt;ORDER_FEES$FEE_QUANTITY&gt;&gt;</center></td>
+     <td align="right"><center>&lt;&lt;ORDER_FEES$FEE_PRICE_EACH&gt;&gt;</center></td>
+     <td align="right"><center>&lt;&lt;ORDER_FEES$FEE_PRICE_EXT&gt;&gt;</center></td>
+     <td align="right">
+      <center>
+       <!--includeif function="IS_TAXABLE_FEE"-->
+       <img src="html\img\checkmark.png"/>
+       <!--endincludeif-->
+      </center>
+     </td>
+    </tr>
+    <!--endforeachrow-->
+	</tbody>
+   </table>
+   <table border="0" cellspacing="0" width="100%">
+    <tr>
+     <td width="60%" valign="top"  border="0">
+        <table border="1" align="left" cellspacing="0" cellpadding="3">
+           <tr>Art Info</tr>
+           <tr>
+              <th>Placement</th>
+              <th>Colors</th>
+              <th>Note</th>
+           </tr>
+           <!--foreachrow table="ORDER_ART_PLACEMENT"-->
+           <tr>
+              <td>&lt;&lt;ORDER_ART_PLACEMENT$_LOOKUP$ART_PLACEMENT_CODE&gt;&gt;</td>
+              <td>&lt;&lt;ORDER_ART_PLACEMENT$COLORS&gt;&gt;</td>
+              <td>&lt;&lt;ORDER_ART_PLACEMENT$NOTES&gt;&gt;</td>
+           </tr>
+           <!--endforeachrow-->
+          <tr>Art File</tr>
+          <tr>
+              <th>Image File</th>
+              <th>Art Folder</th>
+              <th>Note</th>
+           </tr>
+           <!--foreachrow table="ORDER_ART_FILE"-->
+           <tr>
+              <td>&lt;&lt;ORDER_ART_FILE$IMAGE_FILE&gt;&gt;</td>
+              <td>&lt;&lt;ORDER_ART_FILE$ART_FOLDER&gt;&gt;</td>
+              <td>&lt;&lt;ORDER_ART_FILE$NOTE&gt;&gt;</td>
+           </tr>
+           <!--endforeachrow-->
+          <tr>Payments</tr>
+          <tr>
+              <th>Amount</th>
+              <th>Type</th>
+              <th>Date</th>
+           </tr>
+           <!--foreachrow table="ORDER_PAYMENTS"-->
+           <tr>
+              <td>&lt;&lt;ORDER_PAYMENTS$PAYMENT_AMOUNT&gt;&gt;</td>
+              <td>&lt;&lt;ORDER_PAYMENTS$_LOOKUP$PAYMENT_TYPE_CODE&gt;&gt;</td>
+              <td>&lt;&lt;ORDER_PAYMENTS$PAYMENT_DATE&gt;&gt;</td>
+           </tr>
+           <!--endforeachrow-->
+        </table>
+     </td>
+     <td width="30%" border="0">
+      <table border="1" align="right" cellspacing="0" cellpadding="3">
+       <tr>
+        <th align="right">Subtotal</th>
+        <td align="right">&lt;&lt;ORDERS$SUBTOTAL&gt;&gt;</td>
+       </tr>
+       <tr>
+        <th align="right">Tax Rate</th>
+        <td align="right">&lt;&lt;ORDERS$TAX_RATE&gt;&gt;</td>
+       </tr>
+       <tr>
+        <th align="right">Tax</th>
+        <td align="right">&lt;&lt;ORDERS$TAX_AMOUNT&gt;&gt;</td>
+       </tr>
+       <tr>
+        <th align="right">Shipping</th>
+        <td align="right">&lt;&lt;ORDERS$SHIPPING&gt;&gt;</td>
+       </tr>
+       <tr>
+        <th align="right">Total</th>
+        <td align="right">&lt;&lt;ORDERS$TOTAL&gt;&gt;</td>
+       </tr>
+       <tr>
+        <th align="right">Payments</th>
+        <td align="right">&lt;&lt;ORDERS$PAYMENTS&gt;&gt;</td>
+       </tr>
+       <tr>
+        <th align="right"><b><i>Balance Due</i></b></th>
+        <td align="right"><b>&lt;&lt;ORDERS$BALANCE_DUE&gt;&gt;</b></td>
+       </tr>
+      </table>
+     </td>
+    </tr>
+   </table>
+   <center>
+    <h5><i><b>Thank you for your order! We appreciate your business.</b></i><br/>
+    A 50% deposit is required to initiate all orders. Balance is due upon shipment of order.
+   </h5>
+    <h6>All artwork and custom designs are for the use only of the individual or organization paying for the designs. The "screens" remain the property of Southpaw Screen Printing. 	</h6>
+   </center>
+  </td>
+  <td class="box5">
+  </td>
+ </tr>
+  
+ <tr>
+  <td class="box6">
+  </td>
+  <td class="box7">
+  </td>
+  <td class="box8">
+  </td>
+ </tr>
+</table>
+</body>
+</html>
