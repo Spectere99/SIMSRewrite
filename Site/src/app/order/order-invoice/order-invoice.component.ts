@@ -98,19 +98,25 @@ order: any;
   convert() {
     const doc = new jsPDF('p', 'pt', 'a4');
 
+    const margins = {
+      top: 25,
+      bottom: 60,
+      left: 20,
+      width: 522
+    };
+
     const options = {
       pagesplit: true,
       background: '#fff',
-      top: 35,
-      bottom: 35,
-      left: 40,
-      right: 40
     };
 
     const elementToPrint = document.getElementById('invoiceContent');
     console.log('Generating PDF', elementToPrint);
     // doc.autoTable(col, rows);
-    doc.addHTML(elementToPrint, 10, 1, options, () => {
+    doc.addHTML(elementToPrint, 25, 25, options, () => {
+      // const pdfString = doc.output('datauristring');
+      // const x = window.open();
+      // x.document.open(pdfString);
       doc.save('Test.pdf');
     });
 
