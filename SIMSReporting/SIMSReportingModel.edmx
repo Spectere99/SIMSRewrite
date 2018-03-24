@@ -4,7 +4,19 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ReportingModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ReportingModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.7" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="order_payments">
+          <Key>
+            <PropertyRef Name="order_payment_id" />
+          </Key>
+          <Property Name="order_payment_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="order_id" Type="int" />
+          <Property Name="payment_date" Type="datetime" Precision="0" />
+          <Property Name="payment_type_code" Type="varchar" MaxLength="10" />
+          <Property Name="check_number" Type="varchar" MaxLength="50" />
+          <Property Name="payment_amount" Type="varchar" MaxLength="50" />
+          <Property Name="entered_user_id" Type="int" />
+        </EntityType>
         <EntityType Name="orders">
           <Key>
             <PropertyRef Name="order_id" />
@@ -59,10 +71,10 @@
           <Property Name="contact_phone2_type" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityContainer Name="ReportingModelStoreContainer">
+          <EntitySet Name="order_payments" EntityType="Self.order_payments" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="orders" EntityType="Self.orders" Schema="printmgr" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ReportingModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -118,10 +130,41 @@
           <Property Name="contact_phone2" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="contact_phone2_ext" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="contact_phone2_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="order_payments_rpt" Relationship="ReportingModel.order_rptorder_payments_rpt" FromRole="order_rpt" ToRole="order_payments_rpt" />
         </EntityType>
         <EntityContainer Name="ReportingEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="order_rpt" EntityType="ReportingModel.order_rpt" />
+          <EntitySet Name="order_payments_rpt" EntityType="ReportingModel.order_payments_rpt" />
+          <AssociationSet Name="order_rptorder_payments_rpt" Association="ReportingModel.order_rptorder_payments_rpt">
+            <End Role="order_rpt" EntitySet="order_rpt" />
+            <End Role="order_payments_rpt" EntitySet="order_payments_rpt" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="order_payments_rpt">
+          <Key>
+            <PropertyRef Name="order_payment_id" />
+          </Key>
+          <Property Name="order_payment_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="order_id" Type="Int32" />
+          <Property Name="payment_date" Type="DateTime" />
+          <Property Name="payment_type_code" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="check_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="payment_amount" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="entered_user_id" Type="Int32" />
+          <NavigationProperty Name="order_rpt" Relationship="ReportingModel.order_rptorder_payments_rpt" FromRole="order_payments_rpt" ToRole="order_rpt" />
+        </EntityType>
+        <Association Name="order_rptorder_payments_rpt">
+          <End Type="ReportingModel.order_rpt" Role="order_rpt" Multiplicity="0..1" />
+          <End Type="ReportingModel.order_payments_rpt" Role="order_payments_rpt" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order_rpt">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="order_payments_rpt">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -182,6 +225,19 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="order_payments_rpt">
+            <EntityTypeMapping TypeName="ReportingModel.order_payments_rpt">
+              <MappingFragment StoreEntitySet="order_payments">
+                <ScalarProperty Name="entered_user_id" ColumnName="entered_user_id" />
+                <ScalarProperty Name="payment_amount" ColumnName="payment_amount" />
+                <ScalarProperty Name="check_number" ColumnName="check_number" />
+                <ScalarProperty Name="payment_type_code" ColumnName="payment_type_code" />
+                <ScalarProperty Name="payment_date" ColumnName="payment_date" />
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="order_payment_id" ColumnName="order_payment_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -197,7 +253,7 @@
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

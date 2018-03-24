@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { LookupService } from '../../_services/lookups.service';
 import { ReportingService } from '../../_services/report.service';
+import { UserService } from '../../_services/user.service';
 
 import { DxDataGridComponent,
   DxDataGridModule } from 'devextreme-angular';
@@ -11,7 +12,7 @@ import { DxDataGridComponent,
   selector: 'app-order-balance',
   templateUrl: './order-balance.component.html',
   styleUrls: ['./order-balance.component.scss'],
-  providers: [ReportingService, LookupService]
+  providers: [ReportingService, LookupService, UserService]
 })
 export class OrderBalanceComponent implements OnInit {
 @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
@@ -20,9 +21,10 @@ dataSource: any;
 lookupDataSource: any;
 orderTypes: any;
 statusTypes: any;
+userDataSource: any;
 orderStartDate;
 
-  constructor(public reportService: ReportingService, lookupService: LookupService) {
+  constructor(public reportService: ReportingService, lookupService: LookupService, userService: UserService) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     this.orderStartDate = today.toLocaleDateString();
@@ -31,6 +33,9 @@ orderStartDate;
       this.orderTypes = this.createLookupTypeSource('otyps');
       this.statusTypes = this.createLookupTypeSource('ord');
       this.createOrderBalanceDataSource();
+    });
+    userService.getUsers('').subscribe(res => {
+      this.userDataSource = res.value;
     });
   }
 
@@ -55,8 +60,15 @@ orderStartDate;
       'total',
       'balance_due',
       'payments',
-      'contact']
+      'contact',
+      'taken_user_id']
     };
+  }
+
+  getUserFullName(item) {
+    // console.log('getUserFullName', item);
+    // return 'User Name HERE';
+    return item.first_name + ' ' + item.last_name;
   }
 
   setOrderDate(e) {

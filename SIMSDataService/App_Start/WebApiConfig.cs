@@ -67,6 +67,7 @@ namespace SIMSDataService
             builder.EntitySet<order_status_history>("OrderStatusHistory");
 
             builder.EntitySet<order_rpt>("OrderReporting");
+            builder.EntitySet<order_payments_rpt>("PaymentReporting");
             return builder.GetEdmModel();
         }
     }

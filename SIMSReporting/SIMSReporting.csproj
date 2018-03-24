@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="order_payments_rpt.cs">
+      <DependentUpon>SIMSReportingModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="order_rpt.cs">
       <DependentUpon>SIMSReportingModel.tt</DependentUpon>
     </Compile>

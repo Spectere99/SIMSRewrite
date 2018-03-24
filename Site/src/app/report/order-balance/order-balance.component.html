@@ -13,35 +13,64 @@
       <dxo-selection mode="single"></dxo-selection>
       <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
       <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
-      <dxi-column dataField="order_id" caption="ID" [width]="100" [allowFiltering]="true" [visible]="false"></dxi-column>
-      <dxi-column dataField="order_number" caption="Order Number" [width]="150" sortOrder="asc" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="contact" caption="Contact" [width]="200" [allowFiltering]="true"></dxi-column>
+      <dxi-column dataField="order_id" dataType="number" caption="ID" [width]="100" [allowFiltering]="true" [visible]="false"></dxi-column>
+      <dxi-column dataField="order_number" dataType="string" caption="Order Number" [width]="150" sortOrder="asc" [allowFiltering]="true"></dxi-column>
+      <dxi-column dataField="ship_attn" dataType="string" caption="Customer" [width]="350" [allowFiltering]="true"></dxi-column>
+      <dxi-column dataField="taken_user_id" dataType="number" caption="Salesperson" [width]="200" [allowFiltering]="true">
+        <dxo-lookup [dataSource]="userDataSource" valueExpr="user_id" [displayExpr]="getUserFullName"></dxo-lookup>
+      </dxi-column>
       <!-- <dxi-column dataField="ship_attn" caption="Ship Attn" [width]="250" [allowFiltering]="true"></dxi-column> -->
-      <dxi-column dataField="order_type" caption="Order Type" [width]="225">
+      <dxi-column dataField="order_type" dataType="string" caption="Order Type" [width]="250">
         <dxo-lookup [dataSource]="orderTypes" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
       </dxi-column>
-      <dxi-column dataField="order_date" caption="Order Date" [width]="150" [allowFiltering]="true"
+      <dxi-column dataField="order_date" dataType="date" caption="Order Date" [width]="150" [allowFiltering]="true"
         selectedFilterOpration="="
         [filterValue]="orderStartDate"></dxi-column>
-      <dxi-column dataField="order_due_date" caption="Order Due Date" [width]="150" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="order_status" caption="Status" [width]="125">
+      <dxi-column dataField="order_due_date" dataType="date" caption="Order Due Date" [width]="150" [allowFiltering]="true"></dxi-column>
+      <dxi-column dataField="order_status" dataType="string" caption="Status" [width]="125">
         <dxo-lookup [dataSource]="statusTypes" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
       </dxi-column>
-      <dxi-column dataField="total" caption="Total" [width]="175" [allowFiltering]="true" valueFormat="currency"></dxi-column>
-      <dxi-column dataField="balance_due" caption="Remaining Due" [width]="175" [allowFiltering]="true" valueFormat="currency"></dxi-column>
+      <dxi-column dataField="total" dataType="number" caption="Total" [width]="200" [allowFiltering]="true" format="currency" precision="2"></dxi-column>
+      <!-- <dxi-column dataField="balance_due" dataType="number" caption="Remaining Due" [width]="175" [allowFiltering]="true" format="currency" precision="2"></dxi-column> -->
       <dxo-summary>
+          <dxi-group-item
+          column="Total"
+          summaryType="sum"
+          valueFormat="currency"
+          precision="2"
+          displayFormat="Total: {0}"
+          [showInGroupFooter]="true">
+        </dxi-group-item>
+        <dxi-group-item
+            column="Total"
+            summaryType="max"
+            valueFormat="currency"
+            precision="2"
+            [showInGroupFooter]="false"
+            [alignByColumn]="true"
+            displayFormat="Largest: {0}"
+            showInColumn="order_type">
+        </dxi-group-item>
+        <dxi-group-item
+          column="order_number"
+          summaryType="count"
+          displayFormat="{0} orders"
+          >
+        </dxi-group-item>
         <dxi-total-item
             column="total"
             summaryType="sum"
             valueFormat="currency"
+            precision="2"
             displayFormat="Total Sales: {0}">
         </dxi-total-item>
-        <dxi-total-item
+        <!-- <dxi-total-item
             column="balance_due"
             summaryType="sum"
             valueFormat="currency"
+            precision="2"
             displayFormat="Total Balance: {0}">
-        </dxi-total-item>
+        </dxi-total-item> -->
     </dxo-summary>
       <dxo-search-panel [visible]="false"></dxo-search-panel>
       <dxo-header-filter [visible]="true"></dxo-header-filter>

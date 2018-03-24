@@ -26,5 +26,6 @@ namespace SIMSReporting
         }
     
         public virtual DbSet<order_rpt> order_rpt { get; set; }
+        public virtual DbSet<order_payments_rpt> order_payments_rpt { get; set; }
     }
 }

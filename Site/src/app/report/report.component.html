@@ -1,5 +1,13 @@
 <div class="container col-md-12">
     <h5><span class="material-icons" style="text-align: center;">dashboard</span> Reports</h5>
     <hr>
-    <app-order-balance></app-order-balance>
+    <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%;">
+      <mat-tab label="Orders">
+        <app-order-balance></app-order-balance>
+      </mat-tab>
+      <mat-tab label="Payments">
+        <app-order-payments></app-order-payments>>
+      </mat-tab>
+    </mat-tab-group>
+    
   </div>

@@ -14,6 +14,12 @@ namespace SIMSReporting
     
     public partial class order_rpt
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public order_rpt()
+        {
+            this.order_payments_rpt = new HashSet<order_payments_rpt>();
+        }
+    
         public int order_id { get; set; }
         public Nullable<int> customer_id { get; set; }
         public string order_number { get; set; }
@@ -62,5 +68,8 @@ namespace SIMSReporting
         public string contact_phone2 { get; set; }
         public string contact_phone2_ext { get; set; }
         public string contact_phone2_type { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<order_payments_rpt> order_payments_rpt { get; set; }
     }
 }
