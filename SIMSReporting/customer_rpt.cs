@@ -7,20 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace SIMSEntities
+namespace SIMSReporting
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class customer
+    public partial class customer_rpt
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public customer()
+        public customer_rpt()
         {
-            this.customer_address = new HashSet<customer_address>();
-            this.orders = new HashSet<order>();
-            this.customer_person = new HashSet<customer_person>();
-            this.parent = new HashSet<customer>();
+            this.order_rpt = new HashSet<order_rpt>();
         }
     
         public int customer_id { get; set; }
@@ -32,17 +29,10 @@ namespace SIMSEntities
         public string website_url { get; set; }
         public string account_number { get; set; }
         public string override_validation_ind { get; set; }
-        public Nullable<int> parent_id { get; set; }
+        public Nullable<long> parent_id { get; set; }
         public string parent_ind { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<customer_address> customer_address { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<order> orders { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<customer_person> customer_person { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<customer> parent { get; set; }
-        public virtual customer child_customers { get; set; }
+        public virtual ICollection<order_rpt> order_rpt { get; set; }
     }
 }

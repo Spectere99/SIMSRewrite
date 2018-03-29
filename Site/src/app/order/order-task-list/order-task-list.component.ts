@@ -24,11 +24,11 @@ userProfile;
   constructor(private lookupService: LookupService, public orderService: OrderService,
               public taskService: TaskService, public authService: AuthenticationService) {
     this.userProfile = JSON.parse(authService.getUserToken());
-    console.log('order Task List Constructor');
+    // console.log('order Task List Constructor');
     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.taskLookup = this.createLookupTypeSource('otask');
-      console.log('task list', this.taskLookup);
+      // console.log('task list', this.taskLookup);
     });
     taskService.loadTaskData('').subscribe(res => {
       this.taskList = res.value;
@@ -57,8 +57,8 @@ userProfile;
   }
 
   setTaskComplete(isChecked, task, idx) {
-    console.log('setTaskComplete: isChecked', isChecked);
-    console.log('setTaskComplete: userProfile', this.userProfile);
+    // console.log('setTaskComplete: isChecked', isChecked);
+    // console.log('setTaskComplete: userProfile', this.userProfile);
     const foundTask = this.orderTask.filter(item => item.task_code === task.task_code);
     if (foundTask.length > 0) {
       if (isChecked) {
@@ -82,8 +82,8 @@ userProfile;
   }
 
   batchSave(orderId: number) {
-    console.log('Saving Order Tasks', this.orderTask);
-    console.log('Saving Order Task - OrderId:', orderId);
+    // console.log('Saving Order Tasks', this.orderTask);
+    // console.log('Saving Order Task - OrderId:', orderId);
     // Need to pull the existing tasks and loop through to delete them
     // before adding the new task list updates.
     this.orderService.loadOrderTaskData(this.userProfile.profile.login_id, orderId)
@@ -91,7 +91,7 @@ userProfile;
         const toDelete = res;
         this.orderService.deleteOrderTask(this.userProfile.profile.login_id, orderId)
         .subscribe(delRes => {
-          console.log('Delete Response', delRes);
+          // console.log('Delete Response', delRes);
           for (let x = 0; x < this.orderTask.length; x++) {
             this.saveOrderTasks(orderId, this.orderTask[x]);
           }
@@ -104,18 +104,18 @@ userProfile;
     orderTask.order_id = orderId;
     this.orderService.addOrderTask(this.userProfile.profile.log_id, orderTask)
       .subscribe(res => {
-        console.log(res);
+        // console.log(res);
       });
   }
 
   ngOnInit() {
-    console.log('Order Task List onInit', this.currentOrder);
+    // console.log('Order Task List onInit', this.currentOrder);
     if (this.currentOrder) {
       if (this.currentOrder.order_id > 0) {  // Existing Order.  Grab its tasks for display
         this.orderService.loadOrderTaskData('rflowers', this.currentOrder.order_id)
         .subscribe(res => {
           this.orderTask = res.order_task;
-          console.log('Order Tasks Pulled', res);
+          // console.log('Order Tasks Pulled', res);
         });
       }
     }
@@ -123,13 +123,13 @@ userProfile;
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    console.log('Order Task List onChange', this.currentOrder);
+    // console.log('Order Task List onChange', this.currentOrder);
     if (this.currentOrder) {
       if (this.currentOrder.order_id > 0) {  // Existing Order.  Grab its tasks for display
         this.orderService.loadOrderTaskData('rflowers', this.currentOrder.order_id)
         .subscribe(res => {
           this.orderTask = res.order_task;
-          console.log('Order Tasks Pulled', res.order_task);
+          // console.log('Order Tasks Pulled', res.order_task);
         });
       } else {
         this.orderTask = new Array<OrderTask>();

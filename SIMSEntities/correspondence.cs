@@ -23,6 +23,6 @@ namespace SIMSEntities
         public Nullable<int> user_id { get; set; }
         public string corr_filename { get; set; }
     
-        public virtual customer customers { get; set; }
+        public virtual order order { get; set; }
     }
 }

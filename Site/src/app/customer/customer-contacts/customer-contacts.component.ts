@@ -38,17 +38,17 @@ dirtyRecords: Array<CustomerPerson>;
       // Ascending: first age less than the previous
       return obj1.order_by - obj2.order_by;
     });
-    console.log('PersonTypes', this.personTypes);
+    // console.log('PersonTypes', this.personTypes);
   }
 
   createPhoneTypeDataSource() {
     this.phoneTypes = this.lookupDataSource.filter(item => item.class === 'PHON');
-    console.log('PhoneTypes', this.phoneTypes);
+    // console.log('PhoneTypes', this.phoneTypes);
   }
 
   removeContact(customerPersonId: number) {
-    console.log('Removing Contact', customerPersonId);
-    console.log('Customer List', this.customer);
+    // console.log('Removing Contact', customerPersonId);
+    // console.log('Customer List', this.customer);
     // Remove contact from list based on customerId
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '250px',
@@ -56,8 +56,8 @@ dirtyRecords: Array<CustomerPerson>;
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log('The Result', result);
+      // console.log('The dialog was closed');
+      // console.log('The Result', result);
       if (result) {
         this.customer.customer_person = this.customer.customer_person.filter(p => p.customer_person_id !== customerPersonId);
 
@@ -125,11 +125,11 @@ dirtyRecords: Array<CustomerPerson>;
   }
 
   saveContact(customerContact: CustomerPerson) {
-    console.log('Customer Contact on Save', customerContact);
+    // console.log('Customer Contact on Save', customerContact);
       if (customerContact.customer_person_id === 0) {
         this.customerService.addCustomerContact('rwflowers', customerContact)
         .subscribe(res => {
-          console.log('Savecontact Return', res);
+          // console.log('Savecontact Return', res);
           this.snackBar.open('Customer Contact Added!', '', {
             duration: 4000,
             verticalPosition: 'top'
@@ -138,7 +138,7 @@ dirtyRecords: Array<CustomerPerson>;
       } else {
         this.customerService.updateCustomerContact('rwflowers', customerContact)
         .subscribe(res => {
-          console.log('Update contact Return', res);
+          // console.log('Update contact Return', res);
           this.snackBar.open('Customer Contact Updated!', '', {
             duration: 4000,
             verticalPosition: 'top'

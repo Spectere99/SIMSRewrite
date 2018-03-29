@@ -117,7 +117,7 @@
           </tr>
           <tr>
             <td>
-              <select [ngClass]="{'empty':newMode}" class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.order_status" required>
+              <select [ngClass]="{'empty':newMode}" class="form-control form-control-sm" style="width:auto;" [ngModel]="currentOrder.order_status" (ngModelChange)="onOrderStatusChange($event);" required>
                 <option *ngFor="let itm of statusTypes" [value]="itm.char_mod">
                   {{itm.description}}
                 </option>

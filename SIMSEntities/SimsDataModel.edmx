@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="correspondence_id" />
           </Key>
-          <Property Name="correspondence_id" Type="int" Nullable="false" />
+          <Property Name="correspondence_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="customer_id" Type="int" />
           <Property Name="order_id" Type="int" />
           <Property Name="corr_date" Type="datetime" Precision="0" />
@@ -251,7 +251,7 @@
           <Key>
             <PropertyRef Name="order_status_history_id" />
           </Key>
-          <Property Name="order_status_history_id" Type="int" Nullable="false" />
+          <Property Name="order_status_history_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="order_id" Type="int" />
           <Property Name="order_status" Type="varchar" MaxLength="10" />
           <Property Name="status_date" Type="datetime" Precision="0" />
@@ -429,20 +429,6 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="SimsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="correspondence">
-          <Key>
-            <PropertyRef Name="correspondence_id" />
-          </Key>
-          <Property Name="correspondence_id" Type="Int32" Nullable="false" />
-          <Property Name="customer_id" Type="Int32" />
-          <Property Name="order_id" Type="Int32" />
-          <Property Name="corr_date" Type="DateTime" />
-          <Property Name="corr_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="corr_disp" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="user_id" Type="Int32" />
-          <Property Name="corr_filename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="customers" Relationship="SimsModel.correspondencecustomer" FromRole="correspondence" ToRole="customer" />
-        </EntityType>
         <EntityType Name="customer">
           <Key>
             <PropertyRef Name="customer_id" />
@@ -460,7 +446,6 @@
           <Property Name="parent_ind" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="customer_address" Relationship="SimsModel.customer_customer_address" FromRole="customer" ToRole="customer_address" />
           <NavigationProperty Name="orders" Relationship="SimsModel.ordercustomer" FromRole="customer" ToRole="order" />
-          <NavigationProperty Name="correspondence" Relationship="SimsModel.correspondencecustomer" FromRole="customer" ToRole="correspondence" />
           <NavigationProperty Name="customer_person" Relationship="SimsModel.customer_personcustomer" FromRole="customer" ToRole="customer_person" />
           <NavigationProperty Name="parent" Relationship="SimsModel.customer_parent" FromRole="customer" ToRole="customer1" />
           <NavigationProperty Name="child_customers" Relationship="SimsModel.customer_parent" FromRole="customer1" ToRole="customer" />
@@ -754,6 +739,7 @@
           <NavigationProperty Name="order_art_file" Relationship="SimsModel.orderorder_art_file" FromRole="order" ToRole="order_art_file" />
           <NavigationProperty Name="order_task" Relationship="SimsModel.orderorder_task" FromRole="order" ToRole="order_task" />
           <NavigationProperty Name="order_status_history" Relationship="SimsModel.orderorder_status_history" FromRole="order" ToRole="order_status_history" />
+          <NavigationProperty Name="correspondences" Relationship="SimsModel.ordercorrespondence" FromRole="order" ToRole="correspondence" />
         </EntityType>
         <EntityType Name="pricelist">
           <Key>
@@ -829,7 +815,6 @@
           <NavigationProperty Name="user_group" Relationship="SimsModel.useruser_group" FromRole="user" ToRole="user_group" />
         </EntityType>
         <EntityContainer Name="simsEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="correspondences" EntityType="Self.correspondence" />
           <EntitySet Name="customers" EntityType="Self.customer" />
           <EntitySet Name="customer_address" EntityType="Self.customer_address" />
           <EntitySet Name="customer_notes" EntityType="Self.customer_notes" />
@@ -855,10 +840,6 @@
           </AssociationSet>
           <AssociationSet Name="ordercustomer" Association="SimsModel.ordercustomer">
             <End Role="order" EntitySet="orders" />
-            <End Role="customer" EntitySet="customers" />
-          </AssociationSet>
-          <AssociationSet Name="correspondencecustomer" Association="SimsModel.correspondencecustomer">
-            <End Role="correspondence" EntitySet="correspondences" />
             <End Role="customer" EntitySet="customers" />
           </AssociationSet>
           <AssociationSet Name="orderorder_detail" Association="SimsModel.orderorder_detail">
@@ -912,6 +893,11 @@
             <End Role="order" EntitySet="orders" />
             <End Role="order_status_history" EntitySet="order_status_history" />
           </AssociationSet>
+          <EntitySet Name="correspondences" EntityType="SimsModel.correspondence" />
+          <AssociationSet Name="ordercorrespondence" Association="SimsModel.ordercorrespondence">
+            <End Role="order" EntitySet="orders" />
+            <End Role="correspondence" EntitySet="correspondences" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="customer_customer_address">
           <End Type="SimsModel.customer" Role="customer" Multiplicity="0..1" />
@@ -933,18 +919,6 @@
               <PropertyRef Name="customer_id" />
             </Principal>
             <Dependent Role="order">
-              <PropertyRef Name="customer_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="correspondencecustomer">
-          <End Type="SimsModel.correspondence" Role="correspondence" Multiplicity="*" />
-          <End Type="SimsModel.customer" Role="customer" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="customer">
-              <PropertyRef Name="customer_id" />
-            </Principal>
-            <Dependent Role="correspondence">
               <PropertyRef Name="customer_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -1119,26 +1093,38 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="correspondence">
+          <Key>
+            <PropertyRef Name="correspondence_id" />
+          </Key>
+          <Property Name="correspondence_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="customer_id" Type="Int32" />
+          <Property Name="order_id" Type="Int32" />
+          <Property Name="corr_date" Type="DateTime" />
+          <Property Name="corr_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="corr_disp" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="user_id" Type="Int32" />
+          <Property Name="corr_filename" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="order" Relationship="SimsModel.ordercorrespondence" FromRole="correspondence" ToRole="order" />
+        </EntityType>
+        <Association Name="ordercorrespondence">
+          <End Type="SimsModel.order" Role="order" Multiplicity="0..1" />
+          <End Type="SimsModel.correspondence" Role="correspondence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="correspondence">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="SimsModelStoreContainer" CdmEntityContainer="simsEntities">
-          <EntitySetMapping Name="correspondences">
-            <EntityTypeMapping TypeName="SimsModel.correspondence">
-              <MappingFragment StoreEntitySet="correspondence">
-                <ScalarProperty Name="correspondence_id" ColumnName="correspondence_id" />
-                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
-                <ScalarProperty Name="order_id" ColumnName="order_id" />
-                <ScalarProperty Name="corr_date" ColumnName="corr_date" />
-                <ScalarProperty Name="corr_type" ColumnName="corr_type" />
-                <ScalarProperty Name="corr_disp" ColumnName="corr_disp" />
-                <ScalarProperty Name="user_id" ColumnName="user_id" />
-                <ScalarProperty Name="corr_filename" ColumnName="corr_filename" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="customers">
             <EntityTypeMapping TypeName="SimsModel.customer">
               <MappingFragment StoreEntitySet="customer">
@@ -1537,6 +1523,20 @@
               <MappingFragment StoreEntitySet="user_group">
                 <ScalarProperty Name="hotjas_group_id" ColumnName="hotjas_group_id" />
                 <ScalarProperty Name="user_id" ColumnName="user_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="correspondences">
+            <EntityTypeMapping TypeName="SimsModel.correspondence">
+              <MappingFragment StoreEntitySet="correspondence">
+                <ScalarProperty Name="corr_filename" ColumnName="corr_filename" />
+                <ScalarProperty Name="user_id" ColumnName="user_id" />
+                <ScalarProperty Name="corr_disp" ColumnName="corr_disp" />
+                <ScalarProperty Name="corr_type" ColumnName="corr_type" />
+                <ScalarProperty Name="corr_date" ColumnName="corr_date" />
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+                <ScalarProperty Name="customer_id" ColumnName="customer_id" />
+                <ScalarProperty Name="correspondence_id" ColumnName="correspondence_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

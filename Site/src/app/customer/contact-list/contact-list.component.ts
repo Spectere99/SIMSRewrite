@@ -53,13 +53,13 @@ orderTabDisabled = true;
     });
     userService.getUsers('').subscribe(res => {
       this.userDataSource = res.value;
-      console.log(this.userDataSource);
+      // console.log(this.userDataSource);
     });
   }
   contentReady(e) {
     this.allowedPageSizes = [15, 25, 50];
     this.currentPageSize = 15;
-    console.log(this.gridCustomers.instance.getCombinedFilter());
+    // console.log(this.gridCustomers.instance.getCombinedFilter());
     if (Array.isArray(this.gridCustomers.instance.getCombinedFilter()[0])) {
       if (this.gridCustomers.instance.totalCount() < 1000) {
         this.allowedPageSizes = [15, 25, this.gridCustomers.instance.totalCount()];
@@ -79,12 +79,12 @@ orderTabDisabled = true;
 
     if (!this.expandedResults) {
       this.gridHeight = 525;
-      console.log('Page size-Collapse', this.currentPageSize);
-      console.log('gridHeight-Collapse', this.gridHeight);
+      // console.log('Page size-Collapse', this.currentPageSize);
+      // console.log('gridHeight-Collapse', this.gridHeight);
     } else {
       this.gridHeight = this.gridHeight * currentPageCount;
-      console.log('Page size-Expand', this.currentPageSize);
-      console.log('gridHeight-Expand', this.gridHeight);
+      // console.log('Page size-Expand', this.currentPageSize);
+      // console.log('gridHeight-Expand', this.gridHeight);
     }
     this.pagingEnabled = !this.pagingEnabled;
     this.scrollMode = 'virtual';
@@ -128,7 +128,7 @@ orderTabDisabled = true;
    };
   }
   onRowClick(e) {
-    console.log('rowClickEvent Param', e.data.items[0].customers);
+    // console.log('rowClickEvent Param', e.data.items[0].customers);
     if (e.rowType === 'group') {
       this.showEditPopup(e.data.items[0].customers);
     }
@@ -154,12 +154,12 @@ orderTabDisabled = true;
   }
 
   showAddPopup(e) {
-    console.log('Adding', e);
+    // console.log('Adding', e);
     this.selectedCustomer = new Customer;
     // console.log('SelectedCustomer', this.selectedCustomer);
     // alert('Editing!');
     const userProfile = JSON.parse(localStorage.getItem('userProfile'));
-    console.log('currentProfile', userProfile);
+    // console.log('currentProfile', userProfile);
     if (this.selectedCustomer.customer_id < 0) {
       this.orderTabDisabled = true; } else {this.orderTabDisabled = false;
     }
@@ -176,16 +176,16 @@ orderTabDisabled = true;
 
   showEditPopup(e) {
     // e.cancel = true;s
-    console.log('ShowPopup', e.data);
+    // console.log('ShowPopup', e.data);
     this.customerService.getCustomerData('', e.data.customers.customer_id).subscribe(res => {
       this.selectedCustomer = res;
-      console.log('Returned Customer', res);
+      // console.log('Returned Customer', res);
       this.popupVisible = true;
-      console.log('selectedCustomer for Tab Disble', this.selectedCustomer);
+      // console.log('selectedCustomer for Tab Disble', this.selectedCustomer);
       if (this.selectedCustomer.customer_id < 0) {
         this.orderTabDisabled = true; } else {this.orderTabDisabled = false;
       }
-      console.log('orderTabDisabled', this.orderTabDisabled);
+      // console.log('orderTabDisabled', this.orderTabDisabled);
     });
   }
 
@@ -200,7 +200,7 @@ orderTabDisabled = true;
         this.selectedCustomer = cust;
       });
     });
-    console.log('Selected Customer After Apply Changes', this.selectedCustomer);
+    // console.log('Selected Customer After Apply Changes', this.selectedCustomer);
     // Call customer_contacts component's batchSave method.
     setTimeout( () => {
       this.gridCustomers.instance.refresh();

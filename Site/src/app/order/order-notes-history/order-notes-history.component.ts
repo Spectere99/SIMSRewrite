@@ -23,11 +23,11 @@ export class OrderNotesHistoryComponent implements OnInit {
   constructor(private lookupService: LookupService, public orderService: OrderService,
               private userService: UserService, public authService: AuthenticationService) {
     this.userProfile = JSON.parse(authService.getUserToken());
-    console.log('order Task List Constructor');
+    // console.log('order Task List Constructor');
     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.statusTypes = this.createLookupTypeSource('ord');
-      console.log('StatusTypes', this.statusTypes);
+      // console.log('StatusTypes', this.statusTypes);
     });
     userService.getUsers('').subscribe(res => {
       this.userDataSource = res.value;
@@ -41,13 +41,13 @@ export class OrderNotesHistoryComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log('Order Status History List onInit', this.currentOrder);
+    // console.log('Order Status History List onInit', this.currentOrder);
     if (this.currentOrder) {
       if (this.currentOrder.order_id > 0) {  // Existing Order.  Grab its status history for display
         this.orderService.loadOrderStatusHistoryData('rflowers', this.currentOrder.order_id)
           .subscribe(res => {
             this.orderStatusHistory = res.order_status_history;
-            console.log('Order Status History Pulled', res);
+            // console.log('Order Status History Pulled', res);
           });
       }
     }
@@ -55,13 +55,13 @@ export class OrderNotesHistoryComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    console.log('Order Status History List onChange', this.currentOrder);
+    // console.log('Order Status History List onChange', this.currentOrder);
     if (this.currentOrder) {
       if (this.currentOrder.order_id > 0) {  // Existing Order.  Grab its status history
         this.orderService.loadOrderStatusHistoryData('rflowers', this.currentOrder.order_id)
           .subscribe(res => {
             this.orderStatusHistory = res.order_status_history;
-            console.log('Order Status History Pulled', res.order_status_history);
+            // console.log('Order Status History Pulled', res.order_status_history);
           });
       } else {
         this.orderStatusHistory = new Array<OrderStatusHistory>();

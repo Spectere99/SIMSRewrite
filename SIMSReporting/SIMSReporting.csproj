@@ -59,6 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="customer_rpt.cs">
+      <DependentUpon>SIMSReportingModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="order_payments_rpt.cs">
       <DependentUpon>SIMSReportingModel.tt</DependentUpon>
     </Compile>
@@ -80,6 +83,9 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>SIMSReportingModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="vw_order_payments.cs">
+      <DependentUpon>SIMSReportingModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

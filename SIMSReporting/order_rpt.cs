@@ -71,5 +71,6 @@ namespace SIMSReporting
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<order_payments_rpt> order_payments_rpt { get; set; }
+        public virtual customer_rpt customer_rpt { get; set; }
     }
 }

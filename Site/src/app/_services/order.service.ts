@@ -158,7 +158,6 @@ export class OrderStatusHistory {
 
 @Injectable()
 export class OrderService {
-    // private baseURL = 'http://localhost:56543/odata';
     private baseURL = environment.odataEndpoint;
     private artBaseURL = environment.artUploadURL;
     public requestResult: Array<any>;
@@ -282,16 +281,17 @@ export class OrderService {
     }
 
     addOrderTask(userId, orderTask: OrderTask) {
-        console.log('OrderTask in addOrderTask', orderTask);
+        // console.log('OrderTask in addOrderTask', orderTask);
         return this.http.post(this.baseURL + this._ORDER_TASK_ACTION, orderTask, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
             return res.json();
         });
     }
+
     updateOrderTask(userId, orderTask: OrderTask) {
         this.options = '(' + orderTask.order_id + ')';
-        console.log('OrderTask in updateOrderTask', orderTask);
+        // console.log('OrderTask in updateOrderTask', orderTask);
         return this.http.put(this.baseURL + this._ORDER_TASK_ACTION + this.options, orderTask, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -300,7 +300,7 @@ export class OrderService {
     }
     deleteOrderTask(userId, order_id: number) {
         this.options = '(' + order_id + ')';
-        console.log('OrderTask in deleteOrderTask', order_id);
+        // console.log('OrderTask in deleteOrderTask', order_id);
         return this.http.delete(this.baseURL + this._ORDER_TASK_ACTION + this.options, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -309,7 +309,7 @@ export class OrderService {
     }
 
     addOrderInfo(userId, order: Order) {
-        console.log('OrderInfo in addOrderInfo', order);
+        // console.log('OrderInfo in addOrderInfo', order);
         return this.http.post(this.baseURL + this._ORDER_ACTION, order, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -318,7 +318,7 @@ export class OrderService {
     }
     updateOrderInfo(userId, order: Order) {
         this.options = '(' + order.order_id + ')';
-        console.log('OrderInfo in updateOrderInfo', order);
+        // console.log('OrderInfo in updateOrderInfo', order);
         return this.http.put(this.baseURL + this._ORDER_ACTION + this.options, order, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -327,7 +327,7 @@ export class OrderService {
     }
     deleteOrderInfo(userId, order_id: number) {
         this.options = '(' + order_id + ')';
-        console.log('OrderInfo in deleteOrderInfo', order_id);
+        // console.log('OrderInfo in deleteOrderInfo', order_id);
         return this.http.delete(this.baseURL + this._ORDER_ACTION + this.options, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -336,7 +336,7 @@ export class OrderService {
     }
 
     addOrderLineItem(userId, lineItem: OrderDetail) {
-        console.log('OrderDetail in addOrderLineItem', lineItem);
+        // console.log('OrderDetail in addOrderLineItem', lineItem);
         return this.http.post(this.baseURL + this._ORDER_DETAIL_ACTION, lineItem, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -345,7 +345,7 @@ export class OrderService {
     }
     updateOrderLineItem(userId, lineItem: OrderDetail) {
         this.options = '(' + lineItem.order_detail_id + ')';
-        console.log('OrderDetail in updateOrderLineItem', lineItem);
+        // console.log('OrderDetail in updateOrderLineItem', lineItem);
         return this.http.put(this.baseURL + this._ORDER_DETAIL_ACTION + this.options, lineItem, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -354,7 +354,7 @@ export class OrderService {
     }
     deleteOrderLineItem(userId, order_detail_id: number) {
         this.options = '(' + order_detail_id + ')';
-        console.log('OrderDetail ID in deleteOrderLineItem', order_detail_id);
+        // console.log('OrderDetail ID in deleteOrderLineItem', order_detail_id);
         return this.http.delete(this.baseURL + this._ORDER_DETAIL_ACTION + this.options, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -362,7 +362,7 @@ export class OrderService {
         });
     }
     addOrderArtPlacement(userId, orderArtPlacement: OrderArtPlacement) {
-        console.log('OrderArtPlacement in addOrderArtPlacement', orderArtPlacement);
+        // console.log('OrderArtPlacement in addOrderArtPlacement', orderArtPlacement);
         return this.http.post(this.baseURL + this._ORDER_ART_PLACEMENT_ACTION, orderArtPlacement, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -371,7 +371,7 @@ export class OrderService {
     }
     updateOrderArtPlacement(userId, orderArtPlacement: OrderArtPlacement) {
         this.options = '(' + orderArtPlacement.order_art_placement_id + ')';
-        console.log('OrderDetail in updateOrderArtPlacement', orderArtPlacement);
+        // console.log('OrderDetail in updateOrderArtPlacement', orderArtPlacement);
         return this.http.put(this.baseURL + this._ORDER_ART_PLACEMENT_ACTION + this.options, orderArtPlacement
                             , {headers: this.getHeaders(userId) })
         .map((res: Response) => {
@@ -381,7 +381,7 @@ export class OrderService {
     }
     deleteOrderArtPlacement(userId, order_art_placement_id: number) {
         this.options = '(' + order_art_placement_id + ')';
-        console.log('OrderArtPlacement ID in deleteOrderArtPlacement', order_art_placement_id);
+        // console.log('OrderArtPlacement ID in deleteOrderArtPlacement', order_art_placement_id);
         return this.http.delete(this.baseURL + this._ORDER_ART_PLACEMENT_ACTION + this.options
                                 , {headers: this.getHeaders(userId) })
         .map((res: Response) => {
@@ -390,7 +390,7 @@ export class OrderService {
         });
     }
     addOrderFee(userId, orderFee: OrderFee) {
-        console.log('OrderFee in addOrderFee', orderFee);
+        // console.log('OrderFee in addOrderFee', orderFee);
         return this.http.post(this.baseURL + this._ORDER_FEE_ACTION, orderFee, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -399,7 +399,7 @@ export class OrderService {
     }
     updateOrderFee(userId, orderFee: OrderFee) {
         this.options = '(' + orderFee.order_fee_id + ')';
-        console.log('OrderFee in updateOrderFee', orderFee);
+        // console.log('OrderFee in updateOrderFee', orderFee);
         return this.http.put(this.baseURL + this._ORDER_FEE_ACTION + this.options, orderFee, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -408,7 +408,7 @@ export class OrderService {
     }
     deleteOrderFee(userId, order_fee_id: number) {
         this.options = '(' + order_fee_id + ')';
-        console.log('OrderFee ID in deleteOrderFee', order_fee_id);
+        // console.log('OrderFee ID in deleteOrderFee', order_fee_id);
         return this.http.delete(this.baseURL + this._ORDER_FEE_ACTION + this.options, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -416,7 +416,7 @@ export class OrderService {
         });
     }
     addOrderPayment(userId, orderPayment: OrderPayment) {
-        console.log('OrderPayment in addOrderPayment', orderPayment);
+        // console.log('OrderPayment in addOrderPayment', orderPayment);
         return this.http.post(this.baseURL + this._ORDER_PAYMENT_ACTION, orderPayment, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -425,7 +425,7 @@ export class OrderService {
     }
     updateOrderPayment(userId, orderPayment: OrderPayment) {
         this.options = '(' + orderPayment.order_payment_id + ')';
-        console.log('OrderPayment in updateOrderPayment', orderPayment);
+        // console.log('OrderPayment in updateOrderPayment', orderPayment);
         return this.http.put(this.baseURL + this._ORDER_PAYMENT_ACTION + this.options, orderPayment, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -434,7 +434,7 @@ export class OrderService {
     }
     deleteOrderPayment(userId, order_payment_id: number) {
         this.options = '(' + order_payment_id + ')';
-        console.log('OrderPayment ID in deleteOrderPayment', order_payment_id);
+        // console.log('OrderPayment ID in deleteOrderPayment', order_payment_id);
         return this.http.delete(this.baseURL + this._ORDER_PAYMENT_ACTION + this.options, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -443,7 +443,7 @@ export class OrderService {
     }
     // NOTE:  All Art File Actions use a Web API 2.0 back end insted of ODATA
     addOrderArtFile(userId, orderArtFile: OrderArtFile) {
-        console.log('OrderArtFile in addOrderArtFile', orderArtFile);
+        // console.log('OrderArtFile in addOrderArtFile', orderArtFile);
         return this.http.post(this.artBaseURL + '/' + this._ORDER_ART_FILE_ACTION, orderArtFile, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -452,7 +452,7 @@ export class OrderService {
     }
     updateOrderArtFile(userId, orderArtFile: OrderArtFile) {
         this.options = '(' + orderArtFile.order_art_id + ')';
-        console.log('OrderArtFile in updateOrderArtFile', orderArtFile);
+        // console.log('OrderArtFile in updateOrderArtFile', orderArtFile);
         return this.http.put(this.artBaseURL + '/' + this._ORDER_ART_FILE_ACTION + this.options, orderArtFile
                             , {headers: this.getHeaders(userId) })
         .map((res: Response) => {
@@ -462,9 +462,18 @@ export class OrderService {
     }
     deleteOrderArtFile(userId, order_art_id: number) {
         this.options = '/?id=' + order_art_id;
-        console.log('OrderArtFile ID in deleteOrderArtFile', order_art_id);
+        // console.log('OrderArtFile ID in deleteOrderArtFile', order_art_id);
         return this.http.delete(this.artBaseURL + '/' + this._ORDER_ART_FILE_ACTION + this.options
                             , {headers: this.getHeaders(userId) })
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+
+    addOrderStatus(userId, orderStatusHistory: OrderStatusHistory) {
+        // console.log('OrderStatusHistory in addOrderStatusHistory', orderStatusHistory);
+        return this.http.post(this.baseURL + this._ORDER_STATUS_HISTORY_ACTION, orderStatusHistory, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
             return res.json();

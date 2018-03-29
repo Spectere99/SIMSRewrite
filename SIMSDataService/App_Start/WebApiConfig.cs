@@ -27,6 +27,7 @@ namespace SIMSDataService
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();
             config.Filters.Add(new HostAuthenticationFilter(OAuthDefaults.AuthenticationType));
+            config.Formatters.Insert(0, new TextMediaTypeFormatter());
 
             // Web API routes
             config.MapHttpAttributeRoutes();
@@ -49,7 +50,6 @@ namespace SIMSDataService
             builder.EntitySet<customer_person>("CustomerPerson");
             builder.EntitySet<customer_address>("CustomerAddress");
             //builder.EntitySet<customer_person>("customer_persons");
-            builder.EntitySet<correspondence>("correspondences");
             builder.EntitySet<order_detail>("OrderDetails");
             builder.EntitySet<order_art_placement>("OrderArtPlacement");
             builder.EntitySet<order_art_file>("OrderArtFile");
@@ -65,9 +65,13 @@ namespace SIMSDataService
             builder.EntitySet<user_group>("UserGroup");
             builder.EntitySet<hotjas_group>("Group");
             builder.EntitySet<order_status_history>("OrderStatusHistory");
+            builder.EntitySet<correspondence>("Correspondence");
 
             builder.EntitySet<order_rpt>("OrderReporting");
             builder.EntitySet<order_payments_rpt>("PaymentReporting");
+            builder.EntitySet<customer_rpt>("CustomerReporting");
+            builder.EntitySet<vw_order_payments>("OrderPaymentReporting");
+
             return builder.GetEdmModel();
         }
     }

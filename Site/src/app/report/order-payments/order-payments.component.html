@@ -6,22 +6,22 @@
       <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
       <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
       <dxi-column dataField="order_id" dataType="number" caption="ID" [width]="100" [allowFiltering]="true" [visible]="false"></dxi-column>
-      <dxi-column dataField="order_rpt.order_number" dataType="string" caption="Order Number" [width]="150" sortOrder="asc" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="order_rpt.contact" dataType="string" caption="Order Contact" [width]="200" [allowFiltering]="true"
+      <dxi-column dataField="order_number" dataType="string" caption="Order Number" [width]="150" sortOrder="asc" [allowFiltering]="true"></dxi-column>
+      <dxi-column dataField="contact" dataType="string" caption="Order Contact" [width]="200" [allowFiltering]="true"
         [visible]="false"></dxi-column>
-      <dxi-column dataField="order_rpt.ship_attn" dataType="string" caption="Customer" [width]="350" [allowFiltering]="true"
+      <dxi-column dataField="customer_name" dataType="string" caption="Customer" [width]="350" [allowFiltering]="true"
         [visible]="true"></dxi-column>
-      <dxi-column dataField="order_rpt.taken_user_id" dataType="number" caption="Salesperson" [width]="200" [allowFiltering]="true">
-        <dxo-lookup [dataSource]="userDataSource" valueExpr="user_id" [displayExpr]="getUserFullName"></dxo-lookup>
+      <dxi-column dataField="salesperson" dataType="string" caption="Salesperson" [width]="200" [allowFiltering]="true">
+        <!-- <dxo-lookup [dataSource]="userDataSource" valueExpr="user_id" [displayExpr]="getUserFullName"></dxo-lookup> -->
       </dxi-column>
       <!-- <dxi-column dataField="ship_attn" caption="Ship Attn" [width]="250" [allowFiltering]="true"></dxi-column> -->
-      <dxi-column dataField="order_rpt.order_type" dataType="string" caption="Order Type" [width]="250">
+      <dxi-column dataField="order_type" dataType="string" caption="Order Type" [width]="250">
         <dxo-lookup [dataSource]="orderTypes" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
       </dxi-column>
-      <dxi-column dataField="order_rpt.order_date" dataType="date" caption="Order Date" [width]="150" [allowFiltering]="true"></dxi-column>
+      <dxi-column dataField="order_date" dataType="date" caption="Order Date" [width]="150" [allowFiltering]="true"></dxi-column>
       <dxi-column dataField="payment_date" dataType="date" caption="Payment Date" [width]="150" [allowFiltering]="true" selectedFilterOpration="="
         [filterValue]="paymentDate"></dxi-column>
-      <dxi-column dataField="order_rpt.total" dataType="number" caption="Order Total" [width]="125" [allowFiltering]="true" format="currency"
+      <dxi-column dataField="total" dataType="number" caption="Order Total" [width]="125" [allowFiltering]="true" format="currency"
         precision="2" [visible]="false"></dxi-column>
       <dxi-column dataField="payment_type_code" dataType="string" caption="Payment Type" [width]="125" [allowFiltering]="true">
         <dxo-lookup [dataSource]="paymentTypes" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
@@ -29,14 +29,14 @@
       <dxi-column dataField="payment_amount" dataType="number" caption="Payment Amount" [width]="200" [allowFiltering]="true" format="currency"
         precision="2"></dxi-column>
       <!--       <dxi-column dataField="order_rpt.order_due_date" dataType="date" caption="Order Due Date" [width]="150" [allowFiltering]="true"></dxi-column> -->
-      <dxi-column dataField="order_rpt.order_status" dataType="string" caption="Status" [width]="125" [visible]="false">
+      <dxi-column dataField="order_status" dataType="string" caption="Status" [width]="125" [visible]="false">
         <dxo-lookup [dataSource]="statusTypes" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
       </dxi-column>
       <dxo-summary>
         <dxi-group-item column="payment_amount" summaryType="sum" valueFormat="currency" precision="2" displayFormat="Total Payments: {0}"
           [showInGroupFooter]="true">
         </dxi-group-item>
-        <dxi-group-item column="order_rpt.order_number" summaryType="count" displayFormat="{0} orders"
+        <dxi-group-item column="order_number" summaryType="count" displayFormat="{0} orders"
           [showInGroupFooter]="false">
         </dxi-group-item>
         <dxi-total-item column="payment_amount" summaryType="sum" valueFormat="currency" precision="2" displayFormat="Total Payments: {0}">

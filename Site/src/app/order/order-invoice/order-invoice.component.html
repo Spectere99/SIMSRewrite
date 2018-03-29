@@ -1,6 +1,6 @@
 <button id="create" (click)="convert()">Create file</button>
-<div class="col-lg-10">
-  <div id="invoiceContent" [style.display]='none' style="background-color:white">
+<div class="col-lg-6">
+  <div id="invoiceContent" style="background-color:white;">
     <table border="0" cellspacing="0" cellpadding="0" width="100%">
       <tr>
         <td valign="top" cellspacing="0" cellpadding="0" width="100%">
@@ -12,7 +12,7 @@
               <td>
                 <table border="0" cellspacing="0" cellpadding="0" width="100%">
                   <tr>
-                    <td align="right" width="50%">
+                    <td align="right" width="100%">
 
                       <table border="0" cellspacing="0" cellpadding="0" width="75%">
                         <tr>
@@ -22,7 +22,7 @@
 
                             <i>
                               <b>
-                                <font size="5">Work Order / Receipt</font>
+                                <font size="4">Work Order / Receipt</font>
                               </b>
                             </i>
 
@@ -211,12 +211,12 @@
               <!--endforeachrow-->
               <tr>Fees</tr>
               <!--foreachrow table="ORDER_FEES"-->
-              <tr>
-                <td colspan="5">{{ORDER_FEES$_LOOKUP$PRICELIST_ID}}</td>
+              <tr *ngFor="let orderFee of orderFees">
+                <td colspan="5">{{getFeeDescription(orderFee.pricelist_id)}}</td>
                 <td colspan="16"></td>
-                <td align="right">{{ORDER_FEES$FEE_QUANTITY}}</td>
-                <td align="right">{{ORDER_FEES$FEE_PRICE_EACH}}</td>
-                <td align="right">{{ORDER_FEES$FEE_PRICE_EXT}}</td>
+                <td align="right">{{orderFee.fee_quantity}}</td>
+                <td align="right">{{orderFee.fee_price_each}}</td>
+                <td align="right">{{orderFee.fee_price_ext}}</td>
                 <td align="right">
 
                   <!--includeif function="IS_TAXABLE_FEE"-->
@@ -239,10 +239,10 @@
                     <th>Note</th>
                   </tr>
                   <!--foreachrow table="ORDER_ART_PLACEMENT"-->
-                  <tr>
-                    <td>{{ORDER_ART_PLACEMENT$_LOOKUP$ART_PLACEMENT_CODE}}</td>
-                    <td>{{ORDER_ART_PLACEMENT$COLORS}}</td>
-                    <td>{{ORDER_ART_PLACEMENT$NOTES}}</td>
+                  <tr *ngFor="let placement of orderArtPlacement">
+                    <td>{{getLookupDescription(placement.art_placement_code)}}</td>
+                    <td>{{placement.colors}}</td>
+                    <td>{{placement.notes}}</td>
                   </tr>
                   <!--endforeachrow-->
                   <tr>Art File</tr>
@@ -252,10 +252,10 @@
                     <th>Note</th>
                   </tr>
                   <!--foreachrow table="ORDER_ART_FILE"-->
-                  <tr>
-                    <td>{{ORDER_ART_FILE$IMAGE_FILE}}</td>
-                    <td>{{ORDER_ART_FILE$ART_FOLDER}}</td>
-                    <td>{{ORDER_ART_FILE$NOTE}}</td>
+                  <tr *ngFor="let artFile of orderArtFile">
+                    <td>{{artFile.image_file}}</td>
+                    <td>{{artFile.art_folder}}</td>
+                    <td>{{artFile.note}}</td>
                   </tr>
                   <!--endforeachrow-->
                   <tr>Payments</tr>
@@ -265,10 +265,10 @@
                     <th>Date</th>
                   </tr>
                   <!--foreachrow table="ORDER_PAYMENTS"-->
-                  <tr>
-                    <td>{{ORDER_PAYMENTS$PAYMENT_AMOUNT}}</td>
-                    <td>{{ORDER_PAYMENTS$_LOOKUP$PAYMENT_TYPE_CODE}}</td>
-                    <td>{{ORDER_PAYMENTS$PAYMENT_DATE}}</td>
+                  <tr *ngFor="let payment of orderPayments">
+                    <td>{{payment.payment_amount}}</td>
+                    <td>{{getLookupDescription(payment.payment_type_code)}}</td>
+                    <td>{{payment.payment_date | date: 'MM/dd/yyyy'}}</td>
                   </tr>
                   <!--endforeachrow-->
                 </table>

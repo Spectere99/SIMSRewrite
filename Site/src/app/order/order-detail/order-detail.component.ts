@@ -188,16 +188,16 @@ export class OrderDetailComponent implements OnInit {
   }
 
   deleteLineItem(e) {
-    console.log('deletingLineItem', e);
+    // console.log('deletingLineItem', e);
     // See if the item has been saved to the database. (non-negative id)
     // if it has not, then just remove it, otherwise, we need to call the web service
     // to delete the item from the database first.
     const index = this.order.order_detail.findIndex(x => x.order_detail_id === e.order_detail_id);
-    console.log('Del Line Item', index);
+    // console.log('Del Line Item', index);
     if (index >= 0) {
       if (e.order_detail_id > 0) {
         // Call web service to delete here - passing in the order_detail_id.
-        console.log('OrderDetail on Delete', e.order_detail_id);
+        // console.log('OrderDetail on Delete', e.order_detail_id);
         this.orderService.deleteOrderLineItem('rwflowers', e.order_detail_id)
         .subscribe(res => {
           this.snackBar.open('Order Line Deleted!', '', {
@@ -217,17 +217,17 @@ export class OrderDetailComponent implements OnInit {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     artPlacement.added_date = today.toLocaleDateString(); // this.formatOrderNumber(today);
-    console.log('ArtPlacement Added By', artPlacement.added_by);
-    console.log('UserList', this.userDataSource);
+    // console.log('ArtPlacement Added By', artPlacement.added_by);
+    // console.log('UserList', this.userDataSource);
     this.orderArtPlacement.unshift(artPlacement);
   }
   deleteArtPlacement(e) {
-    console.log('deletingArtPlacement', e);
+    // console.log('deletingArtPlacement', e);
     // See if the item has been saved to the database. (non-negative id)
     // if it has not, then just remove it, otherwise, we need to call the web service
     // to delete the item from the database first.
     const index = this.orderArtPlacement.findIndex(x => x.order_art_placement_id === e.order_art_placement_id);
-    console.log('Del Art Plcmt', index);
+    // console.log('Del Art Plcmt', index);
     if (index >= 0) {
       if (e.order_art_placement_id > 0) {
         // Call web service to delete here.
@@ -257,12 +257,12 @@ export class OrderDetailComponent implements OnInit {
     this.orderFees.unshift(orderFee);
   }
   deleteFee(e) {
-    console.log('deletingFee', e);
+    // console.log('deletingFee', e);
     // See if the item has been saved to the database. (non-negative id)
     // if it has not, then just remove it, otherwise, we need to call the web service
     // to delete the item from the database first.
     const index = this.orderFees.findIndex(x => x.order_fee_id === e.order_fee_id);
-    console.log('Del Fee', index);
+    // console.log('Del Fee', index);
     if (index >= 0) {
       if (e.order_fee_id > 0) {
         // Call web service to delete here.
@@ -288,12 +288,12 @@ export class OrderDetailComponent implements OnInit {
     this.orderPayments.push(payment);
   }
   deletePayment(e) {
-    console.log('deletingPayment', e);
+    // console.log('deletingPayment', e);
     // See if the item has been saved to the database. (non-negative id)
     // if it has not, then just remove it, otherwise, we need to call the web service
     // to delete the item from the database first.
     const index = this.orderPayments.findIndex(x => x.order_payment_id === e.order_payment_id);
-    console.log('Del Payment', index);
+    // console.log('Del Payment', index);
     if (index >= 0) {
       if (e.order_payment_id > 0) {
         // Call web service to delete here.
@@ -310,11 +310,11 @@ export class OrderDetailComponent implements OnInit {
   }
 
   onQtyPriceChange(e, idx) {
-    console.log('Order Detail onChange Event', e.target.value);
-    console.log('Order Index item', idx);
+    // console.log('Order Detail onChange Event', e.target.value);
+    // console.log('Order Index item', idx);
     let totalItemQty = 0;
     const orderLine = this.order.order_detail[idx];
-    console.log('orderLine', orderLine);
+    // console.log('orderLine', orderLine);
     totalItemQty = totalItemQty + ((orderLine.xsmall_qty === undefined) ? 0 : +orderLine.xsmall_qty);
     totalItemQty = totalItemQty + ((orderLine.small_qty === undefined) ? 0 : +orderLine.small_qty);
     totalItemQty = totalItemQty + ((orderLine.med_qty === undefined) ? 0 : +orderLine.med_qty);
@@ -350,7 +350,7 @@ export class OrderDetailComponent implements OnInit {
     this.nonTaxableSubTotal = 0.0.toFixed(2);
     let subTotal = 0;
     let nonTaxSubTotal = 0;
-    console.log('order Details', this.order.order_detail);
+    // console.log('order Details', this.order.order_detail);
     // Total order Line Items
     for ( let x = 0; x < this.order.order_detail.length; x++) {
       if (this.order.order_detail[x].taxable_ind === 'Y') {
@@ -359,8 +359,8 @@ export class OrderDetailComponent implements OnInit {
         nonTaxSubTotal = nonTaxSubTotal + +this.order.order_detail[x].item_price_ext;
       }
     }
-    console.log('subTotal', subTotal);
-    console.log('nonTaxSubTotal', nonTaxSubTotal);
+    // console.log('subTotal', subTotal);
+    // console.log('nonTaxSubTotal', nonTaxSubTotal);
     this.order.subtotal = subTotal.toFixed(2);
     this.currentOrder.subtotal = subTotal.toFixed(2);
     // Add Non Shipping Fees to SubTotal.
@@ -409,7 +409,7 @@ export class OrderDetailComponent implements OnInit {
 
   batchSave(order_id: number) {
     for (let x = 0; x < this.order.order_detail.length; x++) {
-      console.log('Saving Order- Order ID= ', order_id);
+      // console.log('Saving Order- Order ID= ', order_id);
       this.order.order_detail[x].order_id = order_id;
       this.saveOrderLines(this.order.order_detail[x]);
     }
@@ -431,13 +431,13 @@ export class OrderDetailComponent implements OnInit {
   }
 
   saveOrderLines(orderDetail: OrderDetail) {
-    console.log('OrderDetail on Save', orderDetail);
+    // console.log('OrderDetail on Save', orderDetail);
     if (orderDetail.order_detail_id <= 0) {
       orderDetail.order_detail_id = 0;
       orderDetail.order_id = this.order.order_id;
       this.orderService.addOrderLineItem('rwflowers', orderDetail)
       .subscribe(res => {
-        console.log('Save orderInfo Return', res);
+        // console.log('Save orderInfo Return', res);
         orderDetail.order_detail_id = res.order_detail_id;
         this.snackBar.open('Order Line Added!', '', {
           duration: 4000,
@@ -447,7 +447,7 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.orderService.updateOrderLineItem('rwflowers', orderDetail)
       .subscribe(res => {
-        console.log('Update orderLineItem Return', res);
+        // console.log('Update orderLineItem Return', res);
         this.snackBar.open('Order Line Updated!', '', {
           duration: 4000,
           verticalPosition: 'top'
@@ -457,12 +457,12 @@ export class OrderDetailComponent implements OnInit {
   }
 
   saveArtPlacement(artPlacement: OrderArtPlacement) {
-    console.log('Art Placement on Save', artPlacement);
+    // console.log('Art Placement on Save', artPlacement);
     if (artPlacement.order_art_placement_id <= 0) {
       artPlacement.order_art_placement_id = 0;
       this.orderService.addOrderArtPlacement('rwflowers', artPlacement)
       .subscribe(res => {
-        console.log('Save artPlacement Return', res);
+        // console.log('Save artPlacement Return', res);
         artPlacement.order_art_placement_id = res.order_art_placement_id;
         this.snackBar.open('Art Placement Line Added!', '', {
           duration: 4000,
@@ -472,7 +472,7 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.orderService.updateOrderArtPlacement('rwflowers', artPlacement)
       .subscribe(res => {
-        console.log('Update artPlacement Return', res);
+        // console.log('Update artPlacement Return', res);
         this.snackBar.open('Art Placement Line Updated!', '', {
           duration: 4000,
           verticalPosition: 'top'
@@ -482,12 +482,12 @@ export class OrderDetailComponent implements OnInit {
   }
 
   saveFees(orderFee: OrderFee) {
-    console.log('Order Fee on Save', orderFee);
+    // console.log('Order Fee on Save', orderFee);
     if (orderFee.order_fee_id <= 0) {
       orderFee.order_fee_id = 0;
       this.orderService.addOrderFee('rwflowers', orderFee)
       .subscribe(res => {
-        console.log('Save orderFee Return', res);
+        // console.log('Save orderFee Return', res);
         orderFee.order_fee_id = res.order_fee_id;
         this.snackBar.open('Order Fee Line Added!', '', {
           duration: 4000,
@@ -497,7 +497,7 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.orderService.updateOrderFee('rwflowers', orderFee)
       .subscribe(res => {
-        console.log('Update orderFee Return', res);
+        // console.log('Update orderFee Return', res);
         this.snackBar.open('Order Fee Line Updated!', '', {
           duration: 4000,
           verticalPosition: 'top'
@@ -507,12 +507,12 @@ export class OrderDetailComponent implements OnInit {
   }
 
   savePayments(orderPayment: OrderPayment) {
-    console.log('Order Payment on Save', orderPayment);
+    // console.log('Order Payment on Save', orderPayment);
     if (orderPayment.order_payment_id <= 0) {
       orderPayment.order_payment_id = 0;
       this.orderService.addOrderPayment('rwflowers', orderPayment)
       .subscribe(res => {
-        console.log('Save orderFee Return', res);
+        // console.log('Save orderFee Return', res);
         orderPayment.order_payment_id = res.order_payment_id;
         this.snackBar.open('Order Payment Line Added!', '', {
           duration: 4000,
@@ -522,7 +522,7 @@ export class OrderDetailComponent implements OnInit {
     } else {
       this.orderService.updateOrderPayment('rwflowers', orderPayment)
       .subscribe(res => {
-        console.log('Update orderPayment Return', res);
+        // console.log('Update orderPayment Return', res);
         this.snackBar.open('Order Payment Line Updated!', '', {
           duration: 4000,
           verticalPosition: 'top'
@@ -548,7 +548,7 @@ export class OrderDetailComponent implements OnInit {
   ngOnChanges() {
     // console.log('order-detail-component currentOrder', this.currentOrder);
     this.editMode = this.currentOrder.order_id !== 0;
-    console.log('Current Order', this.currentOrder);
+    // console.log('Current Order', this.currentOrder);
     if (this.currentOrder.order_id !== 0) {
       this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
         this.order = res;
@@ -586,7 +586,7 @@ export class OrderDetailComponent implements OnInit {
     if (mm < 10) {
       mm = '0' + mm;
     }
-    console.log('formattedDate', mm + dd + yyyy);
+    // console.log('formattedDate', mm + dd + yyyy);
     return mm + dd + yyyy;
   }
 }

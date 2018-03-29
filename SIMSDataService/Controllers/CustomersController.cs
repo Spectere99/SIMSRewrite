@@ -174,13 +174,6 @@ namespace SIMSDataService.Controllers
             return db.customers.Where(m => m.customer_id == key).SelectMany(m => m.orders);
         }
 
-        // GET: odata/Customers(5)/correspondence
-        [EnableQuery]
-        public IQueryable<correspondence> Getcorrespondence([FromODataUri] int key)
-        {
-            return db.customers.Where(m => m.customer_id == key).SelectMany(m => m.correspondence);
-        }
-
         // GET: odata/Customers(5)/customer_person
         [EnableQuery]
         public IQueryable<customer_person> Getcustomer_person([FromODataUri] int key)

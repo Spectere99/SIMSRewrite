@@ -2,7 +2,8 @@ import { Component, OnInit, OnChanges, Input, ViewChild } from '@angular/core';
 import { LookupService } from '../../_services/lookups.service';
 import { UserService } from '../../_services/user.service';
 import { CustomerService } from '../../_services/customer.service';
-import { OrderService, Order, OrderDetail } from '../../_services/order.service';
+import { AuthenticationService } from '../../_services/authentication.service';
+import { OrderService, Order, OrderDetail, OrderStatusHistory } from '../../_services/order.service';
 import { StateService, StateInfo } from '../../_shared/states.service';
 import { OrderTaskListComponent } from '../order-task-list/order-task-list.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
@@ -27,11 +28,16 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   userDataSource: any;
 
   newMode: boolean;
+  userProfile;
+  originalOrderStatus: string;
+  orderStatusChanged = false;
  // customerService: CustomerService;
 
   constructor(lookupService: LookupService, userService: UserService, public customerService: CustomerService,
-              private usStateService: StateService, public orderService: OrderService, public snackBar: MatSnackBar) {
+              private usStateService: StateService, public orderService: OrderService, public snackBar: MatSnackBar,
+              public authService: AuthenticationService) {
 
+    this.userProfile = JSON.parse(authService.getUserToken());
     this.stateList = this.usStateService.getStateList();
       lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
@@ -58,7 +64,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     console.log('contact selection changed:', e);
     console.log('contactPersons', this.contactPersons); */
     const selectedContact = this.contactPersons.filter(item => (item.first_name + ' ' + item.last_name) === e);
-    console.log('selectedContact', selectedContact);
+    // console.log('selectedContact', selectedContact);
     this.currentOrder.contact = selectedContact[0].first_name + ' ' + selectedContact[0].last_name;
 
     this.currentOrder.contact_email = selectedContact[0].email_address;
@@ -72,7 +78,13 @@ export class OrderInfoComponent implements OnInit, OnChanges {
 
   batchSave() {
     return this.saveOrderInfo().map(res => {
-      console.log('Order Info Saved');
+      console.log('Order Info Saved', res);
+      console.log('Order Status Changed', this.orderStatusChanged);
+      if (this.orderStatusChanged === true) {
+        this.saveOrderStatusHistory(res).subscribe(res2 => {
+          console.log('Order Status History Saved', res2);
+        });
+      }
       return res;
     });
   }
@@ -132,14 +144,14 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   saveOrderInfo() {
-    console.log('Order on Save', this.currentOrder);
+    // console.log('Order on Save', this.currentOrder);
       const insOrder = this.convertOrderInfo(this.currentOrder);
-    console.log('Converted Order on Save', insOrder);
+    // console.log('Converted Order on Save', insOrder);
       if (this.currentOrder.order_id <= 0) {
         this.currentOrder.order_id = 0;
         return this.orderService.addOrderInfo('rwflowers', insOrder)
         .map(res => {
-          console.log('Save orderInfo Return', res);
+          // console.log('Save orderInfo Return', res);
           this.currentOrder.order_id = res.order_id;
           this.snackBar.open('Order Added!', '', {
             duration: 4000,
@@ -151,7 +163,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
         const updOrder = this.convertOrderInfo(this.currentOrder);
         return this.orderService.updateOrderInfo('rwflowers', updOrder)
         .map(res => {
-          console.log('Update orderInfo Return', res);
+          // console.log('Update orderInfo Return', res);
           this.snackBar.open('Order Added Updated!', '', {
             duration: 4000,
             verticalPosition: 'top'
@@ -161,9 +173,42 @@ export class OrderInfoComponent implements OnInit, OnChanges {
       }
   }
 
+  saveOrderStatusHistory(orderId: number) {
+    console.log('Saving Order Status History orderId=', orderId);
+    console.log('user', this.userProfile);
+    const orderStatusHistory = new OrderStatusHistory();
+    orderStatusHistory.order_status_history_id = 0;
+    orderStatusHistory.order_id = orderId;
+    orderStatusHistory.order_status = this.currentOrder.order_status;
+    const today = new Date();
+    // today.setHours(0, 0, 0, 0);
+    orderStatusHistory.status_date = today.toISOString();
+    orderStatusHistory.set_by_user_id = this.userProfile.profile.user_id;
+
+    return this.orderService.addOrderStatus(this.userProfile.login_id, orderStatusHistory)
+    .map(res => {
+      this.orderStatusChanged = false;
+      this.newMode = false;
+      return res;
+    });
+  }
+
   setDefaultTaskList(orderType: string) {
-    console.log('setDefaultTaskList: orderType', orderType);
+    // console.log('setDefaultTaskList: orderType', orderType);
     this.taskList.buildDefaultTaskList(this.currentOrder.order_id, orderType);
+  }
+
+  onOrderStatusChange(e) {
+    // console.log('onOrderStatusChange', e);
+    // console.log('Current Order Status', this.currentOrder.order_status);
+    if (e !== this.originalOrderStatus) {
+      this.orderStatusChanged = true;
+    } else {
+      this.orderStatusChanged = false;
+    }
+    this.currentOrder.order_status = e;
+    console.log('Order Status value(s)', this.currentOrder.order_status, this.originalOrderStatus);
+    console.log('Save Order Status', this.orderStatusChanged);
   }
 
   ngOnInit() {
@@ -178,20 +223,23 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     } else {
       this.currentOrder = new Order();
     } */
+
   }
 
   ngOnChanges() {
-    console.log('order-info-component currentOrder', this.currentOrder);
+    // console.log('order-info-component currentOrder', this.currentOrder);
     this.newMode = this.currentOrder.order_id === 0;
+    this.orderStatusChanged = this.newMode;
     if (this.currentOrder.customer_id !== 0) {
       this.customerService.getCustomerData('', this.currentOrder.customer_id).subscribe(res => {
         this.orderCustomer = res;
         this.contactPersons = this.orderCustomer.customer_person;
-        console.log('pulled Customer', this.orderCustomer);
+        // console.log('pulled Customer', this.orderCustomer);
       });
     } else {
       // this.currentOrder = new Order();
     }
+    this.originalOrderStatus = this.currentOrder.order_status;
   }
 
 }

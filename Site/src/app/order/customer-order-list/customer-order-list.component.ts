@@ -119,7 +119,7 @@ userProfile;
       ],
       filter: ['customer_id', '=', this.customer.customer_id]
    };
-   console.log('Return from Order List', this.dataSource);
+   // console.log('Return from Order List', this.dataSource);
   }
   createStatusDataSource() {
     this.order_statusSource = this.lookupDataSource.filter(item => item.class === 'ord');
@@ -159,11 +159,11 @@ userProfile;
   }
   setOrderBillAndShipAddresses() {
     // Get the Billing Address if available
-    console.log('setBillingAndShipmentAddress', this.customer);
+    // console.log('setBillingAndShipmentAddress', this.customer);
     const billingAddress = this.customer.customer_address.filter(item => item.type_code === 'bill');
     this.selectedOrder.ship_attn = this.customer.customer_name;
     if (billingAddress && billingAddress.length > 0) {
-      console.log('Billing Adr', billingAddress[0]);
+      // console.log('Billing Adr', billingAddress[0]);
       this.selectedOrder.BILL_ADDRESS_1 = billingAddress[0].address_1;
       this.selectedOrder.BILL_ADDRESS_2 = billingAddress[0].address_2;
       this.selectedOrder.BILL_CITY = billingAddress[0].city;
@@ -262,7 +262,7 @@ userProfile;
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    console.log('ngChanges on customer-order-list', this.customer);
+    // console.log('ngChanges on customer-order-list', this.customer);
     if (this.customer) {
       this.customerId = this.customer.customer_id;
     }

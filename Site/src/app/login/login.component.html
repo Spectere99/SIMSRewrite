@@ -1,4 +1,4 @@
-<div class="container">
+<div id="login" class="container">
   <div class="card card-container">
     <form #f="ngForm" [formGroup]="loginForm" (ngSubmit)="submitted()">
       <div [hidden]="!message" class="alert alert-danger" role="alert">
@@ -26,3 +26,17 @@
     </form>
   </div>
 </div>
+
+<dx-load-panel
+    #loadPanel
+    shadingColor="rgba(0,0,0,0.4)"
+    [position]="{ of: window }"
+    message="Authenticating..."
+    [(visible)]="loading"
+    [showIndicator]="true"
+    [showPane]="true"
+    [shading]="true"
+    [closeOnOutsideClick]="false"
+    (onShown)="onShown()"
+    (onHidden)="onHidden()">
+</dx-load-panel>

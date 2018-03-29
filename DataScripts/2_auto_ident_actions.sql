@@ -30,3 +30,10 @@ CHANGE COLUMN `order_payment_id` `order_payment_id` INT(10) NOT NULL AUTO_INCREM
 
 ALTER TABLE `printmgr`.`orders` 
 CHANGE COLUMN `order_id` `order_id` INT(10) NOT NULL AUTO_INCREMENT ;
+
+ALTER TABLE `printmgr`.`order_status_history` 
+CHANGE COLUMN `order_status_history_id` `order_status_history_id` INT(10) NOT NULL AUTO_INCREMENT ;
+
+ALTER TABLE `printmgr`.`correspondence` 
+CHANGE COLUMN `correspondence_id` `correspondence_id` INT(10) NOT NULL AUTO_INCREMENT ;
+

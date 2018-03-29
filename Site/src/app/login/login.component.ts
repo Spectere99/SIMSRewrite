@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Http, Headers } from '@angular/http';
 import { Router } from '@angular/router';
-
+import { DxButtonModule, DxLoadPanelModule, DxCheckBoxModule } from 'devextreme-angular';
 
 import { AuthenticationService } from '../_services/authentication.service';
 

@@ -27,7 +27,7 @@ export class OrderArtComponent {
   }
 
   uploadComplete(e) {
-    console.log('Upload Complete!', e);
+    // console.log('Upload Complete!', e);
     const newOrderArtFile: OrderArtFile = {
       order_art_id: (this.orderArtFiles.length + 1) * -1,
       order_id: this.currentOrder.order_id,
@@ -36,11 +36,11 @@ export class OrderArtComponent {
       image_file: e.file.name,
       order_by: this.orderArtFiles.length + 1
     };
-    console.log('newOrderArtFile', newOrderArtFile);
+    // console.log('newOrderArtFile', newOrderArtFile);
     this.orderService.updateOrderArtFile('', newOrderArtFile).subscribe(res => {
-      console.log('Response', res);
+      // console.log('Response', res);
       newOrderArtFile.order_art_id = res.order_art_id;
-      console.log('newOrderArtFile', newOrderArtFile);
+      // console.log('newOrderArtFile', newOrderArtFile);
       this.orderArtFiles.push(newOrderArtFile);
       });
     // console.log('After orderArtFiles.push');
@@ -55,18 +55,18 @@ export class OrderArtComponent {
 
   saveArtItem(artItem: OrderArtFile) {
     this.orderService.updateOrderArtFile('', artItem).subscribe(res => {
-      console.log('Response', res);
+      // console.log('Response', res);
       artItem.order_art_id = res.order_art_id;
     });
   }
 
   deleteArtItem(e) {
-    console.log('deletingArtItem', e);
+    // console.log('deletingArtItem', e);
     // See if the item has been saved to the database. (non-negative id)
     // if it has not, then just remove it, otherwise, we need to call the web service
     // to delete the item from the database first.
     const index = this.orderArtFiles.findIndex(x => x.order_art_id === e.order_art_id);
-    console.log('Del Art Item', index);
+    // console.log('Del Art Item', index);
     if (index >= 0) {
       this.orderService.deleteOrderArtFile('', e.order_art_id).subscribe(res => {
         this.orderArtFiles.splice(index, 1);
@@ -83,7 +83,7 @@ export class OrderArtComponent {
       this.orderService.loadOrderArtFileData('', this.currentOrder.order_id).subscribe(res => {
         this.orderArtFiles = res.order_art_file;
 
-        console.log('pulled OrderArt Data', this.orderArtFiles);
+        // console.log('pulled OrderArt Data', this.orderArtFiles);
       });
     } else {
       this.orderArtFiles = new Array<OrderArtFile>();

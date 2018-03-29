@@ -30,11 +30,11 @@ panelExpanded: boolean;
 ctrlHasFocus: string;
   constructor(public dialog: MatDialog, public snackBar: MatSnackBar, private customerService: CustomerService,
             private lookupService: LookupService, private usStateService: StateService, public datePipe: DatePipe) {
-    console.log('Customer in customer-info:', this.customer);
-    console.log('userList', this.userList);
+    // console.log('Customer in customer-info:', this.customer);
+    // console.log('userList', this.userList);
     this.stateList = this.usStateService.getStateList();
-    console.log('States', this.stateList);
-    console.log('customerList', this.customerList);
+    // console.log('States', this.stateList);
+    // console.log('customerList', this.customerList);
     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.createAddressTypeDataSource();
@@ -42,50 +42,50 @@ ctrlHasFocus: string;
     });
     customerService.getActiveParentCustomers('rwflowers').subscribe(res => {
       this.customerList = res.value;
-      console.log('customerList', this.customerList);
+      // console.log('customerList', this.customerList);
     });
     this.panelExpanded = true;
   }
 
   selected(value: any): void {
-    console.log('Selected value is: ', value);
+    // console.log('Selected value is: ', value);
   }
 
   removed(value: any): void {
-    console.log('Removed value is: ', value);
+    // console.log('Removed value is: ', value);
   }
 
   typed(value: any): void {
-    console.log('New search input: ', value);
+    // console.log('New search input: ', value);
   }
 
   refreshValue(value: any): void {
-    console.log('refreshValue', value);
+    // console.log('refreshValue', value);
     this.customer.parent_id = value;
   }
 
   createAddressTypeDataSource() {
     this.addressTypes = this.lookupDataSource.filter(item => item.class === 'addr');
-    console.log('addr Types', this.addressTypes);
+    // console.log('addr Types', this.addressTypes);
   }
 
   createStatusTypeDataSource() {
     this.statusTypes = this.lookupDataSource.filter(item => item.class === 'comps');
-    console.log('status Types', this.statusTypes);
+    // console.log('status Types', this.statusTypes);
   }
 
   setParentInd(event) {
-    console.log('setParentInd', event.checked);
+    // console.log('setParentInd', event.checked);
     this.customer.parent_ind = event.checked ? 'Y' : 'N';
-    console.log('Customer ParentInd', this.customer.ship_to_bill_ind);
+    // console.log('Customer ParentInd', this.customer.ship_to_bill_ind);
   }
 
   setShipToBillInd(event) {
     this.customer.ship_to_bill_ind = event.checked ? 'Y' : 'N';
   }
   removeAddress(customerAddressId: number) {
-    console.log('Removing Address', customerAddressId);
-    console.log('Customer List', this.customer);
+    // console.log('Removing Address', customerAddressId);
+    // console.log('Customer List', this.customer);
     // Remove contact from list based on customerId
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '250px',
@@ -93,14 +93,14 @@ ctrlHasFocus: string;
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      console.log('The Result', result);
+      // console.log('The dialog was closed');
+      // console.log('The Result', result);
       if (result) {
         // this.customer = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
-        console.log('CustomerAddressId', customerAddressId);
+        // console.log('CustomerAddressId', customerAddressId);
         if (customerAddressId > 0) {
         // Remove contact from the database using Web service call.
-        console.log('Calling Delete Web Service');
+        // console.log('Calling Delete Web Service');
         this.customerService.deleteCustomerAddress('rwflowers', customerAddressId)
           .subscribe(res => {
             this.customer.customer_address = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
@@ -133,7 +133,7 @@ ctrlHasFocus: string;
   const tempNewAddr = this.customer.customer_address.filter(p => p.customer_address_id <= 0);
   newAddress.customer_address_id = (tempNewAddr.length * -1);
   this.customer.customer_address.unshift(newAddress);
-  console.log('Customer Address List after add', this.customer.customer_address);
+  // console.log('Customer Address List after add', this.customer.customer_address);
   this.panelExpanded = true;
   }
 
@@ -141,7 +141,7 @@ ctrlHasFocus: string;
     // Save General Customer Information from the model.
     this.customer.customer_id = customer_id;
     return this.saveCustomer(this.customer).map(res => {
-      console.log('return from Save Customer Subscribe', res);
+      // console.log('return from Save Customer Subscribe', res);
       // Loop throught this.customer.customer_address Array
       if (this.customer.customer_address) {
         for (let x = 0; x < this.customer.customer_address.length; x++) {
@@ -155,12 +155,12 @@ ctrlHasFocus: string;
     // Call saveAddress for each address in array.
   }
   saveAddress(customerAddress: CustomerAddress) {
-    console.log('Customer Address on Save', customerAddress);
+    // console.log('Customer Address on Save', customerAddress);
       if (customerAddress.customer_address_id <= 0) {
         customerAddress.customer_address_id = 0;
         return this.customerService.addCustomerAddress('rwflowers', customerAddress)
         .subscribe(res => {
-          console.log('Save address Return', res);
+          // console.log('Save address Return', res);
           this.snackBar.open('Customer Address Added!', '', {
             duration: 4000,
             verticalPosition: 'top'
@@ -170,7 +170,7 @@ ctrlHasFocus: string;
       } else {
         return this.customerService.updateCustomerAddress('rwflowers', customerAddress)
         .subscribe(res => {
-          console.log('Update address Return', res);
+          // console.log('Update address Return', res);
           this.snackBar.open('Customer Address Updated!', '', {
             duration: 4000,
             verticalPosition: 'top'
@@ -181,7 +181,7 @@ ctrlHasFocus: string;
   }
 
   saveCustomer(customer: Customer) {
-    console.log('Customer on Save', customer);
+    // console.log('Customer on Save', customer);
     if (customer.customer_id === undefined) {
       const currentDate = new Date();
       const formattedDate = this.datePipe.transform(currentDate, 'yyyy-MM-dd');
@@ -198,10 +198,10 @@ ctrlHasFocus: string;
         parent_id: customer.parent_id === undefined ? null : customer.parent_id,
         parent_ind: customer.parent_ind === undefined ? 'N' : customer.parent_ind
       };
-      console.log('SaveCustomer', saveCustomer);
+      // console.log('SaveCustomer', saveCustomer);
       return this.customerService.addCustomer('rwflowers', saveCustomer)
       .map(res => {
-        console.log('Save customer Return', res);
+        // console.log('Save customer Return', res);
         customer = res;
         // customer.customer_address = [];
         customer.customer_contacts = [];
@@ -226,10 +226,10 @@ ctrlHasFocus: string;
         parent_id: customer.parent_id,
         parent_ind: customer.parent_ind
       };
-      console.log('Update Customer', updCustomer);
+      // console.log('Update Customer', updCustomer);
       return this.customerService.updateCustomer('rwflowers', updCustomer)
       .map(res => {
-        console.log('Update customer Return', res);
+        // console.log('Update customer Return', res);
         this.snackBar.open('Customer Updated!', '', {
           duration: 4000,
           verticalPosition: 'top'

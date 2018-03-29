@@ -25,7 +25,6 @@ namespace SIMSEntities
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<correspondence> correspondences { get; set; }
         public virtual DbSet<customer> customers { get; set; }
         public virtual DbSet<customer_address> customer_address { get; set; }
         public virtual DbSet<customer_notes> customer_notes { get; set; }
@@ -48,5 +47,6 @@ namespace SIMSEntities
         public virtual DbSet<group_navigation> group_navigation { get; set; }
         public virtual DbSet<hotjas_group> hotjas_group { get; set; }
         public virtual DbSet<user_group> user_group { get; set; }
+        public virtual DbSet<correspondence> correspondences { get; set; }
     }
 }
