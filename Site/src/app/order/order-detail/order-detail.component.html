@@ -139,10 +139,10 @@
                       (change)="orderDetail.taxable_ind = $event.target.checked ? 'Y' : 'N';updateTotals();">
               </td>
               <td>
-                <input class="form-control" [ngModel]="orderDetail.garment_order_date | date:'MM-dd-yyyy'" (ngModelChange)="orderDetail.garment_order_date = $event">
+                <input class="form-control" type="date" [ngModel]="orderDetail.garment_order_date | date:'yyyy-MM-dd'" (ngModelChange)="orderDetail.garment_order_date = $event">
               </td>
               <td>
-                <input class="form-control" [ngModel]="orderDetail.garment_recvd_date | date:'MM-dd-yyyy'" (ngModelChange)="orderDetail.garment_recvd_date = $event">
+                <input class="form-control" type="date" [ngModel]="orderDetail.garment_recvd_date | date:'yyyy-MM-dd'" (ngModelChange)="orderDetail.garment_recvd_date = $event">
               </td>
               <td>
                 <select class="form-control form-control-sm" style="font-size: 11px; width:auto;" [(ngModel)]="orderDetail.vendor">

@@ -310,6 +310,7 @@
     <Compile Include="Controllers\OrderArtPlacementController.cs" />
     <Compile Include="Controllers\OrderDetailsController.cs" />
     <Compile Include="Controllers\OrderFeesController.cs" />
+    <Compile Include="Controllers\OrderNotesController.cs" />
     <Compile Include="Controllers\OrderPaymentReportingController.cs" />
     <Compile Include="Controllers\OrderPaymentsController.cs" />
     <Compile Include="Controllers\OrderReportingController.cs" />

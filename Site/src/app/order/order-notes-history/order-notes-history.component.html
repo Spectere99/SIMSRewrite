@@ -1,5 +1,47 @@
 <div class="container col-md-12 pt-4">
   <section>
+    Order Notes
+    <hr>
+    <table *ngIf="orderNotes !== undefined && orderNotes.length > 0">
+      <tr>
+        <td style="font-size:12px;text-align:center;"></td>
+        <td style="font-size:12px;">Private</td>
+        <td style="font-size:12px;">Date</td>
+        <td style="font-size:12px;">Entered By</td>
+        <td style="font-size:12px;">Note</td>
+      </tr>
+      <tr *ngFor="let note of orderNotes | sort: 'entered_date'; index as i">
+        <td>
+          <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;" (click)="deleteNote(note);">
+            <mat-icon style="padding-bottom: 35px; padding-right: 26px; font-size:15px;">delete</mat-icon>
+          </button>
+        </td>
+        <td>
+          <input type="checkbox" id="private_ind" name="pvtInd" [checked]="note.private_ind === 'Y'" (change)="note.private_ind = $event.target.checked ? 'Y' : 'N'">
+        </td>
+        <td>
+          <input class="form-control" [ngModel]="note.entered_date | date:'MM/dd/yyyy'" (ngModelChange)="note.entered_date = $event"
+            [disabled]="true" size="10">
+        </td>
+        <td>
+          <!-- <input type="text" class="form-control" size="15" [(ngModel)]="history.set_by_user_id" [disabled]="true"> -->
+          <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="note.user_id" [disabled]="true">
+            <option *ngFor="let user of userDataSource" [value]="user.user_id">
+              {{user.first_name + ' ' + user.last_name}}
+            </option>
+          </select>
+        </td>
+        <td>
+          <input class="form-control" type="text" size="100" [(ngModel)]="note.notes_value">
+        </td>
+      </tr>
+    </table>
+    <div class="alert alert-warning" *ngIf="orderNotes === undefined || orderNotes.length === 0">
+      There are no notes to show.
+    </div>
+  </section>
+  <br/>
+  <section>
     Order Status History
     <hr>
     <table *ngIf="orderStatusHistory !== undefined && orderStatusHistory.length > 0">
@@ -18,7 +60,7 @@
         </td>
         <td>
           <input class="form-control" [ngModel]="history.status_date | date:'MM/dd/yyyy'" (ngModelChange)="history.status_date = $event"
-            [disabled]="true">
+            [disabled]="true" size="10">
         </td>
         <td>
           <!-- <input type="text" class="form-control" size="15" [(ngModel)]="history.set_by_user_id" [disabled]="true"> -->
@@ -33,5 +75,5 @@
     <div class="alert alert-warning" *ngIf="orderStatusHistory === undefined || orderStatusHistory.length === 0">
       There is no history to show.
     </div>
-    </section>
+  </section>
 </div>

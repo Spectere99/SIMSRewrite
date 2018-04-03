@@ -3,6 +3,7 @@ import { environment } from '../../../environments/environment';
 import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee, OrderPayment, OrderArtFile } from '../../_services/order.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { CorrespondenceService, Correspondence } from '../../_services/correspondence.service';
+import { UserService } from '../../_services/user.service';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
 
@@ -32,6 +33,10 @@ vendorTypes: Array<LookupItem>;
 artLocations: Array<LookupItem>;
 paymentSourceItems: Array<LookupItem>;
 orderCorrespondence: Array<Correspondence>;
+correspondenceTypes: Array<LookupItem>;
+correspondenceDisp: Array<LookupItem>;
+userDataSource: any;
+
 
 orderArtPlacement: Array<OrderArtPlacement>;
 orderFees: Array<OrderFee>;
@@ -43,7 +48,8 @@ userProfile;
 
 
   constructor(public orderService: OrderService, private lookupService: LookupService, private priceListService: PriceListService,
-              public correspondenceService: CorrespondenceService, public authService: AuthenticationService) {
+              public correspondenceService: CorrespondenceService, private userService: UserService,
+              public authService: AuthenticationService) {
     this.userProfile = JSON.parse(authService.getUserToken());
     this.defaultDocFolder = environment.defaultDocFolder;
     this.order = new Order();
@@ -53,16 +59,25 @@ userProfile;
     this.orderPayments = [];
     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
+      console.log('Lookup Data Source', this.lookupDataSource);
       this.sizeTypes = this.createLookupTypeSource('ssiz');
       this.styleTypes = this.createLookupTypeSource('sclas');
       this.vendorTypes = this.createLookupTypeSource('vend');
       this.artLocations = this.createLookupTypeSource('aloc');
       this.paymentSourceItems = this.createLookupTypeSource('pms');
+      this.correspondenceTypes = this.createLookupTypeSource('cort');
+      this.correspondenceDisp = this.createLookupTypeSource('crdis');
+      console.log('correspendecne Types', this.correspondenceTypes);
+      console.log('correspendecne Disp', this.correspondenceDisp);
     });
     priceListService.loadPricelistData('').subscribe(res => {
       this.priceListDataSource = res.value;
       this.itemTypes = this.createItemTypeSource('orddi');
       this.setupItems = this.createItemTypeSource('setup');
+    });
+    userService.getUsers('').subscribe(res => {
+      this.userDataSource = res.value;
+      // console.log(this.userDataSource);
     });
   }
 
@@ -89,7 +104,7 @@ userProfile;
     // console.log('Lookup Description', lookup_code);
     // console.log('LookupDataSource', this.lookupDataSource);
     let val = '';
-    if (this.itemTypes) {
+    if (this.lookupDataSource) {
       const foundVal = this.lookupDataSource.find(p => p.char_mod === lookup_code);
       if (foundVal) {
         val = foundVal.description;
@@ -162,12 +177,10 @@ userProfile;
       newCorr.corr_date = new Date().toISOString();
 
       this.correspondenceService.addCorrespondence(this.userProfile.profile.login_id, newCorr).subscribe(res => {
-        // console.log('pdfString', pdfString);
-        // const iframe = '<iframe width="100%" height="100%" src="' + pdfString + '"></iframe>';
         const newWindow = window.open(this.defaultDocFolder + res);
-        // newWindow.document.write(iframe);
-        // newWindow.document.close();
-        // console.log('New Window', newWindow);
+        this.correspondenceService.getCorrespondenceData('', this.currentOrder.order_id).subscribe(res2 => {
+          this.orderCorrespondence = res2.correspondences;
+        });
       });
     });
 
@@ -202,8 +215,9 @@ userProfile;
         console.log('pulled ArtFile Data', this.orderArtFile);
       });
       this.correspondenceService.getCorrespondenceData('', this.currentOrder.order_id).subscribe(res => {
-        this.orderArtFile = res.order_art_file;
-        console.log('pulled ArtFile Data', this.orderArtFile);
+        console.log('correspondenceData return', res);
+        this.orderCorrespondence = res.correspondences;
+        console.log('pulled Correspondence Data', this.orderCorrespondence);
       });
     } else {
       /// this.currentOrder = new Order();

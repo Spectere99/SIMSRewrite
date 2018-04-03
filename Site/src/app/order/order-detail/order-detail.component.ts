@@ -182,9 +182,16 @@ export class OrderDetailComponent implements OnInit {
   }
 
   copyOrderLine(e, idx) {
-    const orderLine = this.order.order_detail[idx];
+    const orderLine = new OrderDetail();
+    Object.assign(orderLine, this.order.order_detail[idx]);
+    // orderLine = this.order.order_detail[idx];
     orderLine.order_detail_id = (this.order.order_detail.length + 1) * -1;
+    orderLine.garment_order_date = undefined;
+    orderLine.garment_recvd_date = undefined;
+    orderLine.shipping_po = undefined;
     this.order.order_detail.unshift(orderLine);
+    console.log('Original Order Line', this.order.order_detail[idx]);
+    console.log('Copied Order Line', orderLine);
   }
 
   deleteLineItem(e) {

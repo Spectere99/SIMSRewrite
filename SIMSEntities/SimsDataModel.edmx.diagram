@@ -45,6 +45,7 @@
         <AssociationConnector Association="SimsModel.orderorder_status_history" />
         <EntityTypeShape EntityType="SimsModel.correspondence" Width="1.5" PointX="4.125" PointY="25.125" />
         <AssociationConnector Association="SimsModel.ordercorrespondence" />
+        <AssociationConnector Association="SimsModel.orderorder_notes" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

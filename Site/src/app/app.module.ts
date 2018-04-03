@@ -55,6 +55,7 @@ import { OrderBalanceComponent } from './report/order-balance/order-balance.comp
 import { OrderNotesHistoryComponent } from './order/order-notes-history/order-notes-history.component';
 import { OrderInvoiceComponent } from './order/order-invoice/order-invoice.component';
 import { OrderPaymentsComponent } from './report/order-payments/order-payments.component';
+import { OrderSummaryComponent } from './order/order-summary/order-summary.component';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -97,6 +98,7 @@ import { OrderPaymentsComponent } from './report/order-payments/order-payments.c
     OrderNotesHistoryComponent,
     OrderInvoiceComponent,
     OrderPaymentsComponent,
+    OrderSummaryComponent,
   ],
   imports: [
     NgbModule.forRoot(),

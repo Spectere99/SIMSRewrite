@@ -1,0 +1,313 @@
+<div class="col-lg-12" style="height:90%; overflow-y: scroll;">
+  <img src="\assets\wts.gif">
+  <button (click)="print();">Print</button>
+  <div id="print-section" class="row">
+    <div class="col-lg-8">
+      <div class="col-md-12" id="order_info" *ngIf="currentOrder !== undefined">
+        <fieldset>
+          <legend class="SmallBodyText">
+            <b>Order Information:</b>
+          </legend>
+          <table class="SmallBodyText" cellpadding="1" cellspacing="0">
+            <tr>
+              <td nowrap width="75">
+                <b>Order #</b>
+              </td>
+              <td nowrap width="75">
+                <b>Due Date</b>
+              </td>
+              <td nowrap colspan="3">
+                <b>Customer Name</b>
+              </td>
+              <td nowrap width="175">
+                <b>Order Type</b>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td nowrap width="75">{{currentOrder.order_number}}&nbsp;&nbsp;</td>
+              <td nowrap width="75">{{currentOrder.order_due_date | date: 'MM/dd/yyyy' }}&nbsp;&nbsp;</td>
+              <td nowrap colspan="3">{{currentOrder.customer.customer_name}}&nbsp;</td>
+              <td nowrap width="175">{{getLookupDescription(currentOrder.order_type)}}&nbsp;&nbsp;</td>
+              <td nowrap>
+                <img src="\assets\greybox.gif"> Pick up</td>
+            </tr>
+            <tr></tr>
+            <tr>
+              <td nowrap width="100">
+                <b>Contact</b>
+              </td>
+              <td nowrap width="100">
+                <b>Phone 1</b>
+              </td>
+              <td nowrap width="50">
+                <b>Ext</b>
+              </td>
+              <td nowrap width="100">
+                <b>Phone 2</b>
+              </td>
+              <td nowrap width="50">
+                <b>Ext</b>
+              </td>
+              <td nowrap width="175">
+                <b>Email</b>
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td nowrap width="100">{{currentOrder.contact}}&nbsp;&nbsp;</td>
+              <td nowrap width="100">{{currentOrder.contact_phone1 | phoneFormat}}&nbsp;&nbsp;</td>
+              <td nowrap width="50">{{currentOrder.contact_phone1_ext}}&nbsp;&nbsp;</td>
+              <td nowrap width="100">{{currentOrder.contact_phone2 | phoneFormat}}&nbsp;&nbsp;</td>
+              <td nowrap width="50">{{currentOrder.contact_phone2_ext}}&nbsp;&nbsp;</td>
+              <td nowrap width="175">{{currentOrder.contact_email}}&nbsp;&nbsp;</td>
+              <td nowrap>
+                <img src="\assets\greybox.gif"> Ship</td>
+            </tr>
+          </table>
+        </fieldset>
+      </div>
+      <br>
+      <div id="ORDER_DETAIL">
+        <fieldset>
+          <legend class="SmallBodyText">
+            <b>Items:</b>
+          </legend>
+          <!--includeif tableempty="ORDER_DETAIL"-->
+          <div *ngIf="orderSum?.order_detail === undefined || orderSUm?.order_detail.length === 0">No line items.</div>
+          <!--else-->
+          <div *ngFor="let lineItem of orderSum?.order_detail">
+            <table class="SmallBodyText" cellpadding="1" cellspacing="0">
+              <!--foreachrow table="ORDER_DETAIL"-->
+              <tr>
+                <td width="50"></td>
+                <td width="50">
+                  <b>Qty</b>
+                </td>
+                <td width="150">
+                  <b>Item</b>
+                </td>
+                <td width="75">
+                  <b>Y/A</b>
+                </td>
+                <td width="100">
+                  <b>Color</b>
+                </td>
+                <td width="25">
+                  <b>XS</b>
+                </td>
+                <td width="25">
+                  <b>S</b>
+                </td>
+                <td width="25">
+                  <b>M</b>
+                </td>
+                <td width="25">
+                  <b>L</b>
+                </td>
+                <td width="25">
+                  <b>XL</b>
+                </td>
+                <td width="35">
+                  <b>2XL</b>
+                </td>
+                <td width="35">
+                  <b>3XL</b>
+                </td>
+                <td width="35">
+                  <b>4XL</b>
+                </td>
+                <td width="35">
+                  <b>5XL</b>
+                </td>
+                <td width="50">
+                  <b>{{getSizeTypeDescription(lineItem.other1_type)}}&nbsp;&nbsp;</b>
+                </td>
+                <td width="150">
+                  <b>Vendor</b>
+                </td>
+                <td width="100">
+                  <b>Mfgr</b>
+                </td>
+                <td width="100">
+                  <b>Style #</b>
+                </td>
+                <td width="100">
+                  <b>Shipping PO#</b>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <!-- <b>{{lineItem.item_line_number}}&nbsp;&nbsp;</b> -->
+                </td>
+                <td>{{lineItem.item_quantity}}&nbsp;&nbsp;</td>
+                <td>{{getItemDescription(lineItem.pricelist_id)}}&nbsp;&nbsp;</td>
+                <td>{{getStyleDescription(lineItem.style_code)}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.color_code}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.xsmall_qty}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.small_qty}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.med_qty}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.large_qty}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.xl_qty}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.C2xl_qty}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.C3xl_qty}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.C4xl_qty}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.C5xl_qty}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.other1_qty}}&nbsp;&nbsp;</td>
+                <td>{{getLookupDescription(lineItem.vendor)}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.manufacturer}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.product_code}}&nbsp;&nbsp;</td>
+                <td>{{lineItem.shipping_po}}&nbsp;&nbsp;</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td colspan="13">
+                  <I>{{lineItem.notes}}&nbsp;&nbsp;</I>
+                </td>
+              </tr>
+              <!--endforeachrow-->
+            </table>
+          </div>
+          <!--endincludeif-->
+        </fieldset>
+      </div>
+
+      <br>
+
+      <div id="order_fees">
+        <fieldset>
+          <legend class="SmallBodyText">
+            <b>Setup Fees:</b>
+          </legend>
+          <!--includeif tableempty="order_fees"-->
+          <div *ngIf="orderFees === undefined || orderFees.length === 0">No setup fees.</div>
+          <!--else-->
+          <div *ngFor="let orderFee of orderFees | sort: fee_line_number">
+            <table class="SmallBodyText" cellpadding="1" cellspacing="0">
+              <tr>
+                <td width="50">
+                  <b>#</b>
+                </td>
+                <td width="50">
+                  <b>Qty</b>
+                </td>
+                <td width="200">
+                  <b>Fee</b>
+                </td>
+                <td width="100">
+                  <b>Each</b>
+                </td>
+                <td width="100">
+                  <b>Total</b>
+                </td>
+              </tr>
+              <!--foreachrow table="ORDER_FEES"-->
+              <tr>
+                <td>
+                  <b>{{orderFee.fee_line_number}}&nbsp;&nbsp;</b>
+                </td>
+                <td>{{orderFee.fee_quantity}}&nbsp;&nbsp;</td>
+                <td>{{getFeeDescription(orderFee.pricelist_id)}}&nbsp;&nbsp;</td>
+                <td>{{orderFee.fee_price_each}}&nbsp;&nbsp;</td>
+                <td>{{orderFee.fee_price_ext}}&nbsp;&nbsp;</td>
+              </tr>
+              <!--endforeachrow-->
+            </table>
+          </div>
+          <!--endincludeif-->
+        </fieldset>
+      </div>
+
+      <br>
+
+      <div id="ART_PLACEMENT">
+        <fieldset>
+          <legend class="SmallBodyText">
+            <b>Art Placement:</b>
+          </legend>
+          <!--includeif tableempty="order_art_placement"-->
+          <div *ngIf="orderArtPlacement === undefined || orderArtPlacement.length === 0">No art placement selected</div> 
+          <!--else-->
+          <div *ngFor="let placement of orderArtPlacement">
+          <table class="SmallBodyText" cellpadding="1" cellspacing="0">
+            <tr>
+              <td width="150">
+                <b>Art Placement</b>
+              </td>
+              <td width="250">
+                <b>Colors</b>
+              </td>
+              <td width="250">
+                <b>Notes</b>
+              </td>
+            </tr>
+            <!--foreachrow table="ORDER_ART_PLACEMENT"-->
+            <tr>
+              <td>{{getLookupDescription(placement.art_placement_code)}}&nbsp;&nbsp;</td>
+              <td>{{placement.colors}}&nbsp;&nbsp;</td>
+              <td>{{placement.notes}}&nbsp;&nbsp;</td>
+            </tr>
+            <!--endforeachrow-->
+          </table>
+        </div>
+          <!--endincludeif-->
+        </fieldset>
+      </div>
+
+      <br>
+
+      <div id="ORDER_ART">
+        <fieldset>
+          <legend class="SmallBodyText">
+            <b>Order Art:</b>
+          </legend>
+          <!--includeif tableempty="ORDER_ART_FILE"-->
+          <div *ngIf="orderArtFile === undefined || orderArtFile.length === 0">No art files</div>
+          <!--else-->
+          <div *ngFor="let artFile of orderArtFile">
+          <table class="SmallBodyText" cellpadding="1" cellspacing="0">
+            <tr>
+              <td width="250">
+                <b>Art File</b>
+              </td>
+              <td width="250">
+                <b>Art Folder</b>
+              </td>
+              <td width="250">
+                <b>Notes</b>
+              </td>
+            </tr>
+            <!--foreachrow table="ORDER_ART_FILE"-->
+            <tr>
+              <td>{{artFile.image_file}}&nbsp;&nbsp;</td>
+              <td>{{artFile.art_folder}}&nbsp;&nbsp;</td>
+              <td>{{artFile.note}}&nbsp;&nbsp;</td>
+            </tr>
+            <!--endforeachrow-->
+          </table>
+        </div>
+          <!--endincludeif-->
+        </fieldset>
+      </div>
+
+      <br>
+
+      <div id="ORDER_NOTES">
+        <fieldset>
+          <legend class="SmallBodyText">
+            <b>Notes:</b>
+          </legend>
+          <table class="SmallBodyText" cellpadding="1" cellspacing="0">
+            <!--foreachrow table="ORDER_NOTES"-->
+            <!--includeif function="IS_PUBLIC"-->
+            <tr *ngFor="let note of orderNotes">
+              <td>{{note.notes_value}}&nbsp;&nbsp;</td>
+            </tr>
+            <!--endincludeif-->
+            <!--endforeachrow-->
+          </table>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+</div>

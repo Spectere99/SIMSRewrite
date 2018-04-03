@@ -9,12 +9,12 @@ export const environment = {
   authEndpoint: 'http://localhost:8888/api/Security',
   // authEndpoint: 'http://spserver:8888/api/Security',
 
-  odataEndpoint: 'http://localhost:56543/odata/',
-  // odataEndpoint: 'http://localhost:8888/odata/',
+  // odataEndpoint: 'http://localhost:56543/odata/',
+  odataEndpoint: 'http://localhost:8888/odata/',
   // odataEndpoint: 'http://spserver:8888/odata/',
 
-  reportingEndpoint: 'http://localhost:56543/odata/',
-  // reportingEndpoint: 'http://localhost:8888/odata/',
+  // reportingEndpoint: 'http://localhost:56543/odata/',
+  reportingEndpoint: 'http://localhost:8888/odata/',
   // reportingEndpoint: 'http://spserver:8888/odata/',
 
   // artUploadURL: 'http://localhost:56543/api/ArtFile',
@@ -28,7 +28,7 @@ export const environment = {
   defaultArtFolder: 'http://localhost:8888/orderimage/',
   // defaultArtFolder: 'http://spserver:8888/orderimage/',
 
-  defaultDocFolder: 'http://localhost:8888/pdf/'
+  defaultDocFolder: 'http://localhost:8888/'
   // defaultDocFolder: 'http://spserver:8888/pdf/'
 
 };

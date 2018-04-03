@@ -10,6 +10,7 @@ import { OrderInfoComponent } from '../order-info/order-info.component';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { OrderArtComponent } from '../order-art/order-art.component';
 import { OrderTaskListComponent } from '../order-task-list/order-task-list.component';
+import { OrderSummaryComponent } from '../order-summary/order-summary.component';
 
 @Component({
   selector: 'app-customer-order-list',
@@ -23,11 +24,13 @@ export class CustomerOrderListComponent implements OnInit {
 @ViewChild(OrderDetailComponent) orderDetail: OrderDetailComponent;
 @ViewChild(OrderArtComponent) orderArt: OrderArtComponent;
 @ViewChild(OrderTaskListComponent) orderTaskList: OrderTaskListComponent;
+@ViewChild(OrderSummaryComponent) orderSummary: OrderSummaryComponent;
 
 baseUrl = environment.odataEndpoint;
 defaultArtFolder = environment.defaultArtFolder;
 dataSource: any;
 popupVisible = false;
+summaryVisible = false;
 order_statusSource: any;
 order_typeSource: any;
 user_Source: any;
@@ -36,6 +39,7 @@ lookupDataSource: any;
 customerId: number;
 enableSave = false;
 userProfile;
+
   constructor(private http: Http, lookupService: LookupService, userService: UserService, authService: AuthenticationService) {
 
     // Pull User Role to set activities
@@ -62,7 +66,7 @@ userProfile;
           type: 'odata',
           url: this.baseUrl + 'orders'
       },
-      expand: ['order_art_file', 'customer'],
+      expand: ['order_art_file', 'customer', 'order_detail'],
       select: [
         'order_id',
         'customer_id',
@@ -115,7 +119,9 @@ userProfile;
         'customer/customer_name',
         'order_art_file/order_art_id',
         'order_art_file/art_folder',
-        'order_art_file/image_file'
+        'order_art_file/image_file',
+        'order_detail/order_detail_id',
+        'order_detail/item_line_number'
       ],
       filter: ['customer_id', '=', this.customer.customer_id]
    };
@@ -135,6 +141,7 @@ userProfile;
     this.selectedOrder.order_id = 0;
     this.selectedOrder.tax_rate = '7.0';
     this.selectedOrder.customer_id = customer_id;
+    this.selectedOrder.customer_name = this.customer.customer_name;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     this.selectedOrder.order_number = this.formatOrderNumber(today);
@@ -142,6 +149,7 @@ userProfile;
     this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
     this.setOrderContact();
     this.setOrderBillAndShipAddresses();
+    this.orderDetail.order.order_detail = [];
     // this.selectedOrder.ship_attn = this.customer
     this.popupVisible = true;
   }
@@ -223,7 +231,7 @@ userProfile;
   }
 
   selectionChanged(e) {
-    this.selectedOrder = e.selectedRowsData[0];
+    // this.selectedOrder = e.selectedRowsData[0];
     // console.log('In selectionChanged', this.selectedOrder);
   }
   setReorderInd(data) {
@@ -252,6 +260,13 @@ userProfile;
     this.selectedOrder.order_date = today;
     this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
     this.popupVisible = false;
+  }
+
+  showOrderSummary(e) {
+    console.log('showOrderSummary', e);
+
+    this.selectedOrder = e;
+    this.summaryVisible = true;
   }
   ngOnInit() {
     // console.log('ngInit on customer-order-list', this.customer);

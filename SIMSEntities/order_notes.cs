@@ -20,5 +20,7 @@ namespace SIMSEntities
         public Nullable<System.DateTime> entered_date { get; set; }
         public string notes_value { get; set; }
         public string private_ind { get; set; }
+    
+        public virtual order order { get; set; }
     }
 }

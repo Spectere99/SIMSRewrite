@@ -641,6 +641,7 @@
           <Property Name="entered_date" Type="DateTime" />
           <Property Name="notes_value" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
           <Property Name="private_ind" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="order" Relationship="SimsModel.orderorder_notes" FromRole="order_notes" ToRole="order" />
         </EntityType>
         <EntityType Name="order_payments">
           <Key>
@@ -740,6 +741,7 @@
           <NavigationProperty Name="order_task" Relationship="SimsModel.orderorder_task" FromRole="order" ToRole="order_task" />
           <NavigationProperty Name="order_status_history" Relationship="SimsModel.orderorder_status_history" FromRole="order" ToRole="order_status_history" />
           <NavigationProperty Name="correspondences" Relationship="SimsModel.ordercorrespondence" FromRole="order" ToRole="correspondence" />
+          <NavigationProperty Name="order_notes" Relationship="SimsModel.orderorder_notes" FromRole="order" ToRole="order_notes" />
         </EntityType>
         <EntityType Name="pricelist">
           <Key>
@@ -897,6 +899,10 @@
           <AssociationSet Name="ordercorrespondence" Association="SimsModel.ordercorrespondence">
             <End Role="order" EntitySet="orders" />
             <End Role="correspondence" EntitySet="correspondences" />
+          </AssociationSet>
+          <AssociationSet Name="orderorder_notes" Association="SimsModel.orderorder_notes">
+            <End Role="order" EntitySet="orders" />
+            <End Role="order_notes" EntitySet="order_notes" />
           </AssociationSet>
         </EntityContainer>
         <Association Name="customer_customer_address">
@@ -1115,6 +1121,18 @@
               <PropertyRef Name="order_id" />
             </Principal>
             <Dependent Role="correspondence">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="orderorder_notes">
+          <End Type="SimsModel.order" Role="order" Multiplicity="0..1" />
+          <End Type="SimsModel.order_notes" Role="order_notes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="order">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="order_notes">
               <PropertyRef Name="order_id" />
             </Dependent>
           </ReferentialConstraint>

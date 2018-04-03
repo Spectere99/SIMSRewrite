@@ -25,6 +25,7 @@ namespace SIMSEntities
             this.order_task = new HashSet<order_task>();
             this.order_status_history = new HashSet<order_status_history>();
             this.correspondences = new HashSet<correspondence>();
+            this.order_notes = new HashSet<order_notes>();
         }
     
         public int order_id { get; set; }
@@ -93,5 +94,7 @@ namespace SIMSEntities
         public virtual ICollection<order_status_history> order_status_history { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<correspondence> correspondences { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<order_notes> order_notes { get; set; }
     }
 }

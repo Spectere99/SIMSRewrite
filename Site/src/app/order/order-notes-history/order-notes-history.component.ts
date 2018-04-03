@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
-import { OrderService, OrderTask, OrderStatusHistory } from '../../_services/order.service';
+import { OrderService, OrderTask, OrderStatusHistory, OrderNote } from '../../_services/order.service';
 import { UserService } from '../../_services/user.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { ArraySortPipe } from '../../_shared/pipes/orderBy.pipe';
@@ -16,6 +16,7 @@ export class OrderNotesHistoryComponent implements OnInit {
   lookupDataSource: Array<LookupItem>;
   statusTypes: Array<LookupItem>;
   orderStatusHistory: Array<OrderStatusHistory>;
+  orderNotes: Array<OrderNote>;
   userDataSource: any;
 
   userProfile;
@@ -44,6 +45,13 @@ export class OrderNotesHistoryComponent implements OnInit {
     // console.log('Order Status History List onInit', this.currentOrder);
     if (this.currentOrder) {
       if (this.currentOrder.order_id > 0) {  // Existing Order.  Grab its status history for display
+        this.orderService.loadOrderNotesData('rflowers', this.currentOrder.order_id)
+          .subscribe(res => {
+            console.log('loading Order Notes Data', this.currentOrder.order_id);
+            this.orderNotes = res.order_notes;
+            console.log('notes returned', this.orderNotes);
+            // console.log('Order Status History Pulled', res);
+          });
         this.orderService.loadOrderStatusHistoryData('rflowers', this.currentOrder.order_id)
           .subscribe(res => {
             this.orderStatusHistory = res.order_status_history;
@@ -58,6 +66,13 @@ export class OrderNotesHistoryComponent implements OnInit {
     // console.log('Order Status History List onChange', this.currentOrder);
     if (this.currentOrder) {
       if (this.currentOrder.order_id > 0) {  // Existing Order.  Grab its status history
+        this.orderService.loadOrderNotesData('rflowers', this.currentOrder.order_id)
+          .subscribe(res => {
+            console.log('loading Order Notes Data', this.currentOrder.order_id);
+            this.orderNotes = res.order_notes;
+            console.log('notes returned', this.orderNotes);
+            // console.log('Order Status History Pulled', res);
+          });
         this.orderService.loadOrderStatusHistoryData('rflowers', this.currentOrder.order_id)
           .subscribe(res => {
             this.orderStatusHistory = res.order_status_history;

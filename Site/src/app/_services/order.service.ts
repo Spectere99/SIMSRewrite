@@ -148,6 +148,15 @@ export class OrderTask {
     completed_date: string;
 }
 
+export class OrderNote {
+    order_notes_id: number;
+    order_id: number;
+    user_id: number;
+    entered_date: string;
+    notes_value: string;
+    private_ind: string;
+}
+
 export class OrderStatusHistory {
     order_status_history_id: number;
     order_id: number;
@@ -171,6 +180,7 @@ export class OrderService {
     public _ORDER_ART_FILE_ACTION = 'orderartfile';
     public _ORDER_TASK_ACTION = 'OrderTask';
     public _ORDER_STATUS_HISTORY_ACTION = 'OrderStatusHistory';
+    public _ORDER_NOTE_ACTION = 'OrderNotes';
 
     constructor( private http: Http ) { }
 
@@ -256,6 +266,20 @@ export class OrderService {
         // Build customer odata Options
         const expandCmd = '?$expand=';
         const expandFields = 'order_task';
+        this.options = '(' + orderId + ')';
+        this.options = this.options.concat(expandCmd, expandFields);
+
+        return this.http.get(this.baseURL + this._ORDER_ACTION + this.options, {headers: this.getHeaders(userId)})
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+
+    loadOrderNotesData(userId, orderId: number): Observable<any> {
+        // Build customer odata Options
+        const expandCmd = '?$expand=';
+        const expandFields = 'order_notes';
         this.options = '(' + orderId + ')';
         this.options = this.options.concat(expandCmd, expandFields);
 
@@ -436,6 +460,32 @@ export class OrderService {
         this.options = '(' + order_payment_id + ')';
         // console.log('OrderPayment ID in deleteOrderPayment', order_payment_id);
         return this.http.delete(this.baseURL + this._ORDER_PAYMENT_ACTION + this.options, {headers: this.getHeaders(userId) })
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+    addOrderNote(userId, orderNote: OrderNote) {
+        // console.log('OrderPayment in addOrderPayment', orderPayment);
+        return this.http.post(this.baseURL + this._ORDER_NOTE_ACTION, orderNote, {headers: this.getHeaders(userId) })
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+    updateOrderNote(userId, orderNote: OrderNote) {
+        this.options = '(' + orderNote.order_notes_id + ')';
+        // console.log('OrderPayment in updateOrderPayment', orderPayment);
+        return this.http.put(this.baseURL + this._ORDER_NOTE_ACTION + this.options, orderNote, {headers: this.getHeaders(userId) })
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+    deleteOrderNote(userId, orderNoteId: number) {
+        this.options = '(' + orderNoteId + ')';
+        // console.log('OrderPayment ID in deleteOrderPayment', order_payment_id);
+        return this.http.delete(this.baseURL + this._ORDER_NOTE_ACTION + this.options, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
             return res.json();

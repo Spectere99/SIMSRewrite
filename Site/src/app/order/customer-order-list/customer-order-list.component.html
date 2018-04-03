@@ -1,17 +1,17 @@
 <div class="container col-md-12 pt-4">
   <section>
-    <h6>Filter by using the cooresponding column.  (Expand each row to view associated image files).</h6>
+    <h6>Filter by using the cooresponding column. (Expand each row to view associated image files).</h6>
     <hr>
     <div style="padding:5px;">
-        <input *ngIf="enableSave" type="button" class="btn btn-primary" value="New Order" (click)="createNewOrder(customerId);">
+      <input *ngIf="enableSave" type="button" class="btn btn-primary" value="New Order" (click)="createNewOrder(customerId);">
     </div>
     <!-- <div style="padding:5px;">
         <input type="button" class="btn btn-primary" value="Refresh" (click)="refreshGrid();">
     </div> -->
     <div class="row col-lg-12">
       <dx-data-grid id="gridOrders" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
-        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)"
-        [masterDetail]="{ enabled: true, template: 'detail' }" [height]="400">
+        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)" [masterDetail]="{ enabled: true, template: 'detail' }"
+        [height]="400">
         <dxo-selection mode="single"></dxo-selection>
         <!-- <dxi-column dataField="reorder_ind" caption="Reorder?" [width]="100" [allowFiltering]="false" [calculateCellValue]="setReorderInd"></dxi-column> -->
         <dxi-column dataField="order_number" caption="Order #" [width]="100" [allowSearch]="true" [allowFiltering]="true" cellTemplate="orderCell"></dxi-column>
@@ -46,12 +46,14 @@
           <!-- <button type="button" class="btn btn-xs" (click)="showEditPopup(data)">{{data.value}}</button> -->
         </div>
         <div *dxTemplate="let art of 'detail'">
-            <div class="row">
-                {{art.data.order_art_file.length}}
-                <div class="col-sm-1" *ngFor="let artFile of art.data.order_art_file">
-                    <a [href]="defaultArtFolder + artFile.image_file" target="_blank"><img [src]="defaultArtFolder + artFile.image_file" height="75px" width="75px"></a>
-                </div>
+          <div class="row">
+            {{art.data.order_art_file.length}}
+            <div class="col-sm-1" *ngFor="let artFile of art.data.order_art_file">
+              <a [href]="defaultArtFolder + artFile.image_file" target="_blank">
+                <img [src]="defaultArtFolder + artFile.image_file" height="75px" width="75px">
+              </a>
             </div>
+          </div>
         </div>
       </dx-data-grid>
       <!-- START POPUP EDITOR MARKUP -->
@@ -66,29 +68,29 @@
               <button class="form-control btn-primary" type="button" style="font-size:10px;">ReOrder</button>
             </div>
             <div class="col-md-2">
-              <button class="form-control btn-primary" type="button" style="font-size:10px;">Order Summary</button>
+              <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showOrderSummary(selectedOrder)">Order Summary</button>
             </div>
           </div>
-              <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%;">
-                <mat-tab label="Info">
-                  <app-order-info [(currentOrder)]="selectedOrder" [taskList]="taskListComp"></app-order-info>
-                </mat-tab>
-                <mat-tab label="Tasks">
-                  <app-order-task-list [currentOrder]="selectedOrder" #taskListComp></app-order-task-list>
-                </mat-tab>
-                <mat-tab label="Details">
-                  <app-order-detail [(currentOrder)]="selectedOrder"></app-order-detail>
-                </mat-tab>
-                <mat-tab label="Art">
-                  <app-order-art [(currentOrder)]="selectedOrder"></app-order-art>
-                </mat-tab>
-                <mat-tab label="History/Comments">
-                  <app-order-notes-history [currentOrder]="selectedOrder"></app-order-notes-history>
-                </mat-tab>
-                <mat-tab label="Coorespondence">
-                  <app-order-invoice [currentOrder]="selectedOrder"></app-order-invoice>
-                </mat-tab>
-              </mat-tab-group>
+          <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%;">
+            <mat-tab label="Info">
+              <app-order-info [(currentOrder)]="selectedOrder" [taskList]="taskListComp"></app-order-info>
+            </mat-tab>
+            <mat-tab label="Tasks">
+              <app-order-task-list [currentOrder]="selectedOrder" #taskListComp></app-order-task-list>
+            </mat-tab>
+            <mat-tab label="Details">
+              <app-order-detail [(currentOrder)]="selectedOrder"></app-order-detail>
+            </mat-tab>
+            <mat-tab label="Art">
+              <app-order-art [(currentOrder)]="selectedOrder"></app-order-art>
+            </mat-tab>
+            <mat-tab label="History/Comments">
+              <app-order-notes-history [currentOrder]="selectedOrder"></app-order-notes-history>
+            </mat-tab>
+            <mat-tab label="Coorespondence">
+              <app-order-invoice [currentOrder]="selectedOrder"></app-order-invoice>
+            </mat-tab>
+          </mat-tab-group>
           <div class="col-md-12 float-right">
             <div class="row col-md-4 float-right">
               <div class="col-md-4">
@@ -97,11 +99,18 @@
               <div class="col-md-4">
                 <input *ngIf="enableSave" type="button" style="font-size:10px;" class="form-control btn-primary" value="Apply" (click)="applyChanges();">
               </div>
-                  
+
             </div>
           </div>
         </div>
       </dx-popup>
+
+      <!-- START POPUP ORDER SUMMARY MARKUP -->
+      <dx-popup class="popup" [showTitle]="true" title="Order Summary" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="summaryVisible">
+        <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
+          <app-order-summary [currentOrder]="selectedOrder"></app-order-summary>
+        </div>
+      </dx-popup>
     </div>
-</section>
+  </section>
 </div>

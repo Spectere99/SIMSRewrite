@@ -66,6 +66,7 @@ namespace SIMSDataService
             builder.EntitySet<hotjas_group>("Group");
             builder.EntitySet<order_status_history>("OrderStatusHistory");
             builder.EntitySet<correspondence>("Correspondence");
+            builder.EntitySet<order_notes>("OrderNotes");
 
             builder.EntitySet<order_rpt>("OrderReporting");
             builder.EntitySet<order_payments_rpt>("PaymentReporting");

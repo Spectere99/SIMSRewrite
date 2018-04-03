@@ -54,7 +54,7 @@ namespace SIMSDataService.Controllers
 
                 File.WriteAllBytes(filePath, docBytes);
 
-                result = Request.CreateResponse(HttpStatusCode.OK, postedFile);
+                result = Request.CreateResponse(HttpStatusCode.OK, newCorr.corr_filename);
 
                 return result;
             }
