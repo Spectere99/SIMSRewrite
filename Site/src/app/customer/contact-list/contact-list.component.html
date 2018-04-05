@@ -53,11 +53,21 @@
               <app-customer-order-list [customer]="selectedCustomer"></app-customer-order-list>
             </mat-tab>
         </mat-tab-group>
-      
-        <div class="col-md-3 float-right" style="padding-top:5px;">
-          <input type="button" class="btn btn-default" value="Cancel" (click)="cancelChanges();">
-          <input type="button" class="btn btn-primary" value="Apply" (click)="applyChanges();">
-        </div>  
+        <div class="col-md-12 float-right">
+            <div class="row col-md-4 float-right">
+              <div class="col-md-4">
+                <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="cancelChanges();">
+              </div>
+              <div class="col-md-4">
+                <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
+              </div>
+
+            </div>
+          </div>
+        <!-- <div class="col-md-3 float-right" style="padding-top:5px;">
+          <input type="button" type="button" style="font-size:10px;" class="form-control btn-primary" value="Cancel" (click)="cancelChanges();">
+          <input type="button" type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
+        </div>   -->
       </div>
       
     </dx-popup>

@@ -306,6 +306,10 @@ export class CustomerListComponent implements OnInit {
     });
     }
 
+    cancelChanges() {
+      this.popupVisible = false;
+    }
+
   ngOnInit() {
   }
 

@@ -41,10 +41,10 @@ export class Order {
     SHIP_ZIP: string;
     PRIORITY: number;
     PERCENT_COMPLETE: string;
-    ship_carrier: null;
-    ship_tracking: null;
-    previous_order: null;
-    reorder_ind: null;
+    ship_carrier: string;
+    ship_tracking: string;
+    previous_order: string;
+    reorder_ind: string;
     ship_attn: string;
     contact: string;
     contact_email: string;
@@ -177,7 +177,7 @@ export class OrderService {
     public _ORDER_ART_PLACEMENT_ACTION = 'OrderArtPlacement';
     public _ORDER_FEE_ACTION = 'OrderFees';
     public _ORDER_PAYMENT_ACTION = 'OrderPayments';
-    public _ORDER_ART_FILE_ACTION = 'orderartfile';
+    public _ORDER_ART_FILE_ACTION = 'OrderArtFile';
     public _ORDER_TASK_ACTION = 'OrderTask';
     public _ORDER_STATUS_HISTORY_ACTION = 'OrderStatusHistory';
     public _ORDER_NOTE_ACTION = 'OrderNotes';
@@ -493,8 +493,9 @@ export class OrderService {
     }
     // NOTE:  All Art File Actions use a Web API 2.0 back end insted of ODATA
     addOrderArtFile(userId, orderArtFile: OrderArtFile) {
-        // console.log('OrderArtFile in addOrderArtFile', orderArtFile);
-        return this.http.post(this.artBaseURL + '/' + this._ORDER_ART_FILE_ACTION, orderArtFile, {headers: this.getHeaders(userId) })
+        console.log('URL for Art File', this.artBaseURL + '/' + this._ORDER_ART_FILE_ACTION);
+        console.log('OrderArtFile in addOrderArtFile', orderArtFile);
+        return this.http.post(this.baseURL + this._ORDER_ART_FILE_ACTION, orderArtFile, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
             return res.json();
@@ -503,6 +504,7 @@ export class OrderService {
     updateOrderArtFile(userId, orderArtFile: OrderArtFile) {
         this.options = '(' + orderArtFile.order_art_id + ')';
         // console.log('OrderArtFile in updateOrderArtFile', orderArtFile);
+        console.log('URL for Art File', this.artBaseURL + '/' + this._ORDER_ART_FILE_ACTION + this.options);
         return this.http.put(this.artBaseURL + '/' + this._ORDER_ART_FILE_ACTION + this.options, orderArtFile
                             , {headers: this.getHeaders(userId) })
         .map((res: Response) => {

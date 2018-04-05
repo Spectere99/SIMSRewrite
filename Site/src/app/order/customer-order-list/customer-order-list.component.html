@@ -15,11 +15,11 @@
         <dxo-selection mode="single"></dxo-selection>
         <!-- <dxi-column dataField="reorder_ind" caption="Reorder?" [width]="100" [allowFiltering]="false" [calculateCellValue]="setReorderInd"></dxi-column> -->
         <dxi-column dataField="order_number" caption="Order #" [width]="100" [allowSearch]="true" [allowFiltering]="true" cellTemplate="orderCell"></dxi-column>
-        <dxi-column dataField="order_date" caption="Order Date" dataType="date" [width]="110"></dxi-column>
+        <dxi-column dataField="order_date" sortOrder="desc" caption="Order Date" dataType="date" [width]="110"></dxi-column>
         <dxi-column dataField="order_status" caption="Status" [width]="125">
           <dxo-lookup [dataSource]="order_statusSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
         </dxi-column>
-        <dxi-column dataField="order_date" caption="Order Date" dataType="date" [width]="110"></dxi-column>
+        <dxi-column dataField="order_due_date" caption="Due Date" dataType="date" [width]="110"></dxi-column>
         <!-- <dxi-column dataField="order_art_file.image_file" caption="Art" [width]="200"></dxi-column> -->
         <!-- <dxi-column dataField="customer.customer_name" caption="Customer Name" [width]="400"></dxi-column>  -->
         <!--    <dxi-column dataField="order_due_date" caption="Due Date" dataType="date" [width]="110"></dxi-column>
@@ -34,8 +34,8 @@
         <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
         <dxo-filter-row [visible]="true"></dxo-filter-row>
         <dxo-header-filter [visible]="true"></dxo-header-filter>
-        <dxo-sorting mode="single">
-          <!-- or "multiple" | "none" -->
+        <dxo-sorting mode="multiple">
+          <!-- or "single" | "none" -->
         </dxo-sorting>
         <dxo-paging [pageSize]="10"></dxo-paging>
         <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 50]" [showInfo]="true"></dxo-pager>
@@ -65,7 +65,7 @@
             </div>
             <!-- <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showValues();">Show Values</button> -->
             <div class="col-md-1">
-              <button class="form-control btn-primary" type="button" style="font-size:10px;">ReOrder</button>
+              <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="reOrder(customerId)">ReOrder</button>
             </div>
             <div class="col-md-2">
               <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showOrderSummary(selectedOrder)">Order Summary</button>
@@ -97,7 +97,7 @@
                 <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="closeEditor();">
               </div>
               <div class="col-md-4">
-                <input *ngIf="enableSave" type="button" style="font-size:10px;" class="form-control btn-primary" value="Apply" (click)="applyChanges();">
+                <input *ngIf="enableSave" type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
               </div>
 
             </div>

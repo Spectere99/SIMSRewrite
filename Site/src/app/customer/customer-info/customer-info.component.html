@@ -21,7 +21,7 @@
                         </select>
                     </td>
                     <td>
-                        <input class="form-control" type="date" size="25" [ngModel]="customer.setup_date | date: 'MM/dd/yyyy'"(ngModelChange)="customer.setup_date=$event" [disabled]="true">
+                        <input class="form-control" type="date" size="25" [ngModel]="customer.setup_date | date: 'yyyy-MM-dd'"(ngModelChange)="customer.setup_date=$event" [disabled]="true">
                     </td>
                     <td>
                         <select class="form-control form-control-sm" 

@@ -6,6 +6,7 @@ import { CorrespondenceService, Correspondence } from '../../_services/correspon
 import { UserService } from '../../_services/user.service';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
+import { DxLoadPanelModule } from 'devextreme-angular';
 
 declare let jsPDF;
 
@@ -23,6 +24,7 @@ declare let jsPDF;
 })
 export class OrderInvoiceComponent implements OnInit {
 @Input() currentOrder: any;
+private loading = false;
 lookupDataSource: Array<LookupItem>;
 priceListDataSource: Array<PriceListItem>;
 itemTypes: Array<PriceListItem>;
@@ -59,7 +61,7 @@ userProfile;
     this.orderPayments = [];
     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
-      console.log('Lookup Data Source', this.lookupDataSource);
+      // console.log('Lookup Data Source', this.lookupDataSource);
       this.sizeTypes = this.createLookupTypeSource('ssiz');
       this.styleTypes = this.createLookupTypeSource('sclas');
       this.vendorTypes = this.createLookupTypeSource('vend');
@@ -67,8 +69,8 @@ userProfile;
       this.paymentSourceItems = this.createLookupTypeSource('pms');
       this.correspondenceTypes = this.createLookupTypeSource('cort');
       this.correspondenceDisp = this.createLookupTypeSource('crdis');
-      console.log('correspendecne Types', this.correspondenceTypes);
-      console.log('correspendecne Disp', this.correspondenceDisp);
+      // console.log('correspendecne Types', this.correspondenceTypes);
+      // console.log('correspendecne Disp', this.correspondenceDisp);
     });
     priceListService.loadPricelistData('').subscribe(res => {
       this.priceListDataSource = res.value;
@@ -147,6 +149,7 @@ userProfile;
   }
 
   convert() {
+    this.loading = true;
     const doc = new jsPDF('p', 'pt', 'a4');
 
     const margins = {
@@ -162,7 +165,7 @@ userProfile;
     };
 
     const elementToPrint = document.getElementById('invoiceContent');
-    console.log('Generating PDF', elementToPrint);
+    // console.log('Generating PDF', elementToPrint);
     // doc.autoTable(col, rows);
     doc.addHTML(elementToPrint, 25, 25, options, () => {
       const pdfString = doc.output('datauristring');
@@ -183,6 +186,7 @@ userProfile;
         });
       });
     });
+    this.loading = false;
 
   }
 
@@ -212,12 +216,12 @@ userProfile;
       });
       this.orderService.loadOrderArtFileData('', this.currentOrder.order_id).subscribe(res => {
         this.orderArtFile = res.order_art_file;
-        console.log('pulled ArtFile Data', this.orderArtFile);
+        // console.log('pulled ArtFile Data', this.orderArtFile);
       });
       this.correspondenceService.getCorrespondenceData('', this.currentOrder.order_id).subscribe(res => {
-        console.log('correspondenceData return', res);
+        // console.log('correspondenceData return', res);
         this.orderCorrespondence = res.correspondences;
-        console.log('pulled Correspondence Data', this.orderCorrespondence);
+        // console.log('pulled Correspondence Data', this.orderCorrespondence);
       });
     } else {
       /// this.currentOrder = new Order();

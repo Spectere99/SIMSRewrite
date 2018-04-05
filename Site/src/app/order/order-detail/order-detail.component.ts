@@ -45,7 +45,7 @@ export class OrderDetailComponent implements OnInit {
     // console.log('mouseWheelEvent: ', event);
     // console.log('sourceElement', event.sourceElement);
   }
-  constructor(private lookupService: LookupService, private priceListService: PriceListService, userService: UserService,
+  constructor(private lookupService: LookupService, private priceListService: PriceListService, public userService: UserService,
     public orderService: OrderService, public authService: AuthenticationService, public snackBar: MatSnackBar) {
     this.userProfile = JSON.parse(authService.getUserToken());
     this.order = new Order();
@@ -53,7 +53,7 @@ export class OrderDetailComponent implements OnInit {
     this.orderArtPlacement = [];
     this.orderFees = [];
     this.orderPayments = [];
-    lookupService.loadLookupData('').subscribe(res => {
+/*     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.sizeTypes = this.createLookupTypeSource('ssiz');
       this.styleTypes = this.createLookupTypeSource('sclas');
@@ -73,7 +73,7 @@ export class OrderDetailComponent implements OnInit {
     userService.getUsers('').subscribe(res => {
       this.userDataSource = res.value;
       // console.log(this.userDataSource);
-    });
+    }); */
   }
 
   showValues() {
@@ -539,6 +539,28 @@ export class OrderDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.lookupService.loadLookupData('').subscribe(res => {
+      this.lookupDataSource = res.value;
+      this.sizeTypes = this.createLookupTypeSource('ssiz');
+      this.styleTypes = this.createLookupTypeSource('sclas');
+      this.vendorTypes = this.createLookupTypeSource('vend');
+      this.artLocations = this.createLookupTypeSource('aloc');
+      this.paymentSourceItems = this.createLookupTypeSource('pms');
+    });
+
+    this.priceListService.loadPricelistData('').subscribe(res => {
+      this.priceListDataSource = res.value;
+      this.itemTypes = this.createItemTypeSource('orddi');
+      this.setupItems = this.createItemTypeSource('setup');
+      // console.log('Pricelist Items', this.itemTypes);
+      // console.log('Setup Items', this.setupItems);
+    });
+
+    this.userService.getUsers('').subscribe(res => {
+      this.userDataSource = res.value;
+      // console.log(this.userDataSource);
+    });
     /* console.log('order-detail OnInit', this.currentOrder);
     this.editMode = this.currentOrder !== undefined;
     this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {

@@ -206,7 +206,7 @@ orderTabDisabled = true;
       this.gridCustomers.instance.refresh();
     },
     1000);
-    // this.popupVisible = false;
+    this.popupVisible = false;
   }
   cancelChanges() {
     this.popupVisible = false;

@@ -227,7 +227,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    // console.log('order-info-component currentOrder', this.currentOrder);
+    console.log('order-info-component currentOrder', this.currentOrder);
     this.newMode = this.currentOrder.order_id === 0;
     this.orderStatusChanged = this.newMode;
     if (this.currentOrder.customer_id !== 0) {
