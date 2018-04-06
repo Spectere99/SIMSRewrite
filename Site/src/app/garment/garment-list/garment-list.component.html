@@ -1,0 +1,101 @@
+<p>Filter by using the cooresponding column.</p>
+<div class="container col-md-12">
+  <div class="row">
+    <div class="col-lg-12">
+      <dx-data-grid id="gridOrders" [dataSource]="dataSource" [showColumnLines]="true" [showRowLines]="true" [showBorders]="true"
+        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)">
+        <dxo-selection mode="multiple"></dxo-selection>
+        <dxi-column dataField="order_id" caption="OrderID" [visible]="false" [width]="100" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="checked_in_ind" caption="In" [width]="30" [allowSearch]="false" [allowFiltering]="false" [calculateCellValue]="setCheckedInInd"></dxi-column>
+        <dxi-column dataField="checked_out_ind" caption="Out" [width]="35" [allowSearch]="false" [allowFiltering]="false" [calculateCellValue]="setCheckedOutInd"></dxi-column>
+        <dxi-column dataField="garment_order_date" caption="Order Date" dataType="date" [width]="110"></dxi-column>
+        <dxi-column dataField="garment_recvd_date" caption="Due Date" dataType="date" [width]="110"></dxi-column>
+        <dxi-column dataField="shipping_po" caption="PO#" [width]="150"></dxi-column>
+        <dxi-column dataField="order_number" caption="Order#" [width]="100" [allowEditing]="false" cellTemplate="orderCell"></dxi-column>
+        <dxi-column dataField="customer_name" caption="Customer Name" [width]="250" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="vendor" caption="Vendor" [width]="200" [allowEditing]="false">
+          <dxo-lookup [dataSource]="vendorTypes" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="pricelist_id" caption="Item Description" [width]="225" [allowEditing]="false">
+          <dxo-lookup [dataSource]="itemTypes" valueExpr="pricelist_id" displayExpr="pricelist_description"></dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="product_code" caption="Prod Cd" [width]="125"></dxi-column>
+        <dxi-column dataField="xsmall_qty" caption="XS" [width]="35" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="small_qty" caption="S" [width]="30" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="med_qty" caption="M" [width]="30" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="large_qty" caption="L" [width]="30" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="xl_qty" caption="XL" [width]="30" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="C2xl_qty" caption="2XL" [width]="40" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="C3xl_qty" caption="3XL" [width]="40" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="C4xl_qty" caption="4XL" [width]="40" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="C5xl_qty" caption="5XL" [width]="40" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="other1_type" caption="" [width]="55" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="other1_qty" caption="Other" [width]="55" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+
+        <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
+        <dxo-sorting mode="multiple">
+          <!-- or "multiple" | "none" -->
+        </dxo-sorting>
+        <dxo-paging [pageSize]="50"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 50]" [showInfo]="true"></dxo-pager>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-editing mode="batch" [allowUpdating]="true" [allowDeleting]="false" [allowAdding]="false">
+        </dxo-editing>
+        <div *dxTemplate="let data of 'orderCell'">
+          <a [routerLink]="" (click)="showEditPopup(data)">{{data.value}}</a>
+        </div>
+      </dx-data-grid>
+      <!-- START POPUP EDITOR MARKUP -->
+      <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible">
+        <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
+          <div class="row">
+            <div class="col-md-5">
+              <strong>Customer:</strong>{{selectedOrder?.customer_name}}
+            </div>
+            <!-- <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showValues();">Show Values</button> -->
+           <!--  <div class="col-md-1">
+              <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="reOrder(customerId)">ReOrder</button>
+            </div>
+            <div class="col-md-2">
+              <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showOrderSummary(selectedOrder)">Order Summary</button>
+            </div> -->
+          </div>
+          <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%;">
+            <mat-tab label="Info">
+              <app-order-info [(currentOrder)]="selectedOrder" [taskList]="taskListComp"></app-order-info>
+            </mat-tab>
+            <mat-tab label="Tasks">
+              <app-order-task-list [currentOrder]="selectedOrder" #taskListComp></app-order-task-list>
+            </mat-tab>
+            <mat-tab label="Details">
+              <app-order-detail [(currentOrder)]="selectedOrder"></app-order-detail>
+            </mat-tab>
+            <mat-tab label="Art">
+              <app-order-art [(currentOrder)]="selectedOrder"></app-order-art>
+            </mat-tab>
+            <mat-tab label="History/Comments">
+              <app-order-notes-history [currentOrder]="selectedOrder"></app-order-notes-history>
+            </mat-tab>
+            <mat-tab label="Coorespondence">
+              <app-order-invoice [currentOrder]="selectedOrder"></app-order-invoice>
+            </mat-tab>
+          </mat-tab-group>
+          <!-- <div class="col-md-12 float-right">
+            <div class="row col-md-4 float-right">
+              <div class="col-md-4">
+                <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="closeEditor();">
+              </div>
+              <div class="col-md-4">
+                <input *ngIf="enableSave" type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
+              </div>
+
+            </div>
+          </div> -->
+        </div>
+      </dx-popup>
+
+    </div>
+  </div>
+</div>
