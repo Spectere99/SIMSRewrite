@@ -20,9 +20,10 @@ namespace SIMSDataService
             // Web API configuration and services
             // Web API configuration and services
             var cors = new EnableCorsAttribute(
-                origins: "*",
-                headers: "*",
-                methods: "*");
+                "*",
+                "*",
+                "*",
+                "DataSeviceVersion, MaxDataServiceVersion");
             config.EnableCors(cors);
             // Configure Web API to use only bearer token authentication.
             config.SuppressDefaultHostAuthentication();

@@ -17,8 +17,8 @@ export const environment = {
   reportingEndpoint: 'http://localhost:8888/odata/',
   // reportingEndpoint: 'http://spserver:8888/odata/',
 
-  artUploadURL: 'http://localhost:56543/api/ArtFile',
-  // artUploadURL: 'http://localhost:8888/api/ArtFile',  // DO NOT USE Slash at end!
+  // artUploadURL: 'http://localhost:56543/api/ArtFile',
+  artUploadURL: 'http://localhost:8888/api/ArtFile',  // DO NOT USE Slash at end!
   // artUploadURL: 'http://spserver:8888/api/ArtFile',  // DO NOT USE Slash at end!
 
   // docUploadURL: 'http://localhost:56543/api/Document',

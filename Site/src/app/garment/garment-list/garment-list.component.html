@@ -1,4 +1,19 @@
 <p>Filter by using the cooresponding column.</p>
+<div class="row">
+  <div class="col-md-2">Pre-Defined Filters</div>
+  <div class="col-md-4">
+  <dx-radio-group #eventRadioGroup
+      id="preDefFilters"
+      layout="horizontal"
+      [items]="filterNames"
+      [value]="filterNames[0]"
+      (onValueChanged)="onValueChanged($event)">
+  </dx-radio-group>
+  </div>
+  <div class="col-md-2" *ngIf="currentFilterName === 'Custom'">
+      <input class="form-control" type="date" [ngModel]="customGarmentOrderDate | date:'yyyy-MM-dd'" (ngModelChange)="customDateChange($event)">
+  </div>
+</div>
 <div class="container col-md-12">
   <div class="row">
     <div class="col-lg-12">
@@ -31,7 +46,96 @@
         <dxi-column dataField="C5xl_qty" caption="5XL" [width]="40" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
         <dxi-column dataField="other1_type" caption="" [width]="55" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
         <dxi-column dataField="other1_qty" caption="Other" [width]="55" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxo-summary>
+            <dxi-group-item
+            column="xsmall_qty"
+            summaryType="sum"
+            valueFormat="fixedPoint"
+            precision="0"
+            displayFormat="{0}"
+            [showInGroupFooter]="true">
+          </dxi-group-item>
+          <dxi-group-item
+            column="small_qty"
+            summaryType="sum"
+            valueFormat="fixedPoint"
+            precision="0"
+            displayFormat="{0}"
+            [showInGroupFooter]="true">
+        </dxi-group-item>
+        <dxi-group-item
+            column="med_qty"
+            summaryType="sum"
+            valueFormat="fixedPoint"
+            precision="0"
+            displayFormat="{0}"
+            [showInGroupFooter]="true">
+        </dxi-group-item>
+        <dxi-group-item
+            column="large_qty"
+            summaryType="sum"
+            valueFormat="fixedPoint"
+            precision="0"
+            displayFormat="{0}"
+            [showInGroupFooter]="true">
+        </dxi-group-item>
+        <dxi-group-item
+            column="xl_qty"
+            summaryType="sum"
+            valueFormat="fixedPoint"
+            precision="0"
+            displayFormat="{0}"
+            [showInGroupFooter]="true">
+        </dxi-group-item>
+        <dxi-group-item
+            column="C2xl_qty"
+            summaryType="sum"
+            valueFormat="fixedPoint"
+            precision="0"
+            displayFormat="{0}"
+            [showInGroupFooter]="true">
+        </dxi-group-item>
+        <dxi-group-item
+            column="C3xl_qty"
+            summaryType="sum"
+            valueFormat="fixedPoint"
+            precision="0"
+            displayFormat="{0}"
+            [showInGroupFooter]="true">
+        </dxi-group-item>
+        <dxi-group-item
+            column="C4xl_qty"
+            summaryType="sum"
+            valueFormat="fixedPoint"
+            precision="0"
+            displayFormat="{0}"
+            [showInGroupFooter]="true">
+        </dxi-group-item>
+        <dxi-group-item
+            column="C5xl_qty"
+            summaryType="sum"
+            valueFormat="fixedPoint"
+            precision="0"
+            displayFormat="{0}"
+            [showInGroupFooter]="true">
+        </dxi-group-item>
+        <dxi-group-item
+            column="other1_qty"
+            summaryType="sum"
+            valueFormat="fixedPoint"
+            precision="0"
+            displayFormat="{0}"
+            [showInGroupFooter]="true">
+        </dxi-group-item>
 
+          <!-- <dxi-total-item
+              column="balance_due"
+              summaryType="sum"
+              valueFormat="currency"
+              precision="2"
+              displayFormat="Total Balance: {0}">
+          </dxi-total-item> -->
+      </dxo-summary>
         <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
         <dxo-filter-row [visible]="true"></dxo-filter-row>
         <dxo-header-filter [visible]="true"></dxo-header-filter>
@@ -41,7 +145,7 @@
         <dxo-paging [pageSize]="50"></dxo-paging>
         <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 50]" [showInfo]="true"></dxo-pager>
         <dxo-group-panel [visible]="true"></dxo-group-panel>
-        <dxo-editing mode="batch" [allowUpdating]="true" [allowDeleting]="false" [allowAdding]="false">
+        <dxo-editing mode="batch" [allowUpdating]="true" [allowDeleting]="false" [allowAdding]="true">
         </dxo-editing>
         <div *dxTemplate="let data of 'orderCell'">
           <a [routerLink]="" (click)="showEditPopup(data)">{{data.value}}</a>
@@ -96,6 +200,7 @@
         </div>
       </dx-popup>
 
+    
     </div>
   </div>
 </div>

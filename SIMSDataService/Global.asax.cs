@@ -19,5 +19,17 @@ namespace SIMSDataService
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Application_BeginRequest(object sender, EventArgs e)
+        {
+            if (Context.Request.Path.Contains("odata/") && Context.Request.HttpMethod == "OPTIONS")
+            {
+                Context.Response.AddHeader("Access-Control-Allow-Origin", Context.Request.Headers["Origin"]);
+                Context.Response.AddHeader("Access-Control-Allow-Headers", "*");
+                Context.Response.AddHeader("Access-Control-Allow-Methods", "GET, POST PUT, DELETE, PATCH, MERGE, OPTIONS");
+                Context.Response.AddHeader("Access-Control-Allow-Credentials", "true");
+                Context.Response.End();
+            }
+        }
     }
 }
