@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, Input, ViewChild, HostListener } from '@angular/core';
 import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee, OrderPayment } from '../../_services/order.service';
+import { CustomerService, Customer} from '../../_services/customer.service';
 import { UserService } from '../../_services/user.service';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
@@ -14,11 +15,12 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   selector: 'app-order-detail',
   templateUrl: './order-detail.component.html',
   styleUrls: ['./order-detail.component.scss'],
-  providers: [OrderService, PriceListService]
+  providers: [OrderService, CustomerService, PriceListService]
 })
 
 export class OrderDetailComponent implements OnInit {
   @Input() currentOrder: any;
+  customer: Customer;
   lookupDataSource: Array<LookupItem>;
   priceListDataSource: Array<PriceListItem>;
 
@@ -46,7 +48,8 @@ export class OrderDetailComponent implements OnInit {
     // console.log('sourceElement', event.sourceElement);
   }
   constructor(private lookupService: LookupService, private priceListService: PriceListService, public userService: UserService,
-    public orderService: OrderService, public authService: AuthenticationService, public snackBar: MatSnackBar) {
+              public orderService: OrderService, public customerService: CustomerService, public authService: AuthenticationService,
+              public snackBar: MatSnackBar) {
     this.userProfile = JSON.parse(authService.getUserToken());
     this.order = new Order();
     this.order.order_detail = [];
@@ -173,11 +176,10 @@ export class OrderDetailComponent implements OnInit {
     lineItem.other2_qty = null;
     lineItem.other3_type = null;
     lineItem.other3_qty = null;
-    lineItem.order_number = null;
-    lineItem.customer_name = null;
     lineItem.garment_order_date = null;
     lineItem.garment_recvd_date = null;
-
+    lineItem.order_number = this.order.order_number;
+    lineItem.customer_name = this.customer.customer_name;
     this.order.order_detail.unshift(lineItem);
   }
 
@@ -189,6 +191,8 @@ export class OrderDetailComponent implements OnInit {
     orderLine.garment_order_date = undefined;
     orderLine.garment_recvd_date = undefined;
     orderLine.shipping_po = undefined;
+    orderLine.order_number = this.order.order_number;
+    orderLine.customer_name = this.customer.customer_name;
     this.order.order_detail.unshift(orderLine);
     console.log('Original Order Line', this.order.order_detail[idx]);
     console.log('Copied Order Line', orderLine);
@@ -442,6 +446,9 @@ export class OrderDetailComponent implements OnInit {
     if (orderDetail.order_detail_id <= 0) {
       orderDetail.order_detail_id = 0;
       orderDetail.order_id = this.order.order_id;
+      orderDetail.customer_name = this.customer.customer_name;
+      orderDetail.order_number = this.currentOrder.order_number;
+      console.log('OrderDetail on Save', orderDetail);
       this.orderService.addOrderLineItem('rwflowers', orderDetail)
       .subscribe(res => {
         // console.log('Save orderInfo Return', res);
@@ -452,6 +459,9 @@ export class OrderDetailComponent implements OnInit {
         });
       });
     } else {
+      orderDetail.customer_name = this.customer.customer_name;
+      orderDetail.order_number = this.currentOrder.order_number;
+      console.log('OrderDetail on Save', orderDetail);
       this.orderService.updateOrderLineItem('rwflowers', orderDetail)
       .subscribe(res => {
         // console.log('Update orderLineItem Return', res);
@@ -579,6 +589,12 @@ export class OrderDetailComponent implements OnInit {
     this.editMode = this.currentOrder.order_id !== 0;
     // console.log('Current Order', this.currentOrder);
     if (this.currentOrder.order_id !== 0) {
+      if (this.currentOrder.customer_id > 0) {
+        this.customerService.getCustomerData('', this.currentOrder.customer_id).subscribe(res => {
+          this.customer = res;
+          // console.log('pulled Customer', this.orderCustomer);
+        });
+      }
       this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
         this.order = res;
         // console.log('pulled order', this.order);

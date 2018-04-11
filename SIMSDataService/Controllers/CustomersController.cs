@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.OData;
 using SIMSEntities;
 
@@ -23,6 +24,7 @@ namespace SIMSDataService.Controllers
     builder.EntitySet<customer_person>("customer_person"); 
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class CustomersController : ODataController
     {
         private simsEntities db = new simsEntities();

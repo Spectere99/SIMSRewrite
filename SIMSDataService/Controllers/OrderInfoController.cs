@@ -7,7 +7,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Cors;
 using System.Web.Http.ModelBinding;
 using System.Web.Http.OData;
 using System.Web.Http.OData.Routing;
@@ -22,31 +21,30 @@ namespace SIMSDataService.Controllers
     using System.Web.Http.OData.Extensions;
     using SIMSEntities;
     ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<order_task>("OrderTask");
-    builder.EntitySet<order>("orders"); 
+    builder.EntitySet<vw_order_info>("OrderInfo");
+    builder.EntitySet<order_task>("order_task"); 
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
-    [EnableCors(origins: "*", headers: "*", methods: "*")]
-    public class OrderTaskController : ODataController
+    public class OrderInfoController : ODataController
     {
         private simsEntities db = new simsEntities();
 
-        // GET: odata/OrderTask
+        // GET: odata/OrderInfo
         [EnableQuery]
-        public IQueryable<order_task> GetOrderTask()
+        public IQueryable<vw_order_info> GetOrderInfo()
         {
-            return db.order_task;
+            return db.vw_order_info;
         }
 
-        // GET: odata/OrderTask(5)
+        // GET: odata/OrderInfo(5)
         [EnableQuery]
-        public SingleResult<order_task> Getorder_task([FromODataUri] int key)
+        public SingleResult<vw_order_info> Getvw_order_info([FromODataUri] int key)
         {
-            return SingleResult.Create(db.order_task.Where(order_task => order_task.order_id == key));
+            return SingleResult.Create(db.vw_order_info.Where(vw_order_info => vw_order_info.order_id == key));
         }
 
-        // PUT: odata/OrderTask(5)
-        public IHttpActionResult Put([FromODataUri] int key, Delta<order_task> patch)
+        // PUT: odata/OrderInfo(5)
+        public IHttpActionResult Put([FromODataUri] int key, Delta<vw_order_info> patch)
         {
             Validate(patch.GetEntity());
 
@@ -55,13 +53,13 @@ namespace SIMSDataService.Controllers
                 return BadRequest(ModelState);
             }
 
-            order_task order_task = db.order_task.Find(key);
-            if (order_task == null)
+            vw_order_info vw_order_info = db.vw_order_info.Find(key);
+            if (vw_order_info == null)
             {
                 return NotFound();
             }
 
-            patch.Put(order_task);
+            patch.Put(vw_order_info);
 
             try
             {
@@ -69,7 +67,7 @@ namespace SIMSDataService.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!order_taskExists(key))
+                if (!vw_order_infoExists(key))
                 {
                     return NotFound();
                 }
@@ -79,18 +77,18 @@ namespace SIMSDataService.Controllers
                 }
             }
 
-            return Updated(order_task);
+            return Updated(vw_order_info);
         }
 
-        // POST: odata/OrderTask
-        public IHttpActionResult Post(order_task order_task)
+        // POST: odata/OrderInfo
+        public IHttpActionResult Post(vw_order_info vw_order_info)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.order_task.Add(order_task);
+            db.vw_order_info.Add(vw_order_info);
 
             try
             {
@@ -98,7 +96,7 @@ namespace SIMSDataService.Controllers
             }
             catch (DbUpdateException)
             {
-                if (order_taskExists(order_task.order_id))
+                if (vw_order_infoExists(vw_order_info.order_id))
                 {
                     return Conflict();
                 }
@@ -108,12 +106,12 @@ namespace SIMSDataService.Controllers
                 }
             }
 
-            return Created(order_task);
+            return Created(vw_order_info);
         }
 
-        // PATCH: odata/OrderTask(5)
+        // PATCH: odata/OrderInfo(5)
         [AcceptVerbs("PATCH", "MERGE")]
-        public IHttpActionResult Patch([FromODataUri] int key, Delta<order_task> patch)
+        public IHttpActionResult Patch([FromODataUri] int key, Delta<vw_order_info> patch)
         {
             Validate(patch.GetEntity());
 
@@ -122,13 +120,13 @@ namespace SIMSDataService.Controllers
                 return BadRequest(ModelState);
             }
 
-            order_task order_task = db.order_task.Find(key);
-            if (order_task == null)
+            vw_order_info vw_order_info = db.vw_order_info.Find(key);
+            if (vw_order_info == null)
             {
                 return NotFound();
             }
 
-            patch.Patch(order_task);
+            patch.Patch(vw_order_info);
 
             try
             {
@@ -136,7 +134,7 @@ namespace SIMSDataService.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!order_taskExists(key))
+                if (!vw_order_infoExists(key))
                 {
                     return NotFound();
                 }
@@ -146,36 +144,29 @@ namespace SIMSDataService.Controllers
                 }
             }
 
-            return Updated(order_task);
+            return Updated(vw_order_info);
         }
 
-        // DELETE: odata/OrderTask(5)
+        // DELETE: odata/OrderInfo(5)
         public IHttpActionResult Delete([FromODataUri] int key)
         {
-            var delOrderTasks = db.order_task.Where(q => q.order_id == key);
-            
-            //order_task order_task = db.order_task.Find(key);
-            if (delOrderTasks.Any())
+            vw_order_info vw_order_info = db.vw_order_info.Find(key);
+            if (vw_order_info == null)
             {
-                foreach (order_task item in delOrderTasks)
-                {
-                    db.order_task.Remove(item);
-                }
-                db.SaveChanges();
-                return Ok(key);
+                return NotFound();
             }
 
-            return Ok(key);
-            
+            db.vw_order_info.Remove(vw_order_info);
+            db.SaveChanges();
 
-            
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // GET: odata/OrderTask(5)/order
+        // GET: odata/OrderInfo(5)/order_task
         [EnableQuery]
-        public SingleResult<order> Getorder([FromODataUri] int key)
+        public IQueryable<order_task> Getorder_task([FromODataUri] int key)
         {
-            return SingleResult.Create(db.order_task.Where(m => m.order_id == key).Select(m => m.order));
+            return db.vw_order_info.Where(m => m.order_id == key).SelectMany(m => m.order_task);
         }
 
         protected override void Dispose(bool disposing)
@@ -187,9 +178,9 @@ namespace SIMSDataService.Controllers
             base.Dispose(disposing);
         }
 
-        private bool order_taskExists(int key)
+        private bool vw_order_infoExists(int key)
         {
-            return db.order_task.Count(e => e.order_id == key) > 0;
+            return db.vw_order_info.Count(e => e.order_id == key) > 0;
         }
     }
 }

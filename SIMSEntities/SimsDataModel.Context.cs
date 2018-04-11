@@ -48,5 +48,6 @@ namespace SIMSEntities
         public virtual DbSet<hotjas_group> hotjas_group { get; set; }
         public virtual DbSet<user_group> user_group { get; set; }
         public virtual DbSet<correspondence> correspondences { get; set; }
+        public virtual DbSet<vw_order_info> vw_order_info { get; set; }
     }
 }

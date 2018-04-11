@@ -1,0 +1,94 @@
+<p>Filter by using the cooresponding column.</p>
+<!-- <div class="row">
+  <div class="col-md-2">Pre-Defined Filters</div>
+  <div class="col-md-4">
+  <dx-radio-group #eventRadioGroup
+      id="preDefFilters"
+      layout="horizontal"
+      [items]="filterNames"
+      [value]="filterNames[0]"
+      (onValueChanged)="onValueChanged($event)">
+  </dx-radio-group>
+  </div>
+  <div class="col-md-2" *ngIf="currentFilterName === 'Custom'">
+      <input class="form-control" type="date" [ngModel]="customGarmentOrderDate | date:'yyyy-MM-dd'" (ngModelChange)="customDateChange($event)">
+  </div>
+</div> -->
+<div class="container col-md-12">
+  <div class="row">
+    <div class="col-lg-12">
+      <dx-data-grid id="gridOrders" [dataSource]="dataSource" [showColumnLines]="true" [showRowLines]="true" [showBorders]="true"
+        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onRowPrepared)="setCustomerName">
+        <dxo-selection mode="single"></dxo-selection>
+        <dxi-column dataField="order_id" caption="OrderID" [visible]="false" [width]="100" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="is_complete" caption="Complete" [width]="100" [allowSearch]="false" [allowFiltering]="false" [calculateCellValue]="setCompletedInd"></dxi-column>
+        <dxi-column dataField="order.order_number" caption="Order#" [width]="100" [allowEditing]="false" cellTemplate="orderCell"></dxi-column>
+        <dxi-column dataField="task_code" caption="Task" [width]="175" [allowEditing]="false">
+          <dxo-lookup [dataSource]="taskLookup" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
+        </dxi-column>
+        <dxi-column dataField="order.order_status" caption="Order Status" [width]="125" [allowEditing]="false">
+          <dxo-lookup [dataSource]="order_statusSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
+        </dxi-column>
+        <!-- <dxi-column dataField="" caption="Customer Name" [width]="350" [allowSearch]="false" [allowFiltering]="false"></dxi-column> -->
+        <dxi-column dataField="order.order_date" caption="Order Date" [visible]="true" [width]="100" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="order.order_due_date" caption="Due Date" [visible]="true" [width]="100" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="" caption="Items" [visible]="true" [width]="100" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
+        <dxo-sorting mode="multiple">
+          <!-- or "multiple" | "none" -->
+        </dxo-sorting>
+        <dxo-paging [pageSize]="50"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 50]" [showInfo]="true"></dxo-pager>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-editing mode="batch" [allowUpdating]="true" [allowDeleting]="false" [allowAdding]="true">
+        </dxo-editing>
+        <div *dxTemplate="let data of 'orderCell'">
+          <a [routerLink]="" (click)="showEditPopup(data)">{{data.value}}</a>
+        </div>
+      </dx-data-grid>
+      <!-- START POPUP EDITOR MARKUP -->
+      <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible">
+        <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
+          <div class="row">
+            <div class="col-md-5">
+              <strong>Customer:</strong>{{selectedOrder?.customer_name}}
+            </div>
+          </div>
+          <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%;">
+            <mat-tab label="Info">
+              <app-order-info [(currentOrder)]="selectedOrder" [taskList]="taskListComp"></app-order-info>
+            </mat-tab>
+            <mat-tab label="Tasks">
+              <app-order-task-list [currentOrder]="selectedOrder" #taskListComp></app-order-task-list>
+            </mat-tab>
+            <mat-tab label="Details">
+              <app-order-detail [(currentOrder)]="selectedOrder"></app-order-detail>
+            </mat-tab>
+            <mat-tab label="Art">
+              <app-order-art [(currentOrder)]="selectedOrder"></app-order-art>
+            </mat-tab>
+            <mat-tab label="History/Comments">
+              <app-order-notes-history [currentOrder]="selectedOrder"></app-order-notes-history>
+            </mat-tab>
+            <mat-tab label="Coorespondence">
+              <app-order-invoice [currentOrder]="selectedOrder"></app-order-invoice>
+            </mat-tab>
+          </mat-tab-group>
+          <!-- <div class="col-md-12 float-right">
+            <div class="row col-md-4 float-right">
+              <div class="col-md-4">
+                <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="closeEditor();">
+              </div>
+              <div class="col-md-4">
+                <input *ngIf="enableSave" type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
+              </div>
+
+            </div>
+          </div> -->
+        </div>
+      </dx-popup>
+    </div>
+  </div>
+</div>

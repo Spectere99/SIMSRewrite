@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="correspondence_id" />
           </Key>
-          <Property Name="correspondence_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="correspondence_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="customer_id" Type="int" />
           <Property Name="order_id" Type="int" />
           <Property Name="corr_date" Type="datetime" Precision="0" />
@@ -400,6 +400,22 @@
           <Property Name="order_type_search_for" Type="varchar" MaxLength="10" />
           <Property Name="assigned_to_search_for" Type="int" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'def.printmgr.vw_order_info' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vw_order_info">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="int" Nullable="false" />
+          <Property Name="order_number" Type="varchar" MaxLength="50" />
+          <Property Name="order_status" Type="varchar" MaxLength="10" />
+          <Property Name="order_date" Type="datetime" Precision="0" />
+          <Property Name="order_due_date" Type="datetime" Precision="0" />
+          <Property Name="order_type" Type="varchar" MaxLength="10" />
+          <Property Name="contact" Type="varchar" MaxLength="100" />
+          <Property Name="customer_name" Type="varchar" MaxLength="50" />
+          <Property Name="ItemCount" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityContainer Name="SimsModelStoreContainer">
           <EntitySet Name="correspondence" EntityType="Self.correspondence" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="customer" EntityType="Self.customer" Schema="printmgr" store:Type="Tables" />
@@ -424,6 +440,19 @@
           <EntitySet Name="task" EntityType="Self.task" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="user_group" EntityType="Self.user_group" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="users" EntityType="Self.users" Schema="printmgr" store:Type="Tables" />
+          <EntitySet Name="vw_order_info" EntityType="Self.vw_order_info" store:Type="Views" store:Schema="printmgr">
+            <DefiningQuery>SELECT
+`vw_order_info`.`order_id`, 
+`vw_order_info`.`order_number`, 
+`vw_order_info`.`order_status`, 
+`vw_order_info`.`order_date`, 
+`vw_order_info`.`order_due_date`, 
+`vw_order_info`.`order_type`, 
+`vw_order_info`.`contact`, 
+`vw_order_info`.`customer_name`, 
+`vw_order_info`.`ItemCount`
+FROM `vw_order_info` AS `vw_order_info`</DefiningQuery>
+          </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -679,6 +708,7 @@
           <Property Name="completed_by" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="completed_date" Type="DateTime" />
           <NavigationProperty Name="order" Relationship="SimsModel.orderorder_task" FromRole="order_task" ToRole="order" />
+          <NavigationProperty Name="vw_order_info" Relationship="SimsModel.order_taskvw_order_info" FromRole="order_task" ToRole="vw_order_info" />
         </EntityType>
         <EntityType Name="order">
           <Key>
@@ -903,6 +933,11 @@
           <AssociationSet Name="orderorder_notes" Association="SimsModel.orderorder_notes">
             <End Role="order" EntitySet="orders" />
             <End Role="order_notes" EntitySet="order_notes" />
+          </AssociationSet>
+          <EntitySet Name="vw_order_info" EntityType="SimsModel.vw_order_info" />
+          <AssociationSet Name="order_taskvw_order_info" Association="SimsModel.order_taskvw_order_info">
+            <End Role="order_task" EntitySet="order_task" />
+            <End Role="vw_order_info" EntitySet="vw_order_info" />
           </AssociationSet>
         </EntityContainer>
         <Association Name="customer_customer_address">
@@ -1133,6 +1168,33 @@
               <PropertyRef Name="order_id" />
             </Principal>
             <Dependent Role="order_notes">
+              <PropertyRef Name="order_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="vw_order_info">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="Int32" Nullable="false" />
+          <Property Name="order_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="order_status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="order_date" Type="DateTime" />
+          <Property Name="order_due_date" Type="DateTime" />
+          <Property Name="order_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="contact" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="customer_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="order_task" Relationship="SimsModel.order_taskvw_order_info" FromRole="vw_order_info" ToRole="order_task" />
+          <Property Name="ItemCount" Type="Int64" Nullable="false" />
+        </EntityType>
+        <Association Name="order_taskvw_order_info">
+          <End Type="SimsModel.order_task" Role="order_task" Multiplicity="*" />
+          <End Type="SimsModel.vw_order_info" Role="vw_order_info" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="vw_order_info">
+              <PropertyRef Name="order_id" />
+            </Principal>
+            <Dependent Role="order_task">
               <PropertyRef Name="order_id" />
             </Dependent>
           </ReferentialConstraint>
@@ -1555,6 +1617,21 @@
                 <ScalarProperty Name="order_id" ColumnName="order_id" />
                 <ScalarProperty Name="customer_id" ColumnName="customer_id" />
                 <ScalarProperty Name="correspondence_id" ColumnName="correspondence_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_order_info">
+            <EntityTypeMapping TypeName="SimsModel.vw_order_info">
+              <MappingFragment StoreEntitySet="vw_order_info">
+                <ScalarProperty Name="ItemCount" ColumnName="ItemCount" />
+                <ScalarProperty Name="customer_name" ColumnName="customer_name" />
+                <ScalarProperty Name="contact" ColumnName="contact" />
+                <ScalarProperty Name="order_type" ColumnName="order_type" />
+                <ScalarProperty Name="order_due_date" ColumnName="order_due_date" />
+                <ScalarProperty Name="order_date" ColumnName="order_date" />
+                <ScalarProperty Name="order_status" ColumnName="order_status" />
+                <ScalarProperty Name="order_number" ColumnName="order_number" />
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

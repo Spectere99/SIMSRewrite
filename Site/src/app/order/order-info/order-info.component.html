@@ -235,4 +235,18 @@
         <!-- </mat-card> -->
       </div>
   </section>
+
+  <dx-load-panel
+  #loadPanel
+  shadingColor="rgba(0,0,0,0.4)"
+  [position]="{ of: window }"
+  message="Loading..."
+  [(visible)]="loading"
+  [showIndicator]="true"
+  [showPane]="true"
+  [shading]="true"
+  [closeOnOutsideClick]="false">
+<!--   (onShown)="onShown()"
+  (onHidden)="onHidden()"> -->
+</dx-load-panel>
 </div>

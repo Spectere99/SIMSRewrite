@@ -37,7 +37,7 @@ export class GarmentListComponent implements OnInit {
   filterNames = [
     'Default',
     'Today',
-    // 'Custom'
+    'All'
   ];
   currentFilter = undefined;
 
@@ -58,11 +58,8 @@ export class GarmentListComponent implements OnInit {
                   ['garment_order_date', '=', this.getToday()]
                 ];
 
-  customOrderFilter = [
-                ['order/order_status', '=', 'ord'],
-                'and',
-                ['garment_order_date', '=', this.customGarmentOrderDate]
-                    ];
+  allOrderFilter = [
+                ['order/order_status', '=', 'ord']];
 
   constructor(public lookupService: LookupService, public userService: UserService, public priceListService: PriceListService,
               public orderService: OrderService, public authService: AuthenticationService) {
@@ -78,20 +75,20 @@ export class GarmentListComponent implements OnInit {
     return today;
   }
 
-  customDateChange(event) {
+/*  customDateChange(event) {
     console.log('customDateChage', event);
     this.customGarmentOrderDate = new Date(event).setHours(0, 0, 0, 0);
-/*     this.customOrderFilter = [
+     this.customOrderFilter = [
       ['order/order_status', '=', 'ord'],
       'and',
       ['garment_order_date', '=', this.customGarmentOrderDate]
     ];
-    this.currentFilter = this.customOrderFilter; */
+    this.currentFilter = this.customOrderFilter;
     console.log('Custom Garment Order Date', this.customGarmentOrderDate);
     console.log('Current Filter', this.currentFilter);
     this.gridOrders.instance.clearFilter();
     this.gridOrders.instance.filter(this.currentFilter);
-  }
+  }*/
 
   onValueChanged(event) {
     console.log(event);
@@ -110,8 +107,8 @@ export class GarmentListComponent implements OnInit {
         // this.gridOrders.instance.refresh();
         break;
       }
-      case 'Custom': {
-        this.currentFilter = this.customOrderFilter;
+      case 'All': {
+        this.currentFilter = this.allOrderFilter;
         console.log('Custom Filter', this.currentFilter);
         // this.gridOrders.instance.refresh();
         break;
@@ -152,7 +149,6 @@ export class GarmentListComponent implements OnInit {
         'garment_order_date',
         'garment_recvd_date',
         'shipping_po',
-        'order_number',
         'customer_name',
         'vendor',
         'pricelist_id',
@@ -170,7 +166,51 @@ export class GarmentListComponent implements OnInit {
         'other1_type',
         'other1_qty',
         'order/order_date',
-        'order/order_status'
+        'order/order_status',
+        'order/order_id',
+        'order/customer_id',
+        'order/reorder_ind',
+        'order/order_number',
+        'order/ship_attn',
+        'order/order_type',
+        'order/purchase_order',
+        'order/order_due_date',
+        'order/assigned_user_id',
+        'order/taken_user_id',
+        'order/est_begin_date',
+        'order/act_begin_date',
+        'order/est_complete_date',
+        'order/act_complete_date',
+        'order/shipped_date',
+        'order/subtotal',
+        'order/tax_rate',
+        'order/tax_amount',
+        'order/shipping',
+        'order/total',
+        'order/payments',
+        'order/balance_due',
+        'order/IMAGE_FILE',
+        'order/BILL_ADDRESS_1',
+        'order/BILL_ADDRESS_2',
+        'order/BILL_CITY',
+        'order/BILL_STATE',
+        'order/BILL_ZIP',
+        'order/SHIP_ADDRESS_1',
+        'order/SHIP_ADDRESS_2',
+        'order/SHIP_CITY',
+        'order/SHIP_STATE',
+        'order/SHIP_ZIP',
+        'order/ship_carrier',
+        'order/ship_tracking',
+        'order/previous_order',
+        'order/contact',
+        'order/contact_email',
+        'order/contact_phone1',
+        'order/contact_phone1_ext',
+        'order/contact_phone1_type',
+        'order/contact_phone2',
+        'order/contact_phone2_ext',
+        'order/contact_phone2_type',
       ],
        filter: this.currentFilter
    };
@@ -179,10 +219,12 @@ export class GarmentListComponent implements OnInit {
   updatingGarmentOrderData(key, values) {
     console.log('updating', key, values);
   }
+
   setCheckedInInd(data) {
     if (data === undefined) { return false; }
     return data.checked_in_ind === 'Y';
   }
+
   setCheckedOutInd(data) {
     if (data === undefined) { return false; }
     return data.checked_out_ind === 'Y';
@@ -191,8 +233,8 @@ export class GarmentListComponent implements OnInit {
   showEditPopup(e) {
     // e.cancel = true;
     // console.log('E', e);
-    this.selectedOrder = e.data;
-    // console.log('Selected Order', this.selectedOrder);
+    this.selectedOrder = e.data.order;
+    console.log('Selected Order', this.selectedOrder);
     // alert('Editing!');
 
     this.popupVisible = true;

@@ -150,6 +150,9 @@
     <Compile Include="user_group.cs">
       <DependentUpon>SimsDataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="vw_order_info.cs">
+      <DependentUpon>SimsDataModel.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

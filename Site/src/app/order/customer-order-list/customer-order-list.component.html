@@ -61,7 +61,7 @@
         <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
           <div class="row">
             <div class="col-md-5">
-              <strong>Customer:</strong>{{customer.customer_name}}
+              <strong>Customer:</strong>{{customer?.customer_name}}
             </div>
             <!-- <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showValues();">Show Values</button> -->
             <div class="col-md-1">
@@ -112,5 +112,18 @@
         </div>
       </dx-popup>
     </div>
+    <dx-load-panel
+      #loadPanel
+      shadingColor="rgba(0,0,0,0.4)"
+      [position]="{ of: window }"
+      message="Loading..."
+      [(visible)]="loading"
+      [showIndicator]="true"
+      [showPane]="true"
+      [shading]="true"
+      [closeOnOutsideClick]="false">
+    <!--   (onShown)="onShown()"
+      (onHidden)="onHidden()"> -->
+    </dx-load-panel>
   </section>
 </div>

@@ -22,5 +22,6 @@ namespace SIMSEntities
         public Nullable<System.DateTime> completed_date { get; set; }
     
         public virtual order order { get; set; }
+        public virtual vw_order_info vw_order_info { get; set; }
     }
 }

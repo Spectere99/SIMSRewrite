@@ -91,6 +91,21 @@ export class CustomerService {
         // headers.append('showInactive'; this.showInactive.toString());
         return headers;
     }
+
+    getCustomerListData(userId): Observable<any> {
+        // Build customer odata Options
+        const expandCmd = '?$expand=';
+        const expandFields = 'customer_person,customer_address,orders';
+        this.options = '';
+        this.options = this.options + '$orderby=customer_name asc';
+
+        return this.http.get(this.baseURL + '/customers', {headers: this.getHeaders(userId)})
+        .map((res: Response) => {
+            // console.log(res.json());
+            return res.json();
+        });
+    }
+
     getActiveParentCustomers(userId): Observable<any> {
         // Build customer odata Options
         // this.options = '(' + customerId + ')';

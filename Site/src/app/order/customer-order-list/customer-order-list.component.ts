@@ -44,6 +44,7 @@ export class CustomerOrderListComponent implements OnInit {
   customerId: number;
   enableSave = false;
   userProfile;
+  private loading = false;
 
   constructor(private http: Http, public orderService: OrderService, lookupService: LookupService,
     userService: UserService, public snackBar: MatSnackBar, authService: AuthenticationService) {

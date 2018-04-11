@@ -26,7 +26,7 @@
         <dxi-column dataField="garment_order_date" caption="Order Date" dataType="date" [width]="110"></dxi-column>
         <dxi-column dataField="garment_recvd_date" caption="Due Date" dataType="date" [width]="110"></dxi-column>
         <dxi-column dataField="shipping_po" caption="PO#" [width]="150"></dxi-column>
-        <dxi-column dataField="order_number" caption="Order#" [width]="100" [allowEditing]="false" cellTemplate="orderCell"></dxi-column>
+        <dxi-column dataField="order.order_number" caption="Order#" [width]="100" [allowEditing]="false" cellTemplate="orderCell"></dxi-column>
         <dxi-column dataField="customer_name" caption="Customer Name" [width]="250" [allowEditing]="false"></dxi-column>
         <dxi-column dataField="vendor" caption="Vendor" [width]="200" [allowEditing]="false">
           <dxo-lookup [dataSource]="vendorTypes" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
@@ -199,8 +199,6 @@
           </div> -->
         </div>
       </dx-popup>
-
-    
     </div>
   </div>
 </div>
