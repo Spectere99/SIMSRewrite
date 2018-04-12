@@ -31,3 +31,8 @@ td {
 .filled {
     background-color: none;
 }
+
+.dx-datagrid-rowsview .dx-row:nth-child(even) 
+{
+        background-color: lightyellow;
+}

@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.ModelBinding;
 using System.Web.Http.OData;
 using System.Web.Http.OData.Routing;
@@ -26,6 +27,7 @@ namespace SIMSDataService.Controllers
     builder.EntitySet<order>("orders"); 
     config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
     */
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public class OrderPaymentsController : ODataController
     {
         private simsEntities db = new simsEntities();

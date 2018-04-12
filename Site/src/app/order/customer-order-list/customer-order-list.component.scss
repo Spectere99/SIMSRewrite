@@ -1,3 +1,8 @@
 .mat-tab-body-content {
     height: 90vh !important;
 }
+
+.dx-datagrid-rowsview .dx-row:nth-child(even) 
+{
+        background-color: lightyellow;
+}

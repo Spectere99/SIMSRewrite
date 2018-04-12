@@ -26,8 +26,9 @@ export class TaskListComponent implements OnInit {
   order_statusSource: Array<LookupItem>;
   customerDataSource: Array<Customer>;
   userProfile;
-
   selectedOrder: any;
+  customer: Customer;
+
   filterNames = [
     'Default',
     'Today',
@@ -67,6 +68,13 @@ export class TaskListComponent implements OnInit {
     return this.lookupDataSource.filter(item => item.class === className);
   }
 
+  getUserDisplayExpr(item) {
+    if (!item) {
+        return '';
+    }
+
+    return item.first_name + ' ' + item.last_name;
+}
   createTaskDataSource() {
     this.dataSource = {
       store: {
@@ -83,6 +91,7 @@ export class TaskListComponent implements OnInit {
       expand: ['order'],
       select: [
         'order_id',
+        'order/order_id',
         'order/order_date',
         'order/order_status',
         'order/customer_id',
@@ -111,6 +120,21 @@ export class TaskListComponent implements OnInit {
    };
   }
 
+  showEditPopup(e) {
+    // e.cancel = true;
+    console.log('E', e);
+    this.customerService.getCustomerData('', e.data.order.customer_id).subscribe(res => {
+      this.customer = res;
+      // this.contactPersons = this.orderCustomer.customer_person;
+      // console.log('pulled Customer', this.orderCustomer);
+    });
+    // console.log('showPopup order', e.data);
+    this.selectedOrder = e.data.order;
+    console.log('Selected Order', this.selectedOrder);
+    // alert('Editing!');
+
+    this.popupVisible = true;
+  }
   removeOrderStatuses() {
     let index = this.order_statusSource.findIndex(x => x.char_mod === 'clos');
     if (index >= 0) {

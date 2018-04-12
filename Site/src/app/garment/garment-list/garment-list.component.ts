@@ -5,8 +5,15 @@ import { Observable } from 'rxjs/Observable';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { OrderService, Order, OrderDetail } from '../../_services/order.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
+import { CustomerService, Customer } from '../../_services/customer.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { UserService, User } from '../../_services/user.service';
+import { OrderInfoComponent } from '../../order/order-info/order-info.component';
+import { OrderDetailComponent } from '../../order/order-detail/order-detail.component';
+import { OrderArtComponent } from '../../order/order-art/order-art.component';
+import { OrderTaskListComponent } from '../../order/order-task-list/order-task-list.component';
+import { OrderSummaryComponent } from '../../order/order-summary/order-summary.component';
+import { OrderNotesHistoryComponent } from '../../order/order-notes-history/order-notes-history.component';
 import { DxDataGridComponent, DxRadioGroupModule, DxTooltipModule, DxRadioGroupComponent } from 'devextreme-angular';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
@@ -15,11 +22,18 @@ import 'rxjs/add/operator/map';
   selector: 'app-garment-list',
   templateUrl: './garment-list.component.html',
   providers: [OrderService, LookupService, UserService,
-              PriceListService, AuthenticationService],
+              PriceListService, CustomerService, AuthenticationService],
   styleUrls: ['./garment-list.component.scss']
 })
 export class GarmentListComponent implements OnInit {
   @ViewChild(DxDataGridComponent) gridOrders: DxDataGridComponent;
+  @ViewChild(OrderInfoComponent) orderInfo: OrderInfoComponent;
+  @ViewChild(OrderDetailComponent) orderDetail: OrderDetailComponent;
+  @ViewChild(OrderArtComponent) orderArt: OrderArtComponent;
+  @ViewChild(OrderTaskListComponent) orderTaskList: OrderTaskListComponent;
+  @ViewChild(OrderSummaryComponent) orderSummary: OrderSummaryComponent;
+  @ViewChild(OrderNotesHistoryComponent) orderNotesHistory: OrderNotesHistoryComponent;
+  customer: Customer;
   baseUrl = environment.odataEndpoint;
   popupVisible = false;
   dataSource: any;
@@ -33,6 +47,8 @@ export class GarmentListComponent implements OnInit {
   todayDate;
   currentFilterName: string;
   customGarmentOrderDate;
+
+  enableSave = false;
 
   filterNames = [
     'Default',
@@ -62,8 +78,9 @@ export class GarmentListComponent implements OnInit {
                 ['order/order_status', '=', 'ord']];
 
   constructor(public lookupService: LookupService, public userService: UserService, public priceListService: PriceListService,
-              public orderService: OrderService, public authService: AuthenticationService) {
+              public orderService: OrderService, public customerService: CustomerService, public authService: AuthenticationService) {
     this.userProfile = JSON.parse(authService.getUserToken());
+    this.enableSave = this.userProfile.profile.role !== 'Readonly';
     this.customGarmentOrderDate = this.getToday();
     this.currentFilter = this.defaultLoadFilter;
     this.createOrderDataSource();
@@ -75,20 +92,20 @@ export class GarmentListComponent implements OnInit {
     return today;
   }
 
-/*  customDateChange(event) {
-    console.log('customDateChage', event);
-    this.customGarmentOrderDate = new Date(event).setHours(0, 0, 0, 0);
-     this.customOrderFilter = [
-      ['order/order_status', '=', 'ord'],
-      'and',
-      ['garment_order_date', '=', this.customGarmentOrderDate]
-    ];
-    this.currentFilter = this.customOrderFilter;
-    console.log('Custom Garment Order Date', this.customGarmentOrderDate);
-    console.log('Current Filter', this.currentFilter);
-    this.gridOrders.instance.clearFilter();
-    this.gridOrders.instance.filter(this.currentFilter);
-  }*/
+  applyChanges() {
+    this.orderInfo.batchSave().subscribe(res => {
+      this.orderDetail.batchSave(res);
+      // Still need art tab batch save.
+      this.orderArt.batchSave(res);
+      // this.selectedOrder = null;
+      this.orderTaskList.batchSave(res);
+      this.orderNotesHistory.batchSave(res);
+      setTimeout(() => {
+        this.gridOrders.instance.refresh();
+      }, 1000);
+      this.popupVisible = false;
+    });
+  }
 
   onValueChanged(event) {
     console.log(event);
@@ -232,7 +249,12 @@ export class GarmentListComponent implements OnInit {
 
   showEditPopup(e) {
     // e.cancel = true;
-    // console.log('E', e);
+    console.log('E', e);
+    this.customerService.getCustomerData('', e.data.order.customer_id).subscribe(res => {
+      this.customer = res;
+      // this.contactPersons = this.orderCustomer.customer_person;
+      // console.log('pulled Customer', this.orderCustomer);
+    });
     this.selectedOrder = e.data.order;
     console.log('Selected Order', this.selectedOrder);
     // alert('Editing!');

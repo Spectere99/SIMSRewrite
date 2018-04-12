@@ -48,27 +48,6 @@ export class OrderPaymentsComponent implements OnInit {
     }
 
     createOrderPaymentDataSource() {
-/*       this.dataSource = {
-        store: {
-            type: 'odata',
-            url: this.baseURL + 'PaymentReporting'
-        },
-        expand: ['order_rpt'],
-        select: ['order_id',
-          'payment_date',
-          'payment_type_code',
-          'payment_amount',
-          'payment_type_code',
-          'order_rpt/order_number',
-          'order_rpt/order_status',
-          'order_rpt/order_date',
-          'order_rpt/order_type',
-          'order_rpt/order_due_date',
-          'order_rpt/total',
-          'order_rpt/balance_due',
-          'order_rpt/contact',
-          'order_rpt/taken_user_id']
-      }; */
       this.dataSource = {
         store: {
             type: 'odata',
@@ -88,7 +67,7 @@ export class OrderPaymentsComponent implements OnInit {
           'total',
           'balance_due',
           'contact',
-          'salesperson',
+          'taken_user',
           'customer_name']
       };
     }

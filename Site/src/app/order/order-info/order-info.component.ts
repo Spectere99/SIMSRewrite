@@ -212,8 +212,9 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    /* // console.log('OnInit currentOrder', this.currentOrder);
-    this.editMode = this.currentOrder !== undefined;
+    console.log('OnInit currentOrder', this.currentOrder);
+    // this.editMode = this.currentOrder !== undefined;
+    this.newMode = this.currentOrder.order_id === 0;
     if (this.currentOrder) {
       this.customerService.getCustomerData('', this.currentOrder.customer_id).subscribe(res => {
         this.orderCustomer = res;
@@ -222,12 +223,12 @@ export class OrderInfoComponent implements OnInit, OnChanges {
       });
     } else {
       this.currentOrder = new Order();
-    } */
+    }
 
   }
 
   ngOnChanges() {
-    console.log('order-info-component currentOrder', this.currentOrder);
+    console.log('OnChanges currentOrder', this.currentOrder);
     this.newMode = this.currentOrder.order_id === 0;
     this.orderStatusChanged = this.newMode;
     if (this.currentOrder.customer_id !== 0) {

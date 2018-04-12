@@ -18,7 +18,7 @@
   <div class="row">
     <div class="col-lg-12">
       <dx-data-grid id="gridOrders" [dataSource]="dataSource" [showColumnLines]="true" [showRowLines]="true" [showBorders]="true"
-        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)">
+        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)" style="height: 700px;">
         <dxo-selection mode="multiple"></dxo-selection>
         <dxi-column dataField="order_id" caption="OrderID" [visible]="false" [width]="100" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
         <dxi-column dataField="checked_in_ind" caption="In" [width]="30" [allowSearch]="false" [allowFiltering]="false" [calculateCellValue]="setCheckedInInd"></dxi-column>
@@ -28,13 +28,14 @@
         <dxi-column dataField="shipping_po" caption="PO#" [width]="150"></dxi-column>
         <dxi-column dataField="order.order_number" caption="Order#" [width]="100" [allowEditing]="false" cellTemplate="orderCell"></dxi-column>
         <dxi-column dataField="customer_name" caption="Customer Name" [width]="250" [allowEditing]="false"></dxi-column>
-        <dxi-column dataField="vendor" caption="Vendor" [width]="200" [allowEditing]="false">
+        <dxi-column dataField="vendor" caption="Vendor" [width]="200" [allowEditing]="true">
           <dxo-lookup [dataSource]="vendorTypes" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
         </dxi-column>
         <dxi-column dataField="pricelist_id" caption="Item Description" [width]="225" [allowEditing]="false">
           <dxo-lookup [dataSource]="itemTypes" valueExpr="pricelist_id" displayExpr="pricelist_description"></dxo-lookup>
         </dxi-column>
         <dxi-column dataField="product_code" caption="Prod Cd" [width]="125"></dxi-column>
+        <dxi-column dataField="color_code" caption="Color" [width]="125"></dxi-column>
         <dxi-column dataField="xsmall_qty" caption="XS" [width]="35" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
         <dxi-column dataField="small_qty" caption="S" [width]="30" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
         <dxi-column dataField="med_qty" caption="M" [width]="30" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
@@ -142,10 +143,12 @@
         <dxo-sorting mode="multiple">
           <!-- or "multiple" | "none" -->
         </dxo-sorting>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-export [enabled]="true" fileName="GarmentList"></dxo-export>
         <dxo-paging [pageSize]="50"></dxo-paging>
         <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 50]" [showInfo]="true"></dxo-pager>
         <dxo-group-panel [visible]="true"></dxo-group-panel>
-        <dxo-editing mode="batch" [allowUpdating]="true" [allowDeleting]="false" [allowAdding]="true">
+        <dxo-editing mode="batch" [allowUpdating]="true" [allowDeleting]="false" [allowAdding]="false">
         </dxo-editing>
         <div *dxTemplate="let data of 'orderCell'">
           <a [routerLink]="" (click)="showEditPopup(data)">{{data.value}}</a>
@@ -156,7 +159,7 @@
         <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
           <div class="row">
             <div class="col-md-5">
-              <strong>Customer:</strong>{{selectedOrder?.customer_name}}
+              <strong>Customer:</strong>{{customer?.customer_name}}
             </div>
             <!-- <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showValues();">Show Values</button> -->
            <!--  <div class="col-md-1">
@@ -186,7 +189,7 @@
               <app-order-invoice [currentOrder]="selectedOrder"></app-order-invoice>
             </mat-tab>
           </mat-tab-group>
-          <!-- <div class="col-md-12 float-right">
+          <div class="col-md-12 float-right">
             <div class="row col-md-4 float-right">
               <div class="col-md-4">
                 <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="closeEditor();">
@@ -194,9 +197,8 @@
               <div class="col-md-4">
                 <input *ngIf="enableSave" type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
               </div>
-
             </div>
-          </div> -->
+          </div>
         </div>
       </dx-popup>
     </div>
