@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee, OrderPayment, OrderArtFile } from '../../_services/order.service';
 import { AuthenticationService } from '../../_services/authentication.service';
@@ -11,21 +11,16 @@ import { DxLoadPanelModule } from 'devextreme-angular';
 declare let jsPDF;
 
 @Component({
-  selector: 'app-order-invoice',
-  templateUrl: './order-invoice.component.html',
- /*  template:
-    `<h1>JSON to PDF app</h1>
-    <div class="container" id="div1">
-        <button id="create" (click)="convert()">Create file</button>
-    </div>
-    `, */
-  styleUrls: ['./order-invoice.component.scss'],
+  selector: 'app-order-correspondence',
+  templateUrl: './order-correspondence.component.html',
+  styleUrls: ['./order-correspondence.component.scss'],
   providers: [OrderService, LookupService, PriceListService, CorrespondenceService]
 })
-export class OrderInvoiceComponent implements OnInit {
+export class OrderCorrespondenceComponent implements OnInit {
 @Input() currentOrder: any;
-@Output() onSave = new EventEmitter<any>();
+selectedOrder;
 private loading = false;
+popupVisible = false;
 lookupDataSource: Array<LookupItem>;
 priceListDataSource: Array<PriceListItem>;
 itemTypes: Array<PriceListItem>;
@@ -49,11 +44,13 @@ order: any;
 defaultDocFolder: string;
 userProfile;
 
+enableSave = false;
 
   constructor(public orderService: OrderService, private lookupService: LookupService, private priceListService: PriceListService,
               public correspondenceService: CorrespondenceService, private userService: UserService,
               public authService: AuthenticationService) {
     this.userProfile = JSON.parse(authService.getUserToken());
+    this.enableSave = this.userProfile.profile.role !== 'Readonly';
     this.defaultDocFolder = environment.defaultDocFolder;
     this.order = new Order();
     this.order.order_detail = [];
@@ -82,6 +79,11 @@ userProfile;
       this.userDataSource = res.value;
       // console.log(this.userDataSource);
     });
+  }
+  showInvoice () {
+    this.selectedOrder = this.currentOrder;
+    this.popupVisible = true;
+    // this.saveInvoice();
   }
 
   createLookupTypeSource(className: string): any {
@@ -149,34 +151,26 @@ userProfile;
     return val;
   }
 
-  convert() {
+  saveInvoice() {
     this.loading = true;
-    const doc = new jsPDF('p', 'pt', 'letter');
+    const doc = new jsPDF('p', 'pt', 'a4');
 
-/*     const margins = {
-      top: 15,
-      bottom: 10,
+    const margins = {
+      top: 25,
+      bottom: 60,
       left: 20,
-    }; */
+      width: 522
+    };
 
     const options = {
       pagesplit: true,
       background: '#fff',
-      dim: {
-        h: 775,
-        w: 575
-      }
     };
 
     const elementToPrint = document.getElementById('invoiceContent');
-    // elementToPrint.parentElement.style.height = '10000px';
-    // elementToPrint.style.display = 'inline-block';
-    elementToPrint.style.width = 'auto';
-    elementToPrint.style.height = 'auto';
-    console.log('Generating PDF', elementToPrint);
+    // console.log('Generating PDF', elementToPrint);
     // doc.autoTable(col, rows);
-    // elementToPrint.style.height = '2000px';
-    doc.addHTML(elementToPrint, 15, 15, options, () => {
+    doc.addHTML(elementToPrint, 25, 25, options, () => {
       const pdfString = doc.output('datauristring');
       const newCorr = new Correspondence();
       newCorr.corr_filename = '';
@@ -191,97 +185,20 @@ userProfile;
       this.correspondenceService.addCorrespondence(this.userProfile.profile.login_id, newCorr).subscribe(res => {
         const newWindow = window.open(this.defaultDocFolder + res);
         this.correspondenceService.getCorrespondenceData('', this.currentOrder.order_id).subscribe(res2 => {
-          // this.orderCorrespondence = res2.correspondences;
-          this.onSave.emit({
-            correspondence: newCorr
-          });
-          this.loading = false;
+          this.orderCorrespondence = res2.correspondences;
         });
       });
     });
+    this.loading = false;
+
   }
 
-  print() {
-    let printContents, popupWin;
-    printContents = document.getElementById('invoiceContent').innerHTML;
-    popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
-    popupWin.document.open();
-    popupWin.document.write(`
-      <html>
-        <head>
-          <title>Orders Summary</title>
-          <style>
-          th {
-            background-color:#eee;
-            font:  11px "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
-          }
-          td {
-            font:  10px "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
-          }
-          h5 {
-            font:  9px "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
-          }
-          h6 {
-            font:  6px "Trebuchet MS", Verdana, Arial, Helvetica,sans-serif;
-          }
-          .box1 {
-            background: url("/assets/boxtl.gif") no-repeat top left;
-            padding: 20px 0px 0px;
-            margin: 0;
-            height: 25px;
-          }
-          .box2 {
-            background: url("/assets/boxtm.gif") repeat top left;
-            padding: 20px 0px 5px;
-            margin: 0;
-            color: white;
-            width: 100%;
-          }
-          .box3 {
-            background: url("/assets/boxtr.gif") no-repeat top left;
-            margin: 0;
-          }
-          .box4 {
-            background: url("/assets/boxl.gif") repeat top left;
-            margin: 0;
-          }
-          .box5 {
-            background: url("/assets/boxr.gif") repeat top right;
-            background-color: white;
-            margin: 0;
-          }
-          .box6 {
-            background: url("/assets/boxbl.gif") no-repeat top left;
-            background-color: white;
-            margin: 0;
-            padding: 5px 15px 25px;
-            height: 30px;
-          }
-          .box7 {
-            background: url("/assets/boxbm.gif") repeat top left;
-            background-color: white;
-            margin: 0;
-            padding: 5px 15px 25px;
-          }
-          .box8 {
-            background: url("/assets/boxbr.gif") no-repeat top left;
-            background-color: white;
-            padding: 5px 15px 25px;
-          }
-          .boxcontent {
-            background-color: #E6E6E6;
-            padding: 5px 0px 0px;
-          }
-          </style>
-        </head>
-      <body>${printContents}</body>
-      </html>`
-    );
-   // <body onload="window.print();window.close()">${printContents}</body>
-   // </html>`
-    popupWin.document.close();
+  refreshCorrespondenceList() {
+    this.correspondenceService.getCorrespondenceData('', this.currentOrder.order_id).subscribe(res => {
+      this.orderCorrespondence = res.correspondences;
+      this.popupVisible = false;
+    });
   }
-
   ngOnInit() {
 
   }

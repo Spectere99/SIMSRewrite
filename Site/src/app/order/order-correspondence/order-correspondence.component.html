@@ -1,0 +1,73 @@
+<div class="container col-md-12 pt-4">
+    <section>
+        <div class="col-lg-6">
+            <div class="row">
+              <div class="col-md-3">
+                Invoice History
+              </div>
+              <div class="col-md-3">
+                <button id="create" class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showInvoice()">View Invoice</button>
+              </div>
+            </div>
+            <hr>
+            <table *ngIf="orderCorrespondence !== undefined && orderCorrespondence.length > 0">
+              <tr>
+                <td style="font-size:12px;">Date</td>
+                <td style="font-size:12px;">By</td>
+                <td style="font-size:12px;">Type</td>
+                <td style="font-size:12px;">Disposition</td>
+                <td style="font-size:12px;">File</td>
+              </tr>
+              <tr *ngFor="let corr of orderCorrespondence | sort: 'corr_date'; index as i">
+                <td>
+                  <input class="form-control" [ngModel]="corr.corr_date | date:'MM/dd/yyyy'" (ngModelChange)="corr.corr_date = $event" [disabled]="true"
+                    size="10">
+                </td>
+                <td>
+                  <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="corr.user_id" [disabled]="true">
+                    <option *ngFor="let user of userDataSource" [value]="user.user_id">
+                      {{user.first_name + ' ' + user.last_name}}
+                    </option>
+                  </select>
+                </td>
+                <td>
+                  <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="corr.corr_type" [disabled]="true">
+                    <option *ngFor="let type of correspondenceTypes" [value]="type.char_mod">
+                      {{type.description}}
+                    </option>
+                  </select>
+                </td>
+                <td>
+                  <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="corr.corr_disp" [disabled]="true">
+                    <option *ngFor="let disp of correspondenceDisp" [value]="disp.char_mod">
+                      {{disp.description}}
+                    </option>
+                  </select>
+                </td>
+                <td>
+                  <a [href]="defaultDocFolder + corr.corr_filename" target="_blank"> {{corr.corr_filename}} </a>
+                </td>
+              </tr>
+            </table>
+            <div class="alert alert-warning" *ngIf="orderCorrespondence === undefined || orderCorrespondence.length === 0">
+              There is no history to show.
+            </div>
+          </div>
+    </section>
+</div>
+
+<dx-popup class="popup" [showTitle]="true" title="Invoice" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible">
+    <div *dxTemplate="let data of 'content'" style="overflow-y: scroll; position:static;">
+      <app-order-invoice [currentOrder]="selectedOrder" (onSave)="refreshCorrespondenceList();"></app-order-invoice>
+      <div class="col-md-12 float-right">
+          <div class="row col-md-4 float-right">
+            <div class="col-md-4">
+              <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="closeEditor();">
+            </div>
+            <div class="col-md-4">
+              <input *ngIf="enableSave" type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="saveInvoice();">
+            </div>
+          </div>
+        </div>
+    </div>
+</dx-popup>

@@ -58,6 +58,7 @@ import { OrderPaymentsComponent } from './report/order-payments/order-payments.c
 import { OrderSummaryComponent } from './order/order-summary/order-summary.component';
 import { GarmentListComponent } from './garment/garment-list/garment-list.component';
 import { TaskListComponent } from './task/task-list/task-list.component';
+import { OrderCorrespondenceComponent } from './order/order-correspondence/order-correspondence.component';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -103,6 +104,7 @@ import { TaskListComponent } from './task/task-list/task-list.component';
     OrderSummaryComponent,
     GarmentListComponent,
     TaskListComponent,
+    OrderCorrespondenceComponent,
   ],
   imports: [
     NgbModule.forRoot(),
