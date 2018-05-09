@@ -47,7 +47,7 @@ private loading = false;
                 this._router.navigate([to]);
             }, (error) => {
                 this.loading = false;
-                this.message = error;
+                this.message = 'Invalid User Name or Password.  Unable to Authenticate';
                 console.error('auth error', error);
             });
     }

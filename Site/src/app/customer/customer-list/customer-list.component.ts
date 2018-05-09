@@ -4,6 +4,7 @@ import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { CustomerInfoComponent } from '../customer-info/customer-info.component';
 import { LookupService } from '../../_services/lookups.service';
 import { UserService } from '../../_services/user.service';
+import { AuthenticationService } from '../../_services/authentication.service';
 import { Customer, CustomerService } from '../../_services/customer.service';
 import { CustomerContactsComponent } from '../customer-contacts/customer-contacts.component';
 import { CustomerInfo } from '../customer-info/customer-info.service';
@@ -11,7 +12,7 @@ import { CustomerInfo } from '../customer-info/customer-info.service';
 @Component({
   selector: 'app-customer-list',
   templateUrl: './customer-list.component.html',
-  providers: [LookupService, UserService, CustomerService],
+  providers: [LookupService, UserService, CustomerService, AuthenticationService],
   styleUrls: ['./customer-list.component.css']
 })
 export class CustomerListComponent implements OnInit {
@@ -41,8 +42,11 @@ export class CustomerListComponent implements OnInit {
   buttonClass = 'btn-blue-grey';
   filterDate = new Date(2008, 1, 1);
   orderTabDisabled = true;
+  userProfile;
 
-  constructor(lookupService: LookupService, userService: UserService, customerService: CustomerService) {
+  constructor(lookupService: LookupService, userService: UserService, customerService: CustomerService
+              , authService: AuthenticationService) {
+      this.userProfile = JSON.parse(authService.getUserToken());
       this.pagingEnabled = true;
       this.disableExpand = true;
       this.expandedResults = false;
@@ -191,9 +195,12 @@ export class CustomerListComponent implements OnInit {
     showAddPopup(e) {
       console.log('Adding', e);
       this.selectedCustomer = new Customer;
-
+      const today = new Date();
       // console.log('SelectedCustomer', this.selectedCustomer);
       // alert('Editing!');
+      // const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+      this.selectedCustomer.setup_date = today.toISOString();
+      this.selectedCustomer.setup_by = this.userProfile.profile.user_id;
       this.popupVisible = true;
       if (this.selectedCustomer.customer_id < 0) {
         this.orderTabDisabled = true; } else {this.orderTabDisabled = false;

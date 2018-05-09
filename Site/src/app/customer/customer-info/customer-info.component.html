@@ -82,10 +82,10 @@
                         </select>
                     </td>
                     <td>
-                            <input class="form-control" type="text" size="40"  [ngModel]="address.address_1">
+                            <input class="form-control" type="text" size="40"  [(ngModel)]="address.address_1">
                     </td>
                     <td>
-                            <input class="form-control" type="text" size="40"  [ngModel]="address.address_2">
+                            <input class="form-control" type="text" size="40"  [(ngModel)]="address.address_2">
                     </td>
                 </tr>
             </table>
@@ -97,7 +97,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input class="form-control" type="text" size="25"  [ngModel]="address.city">
+                        <input class="form-control" type="text" size="25"  [(ngModel)]="address.city">
                     </td>
                     <td>
                         <select class="form-control form-control-sm" 
@@ -108,7 +108,7 @@
                         </select>
                     </td>
                     <td>
-                        <input class="form-control" maxlength="10" type="text" size="10"  [ngModel]="address.zip">
+                        <input class="form-control" maxlength="10" type="text" size="10"  [(ngModel)]="address.zip">
                     </td>
                 </tr>
             </table>

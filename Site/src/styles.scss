@@ -41,7 +41,12 @@
    opacity: 0;
    }
   
-   .dx-datagrid-rowsview .dx-row:nth-child(even) 
-   {
-           background-color: lightyellow;
-   }
+.dx-datagrid-rowsview .dx-row:nth-child(even) 
+{
+        background-color: lightyellow;
+}
+
+.dx-widget
+{
+    font-size: 12px;
+}

@@ -23,18 +23,18 @@
         <dxi-column dataField="order_id" caption="OrderID" [visible]="false" [width]="100" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
         <dxi-column dataField="checked_in_ind" caption="In" [width]="30" [allowSearch]="false" [allowFiltering]="false" [calculateCellValue]="setCheckedInInd"></dxi-column>
         <dxi-column dataField="checked_out_ind" caption="Out" [width]="35" [allowSearch]="false" [allowFiltering]="false" [calculateCellValue]="setCheckedOutInd"></dxi-column>
-        <dxi-column dataField="garment_order_date" caption="Order Date" dataType="date" [width]="110"></dxi-column>
-        <dxi-column dataField="garment_recvd_date" caption="Due Date" dataType="date" [width]="110"></dxi-column>
-        <dxi-column dataField="shipping_po" caption="PO#" [width]="150"></dxi-column>
-        <dxi-column dataField="order.order_number" caption="Order#" [width]="100" [allowEditing]="false" cellTemplate="orderCell"></dxi-column>
-        <dxi-column dataField="customer_name" caption="Customer Name" [width]="250" [allowEditing]="false"></dxi-column>
-        <dxi-column dataField="vendor" caption="Vendor" [width]="200" [allowEditing]="true">
+        <dxi-column dataField="garment_order_date" caption="Order Date" dataType="date" [width]="85"></dxi-column>
+        <dxi-column dataField="garment_recvd_date" caption="Due Date" dataType="date" [width]="85"></dxi-column>
+        <dxi-column dataField="shipping_po" caption="PO#" [width]="75"></dxi-column>
+        <dxi-column dataField="order.order_number" caption="Order#" [width]="75" [allowEditing]="false" cellTemplate="orderCell"></dxi-column>
+        <dxi-column dataField="customer_name" caption="Customer Name" [width]="200" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="vendor" caption="Vendor" [width]="175" [allowEditing]="true">
           <dxo-lookup [dataSource]="vendorTypes" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
         </dxi-column>
-        <dxi-column dataField="pricelist_id" caption="Item Description" [width]="225" [allowEditing]="false">
+        <dxi-column dataField="pricelist_id" caption="Item Description" [width]="200" [allowEditing]="false">
           <dxo-lookup [dataSource]="itemTypes" valueExpr="pricelist_id" displayExpr="pricelist_description"></dxo-lookup>
         </dxi-column>
-        <dxi-column dataField="product_code" caption="Prod Cd" [width]="125"></dxi-column>
+        <dxi-column dataField="product_code" caption="Prod Cd" [width]="100"></dxi-column>
         <dxi-column dataField="color_code" caption="Color" [width]="125"></dxi-column>
         <dxi-column dataField="xsmall_qty" caption="XS" [width]="35" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
         <dxi-column dataField="small_qty" caption="S" [width]="30" [allowSorting]="false" [allowSearch]="false" [allowFiltering]="false" [allowEditing]="false"></dxi-column>

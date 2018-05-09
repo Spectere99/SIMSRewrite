@@ -40,9 +40,11 @@ disableExpand: boolean;
 gridHeight;
 popupVisible = false;
 orderTabDisabled = true;
+userProfile;
 
   constructor(lookupService: LookupService, customerSvc: CustomerService, userService: UserService,
               public authService: AuthenticationService) {
+    this.userProfile = JSON.parse(authService.getUserToken());
     this.customerService = customerSvc;
     this.CreateContactDataSource();
     this.gridHeight = 525;
@@ -156,9 +158,12 @@ orderTabDisabled = true;
   showAddPopup(e) {
     // console.log('Adding', e);
     this.selectedCustomer = new Customer;
+    const today = new Date();
     // console.log('SelectedCustomer', this.selectedCustomer);
     // alert('Editing!');
-    const userProfile = JSON.parse(localStorage.getItem('userProfile'));
+    this.selectedCustomer.setup_date = today.toISOString();
+    this.selectedCustomer.setup_by = this.userProfile.profile.user_id;
+
     // console.log('currentProfile', userProfile);
     if (this.selectedCustomer.customer_id < 0) {
       this.orderTabDisabled = true; } else {this.orderTabDisabled = false;

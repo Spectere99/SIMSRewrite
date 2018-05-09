@@ -118,14 +118,14 @@ ctrlHasFocus: string;
 
   addAddress(customerId: number) {
     const newAddress: CustomerAddress = {
-      customer_address_id: 0,
-      customer_id: customerId,
-      type_code: null,
-      address_1: null,
-      address_2: null,
-      city: null,
-      state: null,
-      zip: null,
+      'customer_address_id': 0,
+      'customer_id': customerId,
+      'type_code': null,
+      'address_1': null,
+      'address_2': null,
+      'city': null,
+      'state': null,
+      'zip': null,
   };
   if (!this.customer.customer_address) {
     this.customer.customer_address = [];
@@ -146,6 +146,7 @@ ctrlHasFocus: string;
       if (this.customer.customer_address) {
         for (let x = 0; x < this.customer.customer_address.length; x++) {
           this.customer.customer_address[x].customer_id = res;
+          // console.log('Address on Save Customer', this.customer.customer_address);
           this.saveAddress(this.customer.customer_address[x]);
         }
       }
@@ -206,7 +207,7 @@ ctrlHasFocus: string;
         // customer.customer_address = [];
         customer.customer_contacts = [];
         customer.orders = [];
-        this.snackBar.open('Customer Added!', '', {
+        this.snackBar.open('Customer Saved!', '', {
           duration: 4000,
           verticalPosition: 'top'
         });
