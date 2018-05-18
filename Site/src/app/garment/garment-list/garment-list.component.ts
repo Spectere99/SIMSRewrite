@@ -182,7 +182,9 @@ export class GarmentListComponent implements OnInit {
         'C5xl_qty',
         'other1_type',
         'other1_qty',
-        'order/order_date',
+        'order/order_number',
+        'order/customer_id'
+        /* 'order/order_date',
         'order/order_status',
         'order/order_id',
         'order/customer_id',
@@ -227,7 +229,7 @@ export class GarmentListComponent implements OnInit {
         'order/contact_phone1_type',
         'order/contact_phone2',
         'order/contact_phone2_ext',
-        'order/contact_phone2_type',
+        'order/contact_phone2_type', */
       ],
        filter: this.currentFilter
    };
@@ -254,12 +256,15 @@ export class GarmentListComponent implements OnInit {
       this.customer = res;
       // this.contactPersons = this.orderCustomer.customer_person;
       // console.log('pulled Customer', this.orderCustomer);
-    });
-    this.selectedOrder = e.data.order;
-    console.log('Selected Order', this.selectedOrder);
-    // alert('Editing!');
 
-    this.popupVisible = true;
+      this.orderService.loadOrderData('', e.data.order_id).subscribe(res2 => {
+        this.selectedOrder = res2;
+        console.log('Selected Order', this.selectedOrder);
+        this.popupVisible = true;
+      });
+    });
+    // this.selectedOrder = e.data.order;
+    // alert('Editing!');
   }
 
   ngOnInit() {
