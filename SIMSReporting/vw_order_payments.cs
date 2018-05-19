@@ -28,5 +28,6 @@ namespace SIMSReporting
         public string contact { get; set; }
         public string taken_user { get; set; }
         public string customer_name { get; set; }
+        public string payment_user { get; set; }
     }
 }

@@ -68,6 +68,7 @@ export class OrderPaymentsComponent implements OnInit {
           'balance_due',
           'contact',
           'taken_user',
+          'payment_user',
           'customer_name']
       };
     }

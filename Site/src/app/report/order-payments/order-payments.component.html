@@ -14,6 +14,9 @@
       <dxi-column dataField="taken_user" dataType="string" caption="Salesperson" [width]="200" [allowFiltering]="true">
         <!-- <dxo-lookup [dataSource]="userDataSource" valueExpr="user_id" [displayExpr]="getUserFullName"></dxo-lookup> -->
       </dxi-column>
+      <dxi-column dataField="payment_user" dataType="string" caption="Received By" [width]="200" [allowFiltering]="true">
+        <!-- <dxo-lookup [dataSource]="userDataSource" valueExpr="user_id" [displayExpr]="getUserFullName"></dxo-lookup> -->
+      </dxi-column>
       <!-- <dxi-column dataField="ship_attn" caption="Ship Attn" [width]="250" [allowFiltering]="true"></dxi-column> -->
       <dxi-column dataField="order_type" dataType="string" caption="Order Type" [width]="250">
         <dxo-lookup [dataSource]="orderTypes" valueExpr="char_mod" displayExpr="description"></dxo-lookup>

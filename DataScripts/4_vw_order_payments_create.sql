@@ -19,11 +19,15 @@ VIEW `vw_order_payments` AS
         `ord`.`contact` AS `contact`,
         CONCAT(`usr`.`first_name`,
                 ' ',
-                `usr`.`last_name`) AS `salesperson`,
+                `usr`.`last_name`) AS `taken_user`,
+		CONCAT(`pmtusr`.`first_name`,
+                ' ',
+                `pmtusr`.`last_name`) AS `payment_user`,
         `cus`.`customer_name` AS `customer_name`
     FROM
-        (((`order_payments` `pmt`
-        JOIN `orders` `ord` ON ((`pmt`.`order_id` = `ord`.`order_id`)))
-        JOIN `customer` `cus` ON ((`cus`.`customer_id` = `ord`.`customer_id`)))
-        JOIN `users` `usr` ON ((`usr`.`user_id` = `ord`.`taken_user_id`)))
-    ORDER BY `ord`.`order_number`;
+        (((`printmgr`.`order_payments` `pmt`
+        JOIN `printmgr`.`orders` `ord` ON ((`pmt`.`order_id` = `ord`.`order_id`)))
+        JOIN `printmgr`.`customer` `cus` ON ((`cus`.`customer_id` = `ord`.`customer_id`)))
+        JOIN `printmgr`.`users` `usr` ON ((`usr`.`user_id` = `ord`.`taken_user_id`))
+        JOIN `printmgr`.`users` `pmtusr` ON ((`pmtusr`.`user_id` = `pmt`.`entered_user_id`)))
+    ORDER BY `ord`.`order_number`
