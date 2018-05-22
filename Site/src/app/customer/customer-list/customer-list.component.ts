@@ -43,6 +43,7 @@ export class CustomerListComponent implements OnInit {
   filterDate = new Date(2008, 1, 1);
   orderTabDisabled = true;
   userProfile;
+  leaveWindowOpen = true;
 
   constructor(lookupService: LookupService, userService: UserService, customerService: CustomerService
               , authService: AuthenticationService) {
@@ -310,6 +311,7 @@ export class CustomerListComponent implements OnInit {
       console.log('Return from CustomerInfo Batch Save', res);
       this.customerContacts.batchSave(res);
       this.selectedCustomer.customer_id = res;
+      this.popupVisible = this.leaveWindowOpen;
     });
     }
 

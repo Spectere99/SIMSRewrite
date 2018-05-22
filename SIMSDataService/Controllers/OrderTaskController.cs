@@ -35,7 +35,7 @@ namespace SIMSDataService.Controllers
         [EnableQuery]
         public IQueryable<order_task> GetOrderTask()
         {
-            return db.order_task;
+            return db.order_task.Where(p=>p.is_complete != null);
         }
 
         // GET: odata/OrderTask(5)

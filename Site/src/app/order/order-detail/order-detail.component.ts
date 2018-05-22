@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, Input, ViewChild, HostListener } from '@angular/core';
 import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee, OrderPayment } from '../../_services/order.service';
-import { CustomerService, Customer} from '../../_services/customer.service';
+import { CustomerService, Customer } from '../../_services/customer.service';
 import { UserService } from '../../_services/user.service';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
@@ -8,8 +8,10 @@ import { AuthenticationService } from '../../_services/authentication.service';
 import { OrderTaskListComponent } from '../order-task-list/order-task-list.component';
 
 
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
-  MatSnackBar } from '@angular/material';
+import {
+  MatDialog, MatDialogRef, MAT_DIALOG_DATA,
+  MatSnackBar
+} from '@angular/material';
 
 @Component({
   selector: 'app-order-detail',
@@ -48,35 +50,14 @@ export class OrderDetailComponent implements OnInit {
     // console.log('sourceElement', event.sourceElement);
   }
   constructor(private lookupService: LookupService, private priceListService: PriceListService, public userService: UserService,
-              public orderService: OrderService, public customerService: CustomerService, public authService: AuthenticationService,
-              public snackBar: MatSnackBar) {
+    public orderService: OrderService, public customerService: CustomerService, public authService: AuthenticationService,
+    public snackBar: MatSnackBar) {
     this.userProfile = JSON.parse(authService.getUserToken());
     this.order = new Order();
     this.order.order_detail = [];
     this.orderArtPlacement = [];
     this.orderFees = [];
     this.orderPayments = [];
-/*     lookupService.loadLookupData('').subscribe(res => {
-      this.lookupDataSource = res.value;
-      this.sizeTypes = this.createLookupTypeSource('ssiz');
-      this.styleTypes = this.createLookupTypeSource('sclas');
-      this.vendorTypes = this.createLookupTypeSource('vend');
-      this.artLocations = this.createLookupTypeSource('aloc');
-      this.paymentSourceItems = this.createLookupTypeSource('pms');
-    });
-
-    priceListService.loadPricelistData('').subscribe(res => {
-      this.priceListDataSource = res.value;
-      this.itemTypes = this.createItemTypeSource('orddi');
-      this.setupItems = this.createItemTypeSource('setup');
-      // console.log('Pricelist Items', this.itemTypes);
-      // console.log('Setup Items', this.setupItems);
-    });
-
-    userService.getUsers('').subscribe(res => {
-      this.userDataSource = res.value;
-      // console.log(this.userDataSource);
-    }); */
   }
 
   showValues() {
@@ -179,7 +160,9 @@ export class OrderDetailComponent implements OnInit {
     lineItem.garment_order_date = null;
     lineItem.garment_recvd_date = null;
     lineItem.order_number = this.order.order_number;
-    lineItem.customer_name = this.customer.customer_name;
+    if (this.customer) {
+      lineItem.customer_name = this.customer.customer_name;
+    }
     this.order.order_detail.unshift(lineItem);
   }
 
@@ -210,12 +193,12 @@ export class OrderDetailComponent implements OnInit {
         // Call web service to delete here - passing in the order_detail_id.
         // console.log('OrderDetail on Delete', e.order_detail_id);
         this.orderService.deleteOrderLineItem('rwflowers', e.order_detail_id)
-        .subscribe(res => {
-          this.snackBar.open('Order Line Deleted!', '', {
-            duration: 4000,
-            verticalPosition: 'top'
+          .subscribe(res => {
+            this.snackBar.open('Order Line Deleted!', '', {
+              duration: 4000,
+              verticalPosition: 'top'
+            });
           });
-        });
       }
     }
     this.order.order_detail.splice(index, 1);
@@ -243,12 +226,12 @@ export class OrderDetailComponent implements OnInit {
       if (e.order_art_placement_id > 0) {
         // Call web service to delete here.
         this.orderService.deleteOrderArtPlacement('rwflowers', e.order_art_placement_id)
-        .subscribe(res => {
-          this.snackBar.open('Art Placement Line Deleted!', '', {
-            duration: 4000,
-            verticalPosition: 'top'
+          .subscribe(res => {
+            this.snackBar.open('Art Placement Line Deleted!', '', {
+              duration: 4000,
+              verticalPosition: 'top'
+            });
           });
-        });
       }
     }
     this.orderArtPlacement.splice(index, 1);
@@ -278,12 +261,12 @@ export class OrderDetailComponent implements OnInit {
       if (e.order_fee_id > 0) {
         // Call web service to delete here.
         this.orderService.deleteOrderFee('rwflowers', e.order_fee_id)
-        .subscribe(res => {
-          this.snackBar.open('Order Charge Line Deleted!', '', {
-            duration: 4000,
-            verticalPosition: 'top'
+          .subscribe(res => {
+            this.snackBar.open('Order Charge Line Deleted!', '', {
+              duration: 4000,
+              verticalPosition: 'top'
+            });
           });
-        });
       }
     }
     this.orderFees.splice(index, 1);
@@ -309,12 +292,12 @@ export class OrderDetailComponent implements OnInit {
       if (e.order_payment_id > 0) {
         // Call web service to delete here.
         this.orderService.deleteOrderPayment('rwflowers', e.order_payment_id)
-        .subscribe(res => {
-          this.snackBar.open('Order Payment Deleted!', '', {
-            duration: 4000,
-            verticalPosition: 'top'
+          .subscribe(res => {
+            this.snackBar.open('Order Payment Deleted!', '', {
+              duration: 4000,
+              verticalPosition: 'top'
+            });
           });
-        });
       }
     }
     this.orderPayments.splice(index, 1);
@@ -338,7 +321,7 @@ export class OrderDetailComponent implements OnInit {
     totalItemQty = totalItemQty + ((orderLine.other1_qty === undefined) ? 0 : +orderLine.other1_qty);
     this.order.order_detail[idx].item_quantity = totalItemQty;
     this.order.order_detail[idx].item_price_ext = (totalItemQty * ((orderLine.item_price_each === undefined) ? 0
-                                                                    : +orderLine.item_price_each)).toFixed(2);
+      : +orderLine.item_price_each)).toFixed(2);
     this.updateTotals();
   }
 
@@ -363,7 +346,7 @@ export class OrderDetailComponent implements OnInit {
     let nonTaxSubTotal = 0;
     // console.log('order Details', this.order.order_detail);
     // Total order Line Items
-    for ( let x = 0; x < this.order.order_detail.length; x++) {
+    for (let x = 0; x < this.order.order_detail.length; x++) {
       if (this.order.order_detail[x].taxable_ind === 'Y') {
         subTotal = subTotal + +this.order.order_detail[x].item_price_ext;
       } else {
@@ -377,7 +360,7 @@ export class OrderDetailComponent implements OnInit {
     // Add Non Shipping Fees to SubTotal.
     const shippingLookup = this.setupItems.filter(item => item.pricelist_description === 'Shipping');
     const nonShippingFees = this.orderFees.filter(item => item.pricelist_id !== +shippingLookup[0].pricelist_id);
-    for ( let y = 0; y < nonShippingFees.length; y++) {
+    for (let y = 0; y < nonShippingFees.length; y++) {
       if (nonShippingFees[y].taxable_ind === 'Y') {
         subTotal = subTotal + +nonShippingFees[y].fee_price_ext;
       } else {
@@ -394,7 +377,7 @@ export class OrderDetailComponent implements OnInit {
     let shippingTotal = 0;
     const shippingFees = this.orderFees.filter(item => +item.pricelist_id === 10737); // +shippingLookup[0].pricelist_id);
 
-    for ( let z = 0; z < shippingFees.length; z++) {
+    for (let z = 0; z < shippingFees.length; z++) {
       shippingTotal = shippingTotal + +shippingFees[z].fee_price_ext;
     }
     this.order.shipping = shippingTotal.toFixed(2);
@@ -450,26 +433,26 @@ export class OrderDetailComponent implements OnInit {
       orderDetail.order_number = this.currentOrder.order_number;
       console.log('OrderDetail on Save', orderDetail);
       this.orderService.addOrderLineItem('rwflowers', orderDetail)
-      .subscribe(res => {
-        // console.log('Save orderInfo Return', res);
-        orderDetail.order_detail_id = res.order_detail_id;
-        this.snackBar.open('Order Line Added!', '', {
-          duration: 4000,
-          verticalPosition: 'top'
+        .subscribe(res => {
+          // console.log('Save orderInfo Return', res);
+          orderDetail.order_detail_id = res.order_detail_id;
+          this.snackBar.open('Order Line Added!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
         });
-      });
     } else {
       orderDetail.customer_name = this.customer.customer_name;
       orderDetail.order_number = this.currentOrder.order_number;
       console.log('OrderDetail on Save', orderDetail);
       this.orderService.updateOrderLineItem('rwflowers', orderDetail)
-      .subscribe(res => {
-        // console.log('Update orderLineItem Return', res);
-        this.snackBar.open('Order Line Updated!', '', {
-          duration: 4000,
-          verticalPosition: 'top'
+        .subscribe(res => {
+          // console.log('Update orderLineItem Return', res);
+          this.snackBar.open('Order Line Updated!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
         });
-      });
     }
   }
 
@@ -478,23 +461,23 @@ export class OrderDetailComponent implements OnInit {
     if (artPlacement.order_art_placement_id <= 0) {
       artPlacement.order_art_placement_id = 0;
       this.orderService.addOrderArtPlacement('rwflowers', artPlacement)
-      .subscribe(res => {
-        // console.log('Save artPlacement Return', res);
-        artPlacement.order_art_placement_id = res.order_art_placement_id;
-        this.snackBar.open('Art Placement Line Added!', '', {
-          duration: 4000,
-          verticalPosition: 'top'
+        .subscribe(res => {
+          // console.log('Save artPlacement Return', res);
+          artPlacement.order_art_placement_id = res.order_art_placement_id;
+          this.snackBar.open('Art Placement Line Added!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
         });
-      });
     } else {
       this.orderService.updateOrderArtPlacement('rwflowers', artPlacement)
-      .subscribe(res => {
-        // console.log('Update artPlacement Return', res);
-        this.snackBar.open('Art Placement Line Updated!', '', {
-          duration: 4000,
-          verticalPosition: 'top'
+        .subscribe(res => {
+          // console.log('Update artPlacement Return', res);
+          this.snackBar.open('Art Placement Line Updated!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
         });
-      });
     }
   }
 
@@ -503,23 +486,23 @@ export class OrderDetailComponent implements OnInit {
     if (orderFee.order_fee_id <= 0) {
       orderFee.order_fee_id = 0;
       this.orderService.addOrderFee('rwflowers', orderFee)
-      .subscribe(res => {
-        // console.log('Save orderFee Return', res);
-        orderFee.order_fee_id = res.order_fee_id;
-        this.snackBar.open('Order Fee Line Added!', '', {
-          duration: 4000,
-          verticalPosition: 'top'
+        .subscribe(res => {
+          // console.log('Save orderFee Return', res);
+          orderFee.order_fee_id = res.order_fee_id;
+          this.snackBar.open('Order Fee Line Added!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
         });
-      });
     } else {
       this.orderService.updateOrderFee('rwflowers', orderFee)
-      .subscribe(res => {
-        // console.log('Update orderFee Return', res);
-        this.snackBar.open('Order Fee Line Updated!', '', {
-          duration: 4000,
-          verticalPosition: 'top'
+        .subscribe(res => {
+          // console.log('Update orderFee Return', res);
+          this.snackBar.open('Order Fee Line Updated!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
         });
-      });
     }
   }
 
@@ -528,23 +511,23 @@ export class OrderDetailComponent implements OnInit {
     if (orderPayment.order_payment_id <= 0) {
       orderPayment.order_payment_id = 0;
       this.orderService.addOrderPayment('rwflowers', orderPayment)
-      .subscribe(res => {
-        // console.log('Save orderFee Return', res);
-        orderPayment.order_payment_id = res.order_payment_id;
-        this.snackBar.open('Order Payment Line Added!', '', {
-          duration: 4000,
-          verticalPosition: 'top'
+        .subscribe(res => {
+          // console.log('Save orderFee Return', res);
+          orderPayment.order_payment_id = res.order_payment_id;
+          this.snackBar.open('Order Payment Line Added!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
         });
-      });
     } else {
       this.orderService.updateOrderPayment('rwflowers', orderPayment)
-      .subscribe(res => {
-        // console.log('Update orderPayment Return', res);
-        this.snackBar.open('Order Payment Line Updated!', '', {
-          duration: 4000,
-          verticalPosition: 'top'
+        .subscribe(res => {
+          // console.log('Update orderPayment Return', res);
+          this.snackBar.open('Order Payment Line Updated!', '', {
+            duration: 4000,
+            verticalPosition: 'top'
+          });
         });
-      });
     }
   }
 
@@ -571,16 +554,39 @@ export class OrderDetailComponent implements OnInit {
       this.userDataSource = res.value;
       // console.log(this.userDataSource);
     });
-    /* console.log('order-detail OnInit', this.currentOrder);
-    this.editMode = this.currentOrder !== undefined;
-    this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
-      this.order = res;
-      console.log('pulled order', this.order);
-    });
-    this.orderService.loadArtPlacementData('', this.currentOrder.order_id).subscribe(res => {
-      this.orderArtPlacement = res.order_art_placement;
-      console.log('pulled Art Placement', this.orderArtPlacement);
-    }); */
+    this.editMode = this.currentOrder.order_id !== 0;
+    // console.log('Current Order', this.currentOrder);
+    if (this.currentOrder.order_id !== 0) {
+      if (this.currentOrder.customer_id > 0) {
+        this.customerService.getCustomerData('', this.currentOrder.customer_id).subscribe(res => {
+          this.customer = res;
+          // console.log('pulled Customer', this.orderCustomer);
+        });
+      }
+      this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
+        this.order = res;
+        // console.log('pulled order', this.order);
+      });
+      this.orderService.loadArtPlacementData('', this.currentOrder.order_id).subscribe(res => {
+        this.orderArtPlacement = res.order_art_placement;
+        // console.log('pulled Art Placement', this.orderArtPlacement);
+      });
+      this.orderService.loadOrderFeeData('', this.currentOrder.order_id).subscribe(res => {
+        this.orderFees = res.order_fees;
+        this.getShipping();
+        // console.log('pulled Order Fees', this.orderFees);
+      });
+      this.orderService.loadOrderPaymentData('', this.currentOrder.order_id).subscribe(res => {
+        this.orderPayments = res.order_payments;
+        // console.log('pulled Payment Data', this.orderPayments);
+      });
+    } else {
+      /// this.currentOrder = new Order();
+      this.order.order_detail = new Array<OrderDetail>();
+      this.orderArtPlacement = new Array<OrderArtPlacement>();
+      this.orderFees = new Array<OrderFee>();
+      this.orderPayments = new Array<OrderPayment>();
+    }
   }
 
   // tslint:disable-next-line:use-life-cycle-interface

@@ -44,6 +44,8 @@ export class CustomerOrderListComponent implements OnInit {
   customerId: number;
   enableSave = false;
   userProfile;
+  leaveWindowOpen: true;
+
   private loading = false;
 
   constructor(private http: Http, public orderService: OrderService, lookupService: LookupService,
@@ -155,7 +157,9 @@ export class CustomerOrderListComponent implements OnInit {
     this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
     this.setOrderContact();
     this.setOrderBillAndShipAddresses();
-    this.orderDetail.order.order_detail = [];
+    if (this.orderDetail) {
+      this.orderDetail.order.order_detail = [];
+    }
     // this.selectedOrder.ship_attn = this.customer
     this.popupVisible = true;
   }
@@ -464,7 +468,7 @@ export class CustomerOrderListComponent implements OnInit {
       setTimeout(() => {
         this.gridOrders.instance.refresh();
       }, 1000);
-      this.popupVisible = false;
+      this.popupVisible = this.leaveWindowOpen;
     });
   }
   showValues() {

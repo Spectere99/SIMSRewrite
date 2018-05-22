@@ -18,6 +18,7 @@ personTypes: any;
 phoneTypes: any;
 dirtyRecords: Array<CustomerPerson>;
 
+
   constructor(public dialog: MatDialog, public snackBar: MatSnackBar,
               public customerService: CustomerService, lookupService: LookupService) {
     /* const customerReturn = customerService.getCustomerContacts();

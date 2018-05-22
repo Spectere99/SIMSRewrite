@@ -41,113 +41,53 @@
         <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
           <div class="row">
             <div class="col-md-5">
-              <strong>Customer:</strong>{{selectedOrder.customer.customer_name}}
+              <strong>Customer:</strong>{{customer?.customer_name}}
             </div>
             <div class="col-md-1">
-              <button class="form-control btn-primary" type="button" style="font-size:10px;"  (click)="showValues();">ReOrder</button>
+              <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="reOrder(customerId)">ReOrder</button>
             </div>
             <div class="col-md-2">
-              <button class="form-control btn-primary" type="button" style="font-size:10px;">Order Summary</button>
+              <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showOrderSummary(selectedOrder)">Order Summary</button>
             </div>
           </div>
-          <!-- <h6>{{selectedCustomer.customer_name ? 'A Customer':'New Customer' }}</h6> -->
-          <!-- <div class="col-md-12"> -->
-              <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%">
-                <mat-tab label="Info">
-                  <app-order-info [currentOrder]="selectedOrder"></app-order-info>
-                </mat-tab>
-                <mat-tab label="Tasks">
-                  <app-order-task-list [currentOrder]="selectedOrder"></app-order-task-list>
-                </mat-tab>
-                <mat-tab label="Details">
-                  <app-order-detail [currentOrder]="selectedOrder"></app-order-detail>
-                </mat-tab>
-                <mat-tab label="Art">
-                  <app-order-art [currentOrder]="selectedOrder"></app-order-art>
-                </mat-tab>
-                <mat-tab label="History/Comments">
-                  <app-order-notes-history [currentOrder]="selectedOrder"></app-order-notes-history>
-                </mat-tab>
-                <mat-tab label="Coorespondence">
-                  <app-order-correspondence [currentOrder]="selectedOrder"></app-order-correspondence>
-                </mat-tab>
-              </mat-tab-group>
-            <!-- <ngb-tabset #orderTab>
-              <ngb-tab id="Info" title="Info">
-                <ng-template ngbTabContent style="height: 50%;">
-                  <div class="row">
-                    <app-order-info [currentOrder]="selectedOrder"></app-order-info>
-                  </div>
-                </ng-template>
-              </ngb-tab>
-              <ngb-tab id="Details" title="Details">
-                <ng-template ngbTabContent>
-                  <div class="row">
-                    <app-order-detail [currentOrder]="selectedOrder"></app-order-detail>
-                  </div>
-                </ng-template>
-              </ngb-tab>
-              <ngb-tab id="Art" title="Art" [disabled]="false">
-                <ng-template ngbTabContent>
-                  <div>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio.
-                      <b>Lorem</b> Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum
-                      imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus sed augue semper porta. Mauris
-                      <b>Praesent</b> massa. Vestibulum lacinia arcu eget nulla. Class aptent
-                      <b>massa.</b> taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur
-                      sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor. Pellentesque nibh.
-                      <b>Sed</b> Aenean quam. In scelerisque sem
-                      <b>lacinia</b> at dolor. Maecenas mattis. Sed convallis tristique sem. Proin ut ligula vel nunc egestas
-                      <b>sem.</b> porttitor. Morbi lectus risus, iaculis vel, suscipit quis,
-                      <b>vel</b> luctus non, massa. Fusce ac turpis
-                      <b>quis,</b> quis ligula lacinia
-                      <b>vel,</b> aliquet. Mauris ipsum. Nulla
-                      <b>quis</b> metus metus, ullamcorper vel, tincidunt
-                      <b>aliquet.</b> sed, euismod in, nibh. Quisque volutpat condimentum velit. Class aptent taciti sociosqu
-                      ad litora torquent per conubia nostra, per inceptos himenaeos. Nam nec
-                      <b>litora</b> ante. Sed lacinia, urna non tincidunt mattis, tortor neque adipiscing diam, a cursus ipsum
-                      <b>tortor</b> ante quis turpis. Nulla facilisi. Ut
-                      <b>cursus</b> fringilla.
-                      <b>ante</b> Suspendisse potenti. Nunc feugiat mi a tellus
-                      <b>fringilla.</b> consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices.
-                      <b>mi</b> Suspendisse in justo eu
-                      <b>consequat</b> magna luctus
-                      <b>imperdiet.</b> suscipit. Sed lectus. Integer euismod
-                      <b>Suspendisse</b> lacus luctus magna. Quisque cursus,
-                      <b>lectus.</b> metus vitae pharetra auctor, sem massa
-                      <b>magna.</b> mattis sem,
-                      <b>metus</b> at interdum magna augue eget diam. Vestibulum ante ipsum
-                      <b>mattis</b> primis in faucibus orci luctus et ultrices
-                      <b>ipsum</b> posuere
-                      <b>in</b> cubilia Curae; Morbi lacinia molestie dui. Praesent
-                      <b>posuere</b> blandit
-                      <b>posuere</b> dolor. Sed non quam. In vel
-                      <b>lacinia</b> mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet. Donec
-                      lacus nunc, viverra nec.</p>
-                  </div>
-                </ng-template>
-              </ngb-tab>
-              <ngb-tab id="Tasks" title="Tasks" [disabled]="false">
-                <ng-template ngbTabContent>
-                </ng-template>
-              </ngb-tab>
-              <ngb-tab id="History" title="History/Comments" [disabled]="false">
-                <ng-template ngbTabContent>
-                </ng-template>
-              </ngb-tab>
-            </ngb-tabset> -->
-          <!-- </div> -->
-          <div class="col-md-12 float-right">
-            <div class="row col-md-4 float-right">
-              <div class="col-md-4">
-                <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="closeEditor();">
+          <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%">
+            <mat-tab label="Info">
+              <app-order-info [currentOrder]="selectedOrder"></app-order-info>
+            </mat-tab>
+            <mat-tab label="Tasks">
+              <app-order-task-list [currentOrder]="selectedOrder"></app-order-task-list>
+            </mat-tab>
+            <mat-tab label="Details">
+              <app-order-detail [currentOrder]="selectedOrder"></app-order-detail>
+            </mat-tab>
+            <mat-tab label="Art">
+              <app-order-art [currentOrder]="selectedOrder"></app-order-art>
+            </mat-tab>
+            <mat-tab label="History/Comments">
+              <app-order-notes-history [currentOrder]="selectedOrder"></app-order-notes-history>
+            </mat-tab>
+            <mat-tab label="Coorespondence">
+              <app-order-correspondence [currentOrder]="selectedOrder"></app-order-correspondence>
+            </mat-tab>
+          </mat-tab-group>
+          <div class="col-md-12">
+              <div class="col-md-2 float-right">
+                <input type="checkbox" id="chkLeaveWindowOpen" name="chkLeaveWindowOpen" [checked]="leaveWindowOpen" (change)="leaveWindowOpen=!leaveWindowOpen">
+                <label for="chkLeaveWindowOpen" style="font-size: 10px;">Leave Open</label>
               </div>
-              <div class="col-md-4">
-                <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Apply" (click)="applyChanges();">
+              <div class="col-md-2 float-right">
+                <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
               </div>
-                  
+              <div class="col-md-2 float-right">
+                <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="cancelChanges();">
+              </div>
             </div>
-          </div>
+        </div>
+      </dx-popup>
+      <!-- START POPUP ORDER SUMMARY MARKUP -->
+      <dx-popup class="popup" [showTitle]="true" title="Order Summary" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="summaryVisible">
+        <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
+          <app-order-summary [currentOrder]="selectedOrder"></app-order-summary>
         </div>
       </dx-popup>
     </div>

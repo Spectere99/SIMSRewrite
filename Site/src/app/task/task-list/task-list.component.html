@@ -80,15 +80,16 @@
               <app-order-invoice [currentOrder]="selectedOrder"></app-order-invoice>
             </mat-tab>
           </mat-tab-group>
-          <!-- <div class="col-md-12 float-right">
-            <div class="row col-md-4 float-right">
-              <div class="col-md-4">
-                <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="closeEditor();">
-              </div>
-              <div class="col-md-4">
-                <input *ngIf="enableSave" type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
-              </div>
-
+          <!-- <div class="col-md-12">
+            <div class="col-md-2 float-right">
+              <input type="checkbox" id="chkLeaveWindowOpen" name="chkLeaveWindowOpen" [checked]="leaveWindowOpen" (change)="leaveWindowOpen=!leaveWindowOpen">
+              <label for="chkLeaveWindowOpen" style="font-size: 10px;">Leave Open</label>
+            </div>
+            <div class="col-md-2 float-right">
+              <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
+            </div>
+            <div class="col-md-2 float-right">
+              <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="cancelChanges();">
             </div>
           </div> -->
         </div>

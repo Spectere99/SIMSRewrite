@@ -28,6 +28,7 @@ export class TaskListComponent implements OnInit {
   userProfile;
   selectedOrder: any;
   customer: Customer;
+  leaveWindowOpen = false;
 
   filterNames = [
     'Default',
@@ -58,10 +59,8 @@ export class TaskListComponent implements OnInit {
       // console.log('userDataSource', this.user_Source);
     });
 
-/*     customerService.getCustomerListData('').subscribe(res => {
-      this.customerDataSource = res.value;
-    }); */
     this.createTaskDataSource();
+    console.log(this.dataSource);
   }
 
   createLookupTypeSource(className: string): any {
@@ -135,6 +134,7 @@ export class TaskListComponent implements OnInit {
 
     this.popupVisible = true;
   }
+
   removeOrderStatuses() {
     let index = this.order_statusSource.findIndex(x => x.char_mod === 'clos');
     if (index >= 0) {
@@ -150,8 +150,9 @@ export class TaskListComponent implements OnInit {
     }
   }
   setCompletedInd(data) {
+    // console.log('SetCompletedInd', data);
     if (data === undefined) { return false; }
-    return data.completed_ind === 'Y';
+    return data.is_complete === 'Y';
   }
 
   setCustomerName(e) {

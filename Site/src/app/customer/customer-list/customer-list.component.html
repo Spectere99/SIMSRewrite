@@ -48,35 +48,8 @@
       </div>
     </dx-data-grid>
     <!-- START POPUP EDITOR MARKUP -->
-    <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false"
-    [(visible)]="popupVisible">
-    <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
-      <!-- <h6>{{selectedCustomer.customer_name ? 'A Customer':'New Customer' }}</h6> -->
-     
-        <!-- <ngb-tabset>
-          <ngb-tab title="Info">
-            <! <div class="col-md-10"> -->
-              <!-- <ng-template ngbTabContent> -->
-                <!-- <div class="row" style="height: 400px; max-height: 400px; overflow-y: auto; overflow-x: hidden;"> -->
-                  <!-- <div class="row"> -->
-                    <!-- <app-customer-info id="custInfo" [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info> -->
-                  <!-- </div> -->
-                  <!-- <div class="row"> -->
-                    <!-- <app-customer-contacts id="custContacts" [customer]="selectedCustomer"></app-customer-contacts> -->
-                  <!-- </div> -->
-                <!-- </div>
-              </ng-template>
-            <!- </div> -->
-          <!-- </ngb-tab>
-          <ngb-tab title="Notes" [disabled]="false">
-            <ng-template ngbTabContent>
-            </ng-template>
-          </ngb-tab>
-          <ngb-tab title="Orders" [disabled]="true">
-            <ng-template ngbTabContent>
-            </ng-template>
-          </ngb-tab>
-        </ngb-tabset> -->
+    <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible">
+      <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
         {{orderTabDisabled}}
         <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%">
           <mat-tab label="Info">
@@ -85,29 +58,25 @@
           </mat-tab>
           <mat-tab label="Notes" [disabled]="true">
           </mat-tab>
-          <mat-tab label="Orders"[disabled]="orderTabDisabled">
+          <mat-tab label="Orders" [disabled]="orderTabDisabled">
             <app-customer-order-list [customer]="selectedCustomer"></app-customer-order-list>
           </mat-tab>
         </mat-tab-group>
 
-        <div class="col-md-12 float-right">
-            <div class="row col-md-4 float-right">
-              <div class="col-md-4">
-                <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="cancelChanges();">
-              </div>
-              <div class="col-md-4">
-                <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
-              </div>
-
-            </div>
+        <div class="col-md-12">
+          <div class="col-md-2 float-right">
+            <input type="checkbox" id="chkLeaveWindowOpen" name="chkLeaveWindowOpen" [checked]="leaveWindowOpen" (change)="leaveWindowOpen=!leaveWindowOpen">
+            <label for="chkLeaveWindowOpen" style="font-size: 10px;">Leave Open</label>
           </div>
-      <!-- <div class="col-md-3 float-right" style="padding-top:5px;">
-        <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Cancel">
-        <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
-      </div>   -->
-    </div>
-    
-  </dx-popup>
+          <div class="col-md-2 float-right">
+            <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
+          </div>
+          <div class="col-md-2 float-right">
+            <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="cancelChanges();">
+          </div>
+        </div>
+      </div>
+
+    </dx-popup>
+  </div>
 </div>
-</div>
- 

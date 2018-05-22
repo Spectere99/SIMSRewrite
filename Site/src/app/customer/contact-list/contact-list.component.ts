@@ -41,6 +41,7 @@ gridHeight;
 popupVisible = false;
 orderTabDisabled = true;
 userProfile;
+leaveWindowOpen = true;
 
   constructor(lookupService: LookupService, customerSvc: CustomerService, userService: UserService,
               public authService: AuthenticationService) {
@@ -211,7 +212,7 @@ userProfile;
       this.gridCustomers.instance.refresh();
     },
     1000);
-    this.popupVisible = false;
+    this.popupVisible = this.leaveWindowOpen;
   }
   cancelChanges() {
     this.popupVisible = false;

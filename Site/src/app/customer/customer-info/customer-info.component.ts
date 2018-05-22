@@ -26,7 +26,6 @@ stateList: any;
 statusTypes: any;
 panelExpanded: boolean;
 
-
 ctrlHasFocus: string;
   constructor(public dialog: MatDialog, public snackBar: MatSnackBar, private customerService: CustomerService,
             private lookupService: LookupService, private usStateService: StateService, public datePipe: DatePipe) {
