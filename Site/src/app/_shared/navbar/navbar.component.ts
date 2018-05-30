@@ -1,6 +1,8 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { Router } from '@angular/router';
+import { version, environmentName } from '../../../environments/environment';
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -9,6 +11,8 @@ import { Router } from '@angular/router';
 export class NavbarComponent implements OnInit {
   collapse = true;
   isAdmin = true;
+  environmentName = environmentName;
+  version = version;
   constructor(public _authService: AuthenticationService, public _router: Router) {
     console.log('User Token', _authService.getUserToken);
   }

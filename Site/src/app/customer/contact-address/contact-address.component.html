@@ -1,0 +1,65 @@
+<div class="container col-md-12 pt-4">
+  <section>
+    <h6>Addresses
+      <button mat-button color="primary" aria-hidden="true" (click)="addAddress(customer.customer_id);" style="outline:none; padding-bottom: 35px; font-size:14px; width:30px; height:20px;">
+        Add
+      </button>
+    </h6>
+    <hr>
+    <div *ngFor="let address of customer.customer_address">
+      <table>
+        <tr>
+          <td></td>
+          <td style="font-size:10px;">Type</td>
+          <td style="font-size:10px;">Address 1</td>
+          <td style="font-size:10px;">Address 2</td>
+        </tr>
+        <tr>
+          <td>
+            <button mat-button color="primary" mat-icon-button aria-hidden="true" style="box-shadow: none; outline:none;" (click)="removeAddress(address.customer_address_id);">
+              <mat-icon color="warn" style="padding-bottom: 35px; padding-right: 33px;">delete</mat-icon>
+            </button>
+          </td>
+          <td>
+            <select class="form-control form-control-sm" [ngClass]="{'empty':newMode}" [(ngModel)]="address.type_code">
+              <option *ngFor="let adr of addressTypes" [value]="adr.char_mod">
+                {{adr.description}}
+              </option>
+            </select>
+          </td>
+          <td>
+            <input class="form-control" type="text" size="40" [(ngModel)]="address.address_1">
+          </td>
+          <td>
+            <input class="form-control" type="text" size="40" [(ngModel)]="address.address_2">
+          </td>
+        </tr>
+      </table>
+      <table>
+        <tr>
+          <td class="placeholder"></td>
+          <td style="font-size:10px;">City</td>
+          <td style="font-size:10px;">State</td>
+          <td style="font-size:10px;">Postal Code</td>
+        </tr>
+        <tr>
+          <td class="placeholder"></td>
+          <td>
+            <input class="form-control" type="text" size="25" [(ngModel)]="address.city">
+          </td>
+          <td>
+            <select class="form-control form-control-sm" [ngClass]="{'empty':newMode}" [(ngModel)]="address.state">
+              <option *ngFor="let state of stateList" [value]="state.abbreviation">
+                {{state.abbreviation}}
+              </option>
+            </select>
+          </td>
+          <td>
+            <input class="form-control" maxlength="10" type="text" size="10" [(ngModel)]="address.zip">
+          </td>
+        </tr>
+      </table>
+      <hr>
+    </div>
+  </section>
+</div>

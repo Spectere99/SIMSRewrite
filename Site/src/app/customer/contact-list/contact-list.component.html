@@ -1,14 +1,14 @@
 <p>Filter by using the cooresponding column. To add a new Customer, click on the Plus (+) button.</p>
-<div class="row">
+<!-- <div class="row">
   <div class="col-lg-12">
     <button type="button" [disabled]="disableExpand" class="btn pull-left" [ngClass]="buttonClass" (click)="ExpandGrid();">Toggle Expand</button>
   </div>
-</div>
+</div> -->
 
 <div class="row">
   <div class="col-lg-12">
     <dx-data-grid id="gridContacts" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
-      [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onCellPrepared)="onCellPrepared($event)" (onRowClick)="onRowClick($event)"
+      [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onRowClick)="onRowClick($event)"
       (onToolbarPreparing)="onToolbarPreparing($event)" (onContentReady)="contentReady($event)">
       <dxo-selection mode="single"></dxo-selection>
       <dxi-column dataField="customer_person_id" caption="Contact ID" [width]="100" [allowFiltering]="true" [visible]="false"></dxi-column>
@@ -44,7 +44,8 @@
         <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%">
           <mat-tab label="Info">
             <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
-            <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts>
+            <app-contact-address [customer]="selectedCustomer"></app-contact-address>
+            <app-contact-info [customer]="selectedCustomer"></app-contact-info>
           </mat-tab>
           <mat-tab label="Notes" [disabled]="true">
           </mat-tab>

@@ -158,9 +158,9 @@
           <tr>
             <td style="font-size:10px;">Address 1</td>
             <td style="font-size:10px;">Address 2</td>
-            <td style="font-size:10px;">Zip</td>
             <td style="font-size:10px;">City</td>
             <td style="font-size:10px;">State</td>
+            <td style="font-size:10px;">Zip</td>
           </tr>
           <tr>
             <td>
@@ -168,9 +168,6 @@
             </td>
             <td>
               <input class="form-control" type="text" size="25" [(ngModel)]="currentOrder.BILL_ADDRESS_2">
-            </td>
-            <td>
-              <input class="form-control" type="text" size="15" [(ngModel)]="currentOrder.BILL_ZIP">
             </td>
             <td>
               <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.BILL_CITY">
@@ -181,6 +178,9 @@
                   {{state.abbreviation}}
                 </option>
               </select>
+            </td>
+            <td>
+                <input class="form-control" type="text" size="15" [(ngModel)]="currentOrder.BILL_ZIP">
             </td>
           </tr>
         </table>
@@ -206,9 +206,9 @@
           <tr>
             <td style="font-size:10px;">Address 1</td>
             <td style="font-size:10px;">Address 2</td>
-            <td style="font-size:10px;">Zip</td>
             <td style="font-size:10px;">City</td>
             <td style="font-size:10px;">State</td>
+            <td style="font-size:10px;">Zip</td>
           </tr>
           <tr>
             <td>
@@ -216,9 +216,6 @@
             </td>
             <td>
               <input class="form-control" type="text" size="25" [(ngModel)]="currentOrder.SHIP_ADDRESS_2">
-            </td>
-            <td>
-              <input class="form-control" type="text" size="15" [(ngModel)]="currentOrder.SHIP_ZIP">
             </td>
             <td>
               <input class="form-control" type="text" size="30" [(ngModel)]="currentOrder.SHIP_CITY">
@@ -230,6 +227,9 @@
                 </option>
               </select>
             </td>
+            <td>
+                <input class="form-control" type="text" size="15" [(ngModel)]="currentOrder.SHIP_ZIP">
+              </td>
           </tr>
         </table>
         <!-- </mat-card> -->

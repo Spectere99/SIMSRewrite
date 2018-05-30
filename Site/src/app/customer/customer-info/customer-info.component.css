@@ -23,3 +23,11 @@ td {
   padding-right:2px;
   padding-left:2px;
 }
+
+td.placeholder {
+  border-top:0pt none;
+  margin-top:0pt;
+  padding-bottom:3px;
+  padding-left:43px;
+  padding-top:5px;
+}

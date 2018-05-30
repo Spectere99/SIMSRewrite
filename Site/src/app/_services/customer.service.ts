@@ -36,7 +36,7 @@ export class Customer {
     parent_id: number;
     parent_ind: string;
     customer_address: CustomerAddress[];
-    customer_contacts: CustomerPerson[];
+    customer_person: CustomerPerson[];
     orders: Order[];
 }
 export class CustomerPerson {
@@ -130,7 +130,7 @@ export class CustomerService {
 
         return this.http.get(this.baseURL + '/customers' + this.options, {headers: this.getHeaders(userId)})
         .map((res: Response) => {
-            // console.log(res.json());
+            console.log('customer-service:getCustomerData', res.json());
             return res.json();
         });
     }
@@ -167,6 +167,8 @@ export class CustomerService {
     updateCustomerContact(userId, customerPerson: CustomerPerson): Observable<any> {
         // Build customer odata Options
         this.options = '(' + customerPerson.customer_person_id + ')';
+        console.log('updateCustomercontact - customerPerson', customerPerson);
+        console.log('updateCustomerContact - options', this.options);
 
         return this.http.put(this.baseURL + '/CustomerPerson' + this.options, customerPerson, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
