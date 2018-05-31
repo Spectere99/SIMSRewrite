@@ -71,7 +71,7 @@ export class ContactAddressComponent implements OnInit {
     // console.log('Customer List', this.customer);
     // Remove contact from list based on customerId
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '250px',
+      width: '350px',
       data: {}
     });
 
@@ -80,7 +80,7 @@ export class ContactAddressComponent implements OnInit {
       // console.log('The Result', result);
       if (result) {
         // this.customer = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
-        // console.log('CustomerAddressId', customerAddressId);
+        console.log('CustomerAddressId', customerAddressId);
         if (customerAddressId > 0) {
           // Remove contact from the database using Web service call.
           // console.log('Calling Delete Web Service');
@@ -165,6 +165,7 @@ export class ContactAddressComponent implements OnInit {
   ngOnInit() {
   }
 
+  // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
     console.log('contact-address:ngOnChange', this.customer);
   }

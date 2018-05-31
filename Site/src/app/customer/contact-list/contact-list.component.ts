@@ -198,17 +198,17 @@ export class ContactListComponent implements OnInit {
       const adr = this.contactAddressCmpt.batchSave(res);
         console.log('contactInfo batch Saved Result', cnt);
         console.log('contactAddress batch Saved Result', adr);
-        this.customerService.getCustomerData('', res).subscribe(cust => {
-          console.log('contact-list applyChanges - selectedCustomer', this.selectedCustomer);
-          console.log('contact-list applyChanges - Customer', cust);
           setTimeout(() => {
             this.gridCustomers.instance.refresh();
+            this.customerService.getCustomerData('', res).subscribe(cust => {
+              console.log('contact-list applyChanges - selectedCustomer', this.selectedCustomer);
+              console.log('contact-list applyChanges - Customer', cust);
             this.selectedCustomer = cust;
-          }, 2000);
+            });
+          }, 1000);
           this.orderTabDisabled = false;
           this.popupVisible = this.leaveWindowOpen;
         });
-    });
   }
   cancelChanges() {
     this.popupVisible = false;
@@ -217,4 +217,9 @@ export class ContactListComponent implements OnInit {
   ngOnInit() {
   }
 
+  popupHiding(e) {
+    // e.cancel = true;  // This will stop the popup from hiding.
+                         //  Use to check for changes
+    this.gridCustomers.instance.refresh();
+  }
 }

@@ -1,12 +1,15 @@
 import { Component, OnInit, ViewChild, Output } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
-import { CustomerInfoComponent } from '../customer-info/customer-info.component';
+
 import { LookupService } from '../../_services/lookups.service';
 import { UserService } from '../../_services/user.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { Customer, CustomerService } from '../../_services/customer.service';
-import { CustomerContactsComponent } from '../customer-contacts/customer-contacts.component';
+// import { CustomerContactsComponent } from '../customer-contacts/customer-contacts.component';
+import { ContactInfoComponent } from '../contact-info/contact-info.component';
+import { ContactAddressComponent } from '../contact-address/contact-address.component';
+import { CustomerInfoComponent } from '../customer-info/customer-info.component';
 import { CustomerInfo } from '../customer-info/customer-info.service';
 
 @Component({
@@ -19,9 +22,11 @@ export class CustomerListComponent implements OnInit {
   // baseURL = 'http://localhost:56543/odata/';
   baseURL = environment.odataEndpoint;
   selectedCustomer: any;
+  @ViewChild(CustomerInfoComponent) customerInfoCmpt: CustomerInfoComponent;
+  @ViewChild(ContactInfoComponent) contactInfoCmpt: ContactInfoComponent;
+  @ViewChild(ContactAddressComponent) contactAddressCmpt: ContactAddressComponent;
   @ViewChild(DxDataGridComponent) gridCustomers: DxDataGridComponent;
-  @ViewChild(CustomerInfoComponent) customerInfo: CustomerInfoComponent;
-  @ViewChild(CustomerContactsComponent) customerContacts: CustomerContactsComponent;
+  // @ViewChild(CustomerContactsComponent) customerContacts: CustomerContactsComponent;
   dataSource: any;
   customerList: any;
   lookupDataSource: any;
@@ -45,7 +50,7 @@ export class CustomerListComponent implements OnInit {
   userProfile;
   leaveWindowOpen = true;
 
-  constructor(lookupService: LookupService, userService: UserService, customerService: CustomerService
+  constructor(lookupService: LookupService, userService: UserService, public customerService: CustomerService
               , authService: AuthenticationService) {
       this.userProfile = JSON.parse(authService.getUserToken());
       this.pagingEnabled = true;
@@ -209,14 +214,19 @@ export class CustomerListComponent implements OnInit {
     }
     showEditPopup(e) {
       // e.cancel = true;
-      console.log('E', e);
-      this.selectedCustomer = e.data;
-      console.log('SelectedCustomer', this.selectedCustomer);
+      console.log('E', e.data.customer_id);
+      this.customerService.getCustomerData('', e.data.customer_id).subscribe(res => {
+        this.selectedCustomer = res;
+        this.selectedCustomer.customer_person = this.selectedCustomer.customer_person.filter(f => f.status_code === 'act');
+        // console.log('getCustomerData Return', res);
+        if (this.selectedCustomer.customer_id < 0) {
+          this.orderTabDisabled = true; } else {this.orderTabDisabled = false;
+        }
+        this.popupVisible = true;
+      });
+      // this.selectedCustomer = e.data;
+      // console.log('SelectedCustomer', this.selectedCustomer);
       // alert('Editing!');
-      this.popupVisible = true;
-      if (this.selectedCustomer.customer_id < 0) {
-        this.orderTabDisabled = true; } else {this.orderTabDisabled = false;
-      }
     }
 
     buildCustomerFirstName(data) {
@@ -303,16 +313,23 @@ export class CustomerListComponent implements OnInit {
     }
 
     applyChanges() {
-      // alert('Applying Customer-Info Changes');
-      console.log('CustomerInfo Child',  this.customerInfo);
-      this.customerInfo.batchSave(this.selectedCustomer.customer_id).subscribe(res => {
-      // Call customer_info component's batchSave method.
-      // alert('Applying Customer Contacts Changes');
-      console.log('Return from CustomerInfo Batch Save', res);
-      this.customerContacts.batchSave(res);
-      this.selectedCustomer.customer_id = res;
-      this.popupVisible = this.leaveWindowOpen;
-    });
+      this.customerInfoCmpt.batchSave(this.selectedCustomer.customer_id).subscribe(res => {
+        // console.log('contact-list calling contactsComponent batchSave', res);
+        const cnt = this.contactInfoCmpt.batchSave(res);
+        const adr = this.contactAddressCmpt.batchSave(res);
+          console.log('contactInfo batch Saved Result', cnt);
+          console.log('contactAddress batch Saved Result', adr);
+            setTimeout(() => {
+              this.gridCustomers.instance.refresh();
+              this.customerService.getCustomerData('', res).subscribe(cust => {
+                console.log('contact-list applyChanges - selectedCustomer', this.selectedCustomer);
+                console.log('contact-list applyChanges - Customer', cust);
+              this.selectedCustomer = cust;
+              });
+            }, 1000);
+            this.orderTabDisabled = false;
+            this.popupVisible = this.leaveWindowOpen;
+          });
     }
 
     cancelChanges() {
@@ -322,4 +339,9 @@ export class CustomerListComponent implements OnInit {
   ngOnInit() {
   }
 
+  popupHiding(e) {
+    // e.cancel = true;  // This will stop the popup from hiding.
+                         //  Use to check for changes
+    this.gridCustomers.instance.refresh();
+  }
 }

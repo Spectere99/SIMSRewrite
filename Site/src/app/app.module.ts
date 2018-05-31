@@ -32,7 +32,7 @@ import { GarmentComponent } from './garment/garment.component';
 import { ReportComponent } from './report/report.component';
 import { LoginComponent } from './login/login.component';
 import { CustomerInfoComponent } from './customer/customer-info/customer-info.component';
-import { CustomerContactsComponent } from './customer/customer-contacts/customer-contacts.component';
+// import { CustomerContactsComponent } from './customer/customer-contacts/customer-contacts.component';
 import { ContactListComponent } from './customer/contact-list/contact-list.component';
 import { CustomerListComponent } from './customer/customer-list/customer-list.component';
 
@@ -87,7 +87,7 @@ import { ContactAddressComponent } from './customer/contact-address/contact-addr
     ReportComponent,
     LoginComponent,
     CustomerInfoComponent,
-    CustomerContactsComponent,
+    // CustomerContactsComponent,
     ContactListComponent,
     CustomerListComponent,
     ConfirmDialogComponent,

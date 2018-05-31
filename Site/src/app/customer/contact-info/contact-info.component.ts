@@ -168,6 +168,7 @@ export class ContactInfoComponent implements OnInit {
   ngOnInit() {
   }
 
+  // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
     console.log('contact-info:ngOnChange', this.customer);
   }

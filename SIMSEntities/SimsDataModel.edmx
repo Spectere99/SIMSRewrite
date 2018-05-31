@@ -75,9 +75,9 @@
           <Property Name="state" Type="varchar" MaxLength="2" />
           <Property Name="zip" Type="varchar" MaxLength="10" />
           <Property Name="country" Type="varchar" MaxLength="50" />
-          <Property Name="phone_1" Type="varchar" MaxLength="13" />
+          <Property Name="phone_1" Type="varchar" MaxLength="15" />
           <Property Name="phone_1_type" Type="varchar" MaxLength="10" />
-          <Property Name="phone_2" Type="varchar" MaxLength="13" />
+          <Property Name="phone_2" Type="varchar" MaxLength="15" />
           <Property Name="phone_2_type" Type="varchar" MaxLength="10" />
           <Property Name="ccnum" Type="varchar" MaxLength="50" />
           <Property Name="ccexp_date" Type="datetime" Precision="0" />
@@ -405,6 +405,7 @@ warning 6002: The table/view 'def.printmgr.vw_order_info' does not have a primar
         <EntityType Name="vw_order_info">
           <Key>
             <PropertyRef Name="order_id" />
+            
           </Key>
           <Property Name="order_id" Type="int" Nullable="false" />
           <Property Name="order_number" Type="varchar" MaxLength="50" />
@@ -521,9 +522,9 @@ FROM `vw_order_info` AS `vw_order_info`</DefiningQuery>
           <Property Name="state" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
           <Property Name="zip" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="country" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="phone_1" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="phone_1" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="phone_1_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="phone_2" Type="String" MaxLength="14" FixedLength="false" Unicode="false" />
+          <Property Name="phone_2" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="phone_2_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="ccnum" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ccexp_date" Type="DateTime" />

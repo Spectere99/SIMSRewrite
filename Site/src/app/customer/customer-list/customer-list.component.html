@@ -48,13 +48,14 @@
       </div>
     </dx-data-grid>
     <!-- START POPUP EDITOR MARKUP -->
-    <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible">
+    <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible" (onHiding)="popupHiding($event)">
       <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
         {{orderTabDisabled}}
         <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%">
           <mat-tab label="Info">
-            <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
-            <app-customer-contacts [customer]="selectedCustomer"></app-customer-contacts>
+              <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
+              <app-contact-address [customer]="selectedCustomer"></app-contact-address>
+              <app-contact-info [customer]="selectedCustomer"></app-contact-info>
           </mat-tab>
           <mat-tab label="Notes" [disabled]="true">
           </mat-tab>
