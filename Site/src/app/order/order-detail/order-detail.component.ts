@@ -192,7 +192,7 @@ export class OrderDetailComponent implements OnInit {
       if (e.order_detail_id > 0) {
         // Call web service to delete here - passing in the order_detail_id.
         // console.log('OrderDetail on Delete', e.order_detail_id);
-        this.orderService.deleteOrderLineItem('rwflowers', e.order_detail_id)
+        this.orderService.deleteOrderLineItem(this.userProfile.login_id, e.order_detail_id)
           .subscribe(res => {
             this.snackBar.open('Order Line Deleted!', '', {
               duration: 4000,
@@ -225,7 +225,7 @@ export class OrderDetailComponent implements OnInit {
     if (index >= 0) {
       if (e.order_art_placement_id > 0) {
         // Call web service to delete here.
-        this.orderService.deleteOrderArtPlacement('rwflowers', e.order_art_placement_id)
+        this.orderService.deleteOrderArtPlacement(this.userProfile.login_id, e.order_art_placement_id)
           .subscribe(res => {
             this.snackBar.open('Art Placement Line Deleted!', '', {
               duration: 4000,
@@ -260,7 +260,7 @@ export class OrderDetailComponent implements OnInit {
     if (index >= 0) {
       if (e.order_fee_id > 0) {
         // Call web service to delete here.
-        this.orderService.deleteOrderFee('rwflowers', e.order_fee_id)
+        this.orderService.deleteOrderFee(this.userProfile.login_id, e.order_fee_id)
           .subscribe(res => {
             this.snackBar.open('Order Charge Line Deleted!', '', {
               duration: 4000,
@@ -278,7 +278,8 @@ export class OrderDetailComponent implements OnInit {
     payment.entered_user_id = this.userProfile.profile.user_id;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    payment.payment_date = today.toLocaleDateString(); // this.formatOrderNumber(today);
+    payment.payment_date = today.toISOString(); // this.formatOrderNumber(today);
+    console.log('Added Payment', payment);
     this.orderPayments.push(payment);
   }
   deletePayment(e) {
@@ -291,7 +292,7 @@ export class OrderDetailComponent implements OnInit {
     if (index >= 0) {
       if (e.order_payment_id > 0) {
         // Call web service to delete here.
-        this.orderService.deleteOrderPayment('rwflowers', e.order_payment_id)
+        this.orderService.deleteOrderPayment(this.userProfile.login_id, e.order_payment_id)
           .subscribe(res => {
             this.snackBar.open('Order Payment Deleted!', '', {
               duration: 4000,
@@ -432,7 +433,7 @@ export class OrderDetailComponent implements OnInit {
       orderDetail.customer_name = this.customer.customer_name;
       orderDetail.order_number = this.currentOrder.order_number;
       console.log('OrderDetail on Save', orderDetail);
-      this.orderService.addOrderLineItem('rwflowers', orderDetail)
+      this.orderService.addOrderLineItem(this.userProfile.login_id, orderDetail)
         .subscribe(res => {
           // console.log('Save orderInfo Return', res);
           orderDetail.order_detail_id = res.order_detail_id;
@@ -445,7 +446,7 @@ export class OrderDetailComponent implements OnInit {
       orderDetail.customer_name = this.customer.customer_name;
       orderDetail.order_number = this.currentOrder.order_number;
       console.log('OrderDetail on Save', orderDetail);
-      this.orderService.updateOrderLineItem('rwflowers', orderDetail)
+      this.orderService.updateOrderLineItem(this.userProfile.login_id, orderDetail)
         .subscribe(res => {
           // console.log('Update orderLineItem Return', res);
           this.snackBar.open('Order Line Updated!', '', {
@@ -460,7 +461,7 @@ export class OrderDetailComponent implements OnInit {
     // console.log('Art Placement on Save', artPlacement);
     if (artPlacement.order_art_placement_id <= 0) {
       artPlacement.order_art_placement_id = 0;
-      this.orderService.addOrderArtPlacement('rwflowers', artPlacement)
+      this.orderService.addOrderArtPlacement(this.userProfile.login_id, artPlacement)
         .subscribe(res => {
           // console.log('Save artPlacement Return', res);
           artPlacement.order_art_placement_id = res.order_art_placement_id;
@@ -470,7 +471,7 @@ export class OrderDetailComponent implements OnInit {
           });
         });
     } else {
-      this.orderService.updateOrderArtPlacement('rwflowers', artPlacement)
+      this.orderService.updateOrderArtPlacement(this.userProfile.login_id, artPlacement)
         .subscribe(res => {
           // console.log('Update artPlacement Return', res);
           this.snackBar.open('Art Placement Line Updated!', '', {
@@ -485,7 +486,7 @@ export class OrderDetailComponent implements OnInit {
     // console.log('Order Fee on Save', orderFee);
     if (orderFee.order_fee_id <= 0) {
       orderFee.order_fee_id = 0;
-      this.orderService.addOrderFee('rwflowers', orderFee)
+      this.orderService.addOrderFee(this.userProfile.login_id, orderFee)
         .subscribe(res => {
           // console.log('Save orderFee Return', res);
           orderFee.order_fee_id = res.order_fee_id;
@@ -495,7 +496,7 @@ export class OrderDetailComponent implements OnInit {
           });
         });
     } else {
-      this.orderService.updateOrderFee('rwflowers', orderFee)
+      this.orderService.updateOrderFee(this.userProfile.login_id, orderFee)
         .subscribe(res => {
           // console.log('Update orderFee Return', res);
           this.snackBar.open('Order Fee Line Updated!', '', {
@@ -510,7 +511,7 @@ export class OrderDetailComponent implements OnInit {
     // console.log('Order Payment on Save', orderPayment);
     if (orderPayment.order_payment_id <= 0) {
       orderPayment.order_payment_id = 0;
-      this.orderService.addOrderPayment('rwflowers', orderPayment)
+      this.orderService.addOrderPayment(this.userProfile.login_id, orderPayment)
         .subscribe(res => {
           // console.log('Save orderFee Return', res);
           orderPayment.order_payment_id = res.order_payment_id;
@@ -520,7 +521,7 @@ export class OrderDetailComponent implements OnInit {
           });
         });
     } else {
-      this.orderService.updateOrderPayment('rwflowers', orderPayment)
+      this.orderService.updateOrderPayment(this.userProfile.login_id, orderPayment)
         .subscribe(res => {
           // console.log('Update orderPayment Return', res);
           this.snackBar.open('Order Payment Line Updated!', '', {
@@ -558,25 +559,25 @@ export class OrderDetailComponent implements OnInit {
     // console.log('Current Order', this.currentOrder);
     if (this.currentOrder.order_id !== 0) {
       if (this.currentOrder.customer_id > 0) {
-        this.customerService.getCustomerData('', this.currentOrder.customer_id).subscribe(res => {
+        this.customerService.getCustomerData(this.userProfile.login_id, this.currentOrder.customer_id).subscribe(res => {
           this.customer = res;
           // console.log('pulled Customer', this.orderCustomer);
         });
       }
-      this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
+      this.orderService.loadOrderData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
         this.order = res;
         // console.log('pulled order', this.order);
       });
-      this.orderService.loadArtPlacementData('', this.currentOrder.order_id).subscribe(res => {
+      this.orderService.loadArtPlacementData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
         this.orderArtPlacement = res.order_art_placement;
         // console.log('pulled Art Placement', this.orderArtPlacement);
       });
-      this.orderService.loadOrderFeeData('', this.currentOrder.order_id).subscribe(res => {
+      this.orderService.loadOrderFeeData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
         this.orderFees = res.order_fees;
         this.getShipping();
         // console.log('pulled Order Fees', this.orderFees);
       });
-      this.orderService.loadOrderPaymentData('', this.currentOrder.order_id).subscribe(res => {
+      this.orderService.loadOrderPaymentData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
         this.orderPayments = res.order_payments;
         // console.log('pulled Payment Data', this.orderPayments);
       });
@@ -596,25 +597,25 @@ export class OrderDetailComponent implements OnInit {
     // console.log('Current Order', this.currentOrder);
     if (this.currentOrder.order_id !== 0) {
       if (this.currentOrder.customer_id > 0) {
-        this.customerService.getCustomerData('', this.currentOrder.customer_id).subscribe(res => {
+        this.customerService.getCustomerData(this.userProfile.login_id, this.currentOrder.customer_id).subscribe(res => {
           this.customer = res;
           // console.log('pulled Customer', this.orderCustomer);
         });
       }
-      this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
+      this.orderService.loadOrderData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
         this.order = res;
         // console.log('pulled order', this.order);
       });
-      this.orderService.loadArtPlacementData('', this.currentOrder.order_id).subscribe(res => {
+      this.orderService.loadArtPlacementData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
         this.orderArtPlacement = res.order_art_placement;
         // console.log('pulled Art Placement', this.orderArtPlacement);
       });
-      this.orderService.loadOrderFeeData('', this.currentOrder.order_id).subscribe(res => {
+      this.orderService.loadOrderFeeData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
         this.orderFees = res.order_fees;
         this.getShipping();
         // console.log('pulled Order Fees', this.orderFees);
       });
-      this.orderService.loadOrderPaymentData('', this.currentOrder.order_id).subscribe(res => {
+      this.orderService.loadOrderPaymentData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
         this.orderPayments = res.order_payments;
         // console.log('pulled Payment Data', this.orderPayments);
       });

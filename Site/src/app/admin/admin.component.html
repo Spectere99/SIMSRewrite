@@ -6,7 +6,7 @@
   <div class="row">
     <div class="col-lg-4">
       <dx-data-grid id="gridUsers" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
-        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onRowClick)="onRowClick($event)" (onToolbarPreparing)="onToolbarPreparing($event)">
+        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onRowClick)="onRowClick($event)">
         <dxo-selection mode="single"></dxo-selection>
         <dxi-column dataField="user_id" caption="User ID" sortOrder="asc" [width]="100" [allowFiltering]="true" [visible]="true"
           [allowEditing]="false"></dxi-column>
@@ -53,21 +53,27 @@
         </div>
       </dx-data-grid>
     </div>
-    <div class="col-md-4" *ngIf="editUser">
-      <div class="col-lg-12" >
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-2">
+          <input class="form-control btn-primary" style="font-size:10px;" type="button" value="New User" (click)="newUser();">
+        </div>
+        {{message}}
+      </div>
+      <div *ngIf="editUser" class="col-lg-12">
         User Details
         <hr>
         <table>
           <tr>
-            <td style="font-size:10px;" width="75">First Name</td>
-            <td style="font-size:10px;" width="75">Last Name</td>
+            <td style="font-size:10px;" width="150">First Name</td>
+            <td style="font-size:10px;" width="150">Last Name</td>
           </tr>
           <tr>
             <td>
-              <input class="form-control" type="text" size="30" [(ngModel)]="editUser.first_name">
+              <input class="form-control" type="text" size="45" [(ngModel)]="editUser.first_name">
             </td>
             <td>
-              <input class="form-control" type="text" size="30" [(ngModel)]="editUser.last_name">
+              <input class="form-control" type="text" size="45" [(ngModel)]="editUser.last_name">
             </td>
           </tr>
           <tr>
@@ -76,10 +82,10 @@
           </tr>
           <tr>
             <td>
-              <input class="form-control" type="text" size="30" [(ngModel)]="editUser.login_id">
+              <input class="form-control" type="text" size="45" [(ngModel)]="editUser.login_id">
             </td>
             <td>
-              <input class="form-control" type="password" size="30" [(ngModel)]="editUser.password">
+              <input class="form-control" type="password" size="45" [(ngModel)]="editUser.password">
             </td>
           </tr>
           <tr>
@@ -87,7 +93,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              <input class="form-control" type="text" size="50" [(ngModel)]="editUser.email">
+              <input class="form-control" type="text" size="75" [(ngModel)]="editUser.email">
             </td>
           </tr>
           <tr>
@@ -129,13 +135,14 @@
         <div class="col-md-3">
           <input class="form-control btn-primary" style="font-size:10px;" type="button" value="Add Role" (click)="addRoleItem();">
         </div>
-      </div>
-      <div class="row"></div>
-      <hr>
-      <div class="row">
+
+        <div class="row"></div>
+        <hr>
+        <div class="row">
           <div class="col-md-3">
             <input class="form-control btn-primary" style="font-size:10px;" type="button" value="Save User" (click)="saveUser();">
           </div>
+        </div>
       </div>
     </div>
   </div>

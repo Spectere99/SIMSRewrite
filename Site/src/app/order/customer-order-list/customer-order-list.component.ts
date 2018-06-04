@@ -463,6 +463,28 @@ export class CustomerOrderListComponent implements OnInit {
       // Still need art tab batch save.
       this.orderArt.batchSave(res);
       // this.selectedOrder = null;
+      console.log('orderTaskList on ApplyChanges', this.orderTaskList.orderTask);
+      console.log('order balance_due', this.selectedOrder.balance_due);
+      console.log('order', this.selectedOrder);
+      if (+this.selectedOrder.balance_due === 0.00) {
+        console.log('balance is paid!');
+        const fpmtTask = this.orderTaskList.orderTask.filter(p => p.task_code === 'fnpmt');
+        if (fpmtTask) {
+          fpmtTask[0].is_complete = 'Y';
+          fpmtTask[0].completed_by = this.userProfile.profile.login_id;
+          fpmtTask[0].completed_date = new Date().toISOString();
+        }
+      }
+      if (this.orderDetail.orderPayments.length >= 1) {
+        const depTask = this.orderTaskList.orderTask.filter(p => p.task_code === 'deprc');
+        if (depTask) {
+          depTask[0].is_complete = 'Y';
+          depTask[0].completed_by = this.userProfile.profile.login_id;
+          depTask[0].completed_date = new Date().toISOString();
+        }
+        console.log('depost is paid!', this.orderDetail.orderPayments);
+      }
+
       this.orderTaskList.batchSave(res);
       this.orderNotesHistory.batchSave(res);
       setTimeout(() => {
