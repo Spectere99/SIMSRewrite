@@ -10,8 +10,7 @@
     </div> -->
     <div class="row col-lg-12">
       <dx-data-grid id="gridOrders" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
-        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)" [masterDetail]="{ enabled: true, template: 'detail' }"
-        [height]="400">
+        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)" [masterDetail]="{ enabled: true, template: 'detail' }">
         <dxo-selection mode="single"></dxo-selection>
         <!-- <dxi-column dataField="reorder_ind" caption="Reorder?" [width]="100" [allowFiltering]="false" [calculateCellValue]="setReorderInd"></dxi-column> -->
         <dxi-column dataField="order_number" caption="Order #" [width]="100" [allowSearch]="true" [allowFiltering]="true" cellTemplate="orderCell"></dxi-column>
@@ -73,22 +72,34 @@
           </div>
           <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%;">
             <mat-tab label="Info">
-              <app-order-info [(currentOrder)]="selectedOrder" [taskList]="taskListComp"></app-order-info>
+              <dx-scroll-view style="height: 100%; width: 100%">
+                <app-order-info [(currentOrder)]="selectedOrder" [taskList]="taskListComp"></app-order-info>
+              </dx-scroll-view>
             </mat-tab>
             <mat-tab label="Tasks">
-              <app-order-task-list [currentOrder]="selectedOrder" #taskListComp></app-order-task-list>
+              <dx-scroll-view style="height: 100%; width: 100%">
+                <app-order-task-list [currentOrder]="selectedOrder" #taskListComp></app-order-task-list>
+              </dx-scroll-view>
             </mat-tab>
             <mat-tab label="Details">
-              <app-order-detail [(currentOrder)]="selectedOrder"></app-order-detail>
+              <dx-scroll-view style="height: 100%; width: 100%">
+                <app-order-detail [(currentOrder)]="selectedOrder"></app-order-detail>
+              </dx-scroll-view>
             </mat-tab>
             <mat-tab label="Art">
-              <app-order-art [(currentOrder)]="selectedOrder"></app-order-art>
+              <dx-scroll-view style="height: 100%; width: 100%">
+                <app-order-art [(currentOrder)]="selectedOrder"></app-order-art>
+              </dx-scroll-view>
             </mat-tab>
             <mat-tab label="History/Comments">
-              <app-order-notes-history [currentOrder]="selectedOrder"></app-order-notes-history>
+              <dx-scroll-view style="height: 100%; width: 100%">
+                <app-order-notes-history [currentOrder]="selectedOrder"></app-order-notes-history>
+              </dx-scroll-view>
             </mat-tab>
             <mat-tab label="Correspondence">
-              <app-order-correspondence [currentOrder]="selectedOrder"></app-order-correspondence>
+              <dx-scroll-view style="height: 100%; width: 100%">
+                <app-order-correspondence [currentOrder]="selectedOrder"></app-order-correspondence>
+              </dx-scroll-view>
             </mat-tab>
           </mat-tab-group>
           <div class="col-md-12">

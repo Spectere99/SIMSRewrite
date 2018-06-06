@@ -79,17 +79,28 @@ export class TaskListComponent implements OnInit {
       store: {
           type: 'odata',
           url: this.baseUrl + 'OrderTask',
-          key: 'order_id',
-          keyType: 'Int32',
+          key: ['order_id', 'task_code'],
+          keyType: {
+                      order_id: 'Int32',
+                      task_code: 'String'
+                    },
+          // key: 'order_id',
+          // keyType: 'Int32',
           version: 3,
           jsonp: false,
           beforeSend: function (url, async, method, timeout, params, payload, headers) {
+
             console.log('beforeSend', url, async, method, timeout, params, payload, headers);
           }
       },
       expand: ['order'],
       select: [
         'order_id',
+        'task_code',
+        'order_by',
+        'is_complete',
+        'completed_by',
+        'completed_date',
         'order/order_id',
         'order/order_date',
         'order/order_status',
@@ -102,12 +113,7 @@ export class TaskListComponent implements OnInit {
         'order/est_begin_date',
         'order/act_begin_date',
         'order/est_complete_date',
-        'order/act_complete_date',
-        'task_code',
-        'order_by',
-        'is_complete',
-        'completed_by',
-        'completed_date',
+        'order/act_complete_date'
       ],
       filter: [['order.order_status', '=', 'inq'],
               'or',
@@ -155,6 +161,10 @@ export class TaskListComponent implements OnInit {
     return data.is_complete === 'Y';
   }
 
+  setCompletedValue(rowData, value) {
+    console.log('SetCompletedValue', rowData, value);
+    rowData.is_complete = (value === true) ? 'Y' : 'N';
+  }
   setCustomerName(e) {
     console.log('setCustomerName', e);
   }

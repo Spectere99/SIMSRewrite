@@ -6,6 +6,8 @@ using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.OData.Builder;
 using System.Web.Http.OData.Extensions;
+using System.Web.Http.OData.Routing;
+using System.Web.Http.OData.Routing.Conventions;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
 using SIMSEntities;
@@ -40,7 +42,20 @@ namespace SIMSDataService
             );
 
            
-            config.Routes.MapODataServiceRoute("odata", "odata", BuildODataModels());
+            // config.Routes.MapODataServiceRoute("odata", "odata", BuildODataModels());
+
+            //RWF - 6/5/2018
+            var conventions = ODataRoutingConventions.CreateDefault();
+            conventions.Insert(0, new CompositeKeyRoutingConvention());
+
+            ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
+
+            config.Routes.MapODataServiceRoute(
+                routeName: "odata",
+                routePrefix: "odata",
+                model: BuildODataModels(),
+                pathHandler: new DefaultODataPathHandler(),
+                routingConventions: conventions);
         }
 
         private static Microsoft.Data.Edm.IEdmModel BuildODataModels()

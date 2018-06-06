@@ -87,7 +87,8 @@ export class ContactInfoComponent implements OnInit {
     return this.customer.customer_person;
   }
 
-  addContact(customerId: number) {
+  addContact(customerId: number, event: Event) {
+    event.stopPropagation();
     const newContact: CustomerPerson = {
       'customer_person_id': 0,
       'customer_id': customerId,

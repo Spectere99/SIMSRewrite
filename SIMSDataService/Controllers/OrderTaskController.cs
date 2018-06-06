@@ -46,7 +46,7 @@ namespace SIMSDataService.Controllers
         }
 
         // PUT: odata/OrderTask(5)
-        public IHttpActionResult Put([FromODataUri] int key, Delta<order_task> patch)
+        public IHttpActionResult Put([FromODataUri] int order_id, [FromODataUri] string task_code, Delta<order_task> patch)
         {
             Validate(patch.GetEntity());
 
@@ -55,7 +55,7 @@ namespace SIMSDataService.Controllers
                 return BadRequest(ModelState);
             }
 
-            order_task order_task = db.order_task.Find(key);
+            order_task order_task = db.order_task.Find(order_id);
             if (order_task == null)
             {
                 return NotFound();
@@ -69,7 +69,7 @@ namespace SIMSDataService.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!order_taskExists(key))
+                if (!order_taskExists(order_id, task_code))
                 {
                     return NotFound();
                 }
@@ -98,7 +98,7 @@ namespace SIMSDataService.Controllers
             }
             catch (DbUpdateException)
             {
-                if (order_taskExists(order_task.order_id))
+                if (order_taskExists(order_task.order_id, order_task.task_code))
                 {
                     return Conflict();
                 }
@@ -113,7 +113,7 @@ namespace SIMSDataService.Controllers
 
         // PATCH: odata/OrderTask(5)
         [AcceptVerbs("PATCH", "MERGE")]
-        public IHttpActionResult Patch([FromODataUri] int key, Delta<order_task> patch)
+        public IHttpActionResult Patch([FromODataUri] int order_id, [FromODataUri] string task_code, Delta<order_task> patch)
         {
             Validate(patch.GetEntity());
 
@@ -122,7 +122,8 @@ namespace SIMSDataService.Controllers
                 return BadRequest(ModelState);
             }
 
-            order_task order_task = db.order_task.Find(key);
+            // order_task order_task = db.order_task.Find(order_id);
+            order_task order_task = db.order_task.FirstOrDefault(p => p.order_id == order_id && p.task_code == task_code);
             if (order_task == null)
             {
                 return NotFound();
@@ -136,7 +137,7 @@ namespace SIMSDataService.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!order_taskExists(key))
+                if (!order_taskExists(order_id, task_code))
                 {
                     return NotFound();
                 }
@@ -187,9 +188,9 @@ namespace SIMSDataService.Controllers
             base.Dispose(disposing);
         }
 
-        private bool order_taskExists(int key)
+        private bool order_taskExists(int key, string key2)
         {
-            return db.order_task.Count(e => e.order_id == key) > 0;
+            return db.order_task.Count(e => e.order_id == key && e.task_code == key2) > 0;
         }
     }
 }

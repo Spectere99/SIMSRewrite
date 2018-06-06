@@ -466,7 +466,7 @@ export class CustomerOrderListComponent implements OnInit {
       console.log('orderTaskList on ApplyChanges', this.orderTaskList.orderTask);
       console.log('order balance_due', this.selectedOrder.balance_due);
       console.log('order', this.selectedOrder);
-      if (+this.selectedOrder.balance_due === 0.00) {
+      if (+this.selectedOrder.balance_due === 0.00 && this.orderDetail.orderPayments.length > 0) {
         console.log('balance is paid!');
         const fpmtTask = this.orderTaskList.orderTask.filter(p => p.task_code === 'fnpmt');
         if (fpmtTask) {

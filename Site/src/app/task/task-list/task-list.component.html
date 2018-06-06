@@ -21,7 +21,8 @@
         [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onRowPrepared)="setCustomerName">
         <dxo-selection mode="single"></dxo-selection>
         <dxi-column dataField="order_id" caption="OrderID" [visible]="false" [width]="100" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
-        <dxi-column dataField="is_complete" caption="Complete" [width]="100" [allowSearch]="false" [allowFiltering]="false" [calculateCellValue]="setCompletedInd"></dxi-column>
+        <dxi-column dataField="is_complete" caption="Complete" [width]="100" [allowSearch]="false" [allowFiltering]="false" 
+                    [calculateCellValue]="setCompletedInd" [setCellValue]="setCompletedValue"></dxi-column>
         <dxi-column dataField="order.order_number" caption="Order#" [width]="100" [allowEditing]="false" cellTemplate="orderCell"></dxi-column>
         <dxi-column dataField="task_code" caption="Task" [width]="175" [allowEditing]="false">
           <dxo-lookup [dataSource]="taskLookup" valueExpr="char_mod" displayExpr="description"></dxo-lookup>

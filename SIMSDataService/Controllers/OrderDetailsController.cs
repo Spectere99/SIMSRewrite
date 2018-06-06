@@ -49,8 +49,17 @@ namespace SIMSDataService.Controllers
         // PUT: odata/OrderDetails(5)
         public async Task<IHttpActionResult> Put([FromODataUri] int key, Delta<order_detail> patch)
         {
+            //var re = Request;
+            //var headers = re.Headers;
+            //var id = "";
+            //if (headers.Contains("id"))
+            //{
+            //    id = headers.GetValues("id").First();
+            //}
+
             Validate(patch.GetEntity());
 
+            
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -64,6 +73,14 @@ namespace SIMSDataService.Controllers
 
             patch.Put(order_detail);
 
+
+            // Check to see if the we need to update the task status to completed.
+            //order_task order_task =
+            //    db.order_task.FirstOrDefault(p => p.order_id == order_detail.order_id && p.task_code == "order");
+
+            //order_task.is_complete = "Y";
+            //order_task.completed_by = id;
+            //order_task.completed_date = DateTime.Now;
             try
             {
                 await db.SaveChangesAsync();

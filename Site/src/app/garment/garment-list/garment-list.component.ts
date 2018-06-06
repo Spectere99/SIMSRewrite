@@ -80,6 +80,7 @@ export class GarmentListComponent implements OnInit {
   constructor(public lookupService: LookupService, public userService: UserService, public priceListService: PriceListService,
               public orderService: OrderService, public customerService: CustomerService, public authService: AuthenticationService) {
     this.userProfile = JSON.parse(authService.getUserToken());
+    console.log('User Profile', this.userProfile);
     this.enableSave = this.userProfile.profile.role !== 'Readonly';
     this.customGarmentOrderDate = this.getToday();
     this.currentFilter = this.defaultLoadFilter;

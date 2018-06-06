@@ -8,8 +8,8 @@
 <div class="row">
   <div class="col-lg-12">
     <dx-data-grid id="gridContacts" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
-      [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onRowClick)="onRowClick($event)"
-      (onToolbarPreparing)="onToolbarPreparing($event)" (onContentReady)="contentReady($event)">
+      [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onRowClick)="onRowClick($event)" (onToolbarPreparing)="onToolbarPreparing($event)"
+      (onContentReady)="contentReady($event)">
       <dxo-selection mode="single"></dxo-selection>
       <dxi-column dataField="customer_person_id" caption="Contact ID" [width]="100" [allowFiltering]="true" [visible]="false"></dxi-column>
       <dxi-column dataField="customers.customer_name" caption="Customer Name" [width]="450" sortOrder="asc" [allowFiltering]="true"
@@ -39,18 +39,23 @@
       </div>
     </dx-data-grid>
     <!-- START POPUP EDITOR MARKUP -->
-    <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible" (onHiding)="popupHiding($event)">
-      <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
-        <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%">
+    <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible"
+      (onHiding)="popupHiding($event)">
+      <div *dxTemplate="let data of 'content'">
+        <mat-tab-group [dynamicHeight]="true" style="height: 90%; width: 100%">
           <mat-tab label="Info">
-            <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
-            <app-contact-address [customer]="selectedCustomer"></app-contact-address>
-            <app-contact-info [customer]="selectedCustomer"></app-contact-info>
+            <dx-scroll-view style="height: 100%; width: 100%">
+              <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
+              <app-contact-address [customer]="selectedCustomer"></app-contact-address>
+              <app-contact-info [customer]="selectedCustomer"></app-contact-info>
+            </dx-scroll-view>
           </mat-tab>
           <mat-tab label="Notes" [disabled]="true">
           </mat-tab>
           <mat-tab label="Orders" [disabled]="orderTabDisabled">
-            <app-customer-order-list [customer]="selectedCustomer"></app-customer-order-list>
+            <dx-scroll-view style="height: 100%; width: 100%">
+              <app-customer-order-list [customer]="selectedCustomer"></app-customer-order-list>
+            </dx-scroll-view>
           </mat-tab>
         </mat-tab-group>
         <div class="col-md-12">

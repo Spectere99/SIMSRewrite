@@ -138,10 +138,8 @@ namespace SIMSDataService.Controllers
                 {
                     return NotFound();
                 }
-                else
-                {
-                    throw;
-                }
+
+                throw;
             }
 
             return Updated(user_group);
@@ -150,7 +148,6 @@ namespace SIMSDataService.Controllers
         // DELETE: odata/UserGroup(5)
         public async Task<IHttpActionResult> Delete([FromODataUri] int key)
         {
-            
             // user_group user_group = await db.user_group.FindAsync(key);
             List<user_group> user_group = db.user_group.Where(p => p.user_id == key).ToList();
             if (user_group.Count == 0)

@@ -1,11 +1,13 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild, Input } from '@angular/core';
 /* import { CustomerInfo, Service } from './customer-info.service'; */
 import { StateService, StateInfo } from '../../_shared/states.service';
 import { LookupService } from '../../_services/lookups.service';
 import { CustomerService, Customer, CustomerDTO, CustomerAddress } from '../../_services/customer.service';
 import {
   MatDialog, MatDialogRef, MAT_DIALOG_DATA,
-  MatSnackBar
+  MatSnackBar,
+  MatExpansionPanel,
+  MatAccordion
 } from '@angular/material';
 import { ConfirmDialogComponent } from '../../_shared/confirm/confirm.component';
 import { DatePipe } from '@angular/common';
@@ -21,6 +23,7 @@ import 'rxjs/add/operator/map';
 export class ContactAddressComponent implements OnInit {
 
   @Input() customer: any;
+  @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
   customerList: Array<any>;
   lookupDataSource: any;
   addressTypes: any;
@@ -99,7 +102,8 @@ export class ContactAddressComponent implements OnInit {
     });
   }
 
-  addAddress(customerId: number) {
+  addAddress(customerId: number, event: Event) {
+    event.stopPropagation();
     const newAddress: CustomerAddress = {
       'customer_address_id': 0,
       'customer_id': customerId,
@@ -118,6 +122,7 @@ export class ContactAddressComponent implements OnInit {
     this.customer.customer_address.unshift(newAddress);
     // console.log('Customer Address List after add', this.customer.customer_address);
     this.panelExpanded = true;
+    this.expansionPanel.open();
   }
 
   batchSave(customer_id: number) {
