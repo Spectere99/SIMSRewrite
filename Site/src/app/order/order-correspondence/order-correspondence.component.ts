@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ViewChild, ElementRef } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee, OrderPayment, OrderArtFile } from '../../_services/order.service';
 import { AuthenticationService } from '../../_services/authentication.service';
@@ -18,6 +18,7 @@ declare let jsPDF;
 })
 export class OrderCorrespondenceComponent implements OnInit {
 @Input() currentOrder: any;
+
 selectedOrder;
 private loading = false;
 popupVisible = false;
@@ -151,9 +152,13 @@ enableSave = false;
     return val;
   }
 
+  generateInvoice() {
+
+  }
+
   saveInvoice() {
     this.loading = true;
-    const doc = new jsPDF('p', 'pt', 'a4');
+    const doc = new jsPDF(); // new jsPDF('p', 'pt', 'a4');
 
     const margins = {
       top: 25,
@@ -167,7 +172,14 @@ enableSave = false;
       background: '#fff',
     };
 
+    const specialElementHandlers = {
+      '#editor': function(element, renderer) {
+        return true;
+      }
+    };
+
     const elementToPrint = document.getElementById('invoiceContent');
+    // const elementToPrint = this.invoiceContent;
     // console.log('Generating PDF', elementToPrint);
     // doc.autoTable(col, rows);
     doc.addHTML(elementToPrint, 25, 25, options, () => {

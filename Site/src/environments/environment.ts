@@ -5,7 +5,7 @@
 // export const baseUrl = 'http://spserver:8888';
 export const baseUrl = 'http://localhost:56543';
 export const environmentName = 'Test';
-export const version = '0.64';
+export const version = '0.65';
 export const environment = {
   production: false,
   // authEndpoint: 'http://localhost:56543/api/Security',
@@ -32,6 +32,6 @@ export const environment = {
   defaultArtFolder: baseUrl + '/orderimage/',
 
   // defaultDocFolder: 'http://localhost:8888/'
-  defaultDocFolder: baseUrl + '/pdf/'
+  defaultDocFolder: baseUrl + '/'
 
 };

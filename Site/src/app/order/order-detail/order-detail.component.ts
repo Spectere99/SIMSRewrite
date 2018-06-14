@@ -294,6 +294,7 @@ export class OrderDetailComponent implements OnInit {
         // Call web service to delete here.
         this.orderService.deleteOrderPayment(this.userProfile.login_id, e.order_payment_id)
           .subscribe(res => {
+            this.updateTotals();
             this.snackBar.open('Order Payment Deleted!', '', {
               duration: 4000,
               verticalPosition: 'top'
@@ -302,6 +303,7 @@ export class OrderDetailComponent implements OnInit {
       }
     }
     this.orderPayments.splice(index, 1);
+    this.updateTotals();
   }
 
   onQtyPriceChange(e, idx) {
