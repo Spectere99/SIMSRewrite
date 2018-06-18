@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee, OrderPayment, OrderArtFile } from '../../_services/order.service';
 import { AuthenticationService } from '../../_services/authentication.service';
@@ -17,6 +17,7 @@ declare let jsPDF;
   providers: [OrderService, LookupService, PriceListService, CorrespondenceService]
 })
 export class OrderCorrespondenceComponent implements OnInit {
+<<<<<<< HEAD
   @Input() currentOrder: any;
 
   selectedOrder;
@@ -46,6 +47,36 @@ export class OrderCorrespondenceComponent implements OnInit {
   userProfile;
 
   enableSave = false;
+=======
+@Input() currentOrder: any;
+selectedOrder;
+private loading = false;
+popupVisible = false;
+lookupDataSource: Array<LookupItem>;
+priceListDataSource: Array<PriceListItem>;
+itemTypes: Array<PriceListItem>;
+setupItems: Array<PriceListItem>;
+styleTypes: Array<LookupItem>;
+sizeTypes: Array<LookupItem>;
+vendorTypes: Array<LookupItem>;
+artLocations: Array<LookupItem>;
+paymentSourceItems: Array<LookupItem>;
+orderCorrespondence: Array<Correspondence>;
+correspondenceTypes: Array<LookupItem>;
+correspondenceDisp: Array<LookupItem>;
+userDataSource: any;
+
+
+orderArtPlacement: Array<OrderArtPlacement>;
+orderFees: Array<OrderFee>;
+orderPayments: Array<OrderPayment>;
+orderArtFile: Array<OrderArtFile>;
+order: any;
+defaultDocFolder: string;
+userProfile;
+
+enableSave = false;
+>>>>>>> parent of d77d1c5... Completed Invoice layout version 1.0
 
   constructor(public orderService: OrderService, private lookupService: LookupService, private priceListService: PriceListService,
     public correspondenceService: CorrespondenceService, private userService: UserService,
@@ -152,13 +183,9 @@ export class OrderCorrespondenceComponent implements OnInit {
     return val;
   }
 
-  generateInvoice() {
-
-  }
-
   saveInvoice() {
     this.loading = true;
-    const doc = new jsPDF(); // new jsPDF('p', 'pt', 'a4');
+    const doc = new jsPDF('p', 'pt', 'a4');
 
     const margins = {
       top: 25,
@@ -172,14 +199,16 @@ export class OrderCorrespondenceComponent implements OnInit {
       background: '#fff',
     };
 
+<<<<<<< HEAD
     const specialElementHandlers = {
       '#editor': function (element, renderer) {
         return true;
       }
     };
 
+=======
+>>>>>>> parent of d77d1c5... Completed Invoice layout version 1.0
     const elementToPrint = document.getElementById('invoiceContent');
-    // const elementToPrint = this.invoiceContent;
     // console.log('Generating PDF', elementToPrint);
     // doc.autoTable(col, rows);
     doc.addHTML(elementToPrint, 25, 25, options, () => {

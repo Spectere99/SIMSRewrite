@@ -1,5 +1,4 @@
-import { Component, OnInit, OnChanges, Input, Output, ViewChild, ElementRef, EventEmitter } from '@angular/core';
-import { CurrencyPipe } from '@angular/common';
+import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee, OrderPayment, OrderArtFile } from '../../_services/order.service';
 import { AuthenticationService } from '../../_services/authentication.service';
@@ -8,7 +7,6 @@ import { UserService } from '../../_services/user.service';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
 import { DxLoadPanelModule } from 'devextreme-angular';
-import { RecurseVisitor } from '@angular/compiler/src/i18n/i18n_ast';
 
 declare let jsPDF;
 
@@ -22,12 +20,11 @@ declare let jsPDF;
     </div>
     `, */
   styleUrls: ['./order-invoice.component.scss'],
-  providers: [OrderService, LookupService, PriceListService, CorrespondenceService, CurrencyPipe]
+  providers: [OrderService, LookupService, PriceListService, CorrespondenceService]
 })
 export class OrderInvoiceComponent implements OnInit {
 @Input() currentOrder: any;
 @Output() onSave = new EventEmitter<any>();
-@ViewChild('invoiceContent') invoiceContent: ElementRef;
 private loading = false;
 lookupDataSource: Array<LookupItem>;
 priceListDataSource: Array<PriceListItem>;
@@ -55,7 +52,7 @@ userProfile;
 
   constructor(public orderService: OrderService, private lookupService: LookupService, private priceListService: PriceListService,
               public correspondenceService: CorrespondenceService, private userService: UserService,
-              public authService: AuthenticationService, private cp: CurrencyPipe) {
+              public authService: AuthenticationService) {
     this.userProfile = JSON.parse(authService.getUserToken());
     this.defaultDocFolder = environment.defaultDocFolder;
     this.order = new Order();
@@ -152,6 +149,7 @@ userProfile;
     return val;
   }
 
+<<<<<<< HEAD
   generateInvoice() {
 
     // tslint:disable-next-line:max-line-length
@@ -545,9 +543,17 @@ userProfile;
                   this.cp.transform(this.currentOrder.balance_due.toString(), 'USD', 'symbol'), 'right');
   }
 
+=======
+>>>>>>> parent of d77d1c5... Completed Invoice layout version 1.0
   convert() {
     this.loading = true;
     const doc = new jsPDF('p', 'pt', 'letter');
+
+/*     const margins = {
+      top: 15,
+      bottom: 10,
+      left: 20,
+    }; */
 
     const options = {
       pagesplit: true,
@@ -558,27 +564,15 @@ userProfile;
       }
     };
 
-    const specialElementHandlers = {
-      '#editor': function (element, renderer) {
-        return true;
-      }
-    };
-
     const elementToPrint = document.getElementById('invoiceContent');
-    // const elementToPrint = this.invoiceContent.nativeElement;
     // elementToPrint.parentElement.style.height = '10000px';
     // elementToPrint.style.display = 'inline-block';
-    // elementToPrint.style.width = 'auto';
-    // elementToPrint.style.height = 'auto';
-    console.log('Generating PDF', elementToPrint.innerHTML);
+    elementToPrint.style.width = 'auto';
+    elementToPrint.style.height = 'auto';
+    console.log('Generating PDF', elementToPrint);
     // doc.autoTable(col, rows);
     // elementToPrint.style.height = '2000px';
-    // doc.addHTML(elementToPrint, 15, 15, options, () => {
-    doc.fromHTML(elementToPrint.innerHTML, 15, 15,
-      {
-        'width': 190,
-        'elementHandlers': specialElementHandlers
-      }, () => {
+    doc.addHTML(elementToPrint, 15, 15, options, () => {
       const pdfString = doc.output('datauristring');
       const newCorr = new Correspondence();
       newCorr.corr_filename = '';
