@@ -202,6 +202,7 @@ export class OrderService {
         return this.http.get(this.baseURL + this._ORDER_ACTION + this.options, {headers: this.getHeaders(userId)})
         .map((res: Response) => {
             // console.log(res.json());
+            console.log('order-service:loadOrderData', res.json());
             return res.json();
         });
     }
@@ -216,6 +217,7 @@ export class OrderService {
         return this.http.get(this.baseURL + this._ORDER_ACTION + this.options, {headers: this.getHeaders(userId)})
         .map((res: Response) => {
             // console.log(res.json());
+            console.log('order-service:loadArtPlacementData', res.json());
             return res.json();
         });
     }
@@ -230,6 +232,7 @@ export class OrderService {
         return this.http.get(this.baseURL + this._ORDER_ACTION + this.options, {headers: this.getHeaders(userId)})
         .map((res: Response) => {
             // console.log(res.json());
+            console.log('order-service:loadOrderFeeData', res.json());
             return res.json();
         });
     }
@@ -244,6 +247,7 @@ export class OrderService {
         return this.http.get(this.baseURL + this._ORDER_ACTION + this.options, {headers: this.getHeaders(userId)})
         .map((res: Response) => {
             // console.log(res.json());
+            console.log('order-service:loadOrderPaymentData', res.json());
             return res.json();
         });
     }
@@ -258,6 +262,7 @@ export class OrderService {
         return this.http.get(this.baseURL + this._ORDER_ACTION + this.options, {headers: this.getHeaders(userId)})
         .map((res: Response) => {
             // console.log(res.json());
+            console.log('order-service:loadOrderArtFileData', res.json());
             return res.json();
         });
     }
@@ -272,6 +277,7 @@ export class OrderService {
         return this.http.get(this.baseURL + this._ORDER_ACTION + this.options, {headers: this.getHeaders(userId)})
         .map((res: Response) => {
             // console.log(res.json());
+            console.log('order-service:loadOrderTaskData', res.json());
             return res.json();
         });
     }
@@ -286,6 +292,7 @@ export class OrderService {
         return this.http.get(this.baseURL + this._ORDER_ACTION + this.options, {headers: this.getHeaders(userId)})
         .map((res: Response) => {
             // console.log(res.json());
+            console.log('order-service:loadOrderNotesData', res.json());
             return res.json();
         });
     }
@@ -300,6 +307,7 @@ export class OrderService {
         return this.http.get(this.baseURL + this._ORDER_ACTION + this.options, {headers: this.getHeaders(userId)})
         .map((res: Response) => {
             // console.log(res.json());
+            console.log('order-service:loadOrderStatusHistoryData', res.json());
             return res.json();
         });
     }

@@ -83,7 +83,9 @@
             </mat-tab>
             <mat-tab label="Details">
               <dx-scroll-view style="height: 100%; width: 100%">
-                <app-order-detail [(currentOrder)]="selectedOrder"></app-order-detail>
+                <app-order-detail [(customer)]="customer" [(currentOrder)]="selectedOrder" [(orderArtPlacement)]="selectedArtPlacements" 
+                  [(orderLineItems)]="selectedOrderLines" [(orderFees)]="selectedOrderFees" [(orderPayments)]="selectedPayments"
+                  [(orderTasks)]="selectedTasks" ></app-order-detail>
               </dx-scroll-view>
             </mat-tab>
             <mat-tab label="Art">
@@ -93,7 +95,7 @@
             </mat-tab>
             <mat-tab label="History/Comments">
               <dx-scroll-view style="height: 100%; width: 100%">
-                <app-order-notes-history [currentOrder]="selectedOrder"></app-order-notes-history>
+                <app-order-notes-history [currentOrder]="selectedOrder" [(orderStatusHistory)]="selectedStatusHistory" [(orderNotes)]="selectedNotes"></app-order-notes-history>
               </dx-scroll-view>
             </mat-tab>
             <mat-tab label="Correspondence">

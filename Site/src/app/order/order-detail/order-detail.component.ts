@@ -21,11 +21,20 @@ import {
 })
 
 export class OrderDetailComponent implements OnInit {
+  @Input() customer: Customer;
   @Input() currentOrder: any;
-  customer: Customer;
+  @Input() orderArtPlacement: Array<OrderArtPlacement>;
+  @Input() orderFees: Array<OrderFee>;
+  @Input() orderPayments: Array<OrderPayment>;
+  @Input() orderTasks: any;
+  @Input() orderLineItems: any;
+
+  loading = false;
+
   lookupDataSource: Array<LookupItem>;
   priceListDataSource: Array<PriceListItem>;
 
+  order: any;
   itemTypes: Array<PriceListItem>;
   setupItems: Array<PriceListItem>;
   styleTypes: Array<LookupItem>;
@@ -36,12 +45,6 @@ export class OrderDetailComponent implements OnInit {
   userDataSource: any;
 
   editMode: boolean;
-
-  orderArtPlacement: Array<OrderArtPlacement>;
-  orderFees: Array<OrderFee>;
-  orderPayments: Array<OrderPayment>;
-  order: any;
-  orderTasks: any;
   nonTaxableSubTotal: string;
   userProfile;
 
@@ -77,11 +80,11 @@ export class OrderDetailComponent implements OnInit {
 
   noOrderItems() {
     // console.log('In orderHasItems', this.order);
-    if (this.order) {
-      if (this.order.order_detail) {
-        return this.order.order_detail.length === 0;
+    // if (this.order) {
+      if (this.orderLineItems) {
+        return this.orderLineItems.length === 0;
       }
-    }
+    // }
     return true;
   }
 
@@ -168,7 +171,7 @@ export class OrderDetailComponent implements OnInit {
 
   copyOrderLine(e, idx) {
     const orderLine = new OrderDetail();
-    Object.assign(orderLine, this.order.order_detail[idx]);
+    Object.assign(orderLine, this.order.order_detail[idx]);  // TODO:  Change to use orderLineItems
     // orderLine = this.order.order_detail[idx];
     orderLine.order_detail_id = (this.order.order_detail.length + 1) * -1;
     orderLine.garment_order_date = undefined;
@@ -186,7 +189,7 @@ export class OrderDetailComponent implements OnInit {
     // See if the item has been saved to the database. (non-negative id)
     // if it has not, then just remove it, otherwise, we need to call the web service
     // to delete the item from the database first.
-    const index = this.order.order_detail.findIndex(x => x.order_detail_id === e.order_detail_id);
+    const index = this.order.order_detail.findIndex(x => x.order_detail_id === e.order_detail_id); // TODO:  Change to use orderLineItems
     // console.log('Del Line Item', index);
     if (index >= 0) {
       if (e.order_detail_id > 0) {
@@ -349,7 +352,7 @@ export class OrderDetailComponent implements OnInit {
     let nonTaxSubTotal = 0;
     // console.log('order Details', this.order.order_detail);
     // Total order Line Items
-    for (let x = 0; x < this.order.order_detail.length; x++) {
+    for (let x = 0; x < this.order.order_detail.length; x++) {  // TODO:  Change to use orderLineItems
       if (this.order.order_detail[x].taxable_ind === 'Y') {
         subTotal = subTotal + +this.order.order_detail[x].item_price_ext;
       } else {
@@ -536,6 +539,7 @@ export class OrderDetailComponent implements OnInit {
 
   ngOnInit() {
 
+    this.loading = true;
     this.lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.sizeTypes = this.createLookupTypeSource('ssiz');
@@ -559,8 +563,9 @@ export class OrderDetailComponent implements OnInit {
     });
     this.editMode = this.currentOrder.order_id !== 0;
     // console.log('Current Order', this.currentOrder);
-    if (this.currentOrder.order_id !== 0) {
+    /* if (this.currentOrder.order_id !== 0) {
       if (this.currentOrder.customer_id > 0) {
+        console.log('order-detail:ngOnInit Calling getCustomerData');
         this.customerService.getCustomerData(this.userProfile.login_id, this.currentOrder.customer_id).subscribe(res => {
           this.customer = res;
           // console.log('pulled Customer', this.orderCustomer);
@@ -581,6 +586,7 @@ export class OrderDetailComponent implements OnInit {
       });
       this.orderService.loadOrderPaymentData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
         this.orderPayments = res.order_payments;
+        this.loading = false;
         // console.log('pulled Payment Data', this.orderPayments);
       });
     } else {
@@ -589,16 +595,19 @@ export class OrderDetailComponent implements OnInit {
       this.orderArtPlacement = new Array<OrderArtPlacement>();
       this.orderFees = new Array<OrderFee>();
       this.orderPayments = new Array<OrderPayment>();
-    }
+      this.loading = false;
+    } */
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
     // console.log('order-detail-component currentOrder', this.currentOrder);
+    this.loading = true;
     this.editMode = this.currentOrder.order_id !== 0;
     // console.log('Current Order', this.currentOrder);
-    if (this.currentOrder.order_id !== 0) {
+    /* if (this.currentOrder.order_id !== 0) {
       if (this.currentOrder.customer_id > 0) {
+        console.log('order-detail:ngOnChanges Calling getCustomerData');
         this.customerService.getCustomerData(this.userProfile.login_id, this.currentOrder.customer_id).subscribe(res => {
           this.customer = res;
           // console.log('pulled Customer', this.orderCustomer);
@@ -619,6 +628,7 @@ export class OrderDetailComponent implements OnInit {
       });
       this.orderService.loadOrderPaymentData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
         this.orderPayments = res.order_payments;
+        this.loading = false;
         // console.log('pulled Payment Data', this.orderPayments);
       });
     } else {
@@ -627,7 +637,8 @@ export class OrderDetailComponent implements OnInit {
       this.orderArtPlacement = new Array<OrderArtPlacement>();
       this.orderFees = new Array<OrderFee>();
       this.orderPayments = new Array<OrderPayment>();
-    }
+      this.loading = false;
+    } */
   }
   formatOrderNumber(today): string {
     console.log('formatOrderNumber - today', today);

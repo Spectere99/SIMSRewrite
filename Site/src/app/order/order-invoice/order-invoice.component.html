@@ -1,7 +1,6 @@
-<div class="container col-md-12 pt-4">
+<!-- <div class="container col-md-12 pt-4">
   <section>
     <div class="col-lg-12">
-      <!-- <input class="form-control btn-primary" type="button" (click)="convert()"> -->
       <div class="row">
         <div class="col-lg-7">
           <div id="invoiceContent" #inoviceContent style="background-color:white;">
@@ -180,7 +179,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <!--foreachrow table="ORDER_DETAIL"-->
+                      <!--foreachrow table="ORDER_DETAIL"
                       <tr *ngFor="let lineItem of order.order_detail">
                         <td colspan="3">{{getItemDescription(lineItem.pricelist_id)}}</td>
                         <td>{{lineItem.product_code}}</td>
@@ -206,15 +205,15 @@
                         <td align="right">{{lineItem.item_price_ext}}</td>
                         <td align="right">
 
-                          <!--includeif function="IS_TAXABLE"-->
+                          <!--includeif function="IS_TAXABLE"
                           <img src="assets\checkmark.png" />
-                          <!--endincludeif-->
+                          <!--endincludeif
 
                         </td>
                       </tr>
-                      <!--endforeachrow-->
+                      <!--endforeachrow
                       <tr>Fees</tr>
-                      <!--foreachrow table="ORDER_FEES"-->
+                      <!--foreachrow table="ORDER_FEES"
                       <tr *ngFor="let orderFee of orderFees">
                         <td colspan="5">{{getFeeDescription(orderFee.pricelist_id)}}</td>
                         <td colspan="16"></td>
@@ -223,13 +222,13 @@
                         <td align="right">{{orderFee.fee_price_ext}}</td>
                         <td align="right">
 
-                          <!--includeif function="IS_TAXABLE_FEE"-->
+                          <!--includeif function="IS_TAXABLE_FEE"
                           <img src="assets\checkmark.png" />
-                          <!--endincludeif-->
+                          <!--endincludeif
 
                         </td>
                       </tr>
-                      <!--endforeachrow-->
+                      <!--endforeachrow
                     </tbody>
                   </table>
                   <table border="0" cellspacing="0" width="100%">
@@ -242,39 +241,39 @@
                             <th>Colors</th>
                             <th>Note</th>
                           </tr>
-                          <!--foreachrow table="ORDER_ART_PLACEMENT"-->
+                          <!--foreachrow table="ORDER_ART_PLACEMENT"
                           <tr *ngFor="let placement of orderArtPlacement">
                             <td>{{getLookupDescription(placement.art_placement_code)}}</td>
                             <td>{{placement.colors}}</td>
                             <td>{{placement.notes}}</td>
                           </tr>
-                          <!--endforeachrow-->
+                          <!--endforeachrow
                           <tr>Art File</tr>
                           <tr>
                             <th>Image File</th>
                             <th>Art Folder</th>
                             <th>Note</th>
                           </tr>
-                          <!--foreachrow table="ORDER_ART_FILE"-->
+                          <!--foreachrow table="ORDER_ART_FILE"
                           <tr *ngFor="let artFile of orderArtFile">
                             <td>{{artFile.image_file}}</td>
                             <td>{{artFile.art_folder}}</td>
                             <td>{{artFile.note}}</td>
                           </tr>
-                          <!--endforeachrow-->
+                          <!--endforeachrow
                           <tr>Payments</tr>
                           <tr>
                             <th>Amount</th>
                             <th>Type</th>
                             <th>Date</th>
                           </tr>
-                          <!--foreachrow table="ORDER_PAYMENTS"-->
+                          <!--foreachrow table="ORDER_PAYMENTS"
                           <tr *ngFor="let payment of orderPayments">
                             <td>{{payment.payment_amount}}</td>
                             <td>{{getLookupDescription(payment.payment_type_code)}}</td>
                             <td>{{payment.payment_date | date: 'MM/dd/yyyy'}}</td>
                           </tr>
-                          <!--endforeachrow-->
+                          <!--endforeachrow
                         </table>
                       </td>
                       <td width="30%" border="0">
@@ -349,8 +348,10 @@
       </div>
     </div>
   </section>
+</div> -->
+<div class="col-md-4">
+  <button id="create" class="form-control btn-primary" type="button" style="font-size:10px;"  (click)="generateInvoice()">Save/Print</button>
 </div>
-
-<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: window }" message="Rendering Invoice..." [(visible)]="loading"
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: window }" message="Loading..." [(visible)]="loading"
   [showIndicator]="true" [showPane]="true" [shading]="true" [closeOnOutsideClick]="false">
 </dx-load-panel>

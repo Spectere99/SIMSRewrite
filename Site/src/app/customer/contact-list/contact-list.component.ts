@@ -177,6 +177,7 @@ export class ContactListComponent implements OnInit {
   }
 
   showEditPopup(e) {
+    console.log('contact-list:showEditPopup Calling getCustomerData');
     this.customerService.getCustomerData('', e.data.customers.customer_id).subscribe(res => {
       this.selectedCustomer = res;
       console.log('contact-list:showEditPopup', this.selectedCustomer);

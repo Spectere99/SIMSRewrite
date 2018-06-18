@@ -205,10 +205,48 @@ userProfile;
     console.log('PaymentLineLocation', paymentLineLocation);
     this.buildTotalSummaryHeader(doc, 250);
     this.buildTotalSummary(doc, 250);
+
+    this.buildInvoiceMessage(doc);
+
     // doc.addImage(logoData, 'JPEG', 10, 10, 241, 171, 200, 100);
-    doc.save('invoice.pdf');
+    // doc.save('invoice.pdf');
+    const pdfString = doc.output('datauristring');
+      const newCorr = new Correspondence();
+      newCorr.corr_filename = '';
+      newCorr.order_id = this.currentOrder.order_id;
+      newCorr.customer_id = this.currentOrder.customer_id;
+      newCorr.file_stream = pdfString;
+      newCorr.corr_type = 'invoi';
+      newCorr.corr_disp = 'local';
+      newCorr.user_id = this.userProfile.profile.user_id;
+      newCorr.corr_date = new Date().toISOString();
+
+      this.correspondenceService.addCorrespondence(this.userProfile.profile.login_id, newCorr).subscribe(res => {
+        const newWindow = window.open(this.defaultDocFolder + res);
+        this.correspondenceService.getCorrespondenceData('', this.currentOrder.order_id).subscribe(res2 => {
+          // this.orderCorrespondence = res2.correspondences;
+          this.onSave.emit({
+            correspondence: newCorr
+          });
+          this.loading = false;
+        });
+      });
   }
 
+  private buildInvoiceMessage(doc) {
+    doc.setFontSize(8);
+    doc.setFontType('bold');
+    doc.text(105, 285, 'Thank you for your order! We appreciate your business', 'center');
+    doc.setFontSize(8);
+    doc.setFontType('bolditalic');
+    doc.text(105, 288, 'A 50% deposit is required to initiate all orders. Balance is due upon shipment of order', 'center');
+    doc.setFontSize(6);
+    doc.setFontType('normal');
+    let disclaimer = 'All artwork and custom designs are for the use only of the individual or organization paying for the designs.';
+    disclaimer = disclaimer.concat(' The "screens" remain the property of Southpaw Screen Printing.');
+    doc.text(105, 291, disclaimer, 'center');
+
+  }
   private buildInvoiceBoxes(doc) {
     // Setting up top header information
     doc.rect(105, 21, 100, 65);
@@ -219,7 +257,7 @@ userProfile;
     doc.rect(105, 71, 100, 5); // OrderDate
     doc.rect(105, 76, 100, 5); // DueDate
 
-    doc.rect(5, 90, 200, 200); // Invoice details
+    doc.rect(5, 90, 200, 192); // Invoice details
 
     doc.setFillColor(185, 215, 255);
     doc.rect(5, 96, 200, 5, 'FD'); // Invoice Line Header
@@ -477,7 +515,7 @@ userProfile;
     doc.setFontSize(8);
     doc.setFontType('normal');
 
-    doc.text(20, lineLocation, this.cp.transform(payment.payment_amount, 'USD', true), 'right');
+    doc.text(20, lineLocation, this.cp.transform(payment.payment_amount, 'USD', 'symbol'), 'right');
 
     doc.text(45, lineLocation, payment.payment_type_code === null ? '' : this.getLookupDescription(payment.payment_type_code));
     doc.text(70, lineLocation, payment.payment_date === null ? '' : new Date(payment.payment_date).toLocaleDateString());
@@ -490,21 +528,21 @@ userProfile;
     doc.setFontSize(10);
     doc.setFontType('normal');
     doc.text(195, lineLocation, '$' + this.currentOrder.subtotal === null ? '-' :
-                    this.cp.transform(this.currentOrder.subtotal.toString(), 'USD', true), 'right');
+                    this.cp.transform(this.currentOrder.subtotal.toString(), 'USD', 'symbol'), 'right');
     doc.text(195, lineLocation + 5, this.currentOrder.tax_rate === null ? '-' :
                     this.currentOrder.tax_rate.toString() + '%', 'right');
     doc.text(195, lineLocation + 10, '$' + this.currentOrder.tax_amount === null ? '-' :
-                  this.cp.transform(this.currentOrder.tax_amount.toString(), 'USD', true), 'right');
+                  this.cp.transform(this.currentOrder.tax_amount.toString(), 'USD', 'symbol'), 'right');
     doc.text(195, lineLocation + 15, '$' + this.currentOrder.shipping === null ? '-' :
-                  this.cp.transform(this.currentOrder.shipping.toString(), 'USD', true), 'right');
+                  this.cp.transform(this.currentOrder.shipping.toString(), 'USD', 'symbol'), 'right');
     doc.text(195, lineLocation + 20, '$' + this.currentOrder.total === null ? '-' :
-                  this.cp.transform(this.currentOrder.total.toString(), 'USD', true), 'right');
+                  this.cp.transform(this.currentOrder.total.toString(), 'USD', 'symbol'), 'right');
     doc.text(195, lineLocation + 25, '$' + this.currentOrder.payments === null ? '-' :
-                  this.cp.transform(this.currentOrder.payments.toString(), 'USD', true), 'right');
+                  this.cp.transform(this.currentOrder.payments.toString(), 'USD', 'symbol'), 'right');
 
     doc.setFontType('bold');
     doc.text(195, lineLocation + 30, '$' + this.currentOrder.balance_due === null ? '' :
-                  this.cp.transform(this.currentOrder.balance_due.toString(), 'USD', true), 'right');
+                  this.cp.transform(this.currentOrder.balance_due.toString(), 'USD', 'symbol'), 'right');
   }
 
   convert() {
@@ -652,7 +690,7 @@ userProfile;
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    // console.log('Current Order', this.currentOrder);
+    console.log('Current Order', this.currentOrder);
     if (this.currentOrder.order_id !== 0) {
       this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
         this.order = res;

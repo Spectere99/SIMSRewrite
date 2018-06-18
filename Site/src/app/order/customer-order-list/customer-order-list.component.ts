@@ -6,6 +6,7 @@ import { LookupService } from '../../_services/lookups.service';
 import { UserService } from '../../_services/user.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement, OrderFee } from '../../_services/order.service';
+import { CorrespondenceService } from '../../_services/correspondence.service';
 import { OrderInfoComponent } from '../order-info/order-info.component';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { OrderArtComponent } from '../order-art/order-art.component';
@@ -14,12 +15,14 @@ import { OrderSummaryComponent } from '../order-summary/order-summary.component'
 import { OrderNotesHistoryComponent } from '../order-notes-history/order-notes-history.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar } from '@angular/material';
+import { Observable } from 'rxjs/Observable';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 
 @Component({
   selector: 'app-customer-order-list',
   templateUrl: './customer-order-list.component.html',
   styleUrls: ['./customer-order-list.component.scss'],
-  providers: [OrderService]
+  providers: [OrderService, CorrespondenceService]
 })
 export class CustomerOrderListComponent implements OnInit {
   @Input() customer;
@@ -31,6 +34,19 @@ export class CustomerOrderListComponent implements OnInit {
   @ViewChild(OrderSummaryComponent) orderSummary: OrderSummaryComponent;
   @ViewChild(OrderNotesHistoryComponent) orderNotesHistory: OrderNotesHistoryComponent;
 
+  /* Data Strutures for Orders */
+  selectedOrder: any;
+  selectedTasks: any;
+  selectedOrderLines: any;
+  selectedArtPlacements: any;
+  selectedFees: any;
+  selectedPayments: any;
+  selectedCorrespondence: any;
+  selectedOrderFees: any;
+  selectedArtFiles: any;
+  selectedNotes: any;
+  selectedStatusHistory: any;
+
   baseUrl = environment.odataEndpoint;
   defaultArtFolder = environment.defaultArtFolder;
   dataSource: any;
@@ -39,17 +55,17 @@ export class CustomerOrderListComponent implements OnInit {
   order_statusSource: any;
   order_typeSource: any;
   user_Source: any;
-  selectedOrder: any;
+
   lookupDataSource: any;
   customerId: number;
   enableSave = false;
   userProfile;
   leaveWindowOpen: true;
-
-  private loading = false;
+  loading: false;
 
   constructor(private http: Http, public orderService: OrderService, lookupService: LookupService,
-    userService: UserService, public snackBar: MatSnackBar, authService: AuthenticationService) {
+    userService: UserService, public snackBar: MatSnackBar, public correspondenceService: CorrespondenceService,
+    authService: AuthenticationService) {
     // Pull User Role to set activities
     this.userProfile = JSON.parse(authService.getUserToken());
     this.enableSave = this.userProfile.profile.role !== 'Readonly';
@@ -72,7 +88,15 @@ export class CustomerOrderListComponent implements OnInit {
     this.dataSource = {
       store: {
         type: 'odata',
-        url: this.baseUrl + 'orders'
+        url: this.baseUrl + 'orders',
+        beforeSend:  function (url, async, method, timeout, params, payload, headers) {
+          // console.log('customer-order-list:beforeSend', url, async, method, timeout, params, payload, headers);
+          // this.loading = true;
+        },
+        onLoaded: function() {
+          // console.log('customer-order-list:onLoaded', this);
+          // this.loading = false;
+        }
       },
       expand: ['order_art_file', 'customer', 'order_detail'],
       select: [
@@ -138,11 +162,9 @@ export class CustomerOrderListComponent implements OnInit {
   createStatusDataSource() {
     this.order_statusSource = this.lookupDataSource.filter(item => item.class === 'ord');
   }
-
   createOrderTypeDataSource() {
     this.order_typeSource = this.lookupDataSource.filter(item => item.class === 'otyps');
   }
-
   createNewOrder(customer_id) {
     // console.log('Creating Order!!!', customer_id);
     this.selectedOrder = new Order();
@@ -228,6 +250,7 @@ export class CustomerOrderListComponent implements OnInit {
     this.selectedOrder.contact_phone2_ext = this.customer.customer_person[0].phone_2_ext;
     this.selectedOrder.contact_phone2_type = this.customer.customer_person[0].phone_2_type;
   }
+
   setOrderBillAndShipAddresses() {
     // Get the Billing Address if available
     // console.log('setBillingAndShipmentAddress', this.customer);
@@ -509,10 +532,32 @@ export class CustomerOrderListComponent implements OnInit {
     // e.cancel = true;
     // console.log('E', e);
     this.selectedOrder = e.data;
+    forkJoin(
+      this.orderService.loadOrderData('', this.selectedOrder.order_id), // 0
+      this.orderService.loadArtPlacementData('', this.selectedOrder.order_id), // 1
+      this.orderService.loadOrderFeeData('', this.selectedOrder.order_id), // 2
+      this.orderService.loadOrderPaymentData('', this.selectedOrder.order_id), // 3
+      this.orderService.loadOrderArtFileData('', this.selectedOrder.order_id), // 4
+      this.orderService.loadOrderNotesData('', this.selectedOrder.order_id), // 5
+      this.orderService.loadOrderStatusHistoryData('', this.selectedOrder.order_id), // 6
+      this.orderService.loadOrderTaskData('', this.selectedOrder.order_id), // 7
+      this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 8
+    ).subscribe(results => {
+      console.log('selectedOrder', this.selectedOrder);
+      console.log('forkJoin Return', results);
+      this.selectedOrderLines = results[0].order_detail;
+      this.selectedArtPlacements = results[1].order_art_placement;
+      this.selectedOrderFees = results[2].order_fees;
+      this.selectedPayments = results[3].order_payments;
+      this.selectedArtFiles = results[4].order_art_file;
+      this.selectedNotes = results[5].order_notes;
+      this.selectedStatusHistory = results[6].order_status_history;
+      this.selectedTasks = results[7].order_task;
+      this.selectedCorrespondence = results[8].correspondences;
+      this.popupVisible = true;
+    });
     // console.log('Selected Order', this.selectedOrder);
     // alert('Editing!');
-
-    this.popupVisible = true;
   }
 
   closeEditor() {

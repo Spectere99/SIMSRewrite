@@ -15,7 +15,7 @@
       <div *ngIf="noOrderItems()">
         <div class="alert alert-warning">No line items.</div>
       </div>
-      <div *ngFor="let orderDetail of order.order_detail; index as i">
+      <div *ngFor="let orderDetail of orderLineItems; index as i">
         <mat-card>
           <table>
             <tr>
@@ -407,3 +407,15 @@
     </div>
   </section>
 </div>
+
+<dx-load-panel
+    #loadPanel
+    shadingColor="rgba(0,0,0,0.4)"
+    [position]="{ of: window }"
+    message="Loading..."
+    [(visible)]="loading"
+    [showIndicator]="true"
+    [showPane]="true"
+    [shading]="true"
+    [closeOnOutsideClick]="false">
+</dx-load-panel>

@@ -128,6 +128,7 @@ export class TaskListComponent implements OnInit {
   showEditPopup(e) {
     // e.cancel = true;
     console.log('E', e);
+    console.log('task-list:showEditPopup Calling getCustomerData');
     this.customerService.getCustomerData('', e.data.order.customer_id).subscribe(res => {
       this.customer = res;
       // this.contactPersons = this.orderCustomer.customer_person;

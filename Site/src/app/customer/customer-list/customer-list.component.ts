@@ -215,6 +215,7 @@ export class CustomerListComponent implements OnInit {
     showEditPopup(e) {
       // e.cancel = true;
       console.log('E', e.data.customer_id);
+      console.log('customer-list:showEditPopup Calling getCustomerData');
       this.customerService.getCustomerData('', e.data.customer_id).subscribe(res => {
         this.selectedCustomer = res;
         this.selectedCustomer.customer_person = this.selectedCustomer.customer_person.filter(f => f.status_code === 'act');

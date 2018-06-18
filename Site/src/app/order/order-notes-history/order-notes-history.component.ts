@@ -15,10 +15,10 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
 })
 export class OrderNotesHistoryComponent implements OnInit {
   @Input() currentOrder: any;
+  @Input() orderStatusHistory: Array<OrderStatusHistory>;
+  @Input() orderNotes: Array<OrderNote>;
   lookupDataSource: Array<LookupItem>;
   statusTypes: Array<LookupItem>;
-  orderStatusHistory: Array<OrderStatusHistory>;
-  orderNotes: Array<OrderNote>;
   userDataSource: any;
 
   userProfile;
@@ -105,7 +105,7 @@ export class OrderNotesHistoryComponent implements OnInit {
   }
   ngOnInit() {
     // console.log('Order Status History List onInit', this.currentOrder);
-    if (this.currentOrder) {
+    /* if (this.currentOrder) {
       if (this.currentOrder.order_id > 0) {  // Existing Order.  Grab its status history for display
         this.orderService.loadOrderNotesData('rflowers', this.currentOrder.order_id)
           .subscribe(res => {
@@ -120,13 +120,13 @@ export class OrderNotesHistoryComponent implements OnInit {
             // console.log('Order Status History Pulled', res);
           });
       }
-    }
+    } */
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
     // console.log('Order Status History List onChange', this.currentOrder);
-    if (this.currentOrder) {
+    /* if (this.currentOrder) {
       if (this.currentOrder.order_id > 0) {  // Existing Order.  Grab its status history
         this.orderService.loadOrderNotesData('rflowers', this.currentOrder.order_id)
           .subscribe(res => {
@@ -143,7 +143,7 @@ export class OrderNotesHistoryComponent implements OnInit {
       } else {
         this.orderStatusHistory = new Array<OrderStatusHistory>();
       }
-    }
+    } */
   }
 
 }

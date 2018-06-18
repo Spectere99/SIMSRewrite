@@ -17,39 +17,39 @@ declare let jsPDF;
   providers: [OrderService, LookupService, PriceListService, CorrespondenceService]
 })
 export class OrderCorrespondenceComponent implements OnInit {
-@Input() currentOrder: any;
+  @Input() currentOrder: any;
 
-selectedOrder;
-private loading = false;
-popupVisible = false;
-lookupDataSource: Array<LookupItem>;
-priceListDataSource: Array<PriceListItem>;
-itemTypes: Array<PriceListItem>;
-setupItems: Array<PriceListItem>;
-styleTypes: Array<LookupItem>;
-sizeTypes: Array<LookupItem>;
-vendorTypes: Array<LookupItem>;
-artLocations: Array<LookupItem>;
-paymentSourceItems: Array<LookupItem>;
-orderCorrespondence: Array<Correspondence>;
-correspondenceTypes: Array<LookupItem>;
-correspondenceDisp: Array<LookupItem>;
-userDataSource: any;
+  selectedOrder;
+  private loading = false;
+  popupVisible = false;
+  lookupDataSource: Array<LookupItem>;
+  priceListDataSource: Array<PriceListItem>;
+  itemTypes: Array<PriceListItem>;
+  setupItems: Array<PriceListItem>;
+  styleTypes: Array<LookupItem>;
+  sizeTypes: Array<LookupItem>;
+  vendorTypes: Array<LookupItem>;
+  artLocations: Array<LookupItem>;
+  paymentSourceItems: Array<LookupItem>;
+  orderCorrespondence: Array<Correspondence>;
+  correspondenceTypes: Array<LookupItem>;
+  correspondenceDisp: Array<LookupItem>;
+  userDataSource: any;
 
 
-orderArtPlacement: Array<OrderArtPlacement>;
-orderFees: Array<OrderFee>;
-orderPayments: Array<OrderPayment>;
-orderArtFile: Array<OrderArtFile>;
-order: any;
-defaultDocFolder: string;
-userProfile;
+  orderArtPlacement: Array<OrderArtPlacement>;
+  orderFees: Array<OrderFee>;
+  orderPayments: Array<OrderPayment>;
+  orderArtFile: Array<OrderArtFile>;
+  order: any;
+  defaultDocFolder: string;
+  userProfile;
 
-enableSave = false;
+  enableSave = false;
 
   constructor(public orderService: OrderService, private lookupService: LookupService, private priceListService: PriceListService,
-              public correspondenceService: CorrespondenceService, private userService: UserService,
-              public authService: AuthenticationService) {
+    public correspondenceService: CorrespondenceService, private userService: UserService,
+    public authService: AuthenticationService) {
     this.userProfile = JSON.parse(authService.getUserToken());
     this.enableSave = this.userProfile.profile.role !== 'Readonly';
     this.defaultDocFolder = environment.defaultDocFolder;
@@ -81,7 +81,7 @@ enableSave = false;
       // console.log(this.userDataSource);
     });
   }
-  showInvoice () {
+  showInvoice() {
     this.selectedOrder = this.currentOrder;
     this.popupVisible = true;
     // this.saveInvoice();
@@ -173,7 +173,7 @@ enableSave = false;
     };
 
     const specialElementHandlers = {
-      '#editor': function(element, renderer) {
+      '#editor': function (element, renderer) {
         return true;
       }
     };
@@ -217,39 +217,46 @@ enableSave = false;
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    // console.log('Current Order', this.currentOrder);
-    if (this.currentOrder.order_id !== 0) {
-      this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
-        this.order = res;
-        // console.log('pulled order', this.order);
-      });
-      this.orderService.loadArtPlacementData('', this.currentOrder.order_id).subscribe(res => {
-        this.orderArtPlacement = res.order_art_placement;
-        // console.log('pulled Art Placement', this.orderArtPlacement);
-      });
-      this.orderService.loadOrderFeeData('', this.currentOrder.order_id).subscribe(res => {
-        this.orderFees = res.order_fees;
-        // console.log('pulled Order Fees', this.orderFees);
-      });
-      this.orderService.loadOrderPaymentData('', this.currentOrder.order_id).subscribe(res => {
-        this.orderPayments = res.order_payments;
-        // console.log('pulled Payment Data', this.orderPayments);
-      });
-      this.orderService.loadOrderArtFileData('', this.currentOrder.order_id).subscribe(res => {
-        this.orderArtFile = res.order_art_file;
-        // console.log('pulled ArtFile Data', this.orderArtFile);
-      });
-      this.correspondenceService.getCorrespondenceData('', this.currentOrder.order_id).subscribe(res => {
-        // console.log('correspondenceData return', res);
-        this.orderCorrespondence = res.correspondences;
-        // console.log('pulled Correspondence Data', this.orderCorrespondence);
-      });
-    } else {
-      /// this.currentOrder = new Order();
-      this.order.order_detail = new Array<OrderDetail>();
-      this.orderArtPlacement = new Array<OrderArtPlacement>();
-      this.orderFees = new Array<OrderFee>();
-      this.orderPayments = new Array<OrderPayment>();
-    }
+    this.loading = true;
+    /* if (this.currentOrder) {
+      // console.log('Current Order', this.currentOrder);
+      if (this.currentOrder.order_id !== 0) {
+        this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
+          this.order = res;
+          // console.log('pulled order', this.order);
+        });
+        this.orderService.loadArtPlacementData('', this.currentOrder.order_id).subscribe(res => {
+          this.orderArtPlacement = res.order_art_placement;
+          // console.log('pulled Art Placement', this.orderArtPlacement);
+        });
+        this.orderService.loadOrderFeeData('', this.currentOrder.order_id).subscribe(res => {
+          this.orderFees = res.order_fees;
+          // console.log('pulled Order Fees', this.orderFees);
+        });
+        this.orderService.loadOrderPaymentData('', this.currentOrder.order_id).subscribe(res => {
+          this.orderPayments = res.order_payments;
+          // console.log('pulled Payment Data', this.orderPayments);
+        });
+        this.orderService.loadOrderArtFileData('', this.currentOrder.order_id).subscribe(res => {
+          this.orderArtFile = res.order_art_file;
+          // console.log('pulled ArtFile Data', this.orderArtFile);
+        });
+        console.log('getting Correspondence Data');
+        this.correspondenceService.getCorrespondenceData('', this.currentOrder.order_id).subscribe(res => {
+          console.log('correspondenceData return', res);
+          this.orderCorrespondence = res.correspondences;
+          this.loading = false;
+          // console.log('pulled Correspondence Data', this.orderCorrespondence);
+        });
+      } else {
+        /// this.currentOrder = new Order();
+        this.order.order_detail = new Array<OrderDetail>();
+        this.orderArtPlacement = new Array<OrderArtPlacement>();
+        this.orderFees = new Array<OrderFee>();
+        this.orderPayments = new Array<OrderPayment>();
+        this.loading = false;
+      }
+      this.selectedOrder = this.currentOrder;
+    } */
   }
 }

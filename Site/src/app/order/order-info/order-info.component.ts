@@ -216,6 +216,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     // this.editMode = this.currentOrder !== undefined;
     this.newMode = this.currentOrder.order_id === 0;
     if (this.currentOrder) {
+      console.log('order-info:ngOnInit Calling getCustomerData');
       this.customerService.getCustomerData('', this.currentOrder.customer_id).subscribe(res => {
         this.orderCustomer = res;
         this.contactPersons = this.orderCustomer.customer_person;
@@ -232,6 +233,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     this.newMode = this.currentOrder.order_id === 0;
     this.orderStatusChanged = this.newMode;
     if (this.currentOrder.customer_id !== 0) {
+      console.log('order-info:ngOnChanges Calling getCustomerData');
       this.customerService.getCustomerData('', this.currentOrder.customer_id).subscribe(res => {
         this.orderCustomer = res;
         this.contactPersons = this.orderCustomer.customer_person;
