@@ -70,27 +70,30 @@
               <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showOrderSummary(selectedOrder)">Order Summary</button>
             </div>
           </div>
-          <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%;">
+          <div *ngIf="loadingOrder">
+            <h5>Loading Order</h5>
+          </div>
+          <mat-tab-group *ngIf="!loadingOrder" [dynamicHeight]="false" style="height: 90%; width: 100%;">
             <mat-tab label="Info">
               <dx-scroll-view style="height: 100%; width: 100%">
-                <app-order-info [(currentOrder)]="selectedOrder" [taskList]="taskListComp"></app-order-info>
+                <app-order-info [(currentOrder)]="selectedOrder" [(customer)]="customer" [taskList]="taskListComp"></app-order-info>
               </dx-scroll-view>
             </mat-tab>
             <mat-tab label="Tasks">
               <dx-scroll-view style="height: 100%; width: 100%">
-                <app-order-task-list [currentOrder]="selectedOrder" #taskListComp></app-order-task-list>
+                <app-order-task-list [(masterOrder)]="selectedOrderMaster" #taskListComp></app-order-task-list>
               </dx-scroll-view>
             </mat-tab>
             <mat-tab label="Details">
               <dx-scroll-view style="height: 100%; width: 100%">
-                <app-order-detail [(customer)]="customer" [(currentOrder)]="selectedOrder" [(orderArtPlacement)]="selectedArtPlacements" 
+                <app-order-detail [(customer)]="customer" [(masterOrder)]="selectedOrderMaster" [(currentOrder)]="selectedOrder" [(orderArtPlacement)]="selectedArtPlacements" 
                   [(orderLineItems)]="selectedOrderLines" [(orderFees)]="selectedOrderFees" [(orderPayments)]="selectedPayments"
                   [(orderTasks)]="selectedTasks" ></app-order-detail>
               </dx-scroll-view>
             </mat-tab>
             <mat-tab label="Art">
               <dx-scroll-view style="height: 100%; width: 100%">
-                <app-order-art [(currentOrder)]="selectedOrder"></app-order-art>
+                <app-order-art [(masterOrder)]="selectedOrderMaster"></app-order-art>
               </dx-scroll-view>
             </mat-tab>
             <mat-tab label="History/Comments">
@@ -100,11 +103,11 @@
             </mat-tab>
             <mat-tab label="Correspondence">
               <dx-scroll-view style="height: 100%; width: 100%">
-                <app-order-correspondence [currentOrder]="selectedOrder"></app-order-correspondence>
+                <app-order-correspondence [(masterOrder)]="selectedOrderMaster"></app-order-correspondence>
               </dx-scroll-view>
             </mat-tab>
           </mat-tab-group>
-          <div class="col-md-12">
+          <div *ngIf="!loadingOrder" class="col-md-12">
             <div class="col-md-2 float-right">
               <input type="checkbox" id="chkLeaveWindowOpen" name="chkLeaveWindowOpen" [checked]="leaveWindowOpen" (change)="leaveWindowOpen=!leaveWindowOpen">
               <label for="chkLeaveWindowOpen" style="font-size: 10px;">Leave Open</label>

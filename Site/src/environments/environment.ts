@@ -32,6 +32,6 @@ export const environment = {
   defaultArtFolder: baseUrl + '/orderimage/',
 
   // defaultDocFolder: 'http://localhost:8888/'
-  defaultDocFolder: baseUrl + '/pdf/'
+  defaultDocFolder: baseUrl + '/'
 
 };

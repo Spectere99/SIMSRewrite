@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
 import { Injectable } from '@angular/core';
@@ -61,6 +61,10 @@ import { TaskListComponent } from './task/task-list/task-list.component';
 import { OrderCorrespondenceComponent } from './order/order-correspondence/order-correspondence.component';
 import { ContactInfoComponent } from './customer/contact-info/contact-info.component';
 import { ContactAddressComponent } from './customer/contact-address/contact-address.component';
+import { GlobalDataProvider } from './_providers/global-data.provider';
+import { LookupService } from './_services/lookups.service';
+import { PriceListService } from './_services/pricelist.service';
+import { UserService } from './_services/user.service';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -137,8 +141,15 @@ import { ContactAddressComponent } from './customer/contact-address/contact-addr
     MatChipsModule,
     MatTabsModule
     ],
-  providers: [DatePipe, ArraySortPipe, UpperCasePipe, AuthenticationService, AuthGuard],
+  providers: [DatePipe, ArraySortPipe, UpperCasePipe, AuthenticationService, AuthGuard,
+              LookupService, PriceListService, UserService, GlobalDataProvider,
+              { provide: APP_INITIALIZER, useFactory: globalDataProviderFactory, deps:
+                [GlobalDataProvider], multi: true}],
   entryComponents: [ConfirmDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function globalDataProviderFactory(provider: GlobalDataProvider) {
+  return () => provider.load();
+}

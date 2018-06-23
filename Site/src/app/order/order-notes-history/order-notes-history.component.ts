@@ -1,4 +1,5 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { OrderService, OrderTask, OrderStatusHistory, OrderNote } from '../../_services/order.service';
 import { UserService } from '../../_services/user.service';
@@ -23,11 +24,14 @@ export class OrderNotesHistoryComponent implements OnInit {
 
   userProfile;
 
-  constructor(private lookupService: LookupService, public orderService: OrderService,
-              private userService: UserService, public authService: AuthenticationService, public snackBar: MatSnackBar) {
+  constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, public authService: AuthenticationService,
+              public snackBar: MatSnackBar) {
     this.userProfile = JSON.parse(authService.getUserToken());
+    this.lookupDataSource = globalDataProvider.getLookups();
+    this.statusTypes = this.createLookupTypeSource('ord');
+    this.userDataSource = globalDataProvider.getUsers();
     // console.log('order Task List Constructor');
-    lookupService.loadLookupData('').subscribe(res => {
+/*     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.statusTypes = this.createLookupTypeSource('ord');
       // console.log('StatusTypes', this.statusTypes);
@@ -35,7 +39,7 @@ export class OrderNotesHistoryComponent implements OnInit {
     userService.getUsers('').subscribe(res => {
       this.userDataSource = res.value;
       // console.log(this.userDataSource);
-    });
+    }); */
   }
 
   createLookupTypeSource(className: string): any {

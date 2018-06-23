@@ -1,6 +1,9 @@
 import { Component, OnInit, OnChanges, Input, Output, EventEmitter } from '@angular/core';
+import { CurrencyPipe } from '@angular/common';
 import { environment } from '../../../environments/environment';
-import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee, OrderPayment, OrderArtFile } from '../../_services/order.service';
+import { GlobalDataProvider } from '../../_providers/global-data.provider';
+import { OrderService, Order, OrderDetail, OrderArtPlacement,
+        OrderFee, OrderPayment, OrderArtFile, OrderMaster } from '../../_services/order.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { CorrespondenceService, Correspondence } from '../../_services/correspondence.service';
 import { UserService } from '../../_services/user.service';
@@ -13,46 +16,47 @@ declare let jsPDF;
 @Component({
   selector: 'app-order-invoice',
   templateUrl: './order-invoice.component.html',
- /*  template:
-    `<h1>JSON to PDF app</h1>
-    <div class="container" id="div1">
-        <button id="create" (click)="convert()">Create file</button>
-    </div>
-    `, */
+  /*  template:
+     `<h1>JSON to PDF app</h1>
+     <div class="container" id="div1">
+         <button id="create" (click)="convert()">Create file</button>
+     </div>
+     `, */
   styleUrls: ['./order-invoice.component.scss'],
-  providers: [OrderService, LookupService, PriceListService, CorrespondenceService]
+  providers: [OrderService, LookupService, PriceListService, CorrespondenceService, CurrencyPipe]
 })
 export class OrderInvoiceComponent implements OnInit {
-@Input() currentOrder: any;
-@Output() onSave = new EventEmitter<any>();
-private loading = false;
-lookupDataSource: Array<LookupItem>;
-priceListDataSource: Array<PriceListItem>;
-itemTypes: Array<PriceListItem>;
-setupItems: Array<PriceListItem>;
-styleTypes: Array<LookupItem>;
-sizeTypes: Array<LookupItem>;
-vendorTypes: Array<LookupItem>;
-artLocations: Array<LookupItem>;
-paymentSourceItems: Array<LookupItem>;
-orderCorrespondence: Array<Correspondence>;
-correspondenceTypes: Array<LookupItem>;
-correspondenceDisp: Array<LookupItem>;
-userDataSource: any;
+ // @Input() currentOrder: any;
+  @Input() masterOrder: OrderMaster;
+  @Output() onSave = new EventEmitter<any>();
+  private loading = false;
+  lookupDataSource: Array<LookupItem>;
+  priceListDataSource: Array<PriceListItem>;
+  itemTypes: Array<PriceListItem>;
+  setupItems: Array<PriceListItem>;
+  styleTypes: Array<LookupItem>;
+  sizeTypes: Array<LookupItem>;
+  vendorTypes: Array<LookupItem>;
+  artLocations: Array<LookupItem>;
+  paymentSourceItems: Array<LookupItem>;
+  orderCorrespondence: Array<Correspondence>;
+  correspondenceTypes: Array<LookupItem>;
+  correspondenceDisp: Array<LookupItem>;
+  userDataSource: any;
 
 
-orderArtPlacement: Array<OrderArtPlacement>;
-orderFees: Array<OrderFee>;
-orderPayments: Array<OrderPayment>;
-orderArtFile: Array<OrderArtFile>;
-order: any;
-defaultDocFolder: string;
-userProfile;
+  orderArtPlacement: Array<OrderArtPlacement>;
+  orderFees: Array<OrderFee>;
+  orderPayments: Array<OrderPayment>;
+  orderArtFile: Array<OrderArtFile>;
+  order: any;
+  defaultDocFolder: string;
+  userProfile;
 
 
-  constructor(public orderService: OrderService, private lookupService: LookupService, private priceListService: PriceListService,
-              public correspondenceService: CorrespondenceService, private userService: UserService,
-              public authService: AuthenticationService) {
+  constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, private priceListService: PriceListService,
+    public correspondenceService: CorrespondenceService,
+    public authService: AuthenticationService, public cp: CurrencyPipe) {
     this.userProfile = JSON.parse(authService.getUserToken());
     this.defaultDocFolder = environment.defaultDocFolder;
     this.order = new Order();
@@ -60,7 +64,15 @@ userProfile;
     this.orderArtPlacement = [];
     this.orderFees = [];
     this.orderPayments = [];
-    lookupService.loadLookupData('').subscribe(res => {
+    this.lookupDataSource = globalDataProvider.getLookups();
+    this.sizeTypes = this.createLookupTypeSource('ssiz');
+    this.styleTypes = this.createLookupTypeSource('sclas');
+    this.vendorTypes = this.createLookupTypeSource('vend');
+    this.artLocations = this.createLookupTypeSource('aloc');
+    this.paymentSourceItems = this.createLookupTypeSource('pms');
+    this.correspondenceTypes = this.createLookupTypeSource('cort');
+    this.correspondenceDisp = this.createLookupTypeSource('crdis');
+/*     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       // console.log('Lookup Data Source', this.lookupDataSource);
       this.sizeTypes = this.createLookupTypeSource('ssiz');
@@ -72,16 +84,20 @@ userProfile;
       this.correspondenceDisp = this.createLookupTypeSource('crdis');
       // console.log('correspendecne Types', this.correspondenceTypes);
       // console.log('correspendecne Disp', this.correspondenceDisp);
-    });
-    priceListService.loadPricelistData('').subscribe(res => {
+    }); */
+    this.priceListDataSource = globalDataProvider.getPriceList();
+    this.itemTypes = this.createItemTypeSource('orddi');
+    this.setupItems = this.createItemTypeSource('setup');
+    /* priceListService.loadPricelistData('').subscribe(res => {
       this.priceListDataSource = res.value;
       this.itemTypes = this.createItemTypeSource('orddi');
       this.setupItems = this.createItemTypeSource('setup');
-    });
-    userService.getUsers('').subscribe(res => {
+    }); */
+    this.userDataSource = globalDataProvider.getUsers();
+    /* userService.getUsers('').subscribe(res => {
       this.userDataSource = res.value;
       // console.log(this.userDataSource);
-    });
+    }); */
   }
 
   createLookupTypeSource(className: string): any {
@@ -148,8 +164,6 @@ userProfile;
     }
     return val;
   }
-
-<<<<<<< HEAD
   generateInvoice() {
 
     // tslint:disable-next-line:max-line-length
@@ -158,7 +172,7 @@ userProfile;
     const doc = new jsPDF();
     const lineLocation = 15;
     const lineOffset = 5;
-    console.log('Current Order', this.currentOrder);
+    console.log('Master Order', this.masterOrder);
     doc.addImage(logoData, 'JPEG', 15, 15, 60, 50);
 
     this.buildInvoiceBoxes(doc);
@@ -167,39 +181,49 @@ userProfile;
 
     console.log('Line Items', this.order.order_detail);
     let detailLineLocation = 105;
-    this.order.order_detail.forEach(lineItem => {
-      this.buildLineItem(doc, detailLineLocation, lineItem);
-      detailLineLocation = detailLineLocation + 5;
-    });
+    if (this.order.order_detail) {
+      this.order.order_detail.forEach(lineItem => {
+        this.buildLineItem(doc, detailLineLocation, lineItem);
+        detailLineLocation = detailLineLocation + 5;
+      });
+    }
 
     this.buildFeeItemHeader(doc, detailLineLocation, 8);
     console.log('Fee Item', this.orderFees);
     let feeLineLocation = detailLineLocation + 14;
-    this.orderFees.forEach(feeItem => {
-      this.buildFeeItem(doc, feeLineLocation, feeItem);
-      feeLineLocation = feeLineLocation + 5;
-    });
+    if (this.orderFees) {
+      this.orderFees.forEach(feeItem => {
+        this.buildFeeItem(doc, feeLineLocation, feeItem);
+        feeLineLocation = feeLineLocation + 5;
+      });
+    }
 
     this.buildArtInfoHeader(doc, feeLineLocation, 8);
     let artInfoLineLocation = feeLineLocation + 14;
-    this.orderArtPlacement.forEach(artPlcItem => {
-      this.buildArtInfoItem(doc, artInfoLineLocation, artPlcItem);
-      artInfoLineLocation = artInfoLineLocation + 5;
-    });
+    if (this.orderArtPlacement) {
+      this.orderArtPlacement.forEach(artPlcItem => {
+        this.buildArtInfoItem(doc, artInfoLineLocation, artPlcItem);
+        artInfoLineLocation = artInfoLineLocation + 5;
+      });
+    }
 
     this.buildArtFileHeader(doc, artInfoLineLocation, 8);
     let artFileLineLocation = artInfoLineLocation + 14;
-    this.orderArtFile.forEach(artFile => {
-      this.buildArtFileItem(doc, artFileLineLocation, artFile);
-      artFileLineLocation = artFileLineLocation + 5;
-    });
+    if (this.orderArtFile) {
+      this.orderArtFile.forEach(artFile => {
+        this.buildArtFileItem(doc, artFileLineLocation, artFile);
+        artFileLineLocation = artFileLineLocation + 5;
+      });
+    }
 
     this.buildPaymentsHeader(doc, 240, 8);
     let paymentLineLocation = 254;
-    this.orderPayments.forEach(payment => {
-      this.buildPaymentItem(doc, paymentLineLocation, payment);
-      paymentLineLocation = paymentLineLocation + 5;
-    });
+    if (this.orderPayments) {
+      this.orderPayments.forEach(payment => {
+        this.buildPaymentItem(doc, paymentLineLocation, payment);
+        paymentLineLocation = paymentLineLocation + 5;
+      });
+    }
     console.log('PaymentLineLocation', paymentLineLocation);
     this.buildTotalSummaryHeader(doc, 250);
     this.buildTotalSummary(doc, 250);
@@ -209,26 +233,26 @@ userProfile;
     // doc.addImage(logoData, 'JPEG', 10, 10, 241, 171, 200, 100);
     // doc.save('invoice.pdf');
     const pdfString = doc.output('datauristring');
-      const newCorr = new Correspondence();
-      newCorr.corr_filename = '';
-      newCorr.order_id = this.currentOrder.order_id;
-      newCorr.customer_id = this.currentOrder.customer_id;
-      newCorr.file_stream = pdfString;
-      newCorr.corr_type = 'invoi';
-      newCorr.corr_disp = 'local';
-      newCorr.user_id = this.userProfile.profile.user_id;
-      newCorr.corr_date = new Date().toISOString();
+    const newCorr = new Correspondence();
+    newCorr.corr_filename = '';
+    newCorr.order_id = this.masterOrder.order_id;
+    newCorr.customer_id = this.masterOrder.customer_id;
+    newCorr.file_stream = pdfString;
+    newCorr.corr_type = 'invoi';
+    newCorr.corr_disp = 'local';
+    newCorr.user_id = this.userProfile.profile.user_id;
+    newCorr.corr_date = new Date().toISOString();
 
-      this.correspondenceService.addCorrespondence(this.userProfile.profile.login_id, newCorr).subscribe(res => {
-        const newWindow = window.open(this.defaultDocFolder + res);
-        this.correspondenceService.getCorrespondenceData('', this.currentOrder.order_id).subscribe(res2 => {
-          // this.orderCorrespondence = res2.correspondences;
-          this.onSave.emit({
-            correspondence: newCorr
-          });
-          this.loading = false;
+    this.correspondenceService.addCorrespondence(this.userProfile.profile.login_id, newCorr).subscribe(res => {
+      const newWindow = window.open(this.defaultDocFolder + res);
+      this.correspondenceService.getCorrespondenceData('', this.masterOrder.order_id).subscribe(res2 => {
+        // this.orderCorrespondence = res2.correspondences;
+        this.onSave.emit({
+          correspondence: newCorr
         });
+        this.loading = false;
       });
+    });
   }
 
   private buildInvoiceMessage(doc) {
@@ -285,49 +309,51 @@ userProfile;
     doc.setFontSize(8);
     doc.setFontType('normal');
     lineLocation = 25;
-    doc.text(136, lineLocation, this.currentOrder.order_number );
+    doc.text(136, lineLocation, this.masterOrder.order_number);
     lineLocation = lineLocation + lineOffset;
     // Bill To information
-    doc.text(136, lineLocation, this.currentOrder.customer == null ? '' : this.currentOrder.customer.customer_name);
+    doc.text(136, lineLocation, this.masterOrder.customer == null ? '' : this.masterOrder.customer.customer_name);
     lineLocation = lineLocation + lineOffset;
-    if (this.currentOrder.BILL_ADDRESS_2 !== null && this.currentOrder.BILL_ADDRESS_1.length > 0) {
-      doc.text(136, lineLocation, this.currentOrder.BILL_ADDRESS_1 == null ? '' : this.currentOrder.BILL_ADDRESS_1);
+    if (this.masterOrder.BILL_ADDRESS_2 !== null && this.masterOrder.BILL_ADDRESS_1.length > 0) {
+      doc.text(136, lineLocation, this.masterOrder.BILL_ADDRESS_1 == null ? '' : this.masterOrder.BILL_ADDRESS_1);
     }
     lineLocation = lineLocation + lineOffset;
-    if (this.currentOrder.BILL_ADDRESS_2 !== null && this.currentOrder.BILL_ADDRESS_2.length > 0) {
-      doc.text(136, lineLocation, this.currentOrder.BILL_ADDRESS_2 == null ? '' : this.currentOrder.BILL_ADDRESS_2);
+    if (this.masterOrder.BILL_ADDRESS_2 !== null && this.masterOrder.BILL_ADDRESS_2.length > 0) {
+      doc.text(136, lineLocation, this.masterOrder.BILL_ADDRESS_2 == null ? '' : this.masterOrder.BILL_ADDRESS_2);
     }
     lineLocation = lineLocation + lineOffset;
-    let cityLine = this.currentOrder.BILL_CITY == null ? '' : this.currentOrder.BILL_CITY;
-    cityLine = cityLine.concat(' ', this.currentOrder.BILL_STATE == null ? '' : this.currentOrder.BILL_STATE);
-    cityLine = cityLine.concat(' ', this.currentOrder.BILL_ZIP == null ? '' : this.currentOrder.BILL_ZIP);
+    let cityLine = this.masterOrder.BILL_CITY == null ? '' : this.masterOrder.BILL_CITY;
+    cityLine = cityLine.concat(' ', this.masterOrder.BILL_STATE == null ? '' : this.masterOrder.BILL_STATE);
+    cityLine = cityLine.concat(' ', this.masterOrder.BILL_ZIP == null ? '' : this.masterOrder.BILL_ZIP);
     console.log('cityLine', cityLine);
     doc.text(136, lineLocation, cityLine);
     lineLocation = lineLocation + (lineOffset);
     // Ship to information
-    doc.text(136, lineLocation, this.currentOrder.customer == null ? '' : this.currentOrder.customer.customer_name);
+    doc.text(136, lineLocation, this.masterOrder.customer == null ? '' : this.masterOrder.customer.customer_name);
     lineLocation = lineLocation + lineOffset;
     const attnLine = 'Attn: ';
-    doc.text(136, lineLocation, attnLine.concat(this.currentOrder.customer == null ? '' : this.currentOrder.ship_attn));
+    doc.text(136, lineLocation, attnLine.concat(this.masterOrder.ship_attn == null ? '' : this.masterOrder.ship_attn));
     lineLocation = lineLocation + lineOffset;
-    doc.text(136, lineLocation, this.currentOrder.SHIP_ADDRESS_1 == null ? '' : this.currentOrder.SHIP_ADDRESS_1);
+    doc.text(136, lineLocation, this.masterOrder.SHIP_ADDRESS_1 == null ? '' : this.masterOrder.SHIP_ADDRESS_1);
     lineLocation = lineLocation + lineOffset;
-    if (this.currentOrder.SHIP_ADDRESS_2 !== null) {
-      doc.text(136, lineLocation, this.currentOrder.SHIP_ADDRESS_2 == null ? '' : this.currentOrder.SHIP_ADDRESS_2);
+    if (this.masterOrder.SHIP_ADDRESS_2 !== null) {
+      doc.text(136, lineLocation, this.masterOrder.SHIP_ADDRESS_2 == null ? '' : this.masterOrder.SHIP_ADDRESS_2);
       lineLocation = lineLocation + lineOffset;
     }
-    let cityLine2 = this.currentOrder.SHIP_CITY == null ? '' : this.currentOrder.SHIP_CITY;
-    cityLine2 = cityLine2.concat(' ', this.currentOrder.SHIP_STATE == null ? '' : this.currentOrder.SHIP_STATE);
-    cityLine2 = cityLine2.concat(' ', this.currentOrder.SHIP_ZIP == null ? '' : this.currentOrder.SHIP_ZIP);
+    let cityLine2 = this.masterOrder.SHIP_CITY == null ? '' : this.masterOrder.SHIP_CITY;
+    cityLine2 = cityLine2.concat(' ', this.masterOrder.SHIP_STATE == null ? '' : this.masterOrder.SHIP_STATE);
+    cityLine2 = cityLine2.concat(' ', this.masterOrder.SHIP_ZIP == null ? '' : this.masterOrder.SHIP_ZIP);
     console.log('cityLine2', cityLine2);
     doc.text(136, lineLocation, cityLine2);
     lineLocation = lineLocation + (lineOffset);
 
-    doc.text(136, lineLocation, this.currentOrder.order_date == null ? '' : this.currentOrder.order_date.toLocaleDateString());
+    doc.text(136, lineLocation, this.masterOrder.order_date == null ? ''
+                              : new Date(this.masterOrder.order_date).toLocaleDateString());
     lineLocation = lineLocation + lineOffset;
-    doc.text(136, lineLocation, this.currentOrder.order_due_date == null ? '' : this.currentOrder.order_due_date.toLocaleDateString());
+    doc.text(136, lineLocation, this.masterOrder.order_due_date == null ? ''
+                              : new Date(this.masterOrder.order_due_date).toLocaleDateString());
     lineLocation = lineLocation + lineOffset;
-    doc.text(136, lineLocation, this.currentOrder.purchase_order == null ? '' : this.currentOrder.purchase_order);
+    doc.text(136, lineLocation, this.masterOrder.purchase_order == null ? '' : this.masterOrder.purchase_order);
     lineLocation = lineLocation + lineOffset;
 
   }
@@ -450,10 +476,14 @@ userProfile;
     doc.text(8, lineLocation, this.getFeeDescription(feeItem.pricelist_id));
 
     doc.text(160, lineLocation, feeItem.fee_quantity === null ? '' : feeItem.fee_quantity.toString());
+    doc.rect(5, lineLocation - 4, 160, 5);
     doc.text(172, lineLocation, feeItem.fee_price_each === null ? '' : feeItem.fee_price_each.toString());
+    doc.rect(5, lineLocation - 4, 175, 5);
     doc.text(185, lineLocation, feeItem.fee_price_ext === null ? '' : feeItem.fee_price_ext.toString());
+    doc.rect(5, lineLocation - 4, 195, 5);
     doc.text(201, lineLocation, feeItem.taxable_ind);
 
+    doc.rect(5, lineLocation - 4, 200, 5);
     // doc.rect(5, lineLocation + 1, 200, 5);
   }
 
@@ -462,26 +492,43 @@ userProfile;
     doc.setFontType('normal');
 
     doc.text(8, lineLocation, this.getItemDescription(lineItem.pricelist_id));
+    doc.rect(5, lineLocation - 4, 39, 5);
     doc.text(45, lineLocation, lineItem.product_code === null ? '' : lineItem.product_code);
+    doc.rect(5, lineLocation - 4, 54, 5);
     doc.text(60, lineLocation, this.getStyleDescription(lineItem.style_code));
+    doc.rect(5, lineLocation - 4, 64, 5);
     doc.text(70, lineLocation, lineItem.color_code === null ? '' : lineItem.color_code.toString());
+    doc.rect(5, lineLocation - 4, 81, 5);
     doc.text(87, lineLocation, lineItem.xsmall_qty === null ? '' : lineItem.xsmall_qty.toString());
+    doc.rect(5, lineLocation - 4, 86, 5);
     doc.text(92, lineLocation, lineItem.small_qty === null ? '' : lineItem.small_qty.toString());
+    doc.rect(5, lineLocation - 4, 91, 5);
     doc.text(97, lineLocation, lineItem.med_qty === null ? '' : lineItem.med_qty.toString());
+    doc.rect(5, lineLocation - 4, 96, 5);
     doc.text(102, lineLocation, lineItem.large_qty === null ? '' : lineItem.large_qty.toString());
+    doc.rect(5, lineLocation - 4, 101, 5);
     doc.text(108, lineLocation, lineItem.xl_qty === null ? '' : lineItem.xl_qty.toString());
+    doc.rect(5, lineLocation - 4, 107, 5);
     doc.text(114, lineLocation, lineItem.C2xl_qty === null ? '' : lineItem.C2xl_qty.toString());
+    doc.rect(5, lineLocation - 4, 113, 5);
     doc.text(121, lineLocation, lineItem.C3xl_qty === null ? '' : lineItem.C3xl_qty.toString());
+    doc.rect(5, lineLocation - 4, 121, 5);
     doc.text(128, lineLocation, lineItem.C4xl_qty === null ? '' : lineItem.C4xl_qty.toString());
+    doc.rect(5, lineLocation - 4, 128, 5);
     doc.text(135, lineLocation, lineItem.C5xl_qty === null ? '' : lineItem.C5xl_qty.toString());
+    doc.rect(5, lineLocation - 4, 135, 5);
     doc.text(143, lineLocation, this.getSizeTypeDescription(lineItem.other1_type));
     doc.text(152, lineLocation, lineItem.other1_qty === null ? '' : lineItem.other1_qty.toString());
+    doc.rect(5, lineLocation - 4, 152, 5);
     doc.text(160, lineLocation, lineItem.item_quantity === null ? '' : lineItem.item_quantity.toString());
+    doc.rect(5, lineLocation - 4, 160, 5);
     doc.text(172, lineLocation, lineItem.item_price_each === null ? '' : lineItem.item_price_each.toString());
+    doc.rect(5, lineLocation - 4, 175, 5);
     doc.text(185, lineLocation, lineItem.item_price_ext === null ? '' : lineItem.item_price_ext.toString());
+    doc.rect(5, lineLocation - 4, 195, 5);
     doc.text(201, lineLocation, lineItem.taxable_ind);
 
-    // doc.rect(5, lineLocation + 1, 200, 5);
+    doc.rect(5, lineLocation - 4, 200, 5);
   }
 
   private buildArtInfoItem(doc, lineLocation: number, artInfo: OrderArtPlacement) {
@@ -489,12 +536,13 @@ userProfile;
     doc.setFontType('normal');
 
     doc.text(8, lineLocation, this.getLookupDescription(artInfo.art_placement_code));
-
+    doc.rect(5, lineLocation - 4, 39, 5);
     doc.text(45, lineLocation, artInfo.colors === null ? '' : artInfo.colors.toString());
+    doc.rect(5, lineLocation - 4, 54, 5);
     doc.text(60, lineLocation, artInfo.notes === null ? '' : artInfo.notes.toString());
+    // doc.rect(5, lineLocation - 4, 64, 5);
 
-
-    // doc.rect(5, lineLocation + 1, 120, 5);
+    doc.rect(5, lineLocation - 4, 120, 5);
   }
 
   private buildArtFileItem(doc, lineLocation: number, artFileInfo: OrderArtFile) {
@@ -502,9 +550,11 @@ userProfile;
     doc.setFontType('normal');
 
     doc.text(8, lineLocation, artFileInfo.image_file);
-
+    doc.rect(5, lineLocation - 4, 69, 5);
     doc.text(75, lineLocation, artFileInfo.art_folder === null ? '' : artFileInfo.art_folder.toString());
+    doc.rect(5, lineLocation - 4, 98, 5);
     doc.text(105, lineLocation, artFileInfo.note === null ? '' : artFileInfo.note.toString());
+    doc.rect(5, lineLocation - 4, 160, 5);
 
     // doc.rect(5, lineLocation + 1, 120, 5);
   }
@@ -514,10 +564,12 @@ userProfile;
     doc.setFontType('normal');
 
     doc.text(20, lineLocation, this.cp.transform(payment.payment_amount, 'USD', 'symbol'), 'right');
-
+    doc.rect(5, lineLocation - 4, 39, 5);
     doc.text(45, lineLocation, payment.payment_type_code === null ? '' : this.getLookupDescription(payment.payment_type_code));
+    doc.rect(5, lineLocation - 4, 64, 5);
     doc.text(70, lineLocation, payment.payment_date === null ? '' : new Date(payment.payment_date).toLocaleDateString());
 
+    doc.rect(5, lineLocation - 4, 120, 5);
 
     // doc.rect(5, lineLocation + 1, 120, 5);
   }
@@ -525,35 +577,28 @@ userProfile;
   private buildTotalSummary(doc, lineLocation: number) {
     doc.setFontSize(10);
     doc.setFontType('normal');
-    doc.text(195, lineLocation, '$' + this.currentOrder.subtotal === null ? '-' :
-                    this.cp.transform(this.currentOrder.subtotal.toString(), 'USD', 'symbol'), 'right');
-    doc.text(195, lineLocation + 5, this.currentOrder.tax_rate === null ? '-' :
-                    this.currentOrder.tax_rate.toString() + '%', 'right');
-    doc.text(195, lineLocation + 10, '$' + this.currentOrder.tax_amount === null ? '-' :
-                  this.cp.transform(this.currentOrder.tax_amount.toString(), 'USD', 'symbol'), 'right');
-    doc.text(195, lineLocation + 15, '$' + this.currentOrder.shipping === null ? '-' :
-                  this.cp.transform(this.currentOrder.shipping.toString(), 'USD', 'symbol'), 'right');
-    doc.text(195, lineLocation + 20, '$' + this.currentOrder.total === null ? '-' :
-                  this.cp.transform(this.currentOrder.total.toString(), 'USD', 'symbol'), 'right');
-    doc.text(195, lineLocation + 25, '$' + this.currentOrder.payments === null ? '-' :
-                  this.cp.transform(this.currentOrder.payments.toString(), 'USD', 'symbol'), 'right');
+    console.log('buildTotalSummary', this.masterOrder);
+    doc.text(195, lineLocation, (this.masterOrder.subtotal === null ? '-' :
+      this.cp.transform(this.masterOrder.subtotal.toString(), 'USD', 'symbol')), 'right');
+    doc.text(195, lineLocation + 5, (this.masterOrder.tax_rate === null ? '-' :
+      this.masterOrder.tax_rate.toString() + '%'), 'right');
+    doc.text(195, lineLocation + 10, (this.masterOrder.tax_amount === null ? '-' :
+      this.cp.transform(this.masterOrder.tax_amount.toString(), 'USD', 'symbol')), 'right');
+    doc.text(195, lineLocation + 15, (this.masterOrder.shipping === null ? '-' :
+      this.cp.transform(this.masterOrder.shipping.toString(), 'USD', 'symbol')), 'right');
+    doc.text(195, lineLocation + 20, (this.masterOrder.total === null ? '-' :
+      this.cp.transform(this.masterOrder.total.toString(), 'USD', 'symbol')), 'right');
+    doc.text(195, lineLocation + 25, (this.masterOrder.payments === null ? '-' :
+      this.cp.transform(this.masterOrder.payments.toString(), 'USD', 'symbol')), 'right');
 
     doc.setFontType('bold');
-    doc.text(195, lineLocation + 30, '$' + this.currentOrder.balance_due === null ? '' :
-                  this.cp.transform(this.currentOrder.balance_due.toString(), 'USD', 'symbol'), 'right');
+    doc.text(195, lineLocation + 30, '$' + this.masterOrder.balance_due === null ? '' :
+      this.cp.transform(this.masterOrder.balance_due.toString(), 'USD', 'symbol'), 'right');
   }
 
-=======
->>>>>>> parent of d77d1c5... Completed Invoice layout version 1.0
-  convert() {
+/*    convert() {
     this.loading = true;
     const doc = new jsPDF('p', 'pt', 'letter');
-
-/*     const margins = {
-      top: 15,
-      bottom: 10,
-      left: 20,
-    }; */
 
     const options = {
       pagesplit: true,
@@ -563,7 +608,6 @@ userProfile;
         w: 575
       }
     };
-
     const elementToPrint = document.getElementById('invoiceContent');
     // elementToPrint.parentElement.style.height = '10000px';
     // elementToPrint.style.display = 'inline-block';
@@ -576,8 +620,8 @@ userProfile;
       const pdfString = doc.output('datauristring');
       const newCorr = new Correspondence();
       newCorr.corr_filename = '';
-      newCorr.order_id = this.currentOrder.order_id;
-      newCorr.customer_id = this.currentOrder.customer_id;
+      newCorr.order_id = this.masterOrder.order_id;
+      newCorr.customer_id = this.masterOrder.customer_id;
       newCorr.file_stream = pdfString;
       newCorr.corr_type = 'invoi';
       newCorr.corr_disp = 'local';
@@ -586,7 +630,7 @@ userProfile;
 
       this.correspondenceService.addCorrespondence(this.userProfile.profile.login_id, newCorr).subscribe(res => {
         const newWindow = window.open(this.defaultDocFolder + res);
-        this.correspondenceService.getCorrespondenceData('', this.currentOrder.order_id).subscribe(res2 => {
+        this.correspondenceService.getCorrespondenceData('', this.masterOrder.order_id).subscribe(res2 => {
           // this.orderCorrespondence = res2.correspondences;
           this.onSave.emit({
             correspondence: newCorr
@@ -595,7 +639,7 @@ userProfile;
         });
       });
     });
-  }
+  } */
 
   print() {
     let printContents, popupWin;
@@ -673,19 +717,49 @@ userProfile;
       <body>${printContents}</body>
       </html>`
     );
-   // <body onload="window.print();window.close()">${printContents}</body>
-   // </html>`
+    // <body onload="window.print();window.close()">${printContents}</body>
+    // </html>`
     popupWin.document.close();
   }
 
   ngOnInit() {
-
+    console.log('order-invoice:ngOnInit: Master Order', this.masterOrder);
+    if (this.masterOrder) {
+      this.order = this.masterOrder;
+      this.orderArtPlacement = this.masterOrder.order_art_placements;
+      this.orderArtFile = this.masterOrder.order_art_file;
+      this.orderFees = this.masterOrder.order_fees;
+      this.orderPayments = this.masterOrder.order_payments;
+      this.orderCorrespondence = this.masterOrder.order_correspondence;
+      /* this.correspondenceService.getCorrespondenceData('', this.masterOrder.order_id).subscribe(res => {
+        console.log('correspondenceData return', res);
+        this.orderCorrespondence = res.correspondences;
+        this.loading = false;
+        // console.log('pulled Correspondence Data', this.orderCorrespondence);
+      }); */
+      // this.selectedOrder = this.masterOrder;
+    }
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    console.log('Current Order', this.currentOrder);
-    if (this.currentOrder.order_id !== 0) {
+    console.log('order-invoice:ngOnChanges: Master Order', this.masterOrder);
+    if (this.masterOrder) {
+      this.order = this.masterOrder;
+      this.orderArtPlacement = this.masterOrder.order_art_placements;
+      this.orderArtFile = this.masterOrder.order_art_file;
+      this.orderFees = this.masterOrder.order_fees;
+      this.orderPayments = this.masterOrder.order_payments;
+      this.orderCorrespondence = this.masterOrder.order_correspondence;
+      /* this.correspondenceService.getCorrespondenceData('', this.masterOrder.order_id).subscribe(res => {
+        console.log('correspondenceData return', res);
+        this.orderCorrespondence = res.correspondences;
+        this.loading = false;
+        // console.log('pulled Correspondence Data', this.orderCorrespondence);
+      }); */
+      // this.selectedOrder = this.masterOrder;
+    }
+    /* if (this.currentOrder.order_id !== 0) {
       this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
         this.order = res;
         // console.log('pulled order', this.order);
@@ -704,7 +778,7 @@ userProfile;
       });
       this.orderService.loadOrderArtFileData('', this.currentOrder.order_id).subscribe(res => {
         this.orderArtFile = res.order_art_file;
-        // console.log('pulled ArtFile Data', this.orderArtFile);
+        console.log('pulled ArtFile Data', this.orderArtFile);
       });
       this.correspondenceService.getCorrespondenceData('', this.currentOrder.order_id).subscribe(res => {
         // console.log('correspondenceData return', res);
@@ -717,6 +791,6 @@ userProfile;
       this.orderArtPlacement = new Array<OrderArtPlacement>();
       this.orderFees = new Array<OrderFee>();
       this.orderPayments = new Array<OrderPayment>();
-    }
+    } */
   }
 }

@@ -1,5 +1,7 @@
 import { Component, OnInit, OnChanges, Input, ViewChild, HostListener } from '@angular/core';
-import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee, OrderPayment } from '../../_services/order.service';
+import { Globals } from '../../globals';
+import { GlobalDataProvider } from '../../_providers/global-data.provider';
+import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee, OrderPayment, OrderMaster } from '../../_services/order.service';
 import { CustomerService, Customer } from '../../_services/customer.service';
 import { UserService } from '../../_services/user.service';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
@@ -22,6 +24,7 @@ import {
 
 export class OrderDetailComponent implements OnInit {
   @Input() customer: Customer;
+  @Input() masterOrder: OrderMaster;
   @Input() currentOrder: any;
   @Input() orderArtPlacement: Array<OrderArtPlacement>;
   @Input() orderFees: Array<OrderFee>;
@@ -52,15 +55,29 @@ export class OrderDetailComponent implements OnInit {
     // console.log('mouseWheelEvent: ', event);
     // console.log('sourceElement', event.sourceElement);
   }
-  constructor(private lookupService: LookupService, private priceListService: PriceListService, public userService: UserService,
+  constructor(globalDataProvider: GlobalDataProvider, public userService: UserService,
     public orderService: OrderService, public customerService: CustomerService, public authService: AuthenticationService,
-    public snackBar: MatSnackBar) {
+    public snackBar: MatSnackBar, private globals: Globals) {
     this.userProfile = JSON.parse(authService.getUserToken());
     this.order = new Order();
     this.order.order_detail = [];
     this.orderArtPlacement = [];
     this.orderFees = [];
     this.orderPayments = [];
+
+    this.loading = true;
+    this.lookupDataSource = globalDataProvider.getLookups();
+    this.priceListDataSource = globalDataProvider.getPriceList();
+    this.userDataSource = globalDataProvider.getUsers();
+
+    this.sizeTypes = this.createLookupTypeSource('ssiz');
+    this.styleTypes = this.createLookupTypeSource('sclas');
+    this.vendorTypes = this.createLookupTypeSource('vend');
+    this.artLocations = this.createLookupTypeSource('aloc');
+    this.paymentSourceItems = this.createLookupTypeSource('pms');
+    this.itemTypes = this.createItemTypeSource('orddi');
+    this.setupItems = this.createItemTypeSource('setup');
+
   }
 
   showValues() {
@@ -536,9 +553,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-
-    this.loading = true;
-    this.lookupService.loadLookupData('').subscribe(res => {
+/*     this.lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.sizeTypes = this.createLookupTypeSource('ssiz');
       this.styleTypes = this.createLookupTypeSource('sclas');
@@ -559,7 +574,7 @@ export class OrderDetailComponent implements OnInit {
       this.userDataSource = res.value;
       // console.log(this.userDataSource);
     });
-    this.editMode = this.currentOrder.order_id !== 0;
+ */    this.editMode = this.currentOrder.order_id !== 0;
     // console.log('Current Order', this.currentOrder);
     /* if (this.currentOrder.order_id !== 0) {
       if (this.currentOrder.customer_id > 0) {
@@ -600,6 +615,7 @@ export class OrderDetailComponent implements OnInit {
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
     // console.log('order-detail-component currentOrder', this.currentOrder);
+    console.log('order-detail-component:ngOnChanges()', this.masterOrder);
     this.loading = true;
     this.editMode = this.currentOrder.order_id !== 0;
     // console.log('Current Order', this.currentOrder);

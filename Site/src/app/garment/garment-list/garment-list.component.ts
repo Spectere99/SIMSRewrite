@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
+import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { OrderService, Order, OrderDetail } from '../../_services/order.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
@@ -39,7 +40,7 @@ export class GarmentListComponent implements OnInit {
   dataSource: any;
   userDataSource: any;
   priceListDataSource: Array<PriceListItem>;
-  lookupDataSource: any;
+  lookupDataSource: Array<LookupItem>;
   vendorTypes: Array<LookupItem>;
   itemTypes: Array<PriceListItem>;
   userProfile;
@@ -77,9 +78,17 @@ export class GarmentListComponent implements OnInit {
   allOrderFilter = [
                 ['order/order_status', '=', 'ord']];
 
-  constructor(public lookupService: LookupService, public userService: UserService, public priceListService: PriceListService,
+  constructor(globalDataProvider: GlobalDataProvider, public lookupService: LookupService, public userService: UserService,
+              public priceListService: PriceListService,
               public orderService: OrderService, public customerService: CustomerService, public authService: AuthenticationService) {
+                console.log('garment-list.component:constructor');
     this.userProfile = JSON.parse(authService.getUserToken());
+    this.lookupDataSource = globalDataProvider.getLookups();
+    this.priceListDataSource = globalDataProvider.getPriceList();
+    console.log('garment-list.component:constructor - lookupDataSource', this.lookupDataSource);
+    this.vendorTypes = this.createLookupTypeSource('vend');
+    this.itemTypes = this.createItemTypeSource('orddi');
+    this.userDataSource = globalDataProvider.getUsers();
     console.log('User Profile', this.userProfile);
     this.enableSave = this.userProfile.profile.role !== 'Readonly';
     this.customGarmentOrderDate = this.getToday();
@@ -270,7 +279,8 @@ export class GarmentListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.lookupService.loadLookupData('').subscribe(res => {
+    console.log('garment-list.component:ngOnInit');
+    /* this.lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.vendorTypes = this.createLookupTypeSource('vend');
     });
@@ -283,7 +293,7 @@ export class GarmentListComponent implements OnInit {
     this.userService.getUsers('').subscribe(res => {
       this.userDataSource = res.value;
       // console.log(this.userDataSource);
-    });
+    }); */
   }
 
 }

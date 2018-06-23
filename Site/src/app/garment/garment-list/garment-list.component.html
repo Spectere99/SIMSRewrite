@@ -174,19 +174,19 @@
               <app-order-info [(currentOrder)]="selectedOrder" [taskList]="taskListComp"></app-order-info>
             </mat-tab>
             <mat-tab label="Tasks">
-              <app-order-task-list [currentOrder]="selectedOrder" #taskListComp></app-order-task-list>
+              <app-order-task-list [(masterOrder)]="selectedOrder" #taskListComp></app-order-task-list>
             </mat-tab>
             <mat-tab label="Details">
               <app-order-detail [(currentOrder)]="selectedOrder"></app-order-detail>
             </mat-tab>
             <mat-tab label="Art">
-              <app-order-art [(currentOrder)]="selectedOrder"></app-order-art>
+              <app-order-art [(masterOrder)]="selectedOrder"></app-order-art>
             </mat-tab>
             <mat-tab label="History/Comments">
               <app-order-notes-history [currentOrder]="selectedOrder"></app-order-notes-history>
             </mat-tab>
             <mat-tab label="Correspondence">
-              <app-order-invoice [currentOrder]="selectedOrder"></app-order-invoice>
+              <app-order-invoice></app-order-invoice>
             </mat-tab>
           </mat-tab-group>
           <div class="col-md-12 float-right">

@@ -1,7 +1,9 @@
 import { Component, OnInit, OnChanges, ViewChild, Input } from '@angular/core';
 /* import { CustomerInfo, Service } from './customer-info.service'; */
+import { Globals } from '../../globals';
+import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { StateService, StateInfo } from '../../_shared/states.service';
-import { LookupService } from '../../_services/lookups.service';
+import { LookupItem, LookupService } from '../../_services/lookups.service';
 import { CustomerService, Customer, CustomerDTO, CustomerAddress } from '../../_services/customer.service';
 import {
   MatDialog, MatDialogRef, MAT_DIALOG_DATA,
@@ -25,21 +27,25 @@ export class ContactAddressComponent implements OnInit {
   @Input() customer: any;
   @ViewChild(MatExpansionPanel) expansionPanel: MatExpansionPanel;
   customerList: Array<any>;
-  lookupDataSource: any;
+  lookupDataSource: Array<LookupItem>;
   addressTypes: any;
   stateList: any;
   panelExpanded: boolean;
 
   ctrlHasFocus: string;
   constructor(public dialog: MatDialog, public snackBar: MatSnackBar, private customerService: CustomerService,
-    private lookupService: LookupService, private usStateService: StateService, public datePipe: DatePipe) {
+    globalDataProvider: GlobalDataProvider, private usStateService: StateService, public datePipe: DatePipe,
+    private globals: Globals) {
 
     this.stateList = this.usStateService.getStateList();
-    lookupService.loadLookupData('').subscribe(res => {
+    console.log('global LookupData', globals.lookupData);
+    this.lookupDataSource = globalDataProvider.getLookups();
+    this.createAddressTypeDataSource();
+    /* lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.createAddressTypeDataSource();
       // this.createStatusTypeDataSource();
-    });
+    }); */
     customerService.getActiveParentCustomers('rwflowers').subscribe(res => {
       this.customerList = res.value;
       // console.log('customerList', this.customerList);

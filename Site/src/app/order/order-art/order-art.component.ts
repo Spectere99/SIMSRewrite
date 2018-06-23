@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { OrderService, OrderArtFile } from '../../_services/order.service';
+import { OrderService, OrderMaster, OrderArtFile } from '../../_services/order.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { environment } from '../../../environments/environment';
 
@@ -10,7 +10,8 @@ import { environment } from '../../../environments/environment';
   providers: [OrderService]
 })
 export class OrderArtComponent {
-  @Input() currentOrder: any;
+  // @Input() currentOrder: any;
+  @Input() masterOrder: OrderMaster;
   // orderUploadURL = 'http://localhost:56543/api/ArtFile';
   // orderUploadURL = 'http://localhost:8888/api/ArtFile';
   orderUploadURL = environment.artUploadURL;
@@ -30,7 +31,7 @@ export class OrderArtComponent {
     // console.log('Upload Complete!', e);
     const newOrderArtFile: OrderArtFile = {
       order_art_id: (this.orderArtFiles.length + 1) * -1,
-      order_id: this.currentOrder.order_id,
+      order_id: this.masterOrder.order_id,
       art_folder: '',
       note: '',
       image_file: e.file.name,
@@ -76,17 +77,18 @@ export class OrderArtComponent {
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
     this.value = [];
+    this.orderArtFiles = this.masterOrder.order_art_file;
     // console.log('order-art-component current Order', this.currentOrder);
-    if (this.currentOrder.order_id !== 0) {
-      this.uploadHeaders = { 'orderNumber': this.currentOrder.orderNumber };
+/*     if (this.masterOrder.order_id !== 0) {
+      this.uploadHeaders = { 'orderNumber': this.masterOrder.order_number };
 
-      this.orderService.loadOrderArtFileData('', this.currentOrder.order_id).subscribe(res => {
+      this.orderService.loadOrderArtFileData('', this.masterOrder.order_id).subscribe(res => {
         this.orderArtFiles = res.order_art_file;
 
         // console.log('pulled OrderArt Data', this.orderArtFiles);
       });
     } else {
       this.orderArtFiles = new Array<OrderArtFile>();
-    }
+    } */
   }
 }

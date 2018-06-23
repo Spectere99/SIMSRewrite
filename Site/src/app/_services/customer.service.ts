@@ -39,6 +39,7 @@ export class Customer {
     customer_person: CustomerPerson[];
     orders: Order[];
 }
+
 export class CustomerPerson {
     customer_person_id: number;
     customer_id: number;

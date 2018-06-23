@@ -1,9 +1,11 @@
 import { Component, OnInit, OnChanges, Input} from '@angular/core';
+import { Globals } from '../../globals';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
-import { OrderService, OrderTask } from '../../_services/order.service';
+import { OrderService, OrderTask, OrderMaster } from '../../_services/order.service';
 import { TaskService, Task } from '../../_services/task.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { ArraySortPipe } from '../../_shared/pipes/orderBy.pipe';
+import { GlobalDataProvider } from '../../_providers/global-data.provider';
 
 
 @Component({
@@ -13,7 +15,8 @@ import { ArraySortPipe } from '../../_shared/pipes/orderBy.pipe';
   providers: [OrderService, TaskService, ArraySortPipe]
 })
 export class OrderTaskListComponent implements OnInit {
-@Input() currentOrder: any;
+// @Input() currentOrder: any;
+@Input() masterOrder: OrderMaster;
 lookupDataSource: Array<LookupItem>;
 taskList: Array<Task>;
 orderTask: Array<OrderTask>;
@@ -21,15 +24,18 @@ taskLookup: Array<LookupItem>;
 
 userProfile;
 
-  constructor(private lookupService: LookupService, public orderService: OrderService,
-              public taskService: TaskService, public authService: AuthenticationService) {
+  constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService,
+              public taskService: TaskService, public authService: AuthenticationService,
+              private globals: Globals) {
     this.userProfile = JSON.parse(authService.getUserToken());
+    this.lookupDataSource = globalDataProvider.getLookups();
+    this.taskLookup = this.createLookupTypeSource('otask');
     // console.log('order Task List Constructor');
-    lookupService.loadLookupData('').subscribe(res => {
+/*     lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.taskLookup = this.createLookupTypeSource('otask');
       // console.log('task list', this.taskLookup);
-    });
+    }); */
     taskService.loadTaskData('').subscribe(res => {
       this.taskList = res.value;
     });
@@ -110,7 +116,8 @@ userProfile;
 
   ngOnInit() {
     // console.log('Order Task List onInit', this.currentOrder);
-    if (this.currentOrder) {
+    this.orderTask = this.masterOrder.order_tasks;
+    /* if (this.currentOrder) {
       if (this.currentOrder.order_id > 0) {  // Existing Order.  Grab its tasks for display
         this.orderService.loadOrderTaskData('rflowers', this.currentOrder.order_id)
         .subscribe(res => {
@@ -118,13 +125,14 @@ userProfile;
           // console.log('Order Tasks Pulled', res);
         });
       }
-    }
+    } */
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
     // console.log('Order Task List onChange', this.currentOrder);
-    if (this.currentOrder) {
+    this.orderTask = this.masterOrder.order_tasks;
+    /* if (this.currentOrder) {
       if (this.currentOrder.order_id > 0) {  // Existing Order.  Grab its tasks for display
         this.orderService.loadOrderTaskData('rflowers', this.currentOrder.order_id)
         .subscribe(res => {
@@ -134,6 +142,6 @@ userProfile;
       } else {
         this.orderTask = new Array<OrderTask>();
       }
-    }
+    } */
   }
 }

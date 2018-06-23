@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, Input, ViewChild } from '@angular/core';
-import { LookupService } from '../../_services/lookups.service';
-import { UserService } from '../../_services/user.service';
-import { CustomerService } from '../../_services/customer.service';
+import { Globals } from '../../globals';
+import { GlobalDataProvider } from '../../_providers/global-data.provider';
+import { Customer, CustomerService } from '../../_services/customer.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { OrderService, Order, OrderDetail, OrderStatusHistory } from '../../_services/order.service';
 import { StateService, StateInfo } from '../../_shared/states.service';
@@ -17,6 +17,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
 })
 export class OrderInfoComponent implements OnInit, OnChanges {
   @Input() currentOrder: Order;
+  @Input() customer: Customer;
   @Input() taskList: OrderTaskListComponent;
   orderCustomer: any;
   lookupDataSource: any;
@@ -33,22 +34,18 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   orderStatusChanged = false;
  // customerService: CustomerService;
 
-  constructor(lookupService: LookupService, userService: UserService, public customerService: CustomerService,
+  constructor(globalDataProvider: GlobalDataProvider, public customerService: CustomerService,
               private usStateService: StateService, public orderService: OrderService, public snackBar: MatSnackBar,
-              public authService: AuthenticationService) {
+              public authService: AuthenticationService, private globals: Globals) {
 
     this.userProfile = JSON.parse(authService.getUserToken());
     this.stateList = this.usStateService.getStateList();
-      lookupService.loadLookupData('').subscribe(res => {
-      this.lookupDataSource = res.value;
-      this.phoneTypes = this.createLookupTypeSource('PHON');
-      this.orderTypes = this.createLookupTypeSource('otyps');
-      this.statusTypes = this.createLookupTypeSource('ord');
-    });
-    userService.getUsers('').subscribe(res => {
-      this.userDataSource = res.value;
-      // console.log(this.userDataSource);
-    });
+    this.lookupDataSource = globalDataProvider.getLookups();
+    this.userDataSource = globalDataProvider.getUsers();
+    this.phoneTypes = this.createLookupTypeSource('PHON');
+    this.orderTypes = this.createLookupTypeSource('otyps');
+    this.statusTypes = this.createLookupTypeSource('ord');
+
    }
 
   createLookupTypeSource(className: string): any {
@@ -214,8 +211,11 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   ngOnInit() {
     console.log('OnInit currentOrder', this.currentOrder);
     // this.editMode = this.currentOrder !== undefined;
+    console.log('OnInit customer', this.customer);
     this.newMode = this.currentOrder.order_id === 0;
-    if (this.currentOrder) {
+    this.orderCustomer = this.customer;
+    this.contactPersons = this.customer.customer_person;
+    /* if (this.currentOrder) {
       console.log('order-info:ngOnInit Calling getCustomerData');
       this.customerService.getCustomerData('', this.currentOrder.customer_id).subscribe(res => {
         this.orderCustomer = res;
@@ -224,15 +224,18 @@ export class OrderInfoComponent implements OnInit, OnChanges {
       });
     } else {
       this.currentOrder = new Order();
-    }
+    } */
 
   }
 
   ngOnChanges() {
     console.log('OnChanges currentOrder', this.currentOrder);
+    console.log('OnChanges customer', this.customer);
     this.newMode = this.currentOrder.order_id === 0;
     this.orderStatusChanged = this.newMode;
-    if (this.currentOrder.customer_id !== 0) {
+    this.orderCustomer = this.customer;
+    this.contactPersons = this.customer.customer_person;
+    /* if (this.currentOrder.customer_id !== 0) {
       console.log('order-info:ngOnChanges Calling getCustomerData');
       this.customerService.getCustomerData('', this.currentOrder.customer_id).subscribe(res => {
         this.orderCustomer = res;
@@ -241,7 +244,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
       });
     } else {
       // this.currentOrder = new Order();
-    }
+    } */
     this.originalOrderStatus = this.currentOrder.order_status;
   }
 

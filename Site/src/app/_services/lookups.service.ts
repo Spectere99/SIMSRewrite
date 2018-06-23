@@ -10,6 +10,7 @@ export class LookupItem {
     class: string;
     char_mod: string;
     description: string;
+    order_by: number;
 }
 
 @Injectable()

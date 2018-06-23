@@ -1,12 +1,13 @@
 import { Component, Injectable, OnInit, Output, ViewChild, Input } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { NgModel } from '@angular/forms';
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
-import { LookupService } from '../../_services/lookups.service';
-import { UserService } from '../../_services/user.service';
+import { LookupService, LookupItem } from '../../_services/lookups.service';
+import { UserService, User } from '../../_services/user.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement, OrderFee } from '../../_services/order.service';
 import { OrderInfoComponent } from '../order-info/order-info.component';
@@ -57,11 +58,11 @@ export class OrderListComponent implements OnInit {
   odataLookup;
   summaryVisible = false;
   dataSource: any;
-  order_statusSource: any;
-  order_typeSource: any;
-  user_Source: any;
+  order_statusSource: Array<LookupItem>;
+  order_typeSource: Array<LookupItem>;
+  userDataSource: Array<User>;
   selectedOrder: any;
-  lookupDataSource: any;
+  lookupDataSource: Array<LookupItem>;
   customerId: number;
   userProfile;
   filterDate = new Date(2008, 1, 1);
@@ -69,20 +70,23 @@ export class OrderListComponent implements OnInit {
 
   popupVisible = false;
 
-    constructor(private http: Http, lookupService: LookupService, userService: UserService,
-                public orderService: OrderService, public snackBar: MatSnackBar, authService: AuthenticationService) {
+    constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, public snackBar: MatSnackBar,
+                authService: AuthenticationService) {
       this.userProfile = JSON.parse(authService.getUserToken());
-      lookupService.loadLookupData('').subscribe(res => {
+      this.lookupDataSource = globalDataProvider.getLookups();
+      this.createStatusDataSource();
+      this.createOrderTypeDataSource();
+      /* lookupService.loadLookupData('').subscribe(res => {
         this.lookupDataSource = res.value;
         // console.log('lookupDataSource', this.lookupDataSource);
         this.createStatusDataSource();
         this.createOrderTypeDataSource();
-      });
-
-      userService.getUsers('').subscribe(res => {
+      }); */
+      this.userDataSource = globalDataProvider.getUsers();
+      /* userService.getUsers('').subscribe(res => {
         this.user_Source = res.value;
         // console.log('userDataSource', this.user_Source);
-      });
+      }); */
 
       this.createOrderDataSource();
     }

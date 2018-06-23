@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, OnChanges, Input } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
 import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
-import { LookupService } from '../../_services/lookups.service';
-import { UserService } from '../../_services/user.service';
+import { LookupService, LookupItem } from '../../_services/lookups.service';
+import { UserService, User } from '../../_services/user.service';
 import { AuthenticationService } from '../../_services/authentication.service';
-import { Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement, OrderFee } from '../../_services/order.service';
+import { OrderMaster, Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement, OrderFee } from '../../_services/order.service';
 import { CorrespondenceService } from '../../_services/correspondence.service';
 import { OrderInfoComponent } from '../order-info/order-info.component';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
@@ -34,6 +35,7 @@ export class CustomerOrderListComponent implements OnInit {
   @ViewChild(OrderSummaryComponent) orderSummary: OrderSummaryComponent;
   @ViewChild(OrderNotesHistoryComponent) orderNotesHistory: OrderNotesHistoryComponent;
 
+  selectedOrderMaster: OrderMaster;
   /* Data Strutures for Orders */
   selectedOrder: any;
   selectedTasks: any;
@@ -54,22 +56,27 @@ export class CustomerOrderListComponent implements OnInit {
   summaryVisible = false;
   order_statusSource: any;
   order_typeSource: any;
-  user_Source: any;
+  userDataSource: Array<User>;
 
-  lookupDataSource: any;
+  lookupDataSource: Array<LookupItem>;
   customerId: number;
   enableSave = false;
   userProfile;
   leaveWindowOpen: true;
-  loading: false;
+  loading: boolean;
+  loadingOrder: boolean;
 
-  constructor(private http: Http, public orderService: OrderService, lookupService: LookupService,
+  constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, lookupService: LookupService,
     userService: UserService, public snackBar: MatSnackBar, public correspondenceService: CorrespondenceService,
     authService: AuthenticationService) {
     // Pull User Role to set activities
     this.userProfile = JSON.parse(authService.getUserToken());
     this.enableSave = this.userProfile.profile.role !== 'Readonly';
-    lookupService.loadLookupData('').subscribe(res => {
+    this.lookupDataSource = globalDataProvider.getLookups();
+    this.createStatusDataSource();
+    this.createOrderTypeDataSource();
+    this.userDataSource = globalDataProvider.getUsers();
+    /* lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       // console.log('lookupDataSource', this.lookupDataSource);
       this.createStatusDataSource();
@@ -79,7 +86,7 @@ export class CustomerOrderListComponent implements OnInit {
     userService.getUsers('').subscribe(res => {
       this.user_Source = res.value;
       // console.log('userDataSource', this.user_Source);
-    });
+    }); */
 
   }
 
@@ -531,7 +538,11 @@ export class CustomerOrderListComponent implements OnInit {
   showEditPopup(e) {
     // e.cancel = true;
     // console.log('E', e);
+    console.log('*** customer-order-list-comopnent:showEditPopup - START');
+    this.loadingOrder = true;
+    this.loading = true;
     this.selectedOrder = e.data;
+    this.selectedOrderMaster = e.data;
     forkJoin(
       this.orderService.loadOrderData('', this.selectedOrder.order_id), // 0
       this.orderService.loadArtPlacementData('', this.selectedOrder.order_id), // 1
@@ -546,16 +557,30 @@ export class CustomerOrderListComponent implements OnInit {
       console.log('selectedOrder', this.selectedOrder);
       console.log('forkJoin Return', results);
       this.selectedOrderLines = results[0].order_detail;
+      this.selectedOrderMaster.order_detail = results[0].order_detail;
       this.selectedArtPlacements = results[1].order_art_placement;
+      this.selectedOrderMaster.order_art_placements = results[1].order_art_placement;
       this.selectedOrderFees = results[2].order_fees;
+      this.selectedOrderMaster.order_fees = results[2].order_fees;
       this.selectedPayments = results[3].order_payments;
+      this.selectedOrderMaster.order_payments = results[3].order_payments;
       this.selectedArtFiles = results[4].order_art_file;
+      this.selectedOrderMaster.order_art_file = results[4].order_art_file;
       this.selectedNotes = results[5].order_notes;
+      this.selectedOrderMaster.order_notes = results[5].order_notes;
       this.selectedStatusHistory = results[6].order_status_history;
+      this.selectedOrderMaster.order_status_histories = results[6].order_status_history;
       this.selectedTasks = results[7].order_task;
+      this.selectedOrderMaster.order_tasks = results[7].order_task;
       this.selectedCorrespondence = results[8].correspondences;
+      this.selectedOrderMaster.order_correspondence = results[8].correspondences;
+      this.selectedOrderMaster.customer = this.customer;
+      console.log('Order Master Return', this.selectedOrderMaster);
+      this.loadingOrder = false;
+      this.loading = false;
       this.popupVisible = true;
     });
+    console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
     // console.log('Selected Order', this.selectedOrder);
     // alert('Editing!');
   }
@@ -574,7 +599,9 @@ export class CustomerOrderListComponent implements OnInit {
     this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
     this.popupVisible = false;
   }
-
+  cancelChanges() {
+    this.popupVisible = false;
+  }
   showOrderSummary(e) {
     console.log('showOrderSummary', e);
 

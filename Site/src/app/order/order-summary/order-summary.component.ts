@@ -1,5 +1,6 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee,
           OrderPayment, OrderArtFile, OrderNote } from '../../_services/order.service';
 // import { AuthenticationService } from '../../_services/authentication.service';
@@ -35,13 +36,24 @@ export class OrderSummaryComponent implements OnInit {
 
   allDataFetched = false;
 
-  constructor(public orderService: OrderService, private lookupService: LookupService, private priceListService: PriceListService) {
+  constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, private priceListService: PriceListService) {
     /* this.order = new Order();
     this.order.order_detail = []; */
     this.orderArtPlacement = [];
     this.orderFees = [];
     this.orderPayments = [];
-    lookupService.loadLookupData('').subscribe(res => {
+    this.lookupDataSource = globalDataProvider.getLookups();
+    this.sizeTypes = this.createLookupTypeSource('ssiz');
+    this.styleTypes = this.createLookupTypeSource('sclas');
+    this.vendorTypes = this.createLookupTypeSource('vend');
+    this.artLocations = this.createLookupTypeSource('aloc');
+    this.priceListDataSource = globalDataProvider.getPriceList();
+    this.sizeTypes = this.createLookupTypeSource('ssiz');
+    this.styleTypes = this.createLookupTypeSource('sclas');
+    this.vendorTypes = this.createLookupTypeSource('vend');
+    this.artLocations = this.createLookupTypeSource('aloc');
+
+    /* lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       console.log('Lookup Data Source', this.lookupDataSource);
       this.sizeTypes = this.createLookupTypeSource('ssiz');
@@ -54,7 +66,7 @@ export class OrderSummaryComponent implements OnInit {
       this.priceListDataSource = res.value;
       this.itemTypes = this.createItemTypeSource('orddi');
       this.setupItems = this.createItemTypeSource('setup');
-    });
+    }); */
   }
 
   createLookupTypeSource(className: string): any {
@@ -112,8 +124,6 @@ export class OrderSummaryComponent implements OnInit {
   }
 
   getSizeTypeDescription(size_type: string): string {
-    console.log('GetSizeTypeDesc', size_type);
-    console.log('Order Item', this.order_detail);
     let val = '';
     if (this.styleTypes) {
       const foundVal = this.sizeTypes.find(p => p.char_mod === size_type);

@@ -1,6 +1,8 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Globals } from '../../globals';
+import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { CustomerService, CustomerPerson } from '../../_services/customer.service';
-import { LookupService } from '../../_services/lookups.service';
+import { LookupItem, LookupService } from '../../_services/lookups.service';
 import {
   MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar
@@ -15,18 +17,23 @@ import { ConfirmDialogComponent } from '../../_shared/confirm/confirm.component'
 })
 export class ContactInfoComponent implements OnInit {
   @Input() customer: any;
-  lookupDataSource: Array<any>;
+  lookupDataSource: Array<LookupItem>;
   personTypes: any;
   phoneTypes: any;
   dirtyRecords: Array<CustomerPerson>;
 
   constructor(public dialog: MatDialog, public snackBar: MatSnackBar,
-    public customerService: CustomerService, lookupService: LookupService) {
-    lookupService.loadLookupData('').subscribe(res => {
+    public customerService: CustomerService, globalDataProvider: GlobalDataProvider,
+    private globals: Globals
+  ) {
+    this.lookupDataSource = globalDataProvider.getLookups();
+    this.createPersonTypeDataSource();
+    this.createPhoneTypeDataSource();
+    /* lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.createPersonTypeDataSource();
       this.createPhoneTypeDataSource();
-    });
+    }); */
   }
 
   createPersonTypeDataSource() {

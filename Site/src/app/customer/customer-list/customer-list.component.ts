@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, Output } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 
+import { Globals } from '../../globals';
+import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { LookupService } from '../../_services/lookups.service';
 import { UserService } from '../../_services/user.service';
 import { AuthenticationService } from '../../_services/authentication.service';
@@ -10,12 +12,11 @@ import { Customer, CustomerService } from '../../_services/customer.service';
 import { ContactInfoComponent } from '../contact-info/contact-info.component';
 import { ContactAddressComponent } from '../contact-address/contact-address.component';
 import { CustomerInfoComponent } from '../customer-info/customer-info.component';
-import { CustomerInfo } from '../customer-info/customer-info.service';
 
 @Component({
   selector: 'app-customer-list',
   templateUrl: './customer-list.component.html',
-  providers: [LookupService, UserService, CustomerService, AuthenticationService],
+  providers: [Globals, LookupService, UserService, CustomerService, AuthenticationService],
   styleUrls: ['./customer-list.component.css']
 })
 export class CustomerListComponent implements OnInit {
@@ -50,8 +51,8 @@ export class CustomerListComponent implements OnInit {
   userProfile;
   leaveWindowOpen = true;
 
-  constructor(lookupService: LookupService, userService: UserService, public customerService: CustomerService
-              , authService: AuthenticationService) {
+  constructor(globalDataProvider: GlobalDataProvider, public customerService: CustomerService
+              , authService: AuthenticationService, private globals: Globals) {
       this.userProfile = JSON.parse(authService.getUserToken());
       this.pagingEnabled = true;
       this.disableExpand = true;
@@ -62,15 +63,19 @@ export class CustomerListComponent implements OnInit {
       this.currentPageSize = this.defaultPageSize;
       this.CreateCustomerDataSource();
       console.log('customerDataSource', this.dataSource);
-      lookupService.loadLookupData('').subscribe(res => {
+      this.lookupDataSource = globalDataProvider.getLookups();
+      this.createPersonTypeDataSource();
+      this.createPhoneTypeDataSource();
+      /* lookupService.loadLookupData('').subscribe(res => {
         this.lookupDataSource = res.value;
         this.createPersonTypeDataSource();
         this.createPhoneTypeDataSource();
-      });
-      userService.getUsers('').subscribe(res => {
+      }); */
+      this.userDataSource = globalDataProvider.getUsers();
+      /* userService.getUsers('').subscribe(res => {
         this.userDataSource = res.value;
         console.log(this.userDataSource);
-      });
+      }); */
      }
 
     ExpandGrid() {
@@ -219,7 +224,7 @@ export class CustomerListComponent implements OnInit {
       this.customerService.getCustomerData('', e.data.customer_id).subscribe(res => {
         this.selectedCustomer = res;
         this.selectedCustomer.customer_person = this.selectedCustomer.customer_person.filter(f => f.status_code === 'act');
-        // console.log('getCustomerData Return', res);
+        console.log('getCustomerData Return', res);
         if (this.selectedCustomer.customer_id < 0) {
           this.orderTabDisabled = true; } else {this.orderTabDisabled = false;
         }

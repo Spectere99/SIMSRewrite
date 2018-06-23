@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, Output, Input, EventEmitter } from '@angular/core';
 import { environment } from '../../../environments/environment';
+import { Globals } from '../../globals';
+import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { LookupService } from '../../_services/lookups.service';
 import { CustomerService, Customer } from '../../_services/customer.service';
@@ -8,7 +10,6 @@ import { UserService } from '../../_services/user.service';
 import { ContactInfoComponent } from '../contact-info/contact-info.component';
 import { ContactAddressComponent } from '../contact-address/contact-address.component';
 import { CustomerInfoComponent } from '../customer-info/customer-info.component';
-import { CustomerInfo } from '../customer-info/customer-info.service';
 
 import { AuthenticationService } from '../../_services/authentication.service';
 
@@ -47,13 +48,19 @@ export class ContactListComponent implements OnInit {
   userProfile;
   leaveWindowOpen = true;
 
-  constructor(lookupService: LookupService, customerSvc: CustomerService, userService: UserService,
-    public authService: AuthenticationService) {
+  constructor(globalDataProvider: GlobalDataProvider, customerSvc: CustomerService,
+    public authService: AuthenticationService, private globals: Globals) {
     this.userProfile = JSON.parse(authService.getUserToken());
     this.customerService = customerSvc;
+    this.userDataSource = globalDataProvider.getUsers();
+    this.lookupDataSource = globalDataProvider.getLookups();
+    // this.userDataSource = globals.userData;
+    // this.lookupDataSource = globals.lookupData;
+    this.createPersonTypeDataSource();
+    this.createPhoneTypeDataSource();
     this.CreateContactDataSource();
     this.gridHeight = 525;
-    lookupService.loadLookupData('').subscribe(res => {
+    /* lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       this.createPersonTypeDataSource();
       this.createPhoneTypeDataSource();
@@ -62,7 +69,7 @@ export class ContactListComponent implements OnInit {
       this.userDataSource = res.value;
       // this.userDataSource = this.userDataSource.filter(f => f.status_code === 'ACTIV');
       console.log(this.userDataSource);
-    });
+    }); */
   }
 
   contentReady(e) {

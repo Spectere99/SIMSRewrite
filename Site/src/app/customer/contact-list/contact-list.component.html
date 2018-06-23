@@ -1,10 +1,4 @@
-<p>Filter by using the cooresponding column. To add a new Customer, click on the Plus (+) button.</p>
-<!-- <div class="row">
-  <div class="col-lg-12">
-    <button type="button" [disabled]="disableExpand" class="btn pull-left" [ngClass]="buttonClass" (click)="ExpandGrid();">Toggle Expand</button>
-  </div>
-</div> -->
-
+<p>Filter by using the corresponding column. To add a new Customer, click on the Plus (+) button.</p>
 <div class="row">
   <div class="col-lg-12">
     <dx-data-grid id="gridContacts" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
@@ -45,7 +39,7 @@
         <mat-tab-group [dynamicHeight]="true" style="height: 90%; width: 100%">
           <mat-tab label="Info">
             <dx-scroll-view style="height: 100%; width: 100%">
-              <app-customer-info [customer]="selectedCustomer" [userList]="userDataSource"></app-customer-info>
+              <app-customer-info [customer]="selectedCustomer"></app-customer-info>
               <app-contact-address [customer]="selectedCustomer"></app-contact-address>
               <app-contact-info [customer]="selectedCustomer"></app-contact-info>
             </dx-scroll-view>

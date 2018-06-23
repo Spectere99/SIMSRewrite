@@ -6,7 +6,7 @@
                 Invoice History
               </div>
               <div class="col-md-5">
-                <app-order-invoice [currentOrder]="currentOrder" (onSave)="refreshCorrespondenceList();"></app-order-invoice>
+                <app-order-invoice [(masterOrder)]="masterOrder" (onSave)="refreshCorrespondenceList();"></app-order-invoice>
               </div>
 <!--               <div class="col-md-3">
                 <button id="create" class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showInvoice()">View Invoice</button>
@@ -21,7 +21,7 @@
                 <td style="font-size:12px;">Disposition</td>
                 <td style="font-size:12px;">File</td>
               </tr>
-              <tr *ngFor="let corr of orderCorrespondence | sort: 'corr_date'; index as i">
+              <tr *ngFor="let corr of orderCorrespondence | sort: 'correspondence_id'; index as i">
                 <td>
                   <input class="form-control" [ngModel]="corr.corr_date | date:'MM/dd/yyyy'" (ngModelChange)="corr.corr_date = $event" [disabled]="true"
                     size="10">
@@ -61,7 +61,7 @@
 
 <dx-popup class="popup" [showTitle]="true" title="Invoice" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible">
     <div *dxTemplate="let data of 'content'" style="overflow-y: scroll; position:static;">
-      <app-order-invoice [currentOrder]="selectedOrder" (onSave)="refreshCorrespondenceList();"></app-order-invoice>
+      <app-order-invoice [(masterOrder)]="masterOrder" (onSave)="refreshCorrespondenceList();"></app-order-invoice>
       <div class="col-md-12 float-right">
           <div class="row col-md-4 float-right">
             <div class="col-md-4">
