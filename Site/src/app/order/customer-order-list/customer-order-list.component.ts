@@ -6,7 +6,8 @@ import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { UserService, User } from '../../_services/user.service';
 import { AuthenticationService } from '../../_services/authentication.service';
-import { OrderMaster, Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement, OrderFee } from '../../_services/order.service';
+import { OrderMaster, Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement,
+          OrderFee, OrderTask } from '../../_services/order.service';
 import { CorrespondenceService } from '../../_services/correspondence.service';
 import { OrderInfoComponent } from '../order-info/order-info.component';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
@@ -16,6 +17,7 @@ import { OrderSummaryComponent } from '../order-summary/order-summary.component'
 import { OrderNotesHistoryComponent } from '../order-notes-history/order-notes-history.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar } from '@angular/material';
+import { WindowRef } from '../../_services/window-ref.service'
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 
@@ -65,11 +67,13 @@ export class CustomerOrderListComponent implements OnInit {
   leaveWindowOpen: true;
   loading: boolean;
   loadingOrder: boolean;
+  window;
 
   constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, lookupService: LookupService,
     userService: UserService, public snackBar: MatSnackBar, public correspondenceService: CorrespondenceService,
-    authService: AuthenticationService) {
+    authService: AuthenticationService, public windowRef: WindowRef) {
     // Pull User Role to set activities
+    this.window = windowRef.nativeWindow;
     this.userProfile = JSON.parse(authService.getUserToken());
     this.enableSave = this.userProfile.profile.role !== 'Readonly';
     this.lookupDataSource = globalDataProvider.getLookups();
@@ -184,6 +188,25 @@ export class CustomerOrderListComponent implements OnInit {
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
     this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
+
+    this.selectedOrderMaster = new OrderMaster();
+    this.selectedOrderMaster.order_id = 0;
+    this.selectedOrderMaster.tax_rate = '7.0';
+    this.selectedOrderMaster.customer_id = customer_id;
+    this.selectedOrderMaster.customer = this.customer;
+    this.selectedOrderMaster.order_number = this.formatOrderNumber(today);
+    this.selectedOrderMaster.order_date = today.toISOString();
+    this.selectedOrderMaster.taken_user_id = this.userProfile.profile.user_id;
+    this.selectedOrderMaster.order_detail = [];
+    this.selectedOrderMaster.order_art_placements = [];
+    this.selectedOrderMaster.order_fees = [];
+    this.selectedOrderMaster.order_payments = [];
+    this.selectedOrderMaster.order_art_file = [];
+    this.selectedOrderMaster.order_tasks = [];
+    this.selectedOrderMaster.order_notes = [];
+    this.selectedOrderMaster.order_status_histories = [];
+    this.selectedOrderMaster.order_correspondence = [];
+
     this.setOrderContact();
     this.setOrderBillAndShipAddresses();
     if (this.orderDetail) {
@@ -256,6 +279,15 @@ export class CustomerOrderListComponent implements OnInit {
     this.selectedOrder.contact_phone2 = this.customer.customer_person[0].phone_2;
     this.selectedOrder.contact_phone2_ext = this.customer.customer_person[0].phone_2_ext;
     this.selectedOrder.contact_phone2_type = this.customer.customer_person[0].phone_2_type;
+
+    this.selectedOrderMaster.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
+    this.selectedOrderMaster.contact_email = this.customer.customer_person[0].email_address;
+    this.selectedOrderMaster.contact_phone1 = this.customer.customer_person[0].phone_1;
+    this.selectedOrderMaster.contact_phone1_ext = this.customer.customer_person[0].phone_1_ext;
+    this.selectedOrderMaster.contact_phone1_type = this.customer.customer_person[0].phone_1_type;
+    this.selectedOrderMaster.contact_phone2 = this.customer.customer_person[0].phone_2;
+    this.selectedOrderMaster.contact_phone2_ext = this.customer.customer_person[0].phone_2_ext;
+    this.selectedOrderMaster.contact_phone2_type = this.customer.customer_person[0].phone_2_type;
   }
 
   setOrderBillAndShipAddresses() {
@@ -284,6 +316,32 @@ export class CustomerOrderListComponent implements OnInit {
           this.selectedOrder.SHIP_CITY = shippingAddress[0].city;
           this.selectedOrder.SHIP_STATE = shippingAddress[0].state;
           this.selectedOrder.SHIP_ZIP = shippingAddress[0].zip;
+        }
+      }
+    }
+
+    this.selectedOrderMaster.ship_attn = this.customer.customer_name;
+    if (billingAddress && billingAddress.length > 0) {
+      // console.log('Billing Adr', billingAddress[0]);
+      this.selectedOrderMaster.BILL_ADDRESS_1 = billingAddress[0].address_1;
+      this.selectedOrderMaster.BILL_ADDRESS_2 = billingAddress[0].address_2;
+      this.selectedOrderMaster.BILL_CITY = billingAddress[0].city;
+      this.selectedOrderMaster.BILL_STATE = billingAddress[0].state;
+      this.selectedOrderMaster.BILL_ZIP = billingAddress[0].zip;
+      if (this.customer.ship_to_bill_ind === 'Y') {
+        this.selectedOrderMaster.SHIP_ADDRESS_1 = billingAddress[0].address_1;
+        this.selectedOrderMaster.SHIP_ADDRESS_2 = billingAddress[0].address_2;
+        this.selectedOrderMaster.SHIP_CITY = billingAddress[0].city;
+        this.selectedOrderMaster.SHIP_STATE = billingAddress[0].state;
+        this.selectedOrderMaster.SHIP_ZIP = billingAddress[0].zip;
+      } else {
+        const shippingAddress = this.customer.customer_address.filter(item => item.type_code === 'ship');
+        if (shippingAddress && shippingAddress.length > 0) {
+          this.selectedOrderMaster.SHIP_ADDRESS_1 = shippingAddress[0].address_1;
+          this.selectedOrderMaster.SHIP_ADDRESS_2 = shippingAddress[0].address_2;
+          this.selectedOrderMaster.SHIP_CITY = shippingAddress[0].city;
+          this.selectedOrderMaster.SHIP_STATE = shippingAddress[0].state;
+          this.selectedOrderMaster.SHIP_ZIP = shippingAddress[0].zip;
         }
       }
     }
@@ -493,26 +551,26 @@ export class CustomerOrderListComponent implements OnInit {
       // Still need art tab batch save.
       this.orderArt.batchSave(res);
       // this.selectedOrder = null;
-      console.log('orderTaskList on ApplyChanges', this.orderTaskList.orderTask);
+      // console.log('orderTaskList on ApplyChanges', this.orderTaskList.orderTask);
       console.log('order balance_due', this.selectedOrder.balance_due);
       console.log('order', this.selectedOrder);
-      if (+this.selectedOrder.balance_due === 0.00 && this.orderDetail.orderPayments.length > 0) {
+      if (+this.selectedOrder.balance_due === 0.00 && this.selectedOrder.order_payments.length > 0) {
         console.log('balance is paid!');
-        const fpmtTask = this.orderTaskList.orderTask.filter(p => p.task_code === 'fnpmt');
+        const fpmtTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'fnpmt');
         if (fpmtTask) {
           fpmtTask[0].is_complete = 'Y';
           fpmtTask[0].completed_by = this.userProfile.profile.login_id;
           fpmtTask[0].completed_date = new Date().toISOString();
         }
       }
-      if (this.orderDetail.orderPayments.length >= 1) {
-        const depTask = this.orderTaskList.orderTask.filter(p => p.task_code === 'deprc');
+      if (this.selectedOrder.order_payments.length >= 1) {
+        const depTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'deprc');
         if (depTask) {
           depTask[0].is_complete = 'Y';
           depTask[0].completed_by = this.userProfile.profile.login_id;
           depTask[0].completed_date = new Date().toISOString();
         }
-        console.log('depost is paid!', this.orderDetail.orderPayments);
+        console.log('depost is paid!', this.selectedOrder.order_payments);
       }
 
       this.orderTaskList.batchSave(res);
@@ -597,6 +655,14 @@ export class CustomerOrderListComponent implements OnInit {
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
     this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
+
+    this.selectedOrderMaster = new OrderMaster();
+    this.selectedOrderMaster.order_id = 0;
+    this.selectedOrderMaster.tax_rate = '7.0';
+    this.selectedOrderMaster.customer_id = this.customer.customer_id;
+    this.selectedOrderMaster.order_number = this.formatOrderNumber(today);
+    this.selectedOrderMaster.order_date = today.toISOString();
+    this.selectedOrderMaster.taken_user_id = this.userProfile.profile.user_id;
     this.popupVisible = false;
   }
   cancelChanges() {

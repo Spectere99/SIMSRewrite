@@ -40,6 +40,7 @@ import { DatePipe, UpperCasePipe } from '@angular/common';
 import { PhoneFormat } from './_shared/pipes/phone.pipe';
 import { AddressLookup } from './_shared/pipes/addressType.pipe';
 import { ArraySortPipe } from './_shared/pipes/orderBy.pipe';
+import { SearchPipe } from './_shared/pipes/search.pipe';
 
 import { APP_ROUTES } from './app.routes';
 import 'devextreme/data/odata/store';
@@ -65,6 +66,7 @@ import { GlobalDataProvider } from './_providers/global-data.provider';
 import { LookupService } from './_services/lookups.service';
 import { PriceListService } from './_services/pricelist.service';
 import { UserService } from './_services/user.service';
+import { WindowRef } from './_services/window-ref.service';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -98,6 +100,7 @@ import { UserService } from './_services/user.service';
     PhoneFormat,
     ArraySortPipe,
     AddressLookup,
+    SearchPipe,
     OrderArtComponent,
     CustomerOrderListComponent,
     PageNotFoundComponent,
@@ -142,7 +145,7 @@ import { UserService } from './_services/user.service';
     MatTabsModule
     ],
   providers: [DatePipe, ArraySortPipe, UpperCasePipe, AuthenticationService, AuthGuard,
-              LookupService, PriceListService, UserService, GlobalDataProvider,
+              LookupService, PriceListService, UserService, GlobalDataProvider, WindowRef,
               { provide: APP_INITIALIZER, useFactory: globalDataProviderFactory, deps:
                 [GlobalDataProvider], multi: true}],
   entryComponents: [ConfirmDialogComponent],

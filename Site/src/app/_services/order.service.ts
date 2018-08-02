@@ -22,13 +22,13 @@ export class Order {
     est_complete_date: string;
     act_complete_date: string;
     shipped_date: string;
-    subtotal: number;
+    subtotal: string;
     tax_rate: string;
-    tax_amount: number;
-    shipping: number;
-    total: number;
-    payments: number;
-    balance_due: number;
+    tax_amount: string;
+    shipping: string;
+    total: string;
+    payments: string;
+    balance_due: string;
     IMAGE_FILE: string;
     BILL_ADDRESS_1: string;
     BILL_ADDRESS_2: string;
@@ -152,7 +152,7 @@ export class OrderDetail {
     other2_qty: number;
     other3_type: number;
     other3_qty: number;
-    order_number: number;
+    order_number: string;
     customer_name: string;
     garment_order_date: string;
     garment_recvd_date: string;
@@ -166,6 +166,7 @@ export class OrderArtPlacement {
     colors: string;
     color_codes: string;
     notes: string;
+    order: any;
 }
 export class OrderFee  {
     order_fee_id: number;

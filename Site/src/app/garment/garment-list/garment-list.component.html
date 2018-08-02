@@ -18,7 +18,7 @@
   <div class="row">
     <div class="col-lg-12">
       <dx-data-grid id="gridOrders" [dataSource]="dataSource" [showColumnLines]="true" [showRowLines]="true" [showBorders]="true"
-        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)" style="height: 700px;">
+        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" style="height: 700px;">
         <dxo-selection mode="multiple"></dxo-selection>
         <dxi-column dataField="order_id" caption="OrderID" [visible]="false" [width]="100" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
         <dxi-column dataField="checked_in_ind" caption="In" [width]="30" [allowSearch]="false" [allowFiltering]="false" [calculateCellValue]="setCheckedInInd"></dxi-column>
@@ -162,45 +162,68 @@
               <strong>Customer:</strong>{{customer?.customer_name}}
             </div>
             <!-- <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showValues();">Show Values</button> -->
-           <!--  <div class="col-md-1">
+            <!-- <div class="col-md-1">
               <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="reOrder(customerId)">ReOrder</button>
             </div>
             <div class="col-md-2">
               <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showOrderSummary(selectedOrder)">Order Summary</button>
             </div> -->
           </div>
-          <mat-tab-group [dynamicHeight]="false" style="height: 90%; width: 100%;">
+          <div *ngIf="loadingOrder">
+            <h5>Loading Order</h5>
+          </div>
+          <mat-tab-group *ngIf="!loadingOrder" [dynamicHeight]="false" style="height: 90%; width: 100%;">
             <mat-tab label="Info">
-              <app-order-info [(currentOrder)]="selectedOrder" [taskList]="taskListComp"></app-order-info>
+              <dx-scroll-view style="height: 100%; width: 100%">
+                <app-order-info [(currentOrder)]="selectedOrderMaster" [(customer)]="customer" [taskList]="taskListComp"></app-order-info>
+              </dx-scroll-view>
             </mat-tab>
             <mat-tab label="Tasks">
-              <app-order-task-list [(masterOrder)]="selectedOrder" #taskListComp></app-order-task-list>
+              <dx-scroll-view style="height: 100%; width: 100%">
+                <app-order-task-list [(masterOrder)]="selectedOrderMaster" #taskListComp></app-order-task-list>
+              </dx-scroll-view>
             </mat-tab>
             <mat-tab label="Details">
-              <app-order-detail [(currentOrder)]="selectedOrder"></app-order-detail>
+              <dx-scroll-view style="height: 100%; width: 100%">
+                <app-order-detail [(customer)]="customer" [(masterOrder)]="selectedOrderMaster" [(currentOrder)]="selectedOrder"></app-order-detail>
+              </dx-scroll-view>
             </mat-tab>
             <mat-tab label="Art">
-              <app-order-art [(masterOrder)]="selectedOrder"></app-order-art>
+              <dx-scroll-view style="height: 100%; width: 100%">
+                <app-order-art [(masterOrder)]="selectedOrderMaster"></app-order-art>
+              </dx-scroll-view>
             </mat-tab>
             <mat-tab label="History/Comments">
-              <app-order-notes-history [currentOrder]="selectedOrder"></app-order-notes-history>
+              <dx-scroll-view style="height: 100%; width: 100%">
+                <app-order-notes-history [currentOrder]="selectedOrder" [(orderStatusHistory)]="selectedStatusHistory" [(orderNotes)]="selectedNotes"></app-order-notes-history>
+              </dx-scroll-view>
             </mat-tab>
             <mat-tab label="Correspondence">
-              <app-order-invoice></app-order-invoice>
+              <dx-scroll-view style="height: 100%; width: 100%">
+                <app-order-correspondence [(masterOrder)]="selectedOrderMaster"></app-order-correspondence>
+              </dx-scroll-view>
             </mat-tab>
           </mat-tab-group>
-          <div class="col-md-12 float-right">
-            <div class="row col-md-4 float-right">
-              <div class="col-md-4">
-                <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="closeEditor();">
-              </div>
-              <div class="col-md-4">
-                <input *ngIf="enableSave" type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
-              </div>
+          <!-- <div *ngIf="!loadingOrder" class="col-md-12">
+            <div class="col-md-2 float-right">
+              <input type="checkbox" id="chkLeaveWindowOpen" name="chkLeaveWindowOpen" [checked]="leaveWindowOpen" (change)="leaveWindowOpen=!leaveWindowOpen">
+              <label for="chkLeaveWindowOpen" style="font-size: 10px;">Leave Open</label>
             </div>
-          </div>
+            <div class="col-md-2 float-right">
+              <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
+            </div>
+            <div class="col-md-2 float-right">
+              <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="cancelChanges();">
+            </div>
+          </div> -->
         </div>
       </dx-popup>
     </div>
   </div>
 </div>
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: window }" message="Loading..." [(visible)]="loading"
+      [showIndicator]="true" [showPane]="true" [shading]="true" [closeOnOutsideClick]="false">
+      <!--   (onShown)="onShown()"
+      (onHidden)="onHidden()"> -->
+</dx-load-panel>

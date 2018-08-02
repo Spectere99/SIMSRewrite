@@ -10,6 +10,7 @@ import { UserService } from '../../_services/user.service';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
 import { DxLoadPanelModule } from 'devextreme-angular';
+import { WindowRef } from '../../_services/window-ref.service';
 
 declare let jsPDF;
 
@@ -29,7 +30,7 @@ export class OrderInvoiceComponent implements OnInit {
  // @Input() currentOrder: any;
   @Input() masterOrder: OrderMaster;
   @Output() onSave = new EventEmitter<any>();
-  private loading = false;
+  loading = false;
   lookupDataSource: Array<LookupItem>;
   priceListDataSource: Array<PriceListItem>;
   itemTypes: Array<PriceListItem>;
@@ -53,10 +54,12 @@ export class OrderInvoiceComponent implements OnInit {
   defaultDocFolder: string;
   userProfile;
 
+  window;
 
   constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, private priceListService: PriceListService,
-    public correspondenceService: CorrespondenceService,
+    public correspondenceService: CorrespondenceService, public windowRef: WindowRef,
     public authService: AuthenticationService, public cp: CurrencyPipe) {
+    this.window = windowRef.nativeWindow;
     this.userProfile = JSON.parse(authService.getUserToken());
     this.defaultDocFolder = environment.defaultDocFolder;
     this.order = new Order();

@@ -74,7 +74,7 @@
             <b>Items:</b>
           </legend>
           <!--includeif tableempty="ORDER_DETAIL"-->
-          <div *ngIf="orderSum?.order_detail === undefined || orderSUm?.order_detail.length === 0">No line items.</div>
+          <div *ngIf="orderSum?.order_detail === undefined || orderSum?.order_detail.length === 0">No line items.</div>
           <!--else-->
           <div *ngFor="let lineItem of orderSum?.order_detail">
             <table class="SmallBodyText" cellpadding="1" cellspacing="0">
@@ -182,7 +182,7 @@
           <!--includeif tableempty="order_fees"-->
           <div *ngIf="orderFees === undefined || orderFees.length === 0">No setup fees.</div>
           <!--else-->
-          <div *ngFor="let orderFee of orderFees | sort: fee_line_number">
+          <div *ngFor="let orderFee of orderFees">
             <table class="SmallBodyText" cellpadding="1" cellspacing="0">
               <tr>
                 <td width="50">

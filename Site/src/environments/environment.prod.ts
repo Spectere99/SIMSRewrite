@@ -1,6 +1,6 @@
 export const baseUrl = 'http://spserver:8888';
 export const environmentName = 'Prod';
-export const version = '0.64';
+export const version = '0.7';
 export const environment = {
   production: true,
   baseUrl: 'http://spserver:8888',

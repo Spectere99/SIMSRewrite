@@ -12,7 +12,7 @@
                     <input class="form-control" type="text" size="50" [(ngModel)]="customer.customer_name">
                 </td>
                 <td>
-                    <select class="form-control form-control-sm" [ngClass]="{'empty':newMode}" [(ngModel)]="customer.status_code">
+                    <select class="form-control form-control-sm" [(ngModel)]="customer.status_code">
                         <option *ngFor="let stat of statusTypes" [value]="stat.char_mod">
                             {{stat.description}}
                         </option>
@@ -23,7 +23,7 @@
                         [disabled]="true">
                 </td>
                 <td>
-                    <select class="form-control form-control-sm" [ngClass]="{'empty':newMode}" [(ngModel)]="customer.setup_by" [disabled]="true">
+                    <select class="form-control form-control-sm" [(ngModel)]="customer.setup_by" [disabled]="true">
                         <option *ngFor="let user of userList  | sort: 'last_name'" [value]="user.user_id">
                             {{user.first_name + ' ' + user.last_name}}
                         </option>

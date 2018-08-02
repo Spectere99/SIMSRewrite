@@ -8,6 +8,7 @@ import { StateService, StateInfo } from '../../_shared/states.service';
 import { OrderTaskListComponent } from '../order-task-list/order-task-list.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar } from '@angular/material';
+import { WindowRef } from '../../_services/window-ref.service';
 
 @Component({
   selector: 'app-order-info',
@@ -32,12 +33,14 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   userProfile;
   originalOrderStatus: string;
   orderStatusChanged = false;
+  loading = false;
+  window;
  // customerService: CustomerService;
 
   constructor(globalDataProvider: GlobalDataProvider, public customerService: CustomerService,
               private usStateService: StateService, public orderService: OrderService, public snackBar: MatSnackBar,
-              public authService: AuthenticationService, private globals: Globals) {
-
+              public authService: AuthenticationService, private globals: Globals, public windowRef: WindowRef) {
+    this.window = windowRef.nativeWindow;
     this.userProfile = JSON.parse(authService.getUserToken());
     this.stateList = this.usStateService.getStateList();
     this.lookupDataSource = globalDataProvider.getLookups();
@@ -93,8 +96,8 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     orderToSave.order_number = order.order_number;
     orderToSave.order_type =  order.order_type;
     orderToSave.purchase_order =  order.purchase_order;
-    orderToSave.order_date =  order.order_date;
-    orderToSave.order_due_date =  order.order_due_date;
+    orderToSave.order_date =  new Date(order.order_date).toISOString();
+    orderToSave.order_due_date =  new Date(order.order_due_date).toISOString();
     orderToSave.order_status =  order.order_status;
     orderToSave.taken_user_id =  order.taken_user_id;
     orderToSave.assigned_user_id =  order.assigned_user_id;
@@ -103,13 +106,13 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     orderToSave.est_complete_date =  order.est_complete_date;
     orderToSave.act_complete_date =  order.act_complete_date;
     orderToSave.shipped_date =  order.shipped_date;
-    orderToSave.subtotal =  order.subtotal;
-    orderToSave.tax_rate =  order.tax_rate;
-    orderToSave.tax_amount =  order.tax_amount;
-    orderToSave.shipping =  order.shipping;
-    orderToSave.total =  order.total;
-    orderToSave.payments =  order.payments;
-    orderToSave.balance_due =  order.balance_due;
+    orderToSave.subtotal =  order.subtotal.toString();
+    orderToSave.tax_rate =  order.tax_rate.toString();
+    orderToSave.tax_amount =  order.tax_amount.toString();
+    orderToSave.shipping =  order.shipping.toString();
+    orderToSave.total =  order.total.toString();
+    orderToSave.payments =  order.payments.toString();
+    orderToSave.balance_due =  order.balance_due.toString();
     orderToSave.IMAGE_FILE =  order.IMAGE_FILE;
     orderToSave.BILL_ADDRESS_1 =  order.BILL_ADDRESS_1;
     orderToSave.BILL_ADDRESS_2 =  order.BILL_ADDRESS_2;
@@ -143,7 +146,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   saveOrderInfo() {
     // console.log('Order on Save', this.currentOrder);
       const insOrder = this.convertOrderInfo(this.currentOrder);
-    // console.log('Converted Order on Save', insOrder);
+      console.log('Converted Order on Save', insOrder);
       if (this.currentOrder.order_id <= 0) {
         this.currentOrder.order_id = 0;
         return this.orderService.addOrderInfo('rwflowers', insOrder)

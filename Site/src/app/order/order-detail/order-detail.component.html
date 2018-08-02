@@ -15,7 +15,7 @@
       <div *ngIf="noOrderItems()">
         <div class="alert alert-warning">No line items.</div>
       </div>
-      <div *ngFor="let orderDetail of orderLineItems; index as i">
+      <div *ngFor="let orderDetail of masterOrder.order_detail; index as i">
         <mat-card>
           <table>
             <tr>
@@ -188,7 +188,7 @@
       <div *ngIf="noArtPlacementItems()">
         <div class="alert alert-warning">No items.</div>
       </div>
-      <div *ngFor="let artPlacement of orderArtPlacement">
+      <div *ngFor="let artPlacement of masterOrder.order_art_placements">
       <mat-card>
         <table>
           <tr>
@@ -255,7 +255,7 @@
       <div *ngIf="noOrderFees()">
         <div class="alert alert-warning">No items.</div>
       </div>
-      <div *ngFor="let fee of orderFees; index as i">
+      <div *ngFor="let fee of masterOrder.order_fees; index as i">
       <mat-card>
         <table>
           <tr>
@@ -310,11 +310,11 @@
             <table>
               <tr>
                 <td>Subtotal:</td>
-                <td>${{order.subtotal}}</td>
+                <td>{{masterOrder.subtotal | currency}}</td>
               </tr>
               <tr>
                 <td>Non-taxable Subtotal:</td>
-                <td>${{nonTaxableSubTotal}}</td>
+                <td>{{nonTaxableSubTotal | currency}}</td>
               </tr>
               <tr>
                 <td>Tax Rate:</td>
@@ -322,25 +322,25 @@
               </tr>
               <tr>
                 <td>Tax:</td>
-                <td>${{currentOrder.tax_amount}}</td>
+                <td>{{masterOrder.tax_amount | currency}}</td>
               </tr>
               <tr>
                 <td>Shipping:</td>
-                <td>${{currentOrder.shipping}}</td>
+                <td>{{masterOrder.shipping | currency}}</td>
               </tr>
               <tr>
                 <td>Total:</td>
-                <td>${{currentOrder.total}}</td>
+                <td>{{masterOrder.total| currency}}</td>
               </tr>
               <tr>
                 <td>Payments:</td>
-                <td>${{currentOrder.payments}}</td>
+                <td>{{masterOrder.payments | currency}}</td>
               </tr>
               <tr>
                 <td>
                   <strong>Balance Due:</strong>
                 </td>
-                <td><strong>${{currentOrder.balance_due}}</strong></td>
+                <td><strong>{{masterOrder.balance_due | currency}}</strong></td>
               </tr>
             </table>
           </div>
@@ -355,7 +355,7 @@
             </div>
             
             <mat-card>
-              <div *ngFor="let pmnt of orderPayments">
+              <div *ngFor="let pmnt of masterOrder.order_payments">
                 <table>
                   <tr>
                     <td></td>
@@ -399,7 +399,7 @@
 
                 </table>
               </div>
-              <div *ngIf="orderPayments.length === 0">No Payments.</div>
+              <div *ngIf="masterOrder.order_payments.length === 0">No Payments.</div>
             </mat-card>
           </div>
         </div>

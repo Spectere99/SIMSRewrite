@@ -3,7 +3,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { Http, Headers } from '@angular/http';
 import { Router } from '@angular/router';
 import { DxButtonModule, DxLoadPanelModule, DxCheckBoxModule } from 'devextreme-angular';
-
+import { WindowRef } from '../_services/window-ref.service';
 import { AuthenticationService } from '../_services/authentication.service';
 
 @Component({
@@ -14,16 +14,19 @@ import { AuthenticationService } from '../_services/authentication.service';
 
 export class LoginComponent implements OnInit {
 // baseURL = 'http://localhost:56543/api/Security';
-private message: string;
-private loginForm;
-private loading = false;
+message: string;
+loginForm;
+loading = false;
 
+window;
 
   constructor(
         private _router: Router,
         private fb: FormBuilder,
-        private _authService: AuthenticationService) {
+        private _authService: AuthenticationService,
+        public windowRef: WindowRef ) {
 
+        this.window = windowRef.nativeWindow;
         console.log('Creating Form');
         this.createForm();
 }
@@ -34,7 +37,7 @@ private loading = false;
         });
     }
 
-    private submitted() {
+    submitted() {
         console.log('submitting Login Request', this.loginForm);
         if (this.loginForm.invalid) { return; }
 

@@ -18,7 +18,7 @@
           <dxo-lookup [dataSource]="order_typeSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
         </dxi-column>
         <dxi-column dataField="assigned_user_id" caption="Assigned To" [width]="100">
-          <dxo-lookup [dataSource]="user_Source" valueExpr="user_id" displayExpr="login_id"></dxo-lookup>
+          <dxo-lookup [dataSource]="userDataSource" valueExpr="user_id" displayExpr="login_id"></dxo-lookup>
         </dxi-column>
         <!--<dxi-column dataField="" caption="Items" [width]="100"></dxi-column> -->
         <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->

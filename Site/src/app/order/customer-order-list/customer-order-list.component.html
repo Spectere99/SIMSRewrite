@@ -2,132 +2,132 @@
   <section>
     <h6>Filter by using the cooresponding column. (Expand each row to view associated image files).</h6>
     <hr>
-    <div style="padding:5px;">
-      <input *ngIf="enableSave" type="button" class="btn btn-primary" value="New Order" (click)="createNewOrder(customerId);">
+    <div class="col-md-2">
+      <input *ngIf="enableSave" type="button" class="btn btn-primary btn-sm" value="New Order" (click)="createNewOrder(customerId);">
     </div>
-    <!-- <div style="padding:5px;">
-        <input type="button" class="btn btn-primary" value="Refresh" (click)="refreshGrid();">
-    </div> -->
-    <div class="row col-lg-12">
-      <dx-data-grid id="gridOrders" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
-        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)" [masterDetail]="{ enabled: true, template: 'detail' }">
-        <dxo-selection mode="single"></dxo-selection>
-        <!-- <dxi-column dataField="reorder_ind" caption="Reorder?" [width]="100" [allowFiltering]="false" [calculateCellValue]="setReorderInd"></dxi-column> -->
-        <dxi-column dataField="order_number" caption="Order #" [width]="100" [allowSearch]="true" [allowFiltering]="true" cellTemplate="orderCell"></dxi-column>
-        <dxi-column dataField="order_date" sortOrder="desc" caption="Order Date" dataType="date" [width]="110"></dxi-column>
-        <dxi-column dataField="order_status" caption="Status" [width]="125">
-          <dxo-lookup [dataSource]="order_statusSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
-        </dxi-column>
-        <dxi-column dataField="order_due_date" caption="Due Date" dataType="date" [width]="110"></dxi-column>
-        <!-- <dxi-column dataField="order_art_file.image_file" caption="Art" [width]="200"></dxi-column> -->
-        <!-- <dxi-column dataField="customer.customer_name" caption="Customer Name" [width]="400"></dxi-column>  -->
-        <!--    <dxi-column dataField="order_due_date" caption="Due Date" dataType="date" [width]="110"></dxi-column>
-        <dxi-column dataField="purchase_order" caption="Purchase Order" [width]="175"></dxi-column>
-        <dxi-column dataField="order_type" caption="Order Type" [width]="225">
-          <dxo-lookup [dataSource]="order_typeSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
-        </dxi-column>
-        <dxi-column dataField="assigned_user_id" caption="Assigned To" [width]="100">
-          <dxo-lookup [dataSource]="user_Source" valueExpr="user_id" displayExpr="login_id"></dxo-lookup>
-        </dxi-column> -->
-        <!--<dxi-column dataField="" caption="Items" [width]="100"></dxi-column> -->
-        <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
-        <dxo-filter-row [visible]="true"></dxo-filter-row>
-        <dxo-header-filter [visible]="true"></dxo-header-filter>
-        <dxo-sorting mode="multiple">
-          <!-- or "single" | "none" -->
-        </dxo-sorting>
-        <dxo-paging [pageSize]="10"></dxo-paging>
-        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 50]" [showInfo]="true"></dxo-pager>
-        <dxo-editing mode="form" [allowUpdating]="false" [allowDeleting]="false" [allowAdding]="false">
-        </dxo-editing>
-        <div *dxTemplate="let data of 'orderCell'">
-          <a [routerLink]="" (click)="showEditPopup(data)">{{data.value}}</a>
-          <!-- <button type="button" class="btn btn-xs" (click)="showEditPopup(data)">{{data.value}}</button> -->
-        </div>
-        <div *dxTemplate="let art of 'detail'">
-          <div class="row">
-            {{art.data.order_art_file.length}}
-            <div class="col-sm-1" *ngFor="let artFile of art.data.order_art_file">
-              <a [href]="defaultArtFolder + artFile.image_file" target="_blank">
-                <img [src]="defaultArtFolder + artFile.image_file" height="75px" width="75px">
-              </a>
+    <div class="row">
+      <div class="col-lg-12">
+        <dx-data-grid id="gridOrders" [width]="1000" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
+          [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)" [masterDetail]="{ enabled: true, template: 'detail' }">
+          <dxo-selection mode="single"></dxo-selection>
+          <!-- <dxi-column dataField="reorder_ind" caption="Reorder?" [width]="100" [allowFiltering]="false" [calculateCellValue]="setReorderInd"></dxi-column> -->
+          <dxi-column dataField="order_number" caption="Order #" [width]="100" [allowSearch]="true" [allowFiltering]="true" cellTemplate="orderCell"></dxi-column>
+          <dxi-column dataField="order_date" sortOrder="desc" caption="Order Date" dataType="date" [width]="110"></dxi-column>
+          <dxi-column dataField="order_type" caption="Order Type" [width]="225">
+              <dxo-lookup [dataSource]="order_typeSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
+          </dxi-column>
+          <dxi-column dataField="order_status" caption="Status" [width]="125">
+            <dxo-lookup [dataSource]="order_statusSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
+          </dxi-column>
+          <dxi-column dataField="order_due_date" caption="Due Date" dataType="date" [width]="110"></dxi-column>
+          
+          <!-- <dxi-column dataField="order_art_file.image_file" caption="Art" [width]="200"></dxi-column> -->
+          <!-- <dxi-column dataField="customer.customer_name" caption="Customer Name" [width]="400"></dxi-column>  -->
+          <!--    <dxi-column dataField="order_due_date" caption="Due Date" dataType="date" [width]="110"></dxi-column>
+          <dxi-column dataField="purchase_order" caption="Purchase Order" [width]="175"></dxi-column>
+          <dxi-column dataField="assigned_user_id" caption="Assigned To" [width]="100">
+            <dxo-lookup [dataSource]="user_Source" valueExpr="user_id" displayExpr="login_id"></dxo-lookup>
+          </dxi-column> -->
+          <!--<dxi-column dataField="" caption="Items" [width]="100"></dxi-column> -->
+          <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
+          <dxo-filter-row [visible]="true"></dxo-filter-row>
+          <dxo-header-filter [visible]="true"></dxo-header-filter>
+          <dxo-sorting mode="multiple">
+            <!-- or "single" | "none" -->
+          </dxo-sorting>
+          <dxo-paging [pageSize]="8" [enabled]="true"></dxo-paging>
+          <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[8, 16, 50]" [showInfo]="true"></dxo-pager>
+          <dxo-scrolling mode="scrollMode"></dxo-scrolling>
+          <dxo-export [enabled]="true" fileName="Customers"></dxo-export>
+          <dxo-editing mode="form" [allowUpdating]="false" [allowDeleting]="false" [allowAdding]="false">
+          </dxo-editing>
+          <div *dxTemplate="let data of 'orderCell'">
+            <a [routerLink]="" (click)="showEditPopup(data)">{{data.value}}</a>
+            <!-- <button type="button" class="btn btn-xs" (click)="showEditPopup(data)">{{data.value}}</button> -->
+          </div>
+          <div *dxTemplate="let art of 'detail'">
+            <div class="row">
+              {{art.data.order_art_file.length}}
+              <div class="col-sm-1" *ngFor="let artFile of art.data.order_art_file">
+                <a [href]="defaultArtFolder + artFile.image_file" target="_blank">
+                  <img [src]="defaultArtFolder + artFile.image_file" height="75px" width="75px">
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      </dx-data-grid>
-      <!-- START POPUP EDITOR MARKUP -->
-      <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible">
-        <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
-          <div class="row">
-            <div class="col-md-5">
-              <strong>Customer:</strong>{{customer?.customer_name}}
+        </dx-data-grid>
+        <!-- START POPUP EDITOR MARKUP -->
+        <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible">
+          <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
+            <div class="row">
+              <div class="col-md-5">
+                <strong>Customer:</strong>{{customer?.customer_name}}
+              </div>
+              <!-- <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showValues();">Show Values</button> -->
+              <div class="col-md-1">
+                <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="reOrder(customerId)">ReOrder</button>
+              </div>
+              <div class="col-md-2">
+                <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showOrderSummary(selectedOrder)">Order Summary</button>
+              </div>
             </div>
-            <!-- <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showValues();">Show Values</button> -->
-            <div class="col-md-1">
-              <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="reOrder(customerId)">ReOrder</button>
+            <div *ngIf="loadingOrder">
+              <h5>Loading Order</h5>
             </div>
-            <div class="col-md-2">
-              <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showOrderSummary(selectedOrder)">Order Summary</button>
-            </div>
-          </div>
-          <div *ngIf="loadingOrder">
-            <h5>Loading Order</h5>
-          </div>
-          <mat-tab-group *ngIf="!loadingOrder" [dynamicHeight]="false" style="height: 90%; width: 100%;">
-            <mat-tab label="Info">
-              <dx-scroll-view style="height: 100%; width: 100%">
-                <app-order-info [(currentOrder)]="selectedOrder" [(customer)]="customer" [taskList]="taskListComp"></app-order-info>
-              </dx-scroll-view>
-            </mat-tab>
-            <mat-tab label="Tasks">
-              <dx-scroll-view style="height: 100%; width: 100%">
-                <app-order-task-list [(masterOrder)]="selectedOrderMaster" #taskListComp></app-order-task-list>
-              </dx-scroll-view>
-            </mat-tab>
-            <mat-tab label="Details">
-              <dx-scroll-view style="height: 100%; width: 100%">
-                <app-order-detail [(customer)]="customer" [(masterOrder)]="selectedOrderMaster" [(currentOrder)]="selectedOrder" [(orderArtPlacement)]="selectedArtPlacements" 
-                  [(orderLineItems)]="selectedOrderLines" [(orderFees)]="selectedOrderFees" [(orderPayments)]="selectedPayments"
-                  [(orderTasks)]="selectedTasks" ></app-order-detail>
-              </dx-scroll-view>
-            </mat-tab>
-            <mat-tab label="Art">
-              <dx-scroll-view style="height: 100%; width: 100%">
-                <app-order-art [(masterOrder)]="selectedOrderMaster"></app-order-art>
-              </dx-scroll-view>
-            </mat-tab>
-            <mat-tab label="History/Comments">
-              <dx-scroll-view style="height: 100%; width: 100%">
-                <app-order-notes-history [currentOrder]="selectedOrder" [(orderStatusHistory)]="selectedStatusHistory" [(orderNotes)]="selectedNotes"></app-order-notes-history>
-              </dx-scroll-view>
-            </mat-tab>
-            <mat-tab label="Correspondence">
-              <dx-scroll-view style="height: 100%; width: 100%">
-                <app-order-correspondence [(masterOrder)]="selectedOrderMaster"></app-order-correspondence>
-              </dx-scroll-view>
-            </mat-tab>
-          </mat-tab-group>
-          <div *ngIf="!loadingOrder" class="col-md-12">
-            <div class="col-md-2 float-right">
-              <input type="checkbox" id="chkLeaveWindowOpen" name="chkLeaveWindowOpen" [checked]="leaveWindowOpen" (change)="leaveWindowOpen=!leaveWindowOpen">
-              <label for="chkLeaveWindowOpen" style="font-size: 10px;">Leave Open</label>
-            </div>
-            <div class="col-md-2 float-right">
-              <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
-            </div>
-            <div class="col-md-2 float-right">
-              <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="cancelChanges();">
+            <mat-tab-group *ngIf="!loadingOrder" [dynamicHeight]="false" style="height: 90%; width: 100%;">
+              <mat-tab label="Info">
+                <dx-scroll-view style="height: 100%; width: 100%">
+                  <app-order-info [(currentOrder)]="selectedOrderMaster" [(customer)]="customer" [taskList]="taskListComp"></app-order-info>
+                </dx-scroll-view>
+              </mat-tab>
+              <mat-tab label="Tasks">
+                <dx-scroll-view style="height: 100%; width: 100%">
+                  <app-order-task-list [(masterOrder)]="selectedOrderMaster" #taskListComp></app-order-task-list>
+                </dx-scroll-view>
+              </mat-tab>
+              <mat-tab label="Details">
+                <dx-scroll-view style="height: 100%; width: 100%">
+                  <app-order-detail [(customer)]="customer" [(masterOrder)]="selectedOrderMaster" [(currentOrder)]="selectedOrder"></app-order-detail>
+                </dx-scroll-view>
+              </mat-tab>
+              <mat-tab label="Art">
+                <dx-scroll-view style="height: 100%; width: 100%">
+                  <app-order-art [(masterOrder)]="selectedOrderMaster"></app-order-art>
+                </dx-scroll-view>
+              </mat-tab>
+              <mat-tab label="History/Comments">
+                <dx-scroll-view style="height: 100%; width: 100%">
+                  <app-order-notes-history [currentOrder]="selectedOrder" [(orderStatusHistory)]="selectedStatusHistory" [(orderNotes)]="selectedNotes"></app-order-notes-history>
+                </dx-scroll-view>
+              </mat-tab>
+              <mat-tab label="Correspondence">
+                <dx-scroll-view style="height: 100%; width: 100%">
+                  <app-order-correspondence [(masterOrder)]="selectedOrderMaster"></app-order-correspondence>
+                </dx-scroll-view>
+              </mat-tab>
+            </mat-tab-group>
+            <div *ngIf="!loadingOrder" class="col-md-12">
+              <div class="col-md-2 float-right">
+                <input type="checkbox" id="chkLeaveWindowOpen" name="chkLeaveWindowOpen" [checked]="leaveWindowOpen" (change)="leaveWindowOpen=!leaveWindowOpen">
+                <label for="chkLeaveWindowOpen" style="font-size: 10px;">Leave Open</label>
+              </div>
+              <div class="col-md-2 float-right">
+                <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
+              </div>
+              <div class="col-md-2 float-right">
+                <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="cancelChanges();">
+              </div>
             </div>
           </div>
-        </div>
-      </dx-popup>
-
-      <!-- START POPUP ORDER SUMMARY MARKUP -->
-      <dx-popup class="popup" [showTitle]="true" title="Order Summary" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="summaryVisible">
-        <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
-          <app-order-summary [currentOrder]="selectedOrder"></app-order-summary>
-        </div>
-      </dx-popup>
+        </dx-popup>
+  
+        <!-- START POPUP ORDER SUMMARY MARKUP -->
+        <dx-popup class="popup" [showTitle]="true" title="Order Summary" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="summaryVisible">
+          <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
+            <app-order-summary [currentOrder]="selectedOrder"></app-order-summary>
+          </div>
+        </dx-popup>
+      </div>
     </div>
     <dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: window }" message="Loading..." [(visible)]="loading"
       [showIndicator]="true" [showPane]="true" [shading]="true" [closeOnOutsideClick]="false">

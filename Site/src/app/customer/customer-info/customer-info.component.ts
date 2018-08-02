@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { StateService, StateInfo } from '../../_shared/states.service';
+import { User } from '../../_services/user.service';
 import { LookupService } from '../../_services/lookups.service';
 import { CustomerService, Customer, CustomerDTO, CustomerAddress } from '../../_services/customer.service';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
@@ -19,7 +20,7 @@ import 'rxjs/add/operator/map';
 })
 export class CustomerInfoComponent implements OnInit {
 @Input() customer: any;
-@Input() userList: Array<any>;
+userList: Array<User>;
 customerList: Array<any>;
 lookupDataSource: any;
 addressTypes: any;
@@ -35,6 +36,7 @@ ctrlHasFocus: string;
     this.stateList = this.usStateService.getStateList();
     // console.log('States', this.stateList);
     // console.log('customerList', this.customerList);
+    this.userList = globalDataProvider.getUsers();
     this.lookupDataSource = globalDataProvider.getLookups();
     this.createAddressTypeDataSource();
     this.createStatusTypeDataSource();

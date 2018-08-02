@@ -33,21 +33,21 @@ namespace SIMSEntities
         public string notes { get; set; }
         public string checked_in_ind { get; set; }
         public string checked_out_ind { get; set; }
-        public Nullable<long> xsmall_qty { get; set; }
-        public Nullable<long> small_qty { get; set; }
-        public Nullable<long> med_qty { get; set; }
-        public Nullable<long> large_qty { get; set; }
-        public Nullable<long> xl_qty { get; set; }
-        public Nullable<long> C2xl_qty { get; set; }
-        public Nullable<long> C3xl_qty { get; set; }
-        public Nullable<long> C4xl_qty { get; set; }
-        public Nullable<long> C5xl_qty { get; set; }
+        public Nullable<int> xsmall_qty { get; set; }
+        public Nullable<int> small_qty { get; set; }
+        public Nullable<int> med_qty { get; set; }
+        public Nullable<int> large_qty { get; set; }
+        public Nullable<int> xl_qty { get; set; }
+        public Nullable<int> C2xl_qty { get; set; }
+        public Nullable<int> C3xl_qty { get; set; }
+        public Nullable<int> C4xl_qty { get; set; }
+        public Nullable<int> C5xl_qty { get; set; }
         public string other1_type { get; set; }
-        public Nullable<long> other1_qty { get; set; }
+        public Nullable<int> other1_qty { get; set; }
         public string other2_type { get; set; }
-        public Nullable<long> other2_qty { get; set; }
+        public Nullable<int> other2_qty { get; set; }
         public string other3_type { get; set; }
-        public Nullable<long> other3_qty { get; set; }
+        public Nullable<int> other3_qty { get; set; }
         public string order_number { get; set; }
         public string customer_name { get; set; }
         public Nullable<System.DateTime> garment_order_date { get; set; }

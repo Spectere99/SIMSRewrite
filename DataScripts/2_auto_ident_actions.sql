@@ -16,6 +16,9 @@ CHANGE COLUMN `order_art_id` `order_art_id` BIGINT(20) NOT NULL AUTO_INCREMENT ;
 ALTER TABLE `printmgr`.`order_art_placement` 
 CHANGE COLUMN `order_art_placement_id` `order_art_placement_id` INT(10) NOT NULL AUTO_INCREMENT ;
 
+ALTER TABLE `printmgr`.`order_fees` 
+CHANGE COLUMN `order_fee_id` `order_fee_id` INT(10) NOT NULL AUTO_INCREMENT ;
+
 ALTER TABLE `printmgr`.`order_detail` 
 CHANGE COLUMN `order_detail_id` `order_detail_id` INT(10) NOT NULL AUTO_INCREMENT ;
 

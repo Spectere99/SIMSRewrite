@@ -4,11 +4,12 @@ import { Http, HttpModule, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
-import { OrderService, Order, OrderDetail } from '../../_services/order.service';
+import { OrderMaster, OrderService, Order, OrderDetail } from '../../_services/order.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
 import { CustomerService, Customer } from '../../_services/customer.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { UserService, User } from '../../_services/user.service';
+import { CorrespondenceService } from '../../_services/correspondence.service';
 import { OrderInfoComponent } from '../../order/order-info/order-info.component';
 import { OrderDetailComponent } from '../../order/order-detail/order-detail.component';
 import { OrderArtComponent } from '../../order/order-art/order-art.component';
@@ -16,13 +17,15 @@ import { OrderTaskListComponent } from '../../order/order-task-list/order-task-l
 import { OrderSummaryComponent } from '../../order/order-summary/order-summary.component';
 import { OrderNotesHistoryComponent } from '../../order/order-notes-history/order-notes-history.component';
 import { DxDataGridComponent, DxRadioGroupModule, DxTooltipModule, DxRadioGroupComponent } from 'devextreme-angular';
+import { WindowRef } from '../../_services/window-ref.service';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 
 @Component({
   selector: 'app-garment-list',
   templateUrl: './garment-list.component.html',
-  providers: [OrderService, LookupService, UserService,
+  providers: [OrderService, LookupService, UserService, CorrespondenceService,
               PriceListService, CustomerService, AuthenticationService],
   styleUrls: ['./garment-list.component.scss']
 })
@@ -34,6 +37,21 @@ export class GarmentListComponent implements OnInit {
   @ViewChild(OrderTaskListComponent) orderTaskList: OrderTaskListComponent;
   @ViewChild(OrderSummaryComponent) orderSummary: OrderSummaryComponent;
   @ViewChild(OrderNotesHistoryComponent) orderNotesHistory: OrderNotesHistoryComponent;
+
+  selectedOrderMaster: OrderMaster;
+  /* Data Strutures for Orders */
+  selectedOrder: any;
+  selectedTasks: any;
+  selectedOrderLines: any;
+  selectedArtPlacements: any;
+  selectedFees: any;
+  selectedPayments: any;
+  selectedCorrespondence: any;
+  selectedOrderFees: any;
+  selectedArtFiles: any;
+  selectedNotes: any;
+  selectedStatusHistory: any;
+
   customer: Customer;
   baseUrl = environment.odataEndpoint;
   popupVisible = false;
@@ -44,11 +62,12 @@ export class GarmentListComponent implements OnInit {
   vendorTypes: Array<LookupItem>;
   itemTypes: Array<PriceListItem>;
   userProfile;
-  selectedOrder: any;
   todayDate;
   currentFilterName: string;
   customGarmentOrderDate;
 
+  loading: boolean;
+  loadingOrder: boolean;
   enableSave = false;
 
   filterNames = [
@@ -78,10 +97,13 @@ export class GarmentListComponent implements OnInit {
   allOrderFilter = [
                 ['order/order_status', '=', 'ord']];
 
+  window;
   constructor(globalDataProvider: GlobalDataProvider, public lookupService: LookupService, public userService: UserService,
-              public priceListService: PriceListService,
-              public orderService: OrderService, public customerService: CustomerService, public authService: AuthenticationService) {
-                console.log('garment-list.component:constructor');
+              public priceListService: PriceListService,  public correspondenceService: CorrespondenceService,
+              public orderService: OrderService, public customerService: CustomerService, public authService: AuthenticationService,
+              public windowRef: WindowRef) {
+    this.window = windowRef.nativeWindow;
+    console.log('garment-list.component:constructor');
     this.userProfile = JSON.parse(authService.getUserToken());
     this.lookupDataSource = globalDataProvider.getLookups();
     this.priceListDataSource = globalDataProvider.getPriceList();
@@ -261,39 +283,58 @@ export class GarmentListComponent implements OnInit {
 
   showEditPopup(e) {
     // e.cancel = true;
-    console.log('E', e);
-    console.log('garment-list:showEditPopup Calling getCustomerData');
-    this.customerService.getCustomerData('', e.data.order.customer_id).subscribe(res => {
-      this.customer = res;
-      // this.contactPersons = this.orderCustomer.customer_person;
-      // console.log('pulled Customer', this.orderCustomer);
-
-      this.orderService.loadOrderData('', e.data.order_id).subscribe(res2 => {
-        this.selectedOrder = res2;
-        console.log('Selected Order', this.selectedOrder);
-        this.popupVisible = true;
-      });
+    // console.log('E', e);
+    console.log('*** garment-list-comopnent:showEditPopup - START');
+    this.loadingOrder = true;
+    this.loading = true;
+    this.selectedOrder = e.data;
+    this.selectedOrderMaster = e.data;
+    forkJoin(
+      this.orderService.loadOrderData('', this.selectedOrder.order_id), // 0
+      this.orderService.loadArtPlacementData('', this.selectedOrder.order_id), // 1
+      this.orderService.loadOrderFeeData('', this.selectedOrder.order_id), // 2
+      this.orderService.loadOrderPaymentData('', this.selectedOrder.order_id), // 3
+      this.orderService.loadOrderArtFileData('', this.selectedOrder.order_id), // 4
+      this.orderService.loadOrderNotesData('', this.selectedOrder.order_id), // 5
+      this.orderService.loadOrderStatusHistoryData('', this.selectedOrder.order_id), // 6
+      this.orderService.loadOrderTaskData('', this.selectedOrder.order_id), // 7
+      this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 8
+      this.customerService.getCustomerData('', e.data.order.customer_id) // 9
+    ).subscribe(results => {
+      console.log('selectedOrder', this.selectedOrder);
+      console.log('forkJoin Return', results);
+      this.selectedOrderLines = results[0].order_detail;
+      this.selectedOrderMaster = results[0];
+      this.selectedOrderMaster.order_detail = results[0].order_detail;
+      this.selectedArtPlacements = results[1].order_art_placement;
+      this.selectedOrderMaster.order_art_placements = results[1].order_art_placement;
+      this.selectedOrderFees = results[2].order_fees;
+      this.selectedOrderMaster.order_fees = results[2].order_fees;
+      this.selectedPayments = results[3].order_payments;
+      this.selectedOrderMaster.order_payments = results[3].order_payments;
+      this.selectedArtFiles = results[4].order_art_file;
+      this.selectedOrderMaster.order_art_file = results[4].order_art_file;
+      this.selectedNotes = results[5].order_notes;
+      this.selectedOrderMaster.order_notes = results[5].order_notes;
+      this.selectedStatusHistory = results[6].order_status_history;
+      this.selectedOrderMaster.order_status_histories = results[6].order_status_history;
+      this.selectedTasks = results[7].order_task;
+      this.selectedOrderMaster.order_tasks = results[7].order_task;
+      this.selectedCorrespondence = results[8].correspondences;
+      this.customer = results[9];
+      this.selectedOrderMaster.order_correspondence = results[8].correspondences;
+      this.selectedOrderMaster.customer = this.customer;
+      console.log('Order Master Return', this.selectedOrderMaster);
+      this.loadingOrder = false;
+      this.loading = false;
+      this.popupVisible = true;
     });
-    // this.selectedOrder = e.data.order;
-    // alert('Editing!');
+    console.log('*** garment-list-comopnent:showEditPopup - LEAVING');
+    
   }
 
   ngOnInit() {
     console.log('garment-list.component:ngOnInit');
-    /* this.lookupService.loadLookupData('').subscribe(res => {
-      this.lookupDataSource = res.value;
-      this.vendorTypes = this.createLookupTypeSource('vend');
-    });
-
-    this.priceListService.loadPricelistData('').subscribe(res => {
-      this.priceListDataSource = res.value;
-      this.itemTypes = this.createItemTypeSource('orddi');
-    });
-
-    this.userService.getUsers('').subscribe(res => {
-      this.userDataSource = res.value;
-      // console.log(this.userDataSource);
-    }); */
   }
 
 }

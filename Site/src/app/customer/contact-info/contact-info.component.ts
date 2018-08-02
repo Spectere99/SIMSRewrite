@@ -91,6 +91,7 @@ export class ContactInfoComponent implements OnInit {
         this.saveContact(this.customer.customer_person[x]).subscribe();
       }
     }
+    console.log('contact-info:batchSave - customer', this.customer);
     return this.customer.customer_person;
   }
 

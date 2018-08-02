@@ -190,21 +190,21 @@
           <Property Name="notes" Type="varchar" MaxLength="150" />
           <Property Name="checked_in_ind" Type="varchar" MaxLength="1" />
           <Property Name="checked_out_ind" Type="varchar" MaxLength="1" />
-          <Property Name="xsmall_qty" Type="uint" />
-          <Property Name="small_qty" Type="uint" />
-          <Property Name="med_qty" Type="uint" />
-          <Property Name="large_qty" Type="uint" />
-          <Property Name="xl_qty" Type="uint" />
-          <Property Name="2xl_qty" Type="uint" />
-          <Property Name="3xl_qty" Type="uint" />
-          <Property Name="4xl_qty" Type="uint" />
-          <Property Name="5xl_qty" Type="uint" />
+          <Property Name="xsmall_qty" Type="int" />
+          <Property Name="small_qty" Type="int" />
+          <Property Name="med_qty" Type="int" />
+          <Property Name="large_qty" Type="int" />
+          <Property Name="xl_qty" Type="int" />
+          <Property Name="2xl_qty" Type="int" />
+          <Property Name="3xl_qty" Type="int" />
+          <Property Name="4xl_qty" Type="int" />
+          <Property Name="5xl_qty" Type="int" />
           <Property Name="other1_type" Type="varchar" MaxLength="10" />
-          <Property Name="other1_qty" Type="uint" />
+          <Property Name="other1_qty" Type="int" />
           <Property Name="other2_type" Type="varchar" MaxLength="10" />
-          <Property Name="other2_qty" Type="uint" />
+          <Property Name="other2_qty" Type="int" />
           <Property Name="other3_type" Type="varchar" MaxLength="10" />
-          <Property Name="other3_qty" Type="uint" />
+          <Property Name="other3_qty" Type="int" />
           <Property Name="order_number" Type="varchar" MaxLength="50" />
           <Property Name="customer_name" Type="varchar" MaxLength="50" />
           <Property Name="garment_order_date" Type="datetime" Precision="0" />
@@ -214,7 +214,7 @@
           <Key>
             <PropertyRef Name="order_fee_id" />
           </Key>
-          <Property Name="order_fee_id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="order_fee_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="order_id" Type="int" />
           <Property Name="fee_line_number" Type="int" />
           <Property Name="fee_quantity" Type="int" />
@@ -315,10 +315,10 @@
           <Property Name="ship_attn" Type="varchar" MaxLength="100" />
           <Property Name="contact" Type="varchar" MaxLength="100" />
           <Property Name="contact_email" Type="varchar" MaxLength="100" />
-          <Property Name="contact_phone1" Type="varchar" MaxLength="10" />
+          <Property Name="contact_phone1" Type="varchar" MaxLength="15" />
           <Property Name="contact_phone1_ext" Type="varchar" MaxLength="10" />
           <Property Name="contact_phone1_type" Type="varchar" MaxLength="10" />
-          <Property Name="contact_phone2" Type="varchar" MaxLength="10" />
+          <Property Name="contact_phone2" Type="varchar" MaxLength="15" />
           <Property Name="contact_phone2_ext" Type="varchar" MaxLength="10" />
           <Property Name="contact_phone2_type" Type="varchar" MaxLength="10" />
         </EntityType>
@@ -623,21 +623,21 @@ FROM `vw_order_info` AS `vw_order_info`</DefiningQuery>
           <Property Name="notes" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
           <Property Name="checked_in_ind" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
           <Property Name="checked_out_ind" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
-          <Property Name="xsmall_qty" Type="Int64" />
-          <Property Name="small_qty" Type="Int64" />
-          <Property Name="med_qty" Type="Int64" />
-          <Property Name="large_qty" Type="Int64" />
-          <Property Name="xl_qty" Type="Int64" />
-          <Property Name="C2xl_qty" Type="Int64" />
-          <Property Name="C3xl_qty" Type="Int64" />
-          <Property Name="C4xl_qty" Type="Int64" />
-          <Property Name="C5xl_qty" Type="Int64" />
+          <Property Name="xsmall_qty" Type="Int32" />
+          <Property Name="small_qty" Type="Int32" />
+          <Property Name="med_qty" Type="Int32" />
+          <Property Name="large_qty" Type="Int32" />
+          <Property Name="xl_qty" Type="Int32" />
+          <Property Name="C2xl_qty" Type="Int32" />
+          <Property Name="C3xl_qty" Type="Int32" />
+          <Property Name="C4xl_qty" Type="Int32" />
+          <Property Name="C5xl_qty" Type="Int32" />
           <Property Name="other1_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="other1_qty" Type="Int64" />
+          <Property Name="other1_qty" Type="Int32" />
           <Property Name="other2_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="other2_qty" Type="Int64" />
+          <Property Name="other2_qty" Type="Int32" />
           <Property Name="other3_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="other3_qty" Type="Int64" />
+          <Property Name="other3_qty" Type="Int32" />
           <Property Name="order_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="customer_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="garment_order_date" Type="DateTime" />
@@ -757,10 +757,10 @@ FROM `vw_order_info` AS `vw_order_info`</DefiningQuery>
           <Property Name="ship_attn" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="contact" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="contact_email" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="contact_phone1" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="contact_phone1" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="contact_phone1_ext" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="contact_phone1_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="contact_phone2" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="contact_phone2" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
           <Property Name="contact_phone2_ext" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="contact_phone2_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="customer" Relationship="SimsModel.ordercustomer" FromRole="order" ToRole="customer" />

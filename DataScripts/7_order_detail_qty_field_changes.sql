@@ -1,0 +1,13 @@
+ALTER TABLE `printmgr`.`order_detail` 
+CHANGE COLUMN `xsmall_qty` `xsmall_qty` INT(10) NULL DEFAULT NULL ,
+CHANGE COLUMN `small_qty` `small_qty` INT(10) NULL DEFAULT NULL ,
+CHANGE COLUMN `med_qty` `med_qty` INT(10) NULL DEFAULT NULL ,
+CHANGE COLUMN `large_qty` `large_qty` INT(10) NULL DEFAULT NULL ,
+CHANGE COLUMN `xl_qty` `xl_qty` INT(10) NULL DEFAULT NULL ,
+CHANGE COLUMN `2xl_qty` `2xl_qty` INT(10) NULL DEFAULT NULL ,
+CHANGE COLUMN `3xl_qty` `3xl_qty` INT(10) NULL DEFAULT NULL ,
+CHANGE COLUMN `4xl_qty` `4xl_qty` INT(10) NULL DEFAULT NULL ,
+CHANGE COLUMN `5xl_qty` `5xl_qty` INT(10) NULL DEFAULT NULL ,
+CHANGE COLUMN `other1_qty` `other1_qty` INT(10) NULL DEFAULT NULL ,
+CHANGE COLUMN `other2_qty` `other2_qty` INT(10) NULL DEFAULT NULL ,
+CHANGE COLUMN `other3_qty` `other3_qty` INT(10) NULL DEFAULT NULL ;

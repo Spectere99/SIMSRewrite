@@ -7,6 +7,7 @@ import { UserService } from '../../_services/user.service';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
 import { AuthenticationService } from '../../_services/authentication.service';
+import { WindowRef } from '../../_services/window-ref.service';
 import { OrderTaskListComponent } from '../order-task-list/order-task-list.component';
 
 
@@ -51,13 +52,16 @@ export class OrderDetailComponent implements OnInit {
   nonTaxableSubTotal: string;
   userProfile;
 
+  window;
+
   @HostListener('mousewheel', ['$event']) onMousewheel(event) {
     // console.log('mouseWheelEvent: ', event);
     // console.log('sourceElement', event.sourceElement);
   }
   constructor(globalDataProvider: GlobalDataProvider, public userService: UserService,
     public orderService: OrderService, public customerService: CustomerService, public authService: AuthenticationService,
-    public snackBar: MatSnackBar, private globals: Globals) {
+    public snackBar: MatSnackBar, private globals: Globals, public windowRef: WindowRef) {
+    this.window = windowRef.nativeWindow;
     this.userProfile = JSON.parse(authService.getUserToken());
     this.order = new Order();
     this.order.order_detail = [];
@@ -97,27 +101,27 @@ export class OrderDetailComponent implements OnInit {
 
   noOrderItems() {
     // console.log('In orderHasItems', this.order);
-    // if (this.order) {
-      if (this.orderLineItems) {
-        return this.orderLineItems.length === 0;
+    if (this.masterOrder) {
+      if (this.masterOrder.order_detail) {
+        return this.masterOrder.order_detail.length === 0;
       }
-    // }
+    }
     return true;
   }
 
   noArtPlacementItems() {
-    if (this.order) {
-      if (this.orderArtPlacement) {
-        return this.orderArtPlacement.length === 0;
+    if (this.masterOrder) {
+      if (this.masterOrder.order_art_placements) {
+        return this.masterOrder.order_art_placements.length === 0;
       }
     }
     return true;
   }
 
   noOrderFees() {
-    if (this.order) {
-      if (this.orderFees) {
-        return this.orderFees.length === 0;
+    if (this.masterOrder) {
+      if (this.masterOrder.order_fees) {
+        return this.masterOrder.order_fees.length === 0;
       }
     }
     return true;
@@ -184,6 +188,7 @@ export class OrderDetailComponent implements OnInit {
       lineItem.customer_name = this.customer.customer_name;
     }
     this.order.order_detail.unshift(lineItem);
+    this.masterOrder.order_detail.unshift(lineItem);
   }
 
   copyOrderLine(e, idx) {
@@ -197,6 +202,7 @@ export class OrderDetailComponent implements OnInit {
     orderLine.order_number = this.order.order_number;
     orderLine.customer_name = this.customer.customer_name;
     this.order.order_detail.unshift(orderLine);
+    this.masterOrder.order_detail.unshift(orderLine);
     console.log('Original Order Line', this.order.order_detail[idx]);
     console.log('Copied Order Line', orderLine);
   }
@@ -206,7 +212,9 @@ export class OrderDetailComponent implements OnInit {
     // See if the item has been saved to the database. (non-negative id)
     // if it has not, then just remove it, otherwise, we need to call the web service
     // to delete the item from the database first.
-    const index = this.order.order_detail.findIndex(x => x.order_detail_id === e.order_detail_id); // TODO:  Change to use orderLineItems
+    // const index = this.order.order_detail.findIndex(x => x.order_detail_id === e.order_detail_id); // TODO:  Change to use orderLineItems
+    const index = this.masterOrder.order_detail.findIndex(x => x.order_detail_id === e.order_detail_id);
+
     // console.log('Del Line Item', index);
     if (index >= 0) {
       if (e.order_detail_id > 0) {
@@ -222,25 +230,28 @@ export class OrderDetailComponent implements OnInit {
       }
     }
     this.order.order_detail.splice(index, 1);
+    this.masterOrder.order_detail.splice(index, 1);
   }
 
   addArtPlacement(e) {
     const artPlacement = new OrderArtPlacement();
-    artPlacement.order_art_placement_id = (this.orderArtPlacement.length + 1) * -1;
+    artPlacement.order_art_placement_id = (this.masterOrder.order_art_placements.length + 1) * -1;
     artPlacement.added_by = this.userProfile.profile.login_id;
+    artPlacement.notes = null;
+    artPlacement.order = null;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    artPlacement.added_date = today.toLocaleDateString(); // this.formatOrderNumber(today);
+    artPlacement.added_date = today.toISOString(); // this.formatOrderNumber(today);
     // console.log('ArtPlacement Added By', artPlacement.added_by);
     // console.log('UserList', this.userDataSource);
-    this.orderArtPlacement.unshift(artPlacement);
+    this.masterOrder.order_art_placements.unshift(artPlacement);
   }
   deleteArtPlacement(e) {
     // console.log('deletingArtPlacement', e);
     // See if the item has been saved to the database. (non-negative id)
     // if it has not, then just remove it, otherwise, we need to call the web service
     // to delete the item from the database first.
-    const index = this.orderArtPlacement.findIndex(x => x.order_art_placement_id === e.order_art_placement_id);
+    const index = this.masterOrder.order_art_placements.findIndex(x => x.order_art_placement_id === e.order_art_placement_id);
     // console.log('Del Art Plcmt', index);
     if (index >= 0) {
       if (e.order_art_placement_id > 0) {
@@ -254,28 +265,31 @@ export class OrderDetailComponent implements OnInit {
           });
       }
     }
-    this.orderArtPlacement.splice(index, 1);
+    // this.orderArtPlacement.splice(index, 1);
+    this.masterOrder.order_art_placements.splice(index, 1);
   }
 
   addFee(e) {
     const orderFee = new OrderFee();
-    orderFee.order_fee_id = (this.orderFees.length + 1) * -1;
-    orderFee.fee_line_number = this.orderFees.length + 1;
+    orderFee.order_fee_id = (this.masterOrder.order_fees.length + 1) * -1;
+    orderFee.fee_line_number = this.masterOrder.order_fees.length + 1;
     orderFee.fee_price_each = 0.0.toFixed(2);
     orderFee.taxable_ind = 'N';
     orderFee.pricelist_id = null;
     orderFee.fee_price_ext = 0.0.toFixed(2);
-    orderFee.order_id = this.currentOrder.order_id;
+    orderFee.order_id = this.masterOrder.order_id;
     orderFee.fee_quantity = 0;
 
-    this.orderFees.unshift(orderFee);
+    // this.orderFees.unshift(orderFee);
+    this.masterOrder.order_fees.unshift(orderFee);
   }
   deleteFee(e) {
     // console.log('deletingFee', e);
     // See if the item has been saved to the database. (non-negative id)
     // if it has not, then just remove it, otherwise, we need to call the web service
     // to delete the item from the database first.
-    const index = this.orderFees.findIndex(x => x.order_fee_id === e.order_fee_id);
+    // const index = this.orderFees.findIndex(x => x.order_fee_id === e.order_fee_id);
+    const index = this.masterOrder.order_fees.findIndex(x => x.order_fee_id === e.order_fee_id);
     // console.log('Del Fee', index);
     if (index >= 0) {
       if (e.order_fee_id > 0) {
@@ -289,25 +303,28 @@ export class OrderDetailComponent implements OnInit {
           });
       }
     }
-    this.orderFees.splice(index, 1);
+    // this.orderFees.splice(index, 1);
+    this.masterOrder.order_fees.splice(index, 1);
   }
 
   addPayment(e) {
     const payment = new OrderPayment();
-    payment.order_payment_id = (this.orderPayments.length + 1) * -1;
+    payment.order_payment_id = (this.masterOrder.order_payments.length + 1) * -1;
     payment.entered_user_id = this.userProfile.profile.user_id;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     payment.payment_date = today.toISOString(); // this.formatOrderNumber(today);
     console.log('Added Payment', payment);
-    this.orderPayments.push(payment);
+    // this.orderPayments.push(payment);
+    this.masterOrder.order_payments.push(payment);
   }
   deletePayment(e) {
     // console.log('deletingPayment', e);
     // See if the item has been saved to the database. (non-negative id)
     // if it has not, then just remove it, otherwise, we need to call the web service
     // to delete the item from the database first.
-    const index = this.orderPayments.findIndex(x => x.order_payment_id === e.order_payment_id);
+    // const index = this.orderPayments.findIndex(x => x.order_payment_id === e.order_payment_id);
+    const index = this.masterOrder.order_payments.findIndex(x => x.order_payment_id === e.order_payment_id);
     // console.log('Del Payment', index);
     if (index >= 0) {
       if (e.order_payment_id > 0) {
@@ -321,14 +338,16 @@ export class OrderDetailComponent implements OnInit {
           });
       }
     }
-    this.orderPayments.splice(index, 1);
+    // this.orderPayments.splice(index, 1);
+    this.masterOrder.order_payments.splice(index, 1);
   }
 
   onQtyPriceChange(e, idx) {
     // console.log('Order Detail onChange Event', e.target.value);
     // console.log('Order Index item', idx);
     let totalItemQty = 0;
-    const orderLine = this.order.order_detail[idx];
+    // const orderLine = this.order.order_detail[idx];
+    const orderLine = this.masterOrder.order_detail[idx];
     // console.log('orderLine', orderLine);
     totalItemQty = totalItemQty + ((orderLine.xsmall_qty === undefined) ? 0 : +orderLine.xsmall_qty);
     totalItemQty = totalItemQty + ((orderLine.small_qty === undefined) ? 0 : +orderLine.small_qty);
@@ -340,47 +359,61 @@ export class OrderDetailComponent implements OnInit {
     totalItemQty = totalItemQty + ((orderLine.C4xl_qty === undefined) ? 0 : +orderLine.C4xl_qty);
     totalItemQty = totalItemQty + ((orderLine.C5xl_qty === undefined) ? 0 : +orderLine.C5xl_qty);
     totalItemQty = totalItemQty + ((orderLine.other1_qty === undefined) ? 0 : +orderLine.other1_qty);
-    this.order.order_detail[idx].item_quantity = totalItemQty;
+    /* this.order.order_detail[idx].item_quantity = totalItemQty;
     this.order.order_detail[idx].item_price_ext = (totalItemQty * ((orderLine.item_price_each === undefined) ? 0
-      : +orderLine.item_price_each)).toFixed(2);
+      : +orderLine.item_price_each)).toFixed(2); */
+
+    this.masterOrder.order_detail[idx].item_quantity = totalItemQty;
+    this.masterOrder.order_detail[idx].item_price_ext = (totalItemQty * ((orderLine.item_price_each === undefined) ? 0
+        : +orderLine.item_price_each)).toFixed(2);
     this.updateTotals();
   }
 
   onFeeChange(e, idx) {
-    const feeLine = this.orderFees[idx];
+    // const feeLine = this.orderFees[idx];
+    const feeLine = this.masterOrder.order_fees[idx];
 
     feeLine.fee_price_ext = (+feeLine.fee_quantity * +feeLine.fee_price_each).toFixed(2);
 
     this.updateTotals();
   }
   onTaxRateChange(e) {
-    for (let x = 0; x < this.order.order_detail.length; x++) {
+    /* for (let x = 0; x < this.order.order_detail.length; x++) {
+      this.onQtyPriceChange(e, x);
+    } */
+    for (let x = 0; x < this.masterOrder.order_detail.length; x++) {
       this.onQtyPriceChange(e, x);
     }
     this.updateTotals();
   }
 
   updateTotals() {
-    this.order.subtotal = 0;
+    // this.order.subtotal = 0;
     this.nonTaxableSubTotal = 0.0.toFixed(2);
     let subTotal = 0;
     let nonTaxSubTotal = 0;
-    // console.log('order Details', this.order.order_detail);
-    // Total order Line Items
-    for (let x = 0; x < this.order.order_detail.length; x++) {  // TODO:  Change to use orderLineItems
-      if (this.order.order_detail[x].taxable_ind === 'Y') {
-        subTotal = subTotal + +this.order.order_detail[x].item_price_ext;
+    let shippingTotal = 0;
+    let taxAmount = 0;
+    let orderTotal = 0;
+    let balanceDue = 0;
+
+    // Calculate Taxable and Non Taxable Sub Totals
+    for (let x = 0; x < this.masterOrder.order_detail.length; x++) { 
+      if (this.masterOrder.order_detail[x].taxable_ind === 'Y') {
+        subTotal = subTotal + +this.masterOrder.order_detail[x].item_price_ext;
       } else {
-        nonTaxSubTotal = nonTaxSubTotal + +this.order.order_detail[x].item_price_ext;
+        nonTaxSubTotal = nonTaxSubTotal + +this.masterOrder.order_detail[x].item_price_ext;
       }
     }
-    // console.log('subTotal', subTotal);
-    // console.log('nonTaxSubTotal', nonTaxSubTotal);
-    this.order.subtotal = subTotal.toFixed(2);
-    this.currentOrder.subtotal = subTotal.toFixed(2);
-    // Add Non Shipping Fees to SubTotal.
+    console.log('subTotal', subTotal);
+    console.log('nonTaxSubTotal', nonTaxSubTotal);
+    this.masterOrder.subtotal = subTotal;
+
+    // Add Shipping Fees to SubTotal.
     const shippingLookup = this.setupItems.filter(item => item.pricelist_description === 'Shipping');
-    const nonShippingFees = this.orderFees.filter(item => item.pricelist_id !== +shippingLookup[0].pricelist_id);
+
+    // Add Non Shipping Fees to SubTotal and NonTaxable Sub Totals
+    const nonShippingFees = this.masterOrder.order_fees.filter(item => item.pricelist_id !== +shippingLookup[0].pricelist_id);
     for (let y = 0; y < nonShippingFees.length; y++) {
       if (nonShippingFees[y].taxable_ind === 'Y') {
         subTotal = subTotal + +nonShippingFees[y].fee_price_ext;
@@ -388,60 +421,72 @@ export class OrderDetailComponent implements OnInit {
         nonTaxSubTotal = nonTaxSubTotal + +nonShippingFees[y].fee_price_ext;
       }
     }
-    this.nonTaxableSubTotal = nonTaxSubTotal.toFixed(2);
-    this.order.subtotal = subTotal.toFixed(2);
-    this.currentOrder.subtotal = this.order.subtotal;
-    this.order.tax_amount = (subTotal * (this.currentOrder.tax_rate / 100)).toFixed(2);
-    this.currentOrder.tax_amount = this.order.tax_amount;
+    // this.nonTaxableSubTotal = nonTaxSubTotal.toFixed(2);
+    // this.order.subtotal = subTotal.toFixed(2);
+
+    taxAmount  = (subTotal * (+this.masterOrder.tax_rate / 100));
 
     // Total Shipping Items (Non Taxable)
-    let shippingTotal = 0;
-    const shippingFees = this.orderFees.filter(item => +item.pricelist_id === 10737); // +shippingLookup[0].pricelist_id);
+    const shippingFees = this.masterOrder.order_fees.filter(item => +item.pricelist_id === 10737); // +shippingLookup[0].pricelist_id);
 
     for (let z = 0; z < shippingFees.length; z++) {
       shippingTotal = shippingTotal + +shippingFees[z].fee_price_ext;
     }
-    this.order.shipping = shippingTotal.toFixed(2);
-    this.currentOrder.shipping = this.order.shipping;
-
 
     // Get Payments that were made
     let paymentTotal = 0;
-    for (let x = 0; x < this.orderPayments.length; x++) {
-      paymentTotal = paymentTotal + +this.orderPayments[x].payment_amount;
+  
+    for (let x = 0; x < this.masterOrder.order_payments.length; x++) {
+      paymentTotal = paymentTotal + +this.masterOrder.order_payments[x].payment_amount;
     }
 
     // Total it all up.
-    this.order.total = (+subTotal + +this.order.tax_amount + nonTaxSubTotal + shippingTotal).toFixed(2);
-    this.currentOrder.total = this.order.total;
+    orderTotal = (+subTotal + +this.masterOrder.tax_amount + nonTaxSubTotal + shippingTotal);
+/*     console.log('SubTotal:', subTotal);
+    console.log('TaxAmount', taxAmount);
+    console.log('NonTaxSubTotal', nonTaxSubTotal);
+    console.log('ShippingTotal', shippingTotal);
+    console.log('OrderTotal', orderTotal);
+    console.log('Payments', paymentTotal);
+    console.log('BalanceDue', orderTotal - paymentTotal); */
 
-    this.order.payments = paymentTotal.toFixed(2);
-    this.currentOrder.payments = paymentTotal.toFixed(2);
+    this.masterOrder.subtotal = +subTotal.toFixed(2);
+    this.masterOrder.tax_amount = +taxAmount.toFixed(2);
+    this.masterOrder.shipping = +shippingTotal.toFixed(2);
+    this.masterOrder.total = +orderTotal.toFixed(2);
+    this.masterOrder.payments = +paymentTotal.toFixed(2);
+    this.masterOrder.balance_due = +(+orderTotal.toFixed(2) - +paymentTotal.toFixed(2)).toFixed(2);
+    this.nonTaxableSubTotal = nonTaxSubTotal.toFixed(2);
 
-    this.order.balance_due = (+subTotal + +this.order.tax_amount + nonTaxSubTotal + shippingTotal - paymentTotal).toFixed(2);
-    this.currentOrder.balance_due = this.order.balance_due;
+/*     console.log('Master-SubTotal:', this.masterOrder.subtotal);
+    console.log('Master-TaxAmount', this.masterOrder.tax_amount);
+    console.log('Master-ShippingTotal', this.masterOrder.shipping);
+    console.log('Master-OrderTotal', this.masterOrder.total);
+    console.log('Master-Payments', this.masterOrder.payments);
+    console.log('Master-BalanceDue', this.masterOrder.balance_due); */
   }
 
   batchSave(order_id: number) {
-    for (let x = 0; x < this.order.order_detail.length; x++) {
+
+    for (let x = 0; x < this.masterOrder.order_detail.length; x++) {
       // console.log('Saving Order- Order ID= ', order_id);
-      this.order.order_detail[x].order_id = order_id;
-      this.saveOrderLines(this.order.order_detail[x]);
+      this.masterOrder.order_detail[x].order_id = order_id;
+      this.saveOrderLines(this.masterOrder.order_detail[x]);
     }
 
-    for (let x = 0; x < this.orderArtPlacement.length; x++) {
-      this.orderArtPlacement[x].order_id = order_id;
-      this.saveArtPlacement(this.orderArtPlacement[x]);
+    for (let x = 0; x < this.masterOrder.order_art_placements.length; x++) {
+      this.masterOrder.order_art_placements[x].order_id = order_id;
+      this.saveArtPlacement(this.masterOrder.order_art_placements[x]);
     }
 
-    for (let x = 0; x < this.orderFees.length; x++) {
-      this.orderFees[x].order_id = order_id;
-      this.saveFees(this.orderFees[x]);
+    for (let x = 0; x < this.masterOrder.order_fees.length; x++) {
+      this.masterOrder.order_fees[x].order_id = order_id;
+      this.saveFees(this.masterOrder.order_fees[x]);
     }
 
-    for (let x = 0; x < this.orderPayments.length; x++) {
-      this.orderPayments[x].order_id = order_id;
-      this.savePayments(this.orderPayments[x]);
+    for (let x = 0; x < this.masterOrder.order_payments.length; x++) {
+      this.masterOrder.order_payments[x].order_id = order_id;
+      this.savePayments(this.masterOrder.order_payments[x]);
     }
   }
 
@@ -449,7 +494,7 @@ export class OrderDetailComponent implements OnInit {
     // console.log('OrderDetail on Save', orderDetail);
     if (orderDetail.order_detail_id <= 0) {
       orderDetail.order_detail_id = 0;
-      orderDetail.order_id = this.order.order_id;
+      orderDetail.order_id = this.masterOrder.order_id;
       orderDetail.customer_name = this.customer.customer_name;
       orderDetail.order_number = this.currentOrder.order_number;
       console.log('OrderDetail on Save', orderDetail);
@@ -464,7 +509,7 @@ export class OrderDetailComponent implements OnInit {
         });
     } else {
       orderDetail.customer_name = this.customer.customer_name;
-      orderDetail.order_number = this.currentOrder.order_number;
+      orderDetail.order_number = this.masterOrder.order_number;
       console.log('OrderDetail on Save', orderDetail);
       this.orderService.updateOrderLineItem(this.userProfile.login_id, orderDetail)
         .subscribe(res => {
@@ -478,7 +523,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   saveArtPlacement(artPlacement: OrderArtPlacement) {
-    // console.log('Art Placement on Save', artPlacement);
+    console.log('Art Placement on Save', artPlacement);
     if (artPlacement.order_art_placement_id <= 0) {
       artPlacement.order_art_placement_id = 0;
       this.orderService.addOrderArtPlacement(this.userProfile.login_id, artPlacement)
@@ -528,7 +573,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   savePayments(orderPayment: OrderPayment) {
-    // console.log('Order Payment on Save', orderPayment);
+    console.log('Order Payment on Save', orderPayment);
     if (orderPayment.order_payment_id <= 0) {
       orderPayment.order_payment_id = 0;
       this.orderService.addOrderPayment(this.userProfile.login_id, orderPayment)
@@ -553,63 +598,9 @@ export class OrderDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-/*     this.lookupService.loadLookupData('').subscribe(res => {
-      this.lookupDataSource = res.value;
-      this.sizeTypes = this.createLookupTypeSource('ssiz');
-      this.styleTypes = this.createLookupTypeSource('sclas');
-      this.vendorTypes = this.createLookupTypeSource('vend');
-      this.artLocations = this.createLookupTypeSource('aloc');
-      this.paymentSourceItems = this.createLookupTypeSource('pms');
-    });
-
-    this.priceListService.loadPricelistData('').subscribe(res => {
-      this.priceListDataSource = res.value;
-      this.itemTypes = this.createItemTypeSource('orddi');
-      this.setupItems = this.createItemTypeSource('setup');
-      // console.log('Pricelist Items', this.itemTypes);
-      // console.log('Setup Items', this.setupItems);
-    });
-
-    this.userService.getUsers('').subscribe(res => {
-      this.userDataSource = res.value;
-      // console.log(this.userDataSource);
-    });
- */    this.editMode = this.currentOrder.order_id !== 0;
+    this.editMode = this.currentOrder.order_id !== 0;
+    this.updateTotals();
     // console.log('Current Order', this.currentOrder);
-    /* if (this.currentOrder.order_id !== 0) {
-      if (this.currentOrder.customer_id > 0) {
-        console.log('order-detail:ngOnInit Calling getCustomerData');
-        this.customerService.getCustomerData(this.userProfile.login_id, this.currentOrder.customer_id).subscribe(res => {
-          this.customer = res;
-          // console.log('pulled Customer', this.orderCustomer);
-        });
-      }
-      this.orderService.loadOrderData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
-        this.order = res;
-        // console.log('pulled order', this.order);
-      });
-      this.orderService.loadArtPlacementData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
-        this.orderArtPlacement = res.order_art_placement;
-        // console.log('pulled Art Placement', this.orderArtPlacement);
-      });
-      this.orderService.loadOrderFeeData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
-        this.orderFees = res.order_fees;
-        this.getShipping();
-        // console.log('pulled Order Fees', this.orderFees);
-      });
-      this.orderService.loadOrderPaymentData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
-        this.orderPayments = res.order_payments;
-        this.loading = false;
-        // console.log('pulled Payment Data', this.orderPayments);
-      });
-    } else {
-      /// this.currentOrder = new Order();
-      this.order.order_detail = new Array<OrderDetail>();
-      this.orderArtPlacement = new Array<OrderArtPlacement>();
-      this.orderFees = new Array<OrderFee>();
-      this.orderPayments = new Array<OrderPayment>();
-      this.loading = false;
-    } */
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
@@ -617,43 +608,11 @@ export class OrderDetailComponent implements OnInit {
     // console.log('order-detail-component currentOrder', this.currentOrder);
     console.log('order-detail-component:ngOnChanges()', this.masterOrder);
     this.loading = true;
+    this.updateTotals();
     this.editMode = this.currentOrder.order_id !== 0;
     // console.log('Current Order', this.currentOrder);
-    /* if (this.currentOrder.order_id !== 0) {
-      if (this.currentOrder.customer_id > 0) {
-        console.log('order-detail:ngOnChanges Calling getCustomerData');
-        this.customerService.getCustomerData(this.userProfile.login_id, this.currentOrder.customer_id).subscribe(res => {
-          this.customer = res;
-          // console.log('pulled Customer', this.orderCustomer);
-        });
-      }
-      this.orderService.loadOrderData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
-        this.order = res;
-        // console.log('pulled order', this.order);
-      });
-      this.orderService.loadArtPlacementData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
-        this.orderArtPlacement = res.order_art_placement;
-        // console.log('pulled Art Placement', this.orderArtPlacement);
-      });
-      this.orderService.loadOrderFeeData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
-        this.orderFees = res.order_fees;
-        this.getShipping();
-        // console.log('pulled Order Fees', this.orderFees);
-      });
-      this.orderService.loadOrderPaymentData(this.userProfile.login_id, this.currentOrder.order_id).subscribe(res => {
-        this.orderPayments = res.order_payments;
-        this.loading = false;
-        // console.log('pulled Payment Data', this.orderPayments);
-      });
-    } else {
-      /// this.currentOrder = new Order();
-      this.order.order_detail = new Array<OrderDetail>();
-      this.orderArtPlacement = new Array<OrderArtPlacement>();
-      this.orderFees = new Array<OrderFee>();
-      this.orderPayments = new Array<OrderPayment>();
-      this.loading = false;
-    } */
   }
+  
   formatOrderNumber(today): string {
     console.log('formatOrderNumber - today', today);
     let dd = today.getDate();
