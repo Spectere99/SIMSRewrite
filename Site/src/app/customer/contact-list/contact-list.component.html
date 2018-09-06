@@ -6,13 +6,23 @@
       (onContentReady)="contentReady($event)">
       <dxo-selection mode="single"></dxo-selection>
       <dxi-column dataField="customer_person_id" caption="Contact ID" [width]="100" [allowFiltering]="true" [visible]="false"></dxi-column>
-      <dxi-column dataField="customers.customer_name" caption="Customer Name" [width]="450" sortOrder="asc" [allowFiltering]="true"
+      <dxi-column dataField="customers.customer_name" caption="Customer Name" [width]="300" sortOrder="asc" [allowFiltering]="true"
         cellTemplate="customerCell"></dxi-column>
-      <dxi-column dataField="person_type" caption="Person Type" [width]="200" [allowFiltering]="true">
+      <dxi-column dataField="person_type" caption="Person Type" [width]="140" [allowFiltering]="true">
         <dxo-lookup [dataSource]="personTypes" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
       </dxi-column>
-      <dxi-column dataField="first_name" caption="First Name" [width]="250" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="last_name" caption="Last Name" [width]="250" [allowFiltering]="true"></dxi-column>
+      <dxi-column dataField="first_name" caption="First Name" [width]="125" [allowFiltering]="true"></dxi-column>
+      <dxi-column dataField="last_name" caption="Last Name" [width]="125" [allowFiltering]="true"></dxi-column>
+      <dxi-column dataField="email_address" caption="Email" [width]="250" [allowFiltering]="true" cellTemplate="emailCell">
+        <div *dxTemplate="let emailData of 'emailCell'">
+          <a [href]="'mailto:' + emailData.value">{{emailData.value}}</a>
+        </div>
+      </dxi-column>
+      <dxi-column dataField="phone_1" caption="Phone" [width]="175" [allowFiltering]="true" cellTemplate="phoneCell">
+        <div *dxTemplate="let phoneData of 'phoneCell'">
+          {{ phoneData.value | phoneFormat }}
+        </div>
+      </dxi-column>
       <dxo-search-panel [visible]="false"></dxo-search-panel>
       <dxo-header-filter [visible]="true"></dxo-header-filter>
       <dxo-filter-row [visible]="true"></dxo-filter-row>

@@ -563,20 +563,24 @@ export class CustomerOrderListComponent implements OnInit {
           fpmtTask[0].completed_date = new Date().toISOString();
         }
       }
-      if (this.selectedOrder.order_payments.length >= 1) {
-        const depTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'deprc');
-        if (depTask) {
-          depTask[0].is_complete = 'Y';
-          depTask[0].completed_by = this.userProfile.profile.login_id;
-          depTask[0].completed_date = new Date().toISOString();
+      if (this.selectedOrder.order_payments){
+        if (this.selectedOrder.order_payments.length >= 1) {
+          const depTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'deprc');
+          if (depTask) {
+            depTask[0].is_complete = 'Y';
+            depTask[0].completed_by = this.userProfile.profile.login_id;
+            depTask[0].completed_date = new Date().toISOString();
+          }
+          console.log('depost is paid!', this.selectedOrder.order_payments);
         }
-        console.log('depost is paid!', this.selectedOrder.order_payments);
       }
+      
 
       this.orderTaskList.batchSave(res);
       this.orderNotesHistory.batchSave(res);
       setTimeout(() => {
         this.gridOrders.instance.refresh();
+        this.loadOrder(this.selectedOrder);
       }, 1000);
       this.popupVisible = this.leaveWindowOpen;
     });
@@ -596,11 +600,44 @@ export class CustomerOrderListComponent implements OnInit {
   showEditPopup(e) {
     // e.cancel = true;
     // console.log('E', e);
-    console.log('*** customer-order-list-comopnent:showEditPopup - START');
+    console.log('*** customer-order-list-comopnent:showEditPopup - START', e.data);
+    this.loadOrder(e.data);
+    console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
+    // console.log('Selected Order', this.selectedOrder);
+    // alert('Editing!');
+  }
+
+  closeEditor() {
+    // Need to reset the selected order so the child components to scream
+    //  about not having a reference value (undefined)
+    this.selectedOrder = new Order();
+    this.selectedOrder.order_id = 0;
+    this.selectedOrder.tax_rate = '7.0';
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    this.selectedOrder.customer_id = this.customer.customer_id;
+    this.selectedOrder.order_number = this.formatOrderNumber(today);
+    this.selectedOrder.order_date = today;
+    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
+
+    this.selectedOrderMaster = new OrderMaster();
+    this.selectedOrderMaster.order_id = 0;
+    this.selectedOrderMaster.tax_rate = '7.0';
+    this.selectedOrderMaster.customer_id = this.customer.customer_id;
+    this.selectedOrderMaster.order_number = this.formatOrderNumber(today);
+    this.selectedOrderMaster.order_date = today.toISOString();
+    this.selectedOrderMaster.taken_user_id = this.userProfile.profile.user_id;
+    this.popupVisible = false;
+  }
+  cancelChanges() {
+    this.popupVisible = false;
+  }
+
+  loadOrder(e) {
     this.loadingOrder = true;
     this.loading = true;
-    this.selectedOrder = e.data;
-    this.selectedOrderMaster = e.data;
+    this.selectedOrder = e;
+    this.selectedOrderMaster = e;
     forkJoin(
       this.orderService.loadOrderData('', this.selectedOrder.order_id), // 0
       this.orderService.loadArtPlacementData('', this.selectedOrder.order_id), // 1
@@ -638,36 +675,8 @@ export class CustomerOrderListComponent implements OnInit {
       this.loading = false;
       this.popupVisible = true;
     });
-    console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
-    // console.log('Selected Order', this.selectedOrder);
-    // alert('Editing!');
   }
-
-  closeEditor() {
-    // Need to reset the selected order so the child components to scream
-    //  about not having a reference value (undefined)
-    this.selectedOrder = new Order();
-    this.selectedOrder.order_id = 0;
-    this.selectedOrder.tax_rate = '7.0';
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    this.selectedOrder.customer_id = this.customer.customer_id;
-    this.selectedOrder.order_number = this.formatOrderNumber(today);
-    this.selectedOrder.order_date = today;
-    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
-
-    this.selectedOrderMaster = new OrderMaster();
-    this.selectedOrderMaster.order_id = 0;
-    this.selectedOrderMaster.tax_rate = '7.0';
-    this.selectedOrderMaster.customer_id = this.customer.customer_id;
-    this.selectedOrderMaster.order_number = this.formatOrderNumber(today);
-    this.selectedOrderMaster.order_date = today.toISOString();
-    this.selectedOrderMaster.taken_user_id = this.userProfile.profile.user_id;
-    this.popupVisible = false;
-  }
-  cancelChanges() {
-    this.popupVisible = false;
-  }
+  
   showOrderSummary(e) {
     console.log('showOrderSummary', e);
 

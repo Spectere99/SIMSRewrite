@@ -5,7 +5,7 @@ import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee,
           OrderPayment, OrderArtFile, OrderNote } from '../../_services/order.service';
 // import { AuthenticationService } from '../../_services/authentication.service';
 // import { CorrespondenceService, Correspondence } from '../../_services/correspondence.service';
-// import { UserService } from '../../_services/user.service';
+import { UserService } from '../../_services/user.service';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
 @Component({
@@ -25,6 +25,7 @@ export class OrderSummaryComponent implements OnInit {
   sizeTypes: Array<LookupItem>;
   vendorTypes: Array<LookupItem>;
   artLocations: Array<LookupItem>;
+  userDataSource: any;
 
   orderArtPlacement: Array<OrderArtPlacement>;
   orderFees: Array<OrderFee>;
@@ -43,6 +44,7 @@ export class OrderSummaryComponent implements OnInit {
     this.orderFees = [];
     this.orderPayments = [];
     this.lookupDataSource = globalDataProvider.getLookups();
+    this.userDataSource = globalDataProvider.getUsers();
     this.sizeTypes = this.createLookupTypeSource('ssiz');
     this.styleTypes = this.createLookupTypeSource('sclas');
     this.vendorTypes = this.createLookupTypeSource('vend');
@@ -88,6 +90,19 @@ export class OrderSummaryComponent implements OnInit {
     return val;
   }
 
+  getUserName(userId: number): string {
+    let val = '';
+    console.log('getUserName', userId);
+    if (this.userDataSource) {
+      console.log('userDataSource', this.userDataSource);
+      const foundVal = this.userDataSource.find(p => p.user_id === userId);
+
+      if (foundVal) {
+        val = foundVal.first_name + ' ' + foundVal.last_name;
+      }
+    }
+    return val;
+  }
   getLookupDescription(lookup_code: string): string {
     // console.log('Lookup Description', lookup_code);
     // console.log('LookupDataSource', this.lookupDataSource);

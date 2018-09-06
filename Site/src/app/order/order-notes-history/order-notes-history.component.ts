@@ -75,10 +75,12 @@ export class OrderNotesHistoryComponent implements OnInit {
   }
 
   batchSave(order_id: number) {
-    for (let x = 0; x < this.orderNotes.length; x++) {
-      // console.log('Saving Order- Order ID= ', order_id);
-      this.orderNotes[x].order_id = order_id;
-      this.saveOrderNote(this.orderNotes[x]);
+    if (this.orderNotes) {
+      for (let x = 0; x < this.orderNotes.length; x++) {
+        // console.log('Saving Order- Order ID= ', order_id);
+        this.orderNotes[x].order_id = order_id;
+        this.saveOrderNote(this.orderNotes[x]);
+      }
     }
   }
 

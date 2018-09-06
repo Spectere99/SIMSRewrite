@@ -6,7 +6,8 @@
       <div class="col-md-12" id="order_info" *ngIf="currentOrder !== undefined">
         <fieldset>
           <legend class="SmallBodyText">
-            <b>Order Information:</b>
+            <b>Order Information:</b><br>
+            <b>Sales Rep: </b> {{getUserName(currentOrder.taken_user_id)}}
           </legend>
           <table class="SmallBodyText" cellpadding="1" cellspacing="0">
             <tr>

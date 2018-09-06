@@ -185,6 +185,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     orderStatusHistory.status_date = today.toISOString();
     orderStatusHistory.set_by_user_id = this.userProfile.profile.user_id;
 
+    console.log('order-info:saveOrderStatusHistory - OrderStatusHistory', orderStatusHistory);
     return this.orderService.addOrderStatus(this.userProfile.login_id, orderStatusHistory)
     .map(res => {
       this.orderStatusChanged = false;
