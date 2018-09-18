@@ -184,7 +184,7 @@ export class CustomerOrderListComponent implements OnInit {
     this.selectedOrder.customer_id = customer_id;
     this.selectedOrder.customer_name = this.customer.customer_name;
     const today = new Date();
-    today.setHours(0, 0, 0, 0);
+    today.setUTCHours(0, 0, 0, 0);
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
     this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
@@ -223,18 +223,18 @@ export class CustomerOrderListComponent implements OnInit {
     reOrderObj.taken_user_id = this.userProfile.profile.user_id;
     reOrderObj.assigned_user_id = this.userProfile.profile.user_id;
 
-
+    console.log ('customer_order-list:reOrder-reOrderObj', reOrderObj);
     this.orderService.addOrderInfo(this.userProfile.profile.login_id, reOrderObj).subscribe(res => {
       console.log('Order ID Return', res);
       reOrderObj.order_id = res.order_id;
       reOrderObj.order_number = res.order_number;
-      const reOrderDetails = this.cloneOrderDetails(this.orderDetail.order.order_detail, res.order_id);
+      const reOrderDetails = this.cloneOrderDetails(this.selectedOrderMaster.order_detail, res.order_id);
       reOrderDetails.forEach((item) => {
         // console.log('Cloning OrderLine', item);
         this.orderService.addOrderLineItem(this.userProfile.profile.login_id, item).subscribe();
       });
 
-      const reOrderArtFiles = this.cloneOrderArtFiles(this.orderArt.orderArtFiles, res.order_id);
+      const reOrderArtFiles = this.cloneOrderArtFiles(this.selectedOrderMaster.order_art_file, res.order_id);
       reOrderArtFiles.forEach((item) => {
         // console.log('Cloning Art File', item);
         this.orderService.addOrderArtFile(this.userProfile.profile.login_id, item).subscribe();
@@ -246,7 +246,7 @@ export class CustomerOrderListComponent implements OnInit {
         this.orderService.addOrderFee(this.userProfile.profile.login_id, item).subscribe();
       });
 
-      const reOrderArtPlacement = this.cloneOrderArtPlacement(this.orderDetail.orderArtPlacement, res.order_id);
+      const reOrderArtPlacement = this.cloneOrderArtPlacement(this.selectedOrderMaster.order_art_placements, res.order_id);
       reOrderArtPlacement.forEach((item) => {
         // console.log('Cloning Art Placements', item);
         this.orderService.addOrderArtPlacement(this.userProfile.profile.login_id, item).subscribe();
@@ -258,13 +258,14 @@ export class CustomerOrderListComponent implements OnInit {
         this.orderService.addOrderTask(this.userProfile.profile.login_id, item).subscribe();
       });
 
-      this.gridOrders.instance.refresh();
-      this.snackBar.open('Re-Order Created.', '', {
-        duration: 4000,
-        verticalPosition: 'top'
-      });
-      this.selectedOrder = reOrderObj;
-      // this.popupVisible = false;
+      setTimeout(() => {
+        this.gridOrders.instance.refresh();
+        this.loadOrder(reOrderObj);
+        this.snackBar.open('Re-Order Created.', '', {
+          duration: 4000,
+          verticalPosition: 'top'
+        });
+      }, 2000);
     });
 
   }
@@ -383,7 +384,7 @@ export class CustomerOrderListComponent implements OnInit {
     newOrder.contact_phone2 = origOrder.contact_phone2;
     newOrder.contact_phone2_ext = origOrder.contact_phone2_ext;
     newOrder.contact_phone2_type = origOrder.contact_phone2_type;
-    newOrder.balance_due = origOrder.balance_due;
+    newOrder.balance_due = origOrder.balance_due.toString();
     newOrder.BILL_ADDRESS_1 = origOrder.BILL_ADDRESS_1;
     newOrder.BILL_ADDRESS_2 = origOrder.BILL_ADDRESS_2;
     newOrder.BILL_CITY = origOrder.BILL_CITY;
@@ -398,19 +399,19 @@ export class CustomerOrderListComponent implements OnInit {
     newOrder.SHIP_ZIP = origOrder.SHIP_ZIP;
     newOrder.order_type = this.setReOrderType(origOrder.order_type);
     newOrder.order_number = this.formatOrderNumber(today);
-    newOrder.subtotal = origOrder.subtotal;
-    newOrder.tax_amount = origOrder.tax_amount;
-    newOrder.tax_rate = origOrder.tax_rate;
-    newOrder.shipping = origOrder.shipping;
-    newOrder.total = origOrder.total;
-    newOrder.balance_due = origOrder.total;
+    newOrder.subtotal = origOrder.subtotal.toString();
+    newOrder.tax_amount = origOrder.tax_amount.toString();
+    newOrder.tax_rate = origOrder.tax_rate.toString();
+    newOrder.shipping = origOrder.shipping.toString();
+    newOrder.total = origOrder.total.toString();
+    newOrder.balance_due = origOrder.total.toString();
 
     return newOrder;
   }
 
   cloneOrderDetails(origDetails: Array<OrderDetail>, order_id: number): Array<OrderDetail> {
     const newDetails = new Array<OrderDetail>();
-
+    console.log('customer-order-list:cloneOrderDetails - origDetails', origDetails)
     origDetails.forEach((item) => { // foreach statement
       const newDetail = new OrderDetail();
       newDetail.order_detail_id = 0;
