@@ -12,6 +12,8 @@ namespace SIMSReporting
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    using System.Data.Entity.Core.Objects;
+    using System.Linq;
     
     public partial class ReportingEntities : DbContext
     {
@@ -29,5 +31,12 @@ namespace SIMSReporting
         public virtual DbSet<order_payments_rpt> order_payments_rpt { get; set; }
         public virtual DbSet<customer_rpt> customers_rpt { get; set; }
         public virtual DbSet<vw_order_payments> vw_order_payments { get; set; }
+        public virtual DbSet<vw_order_quantities> vw_order_quantities { get; set; }
+        public virtual DbSet<vw_order_quantities_rollup> vw_order_quantities_rollup { get; set; }
+    
+        public virtual ObjectResult<sp_get_order_quantities_Result> sp_get_order_quantities()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_get_order_quantities_Result>("sp_get_order_quantities");
+        }
     }
 }

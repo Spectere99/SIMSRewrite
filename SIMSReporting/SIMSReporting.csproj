@@ -84,7 +84,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>SIMSReportingModel.edmx</DependentUpon>
     </Compile>
+    <Compile Include="sp_get_order_quantities_Result.cs">
+      <DependentUpon>SIMSReportingModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="vw_order_payments.cs">
+      <DependentUpon>SIMSReportingModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vw_order_quantities.cs">
+      <DependentUpon>SIMSReportingModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="vw_order_quantities_rollup.cs">
       <DependentUpon>SIMSReportingModel.tt</DependentUpon>
     </Compile>
   </ItemGroup>

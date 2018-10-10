@@ -67,6 +67,7 @@ import { LookupService } from './_services/lookups.service';
 import { PriceListService } from './_services/pricelist.service';
 import { UserService } from './_services/user.service';
 import { WindowRef } from './_services/window-ref.service';
+import { OrderQuantitiesComponent } from './report/order-quantities/order-quantities.component';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -116,6 +117,7 @@ import { WindowRef } from './_services/window-ref.service';
     OrderCorrespondenceComponent,
     ContactInfoComponent,
     ContactAddressComponent,
+    OrderQuantitiesComponent,
   ],
   imports: [
     NgbModule.forRoot(),

@@ -80,17 +80,6 @@ export class CustomerOrderListComponent implements OnInit {
     this.createStatusDataSource();
     this.createOrderTypeDataSource();
     this.userDataSource = globalDataProvider.getUsers();
-    /* lookupService.loadLookupData('').subscribe(res => {
-      this.lookupDataSource = res.value;
-      // console.log('lookupDataSource', this.lookupDataSource);
-      this.createStatusDataSource();
-      this.createOrderTypeDataSource();
-    });
-
-    userService.getUsers('').subscribe(res => {
-      this.user_Source = res.value;
-      // console.log('userDataSource', this.user_Source);
-    }); */
 
   }
 
@@ -102,11 +91,9 @@ export class CustomerOrderListComponent implements OnInit {
         url: this.baseUrl + 'orders',
         beforeSend:  function (url, async, method, timeout, params, payload, headers) {
           // console.log('customer-order-list:beforeSend', url, async, method, timeout, params, payload, headers);
-          // this.loading = true;
         },
         onLoaded: function() {
           // console.log('customer-order-list:onLoaded', this);
-          // this.loading = false;
         }
       },
       expand: ['order_art_file', 'customer', 'order_detail'],
@@ -164,7 +151,8 @@ export class CustomerOrderListComponent implements OnInit {
         'order_art_file/art_folder',
         'order_art_file/image_file',
         'order_detail/order_detail_id',
-        'order_detail/item_line_number'
+        'order_detail/item_line_number',
+        'order_detail/item_quantity'
       ],
       filter: ['customer_id', '=', this.customer.customer_id]
     };
@@ -546,15 +534,31 @@ export class CustomerOrderListComponent implements OnInit {
     return ordType;
   }
 
+  getOrderQty(data) {
+    //console.log('getOrderQty', data.order_detail);
+    if (data.order_detail !== undefined) {
+      let itemQty = 0;
+      data.order_detail.forEach(element => {
+        itemQty = itemQty + element.item_quantity;
+      });
+      return itemQty;
+    }
+    return 0;
+  }
+
+  getUserName(data) {
+    // console.log('getUserName', data);
+    return data.first_name + ' ' + data.last_name;
+  }
   applyChanges() {
     this.orderInfo.batchSave().subscribe(res => {
       this.orderDetail.batchSave(res);
       // Still need art tab batch save.
       this.orderArt.batchSave(res);
-      // this.selectedOrder = null;
       // console.log('orderTaskList on ApplyChanges', this.orderTaskList.orderTask);
       console.log('order balance_due', this.selectedOrder.balance_due);
       console.log('order', this.selectedOrder);
+      this.selectedOrder.order_id = res;
       if (+this.selectedOrder.balance_due === 0.00 && this.selectedOrder.order_payments.length > 0) {
         console.log('balance is paid!');
         const fpmtTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'fnpmt');
@@ -605,7 +609,6 @@ export class CustomerOrderListComponent implements OnInit {
     this.loadOrder(e.data);
     console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
     // console.log('Selected Order', this.selectedOrder);
-    // alert('Editing!');
   }
 
   closeEditor() {

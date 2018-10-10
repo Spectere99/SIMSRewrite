@@ -248,6 +248,21 @@ export class OrderService {
         return headers;
     }
 
+    loadOrderInfo(userId, orderId: number): Observable<any> {
+        // Build customer odata Options
+        const expandCmd = '';
+        const expandFields = '';
+        this.options = '(' + orderId + ')';
+        this.options = this.options.concat(expandCmd, expandFields);
+
+        return this.http.get(this.baseURL + this._ORDER_ACTION + this.options, {headers: this.getHeaders(userId)})
+        .map((res: Response) => {
+            // console.log(res.json());
+            console.log('order-service:loadOrderInfo', res.json());
+            return res.json();
+        });
+    }
+
     loadOrderData(userId, orderId: number): Observable<any> {
         // Build customer odata Options
         const expandCmd = '?$expand=';

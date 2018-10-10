@@ -89,6 +89,8 @@ namespace SIMSDataService
             builder.EntitySet<order_payments_rpt>("PaymentReporting");
             builder.EntitySet<customer_rpt>("CustomerReporting");
             builder.EntitySet<vw_order_payments>("OrderPaymentReporting");
+            builder.EntitySet<vw_order_quantities>("OrderQuantitiesReporting");
+            builder.EntitySet<vw_order_quantities_rollup>("OrderQuantitiesRollup");
 
             return builder.GetEdmModel();
         }

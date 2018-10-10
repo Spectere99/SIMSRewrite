@@ -15,7 +15,7 @@
       <dxo-column-fixing [enabled]="true"></dxo-column-fixing>
       <dxi-column dataField="order_id" dataType="number" caption="ID" [width]="100" [allowFiltering]="true" [visible]="false"></dxi-column>
       <dxi-column dataField="order_number" dataType="string" caption="Order Number" [width]="150" sortOrder="asc" [allowFiltering]="true"></dxi-column>
-      <dxi-column dataField="ship_attn" dataType="string" caption="Customer" [width]="350" [allowFiltering]="true"></dxi-column>
+      <dxi-column dataField="customer_rpt.customer_name" dataType="string" caption="Customer" [width]="350" [allowFiltering]="true"></dxi-column>
       <dxi-column dataField="taken_user_id" dataType="number" caption="Salesperson" [width]="200" [allowFiltering]="true">
         <dxo-lookup [dataSource]="userDataSource" valueExpr="user_id" [displayExpr]="getUserFullName"></dxo-lookup>
       </dxi-column>

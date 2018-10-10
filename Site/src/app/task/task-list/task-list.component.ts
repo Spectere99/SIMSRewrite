@@ -3,21 +3,38 @@ import { environment } from '../../../environments/environment';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
-import { OrderService, Order, OrderDetail } from '../../_services/order.service';
+import { OrderService, OrderMaster, Order, OrderDetail } from '../../_services/order.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { UserService, User } from '../../_services/user.service';
 import { CustomerService, Customer } from '../../_services/customer.service';
+import { CorrespondenceService } from '../../_services/correspondence.service';
 import { DxDataGridComponent, DxRadioGroupModule, DxTooltipModule, DxRadioGroupComponent } from 'devextreme-angular';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 
 @Component({
   selector: 'app-task-list',
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.scss'],
-  providers: [LookupService, OrderService, UserService, CustomerService]
+  providers: [LookupService, OrderService, UserService, CustomerService, CorrespondenceService]
 })
 export class TaskListComponent implements OnInit {
   @ViewChild(DxDataGridComponent) gridOrders: DxDataGridComponent;
   baseUrl = environment.odataEndpoint;
+  
+  selectedOrderMaster: OrderMaster;
+  /* Data Strutures for Orders */
+  selectedOrder: any;
+  selectedTasks: any;
+  selectedOrderLines: any;
+  selectedArtPlacements: any;
+  selectedFees: any;
+  selectedPayments: any;
+  selectedCorrespondence: any;
+  selectedOrderFees: any;
+  selectedArtFiles: any;
+  selectedNotes: any;
+  selectedStatusHistory: any;
+
   popupVisible = false;
   dataSource: any;
   userDataSource: any;
@@ -26,9 +43,11 @@ export class TaskListComponent implements OnInit {
   order_statusSource: Array<LookupItem>;
   customerDataSource: Array<Customer>;
   userProfile;
-  selectedOrder: any;
+
   customer: Customer;
   leaveWindowOpen = false;
+  loading: boolean;
+  loadingOrder: boolean;
 
   filterNames = [
     'Default',
@@ -41,7 +60,7 @@ export class TaskListComponent implements OnInit {
 
   constructor(public lookupService: LookupService, public userService: UserService,
               public orderService: OrderService, public authService: AuthenticationService,
-              public customerService: CustomerService) {
+              public customerService: CustomerService,  public correspondenceService: CorrespondenceService) {
     console.log('Constructor');
     this.userProfile = JSON.parse(authService.getUserToken());
     this.currentFilter = this.defaultLoadFilter;
@@ -128,19 +147,84 @@ export class TaskListComponent implements OnInit {
   showEditPopup(e) {
     // e.cancel = true;
     console.log('E', e);
-    console.log('task-list:showEditPopup Calling getCustomerData');
-    this.customerService.getCustomerData('', e.data.order.customer_id).subscribe(res => {
-      this.customer = res;
+    console.log('task-list:showEditPopup Calling loadOrder');
+    // this.customerService.getCustomerData('', e.data.order.customer_id).subscribe(res => {
+      // this.customer = res;
+      this.loadOrder(e.data);
       // this.contactPersons = this.orderCustomer.customer_person;
       // console.log('pulled Customer', this.orderCustomer);
-    });
+    //});
     // console.log('showPopup order', e.data);
-    this.selectedOrder = e.data.order;
     console.log('Selected Order', this.selectedOrder);
     // alert('Editing!');
 
-    this.popupVisible = true;
+    /* this.popupVisible = true; */
   }
+
+  loadOrder(e) {
+    this.loadingOrder = true;
+    this.loading = true;
+    this.selectedOrder = e.order;
+    this.selectedOrderMaster = e.order;
+    forkJoin(
+      this.orderService.loadOrderInfo('', this.selectedOrder.order_id), // 0
+      this.orderService.loadOrderData('', this.selectedOrder.order_id), // 1
+      this.orderService.loadArtPlacementData('', this.selectedOrder.order_id), // 2
+      this.orderService.loadOrderFeeData('', this.selectedOrder.order_id), // 3
+      this.orderService.loadOrderPaymentData('', this.selectedOrder.order_id), // 4
+      this.orderService.loadOrderArtFileData('', this.selectedOrder.order_id), // 5
+      this.orderService.loadOrderNotesData('', this.selectedOrder.order_id), // 6
+      this.orderService.loadOrderStatusHistoryData('', this.selectedOrder.order_id), // 7
+      this.orderService.loadOrderTaskData('', this.selectedOrder.order_id), // 8
+      this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 9
+      this.customerService.getCustomerData('', this.selectedOrder.customer_id) // 10
+    ).subscribe(results => {
+      console.log('selectedOrder', this.selectedOrder);
+      console.log('forkJoin Return', results);
+      this.customer = results[10];
+      this.selectedOrder = results[0];
+      this.selectedOrderMaster = results[0];
+      this.selectedOrderLines = results[1].order_detail;
+      this.selectedOrderMaster.order_detail = results[1].order_detail;
+      this.selectedArtPlacements = results[2].order_art_placement;
+      this.selectedOrderMaster.order_art_placements = results[2].order_art_placement;
+      this.selectedOrderFees = results[3].order_fees;
+      this.selectedOrderMaster.order_fees = results[3].order_fees;
+      this.selectedPayments = results[4].order_payments;
+      this.selectedOrderMaster.order_payments = results[4].order_payments;
+      this.selectedArtFiles = results[5].order_art_file;
+      this.selectedOrderMaster.order_art_file = results[5].order_art_file;
+      this.selectedNotes = results[6].order_notes;
+      this.selectedOrderMaster.order_notes = results[6].order_notes;
+      this.selectedStatusHistory = results[7].order_status_history;
+      this.selectedOrderMaster.order_status_histories = results[7].order_status_history;
+      this.selectedTasks = results[8].order_task;
+      this.selectedOrderMaster.order_tasks = results[8].order_task;
+      this.selectedCorrespondence = results[9].correspondences;
+      this.selectedOrderMaster.order_correspondence = results[9].correspondences;
+      this.selectedOrderMaster.customer = this.customer;
+      console.log('Order Master Return', this.selectedOrderMaster);
+      this.loadingOrder = false;
+      this.loading = false;
+      this.popupVisible = true;
+    });
+  }
+
+  /* getOrderQty(data) {
+    console.log('getOrderQty', data);
+    let orderDetail;
+    this.orderService.loadOrderData('', data.order_id).subscribe(res => {
+      orderDetail = res.order_detail;
+      if (orderDetail !== undefined) {
+        let itemQty = 0;
+        data.order_detail.forEach(element => {
+          itemQty = itemQty + element.item_quantity;
+        });
+        return itemQty;
+      }
+      return 0;
+    })
+  } */
 
   removeOrderStatuses() {
     let index = this.order_statusSource.findIndex(x => x.char_mod === 'clos');

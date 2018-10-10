@@ -108,6 +108,39 @@ warning 6002: The table/view 'def.printmgr.vw_order_payments' does not have a pr
           <Property Name="payment_user" Type="varchar" MaxLength="101" />
           <Property Name="customer_name" Type="varchar" MaxLength="50" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'def.printmgr.vw_order_quantities' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vw_order_quantities">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="int" Nullable="false" />
+          <Property Name="order_number" Type="varchar" MaxLength="50" />
+          <Property Name="order_type" Type="varchar" MaxLength="10" />
+          <Property Name="order_type_desc" Type="varchar" MaxLength="50" />
+          <Property Name="order_date" Type="datetime" Precision="0" />
+          <Property Name="order_due_date" Type="datetime" Precision="0" />
+          <Property Name="total" Type="varchar" MaxLength="50" />
+          <Property Name="customer_name" Type="varchar" MaxLength="50" />
+          <Property Name="TOTAL_QTY" Type="decimal" Precision="32" Scale="0" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'def.printmgr.vw_order_quantities_rollup' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vw_order_quantities_rollup">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="order_due_date" Type="datetime" Precision="0" />
+          <Property Name="garments_only" Type="decimal" Precision="54" Scale="0" />
+          <Property Name="screen_prints" Type="decimal" Precision="54" Scale="0" />
+          <Property Name="screen_prints_reorder" Type="decimal" Precision="54" Scale="0" />
+          <Property Name="embroidery" Type="decimal" Precision="54" Scale="0" />
+          <Property Name="embroidery_reorder" Type="decimal" Precision="54" Scale="0" />
+          <Property Name="laser_engraving" Type="decimal" Precision="54" Scale="0" />
+          <Property Name="ad_specialty" Type="decimal" Precision="54" Scale="0" />
+          <Property Name="TOTAL_QTY" Type="decimal" Precision="54" Scale="0" />
+        </EntityType>
         <EntityContainer Name="ReportingModelStoreContainer">
           <EntitySet Name="customer" EntityType="Self.customer" Schema="printmgr" store:Type="Tables" />
           <EntitySet Name="order_payments" EntityType="Self.order_payments" Schema="printmgr" store:Type="Tables" />
@@ -130,6 +163,33 @@ warning 6002: The table/view 'def.printmgr.vw_order_payments' does not have a pr
 `vw_order_payments`.`payment_user`, 
 `vw_order_payments`.`customer_name`
 FROM `vw_order_payments` AS `vw_order_payments`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_order_quantities" EntityType="Self.vw_order_quantities" store:Type="Views" store:Schema="printmgr">
+            <DefiningQuery>SELECT
+`vw_order_quantities`.`order_id`, 
+`vw_order_quantities`.`order_number`, 
+`vw_order_quantities`.`order_type`, 
+`vw_order_quantities`.`order_type_desc`, 
+`vw_order_quantities`.`order_date`, 
+`vw_order_quantities`.`order_due_date`, 
+`vw_order_quantities`.`total`, 
+`vw_order_quantities`.`customer_name`, 
+`vw_order_quantities`.`TOTAL_QTY`
+FROM `vw_order_quantities` AS `vw_order_quantities`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vw_order_quantities_rollup" EntityType="Self.vw_order_quantities_rollup" store:Type="Views" store:Schema="printmgr">
+            <DefiningQuery>SELECT
+`vw_order_quantities_rollup`.`id`, 
+`vw_order_quantities_rollup`.`order_due_date`, 
+`vw_order_quantities_rollup`.`garments_only`, 
+`vw_order_quantities_rollup`.`screen_prints`, 
+`vw_order_quantities_rollup`.`screen_prints_reorder`, 
+`vw_order_quantities_rollup`.`embroidery`, 
+`vw_order_quantities_rollup`.`embroidery_reorder`, 
+`vw_order_quantities_rollup`.`laser_engraving`, 
+`vw_order_quantities_rollup`.`ad_specialty`, 
+`vw_order_quantities_rollup`.`TOTAL_QTY`
+FROM `vw_order_quantities_rollup` AS `vw_order_quantities_rollup`</DefiningQuery>
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -204,6 +264,9 @@ FROM `vw_order_payments` AS `vw_order_payments`</DefiningQuery>
             <End Role="customer_rpt" EntitySet="customers_rpt" />
           </AssociationSet>
           <EntitySet Name="vw_order_payments" EntityType="ReportingModel.vw_order_payments" />
+          <EntitySet Name="vw_order_quantities" EntityType="ReportingModel.vw_order_quantities" />
+          <FunctionImport Name="sp_get_order_quantities" ReturnType="Collection(ReportingModel.sp_get_order_quantities_Result)" />
+          <EntitySet Name="vw_order_quantities_rollup" EntityType="ReportingModel.vw_order_quantities_rollup" />
         </EntityContainer>
         <EntityType Name="order_payments_rpt">
           <Key>
@@ -278,6 +341,36 @@ FROM `vw_order_payments` AS `vw_order_payments`</DefiningQuery>
           <Property Name="taken_user" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
           <Property Name="customer_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="payment_user" Type="String" MaxLength="101" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="vw_order_quantities">
+          <Key>
+            <PropertyRef Name="order_id" />
+          </Key>
+          <Property Name="order_id" Type="Int32" Nullable="false" />
+          <Property Name="order_number" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="order_type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="order_date" Type="DateTime" />
+          <Property Name="order_due_date" Type="DateTime" />
+          <Property Name="total" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="customer_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="TOTAL_QTY" Type="Decimal" />
+          <Property Name="order_type_desc" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="sp_get_order_quantities_Result" />
+        <EntityType Name="vw_order_quantities_rollup">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="order_due_date" Type="DateTime" />
+          <Property Name="garments_only" Type="Int32" />
+          <Property Name="screen_prints" Type="Int32" />
+          <Property Name="screen_prints_reorder" Type="Int32" />
+          <Property Name="embroidery" Type="Int32" />
+          <Property Name="embroidery_reorder" Type="Int32" />
+          <Property Name="laser_engraving" Type="Int32" />
+          <Property Name="ad_specialty" Type="Int32" />
+          <Property Name="TOTAL_QTY" Type="Int32" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -387,6 +480,37 @@ FROM `vw_order_payments` AS `vw_order_payments`</DefiningQuery>
                 <ScalarProperty Name="payment_type_code" ColumnName="payment_type_code" />
                 <ScalarProperty Name="payment_date" ColumnName="payment_date" />
                 <ScalarProperty Name="order_id" ColumnName="order_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_order_quantities">
+            <EntityTypeMapping TypeName="ReportingModel.vw_order_quantities">
+              <MappingFragment StoreEntitySet="vw_order_quantities">
+                <ScalarProperty Name="order_type_desc" ColumnName="order_type_desc" />
+                <ScalarProperty Name="TOTAL_QTY" ColumnName="TOTAL_QTY" />
+                <ScalarProperty Name="customer_name" ColumnName="customer_name" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="order_due_date" ColumnName="order_due_date" />
+                <ScalarProperty Name="order_date" ColumnName="order_date" />
+                <ScalarProperty Name="order_type" ColumnName="order_type" />
+                <ScalarProperty Name="order_number" ColumnName="order_number" />
+                <ScalarProperty Name="order_id" ColumnName="order_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vw_order_quantities_rollup">
+            <EntityTypeMapping TypeName="ReportingModel.vw_order_quantities_rollup">
+              <MappingFragment StoreEntitySet="vw_order_quantities_rollup">
+                <ScalarProperty Name="TOTAL_QTY" ColumnName="TOTAL_QTY" />
+                <ScalarProperty Name="ad_specialty" ColumnName="ad_specialty" />
+                <ScalarProperty Name="laser_engraving" ColumnName="laser_engraving" />
+                <ScalarProperty Name="embroidery_reorder" ColumnName="embroidery_reorder" />
+                <ScalarProperty Name="embroidery" ColumnName="embroidery" />
+                <ScalarProperty Name="screen_prints_reorder" ColumnName="screen_prints_reorder" />
+                <ScalarProperty Name="screen_prints" ColumnName="screen_prints" />
+                <ScalarProperty Name="garments_only" ColumnName="garments_only" />
+                <ScalarProperty Name="order_due_date" ColumnName="order_due_date" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

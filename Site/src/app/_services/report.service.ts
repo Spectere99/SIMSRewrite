@@ -16,7 +16,9 @@ export class ReportingService {
         const headers = new Headers({ 'Accept': 'application/json' });
         headers.append('Content-Type', 'application/json; charset=UTF-8');
         headers.append('userid', userId);
-        headers.append('orderDate', orderDate);
+        if (orderDate) {
+            headers.append('orderDate', orderDate);    
+        }
         // headers.append('showInactive', this.showInactive.toString());
         return headers;
     }
@@ -27,4 +29,14 @@ export class ReportingService {
             return res.json();
         });
     }
+
+    getOrderQuantityData(userId): Observable<any> {
+        return this.http.get(this.baseURL + 'OrderQuantitiesRollup', {headers: this.getHeaders(userId, undefined)})
+        .map((res: Response) => {
+            console.log(res.json());
+            return res.json();
+        });
+    }
+
+
 }

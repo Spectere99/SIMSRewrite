@@ -49,7 +49,7 @@ orderStartDate;
           type: 'odata',
           url: this.baseURL + 'OrderReporting'
       },
-      expand: [],
+      expand: ['customer_rpt'],
       select: ['order_id',
       'order_number',
       'order_status',
@@ -61,7 +61,8 @@ orderStartDate;
       'balance_due',
       'payments',
       'contact',
-      'taken_user_id']
+      'taken_user_id',
+      'customer_rpt/customer_name']
     };
   }
 

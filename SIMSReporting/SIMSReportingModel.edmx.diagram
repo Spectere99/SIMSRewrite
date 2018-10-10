@@ -4,13 +4,15 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4454d21dfc654a1684b3acdb0e33810e" Name="Diagram1" ZoomLevel="47">
+      <Diagram DiagramId="4454d21dfc654a1684b3acdb0e33810e" Name="Diagram1" ZoomLevel="68">
         <EntityTypeShape EntityType="ReportingModel.order_rpt" Width="2.375" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="ReportingModel.order_payments_rpt" Width="2.25" PointX="4.375" PointY="0.75" />
         <AssociationConnector Association="ReportingModel.order_rptorder_payments_rpt" />
         <EntityTypeShape EntityType="ReportingModel.customer_rpt" Width="1.5" PointX="4.375" PointY="4.75" />
         <AssociationConnector Association="ReportingModel.order_rptcustomer_rpt" />
         <EntityTypeShape EntityType="ReportingModel.vw_order_payments" Width="1.5" PointX="8.25" PointY="3.625" />
+        <EntityTypeShape EntityType="ReportingModel.vw_order_quantities" Width="1.5" PointX="6.375" PointY="8.75" />
+        <EntityTypeShape EntityType="ReportingModel.vw_order_quantities_rollup" Width="1.5" PointX="8.375" PointY="8.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -20,14 +20,14 @@
             <dxo-lookup [dataSource]="order_statusSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
           </dxi-column>
           <dxi-column dataField="order_due_date" caption="Due Date" dataType="date" [width]="110"></dxi-column>
-          
+          <dxi-column dataField="assigned_user_id" caption="Assigned To" [width]="200">
+            <dxo-lookup [dataSource]="userDataSource" valueExpr="user_id" [displayExpr]="getUserName"></dxo-lookup>
+          </dxi-column> 
+          <dxi-column dataField="" caption="Order Qty" [width]="100" [calculateCellValue]="getOrderQty" [allowFiltering]="false"></dxi-column>
           <!-- <dxi-column dataField="order_art_file.image_file" caption="Art" [width]="200"></dxi-column> -->
           <!-- <dxi-column dataField="customer.customer_name" caption="Customer Name" [width]="400"></dxi-column>  -->
           <!--    <dxi-column dataField="order_due_date" caption="Due Date" dataType="date" [width]="110"></dxi-column>
-          <dxi-column dataField="purchase_order" caption="Purchase Order" [width]="175"></dxi-column>
-          <dxi-column dataField="assigned_user_id" caption="Assigned To" [width]="100">
-            <dxo-lookup [dataSource]="user_Source" valueExpr="user_id" displayExpr="login_id"></dxo-lookup>
-          </dxi-column> -->
+          <dxi-column dataField="purchase_order" caption="Purchase Order" [width]="175"></dxi-column>-->
           <!--<dxi-column dataField="" caption="Items" [width]="100"></dxi-column> -->
           <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
           <dxo-filter-row [visible]="true"></dxo-filter-row>
