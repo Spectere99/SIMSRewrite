@@ -2,14 +2,14 @@ import { Component, Injectable, OnInit, Output, ViewChild, Input } from '@angula
 import { environment } from '../../../environments/environment';
 import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { NgModel } from '@angular/forms';
 import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { UserService, User } from '../../_services/user.service';
 import { AuthenticationService } from '../../_services/authentication.service';
-import { Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement, OrderFee } from '../../_services/order.service';
+import { OrderMaster, Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement, OrderFee } from '../../_services/order.service';
+import { CorrespondenceService } from '../../_services/correspondence.service';
 import { OrderInfoComponent } from '../order-info/order-info.component';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { OrderArtComponent } from '../order-art/order-art.component';
@@ -19,6 +19,9 @@ import { OrderNotesHistoryComponent } from '../order-notes-history/order-notes-h
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar } from '@angular/material';
 
+import { WindowRef } from '../../_services/window-ref.service';
+import { Observable } from 'rxjs/Observable';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
@@ -39,7 +42,7 @@ import 'rxjs/add/operator/map';
 @Component({
   selector: 'app-order-list',
   templateUrl: './order-list.component.html',
-  providers: [LookupService, UserService, OrderService],
+  providers: [LookupService, UserService, OrderService, CorrespondenceService],
   styleUrls: ['./order-list.component.scss']
 })
 
@@ -54,6 +57,20 @@ export class OrderListComponent implements OnInit {
   @ViewChild(OrderTaskListComponent) orderTaskList: OrderTaskListComponent;
   @ViewChild(OrderSummaryComponent) orderSummary: OrderSummaryComponent;
   @ViewChild(OrderNotesHistoryComponent) orderNotesHistory: OrderNotesHistoryComponent;
+
+  selectedOrderMaster: OrderMaster;
+  /* Data Strutures for Orders */
+  selectedOrder: any;
+  selectedTasks: any;
+  selectedOrderLines: any;
+  selectedArtPlacements: any;
+  selectedFees: any;
+  selectedPayments: any;
+  selectedCorrespondence: any;
+  selectedOrderFees: any;
+  selectedArtFiles: any;
+  selectedNotes: any;
+  selectedStatusHistory: any;
   baseUrl = environment.odataEndpoint;
   odataLookup;
   summaryVisible = false;
@@ -61,17 +78,17 @@ export class OrderListComponent implements OnInit {
   order_statusSource: Array<LookupItem>;
   order_typeSource: Array<LookupItem>;
   userDataSource: Array<User>;
-  selectedOrder: any;
   lookupDataSource: Array<LookupItem>;
   customerId: number;
   userProfile;
   filterDate = new Date(2008, 1, 1);
   leaveWindowOpen = false;
-
+  loading: boolean;
+  loadingOrder: boolean;
   popupVisible = false;
 
     constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, public snackBar: MatSnackBar,
-                authService: AuthenticationService) {
+                authService: AuthenticationService, public correspondenceService: CorrespondenceService) {
       this.userProfile = JSON.parse(authService.getUserToken());
       this.lookupDataSource = globalDataProvider.getLookups();
       this.createStatusDataSource();
@@ -155,6 +172,9 @@ export class OrderListComponent implements OnInit {
         'customer/customer_name',
         'order_art_file/image_file'
       ],
+      beforeSend: function(request) {
+        request.timeout = environment.connectionTimeout;
+      },
        // filter: ['order_date', '>', this.filterDate]
    };
   }
@@ -197,13 +217,16 @@ export class OrderListComponent implements OnInit {
     if (mm < 10) {
       mm = '0' + mm;
     }
-    return mm + dd + yyyy;
+    return mm.toString() + dd.toString() + yyyy.toString();
   }
 
   showEditPopup(e) {
     // e.cancel = true;
     // console.log('E', e);
     this.selectedOrder = e.data;
+    console.log('*** customer-order-list-comopnent:showEditPopup - START', e.data);
+    this.loadOrder(e.data);
+    console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
     // console.log('Selected Order', this.selectedOrder);
     // alert('Editing!');
     // console.log('Tab', this.listTab);
@@ -471,6 +494,50 @@ export class OrderListComponent implements OnInit {
 
     this.selectedOrder = e;
     this.summaryVisible = true;
+  }
+
+  loadOrder(e) {
+    this.loadingOrder = true;
+    this.loading = true;
+    this.selectedOrder = e;
+    this.selectedOrderMaster = e;
+    forkJoin(
+      this.orderService.loadOrderData('', this.selectedOrder.order_id), // 0
+      this.orderService.loadArtPlacementData('', this.selectedOrder.order_id), // 1
+      this.orderService.loadOrderFeeData('', this.selectedOrder.order_id), // 2
+      this.orderService.loadOrderPaymentData('', this.selectedOrder.order_id), // 3
+      this.orderService.loadOrderArtFileData('', this.selectedOrder.order_id), // 4
+      this.orderService.loadOrderNotesData('', this.selectedOrder.order_id), // 5
+      this.orderService.loadOrderStatusHistoryData('', this.selectedOrder.order_id), // 6
+      this.orderService.loadOrderTaskData('', this.selectedOrder.order_id), // 7
+      this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 8
+    ).subscribe(results => {
+      console.log('selectedOrder', this.selectedOrder);
+      console.log('forkJoin Return', results);
+      this.selectedOrderLines = results[0].order_detail;
+      this.selectedOrderMaster.order_detail = results[0].order_detail;
+      this.selectedArtPlacements = results[1].order_art_placement;
+      this.selectedOrderMaster.order_art_placements = results[1].order_art_placement;
+      this.selectedOrderFees = results[2].order_fees;
+      this.selectedOrderMaster.order_fees = results[2].order_fees;
+      this.selectedPayments = results[3].order_payments;
+      this.selectedOrderMaster.order_payments = results[3].order_payments;
+      this.selectedArtFiles = results[4].order_art_file;
+      this.selectedOrderMaster.order_art_file = results[4].order_art_file;
+      this.selectedNotes = results[5].order_notes;
+      this.selectedOrderMaster.order_notes = results[5].order_notes;
+      this.selectedStatusHistory = results[6].order_status_history;
+      this.selectedOrderMaster.order_status_histories = results[6].order_status_history;
+      this.selectedTasks = results[7].order_task;
+      this.selectedOrderMaster.order_tasks = results[7].order_task;
+      this.selectedCorrespondence = results[8].correspondences;
+      this.selectedOrderMaster.order_correspondence = results[8].correspondences;
+      this.selectedOrderMaster.customer = this.customer;
+      console.log('Order Master Return', this.selectedOrderMaster);
+      this.loadingOrder = false;
+      this.loading = false;
+      this.popupVisible = true;
+    });
   }
 
   ngOnInit() {

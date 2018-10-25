@@ -612,7 +612,7 @@ export class OrderDetailComponent implements OnInit {
     this.editMode = this.currentOrder.order_id !== 0;
     // console.log('Current Order', this.currentOrder);
   }
-  
+
   formatOrderNumber(today): string {
     console.log('formatOrderNumber - today', today);
     let dd = today.getDate();
@@ -625,6 +625,6 @@ export class OrderDetailComponent implements OnInit {
       mm = '0' + mm;
     }
     // console.log('formattedDate', mm + dd + yyyy);
-    return mm + dd + yyyy;
+    return mm.toString() + dd.toString() + yyyy.toString();
   }
 }

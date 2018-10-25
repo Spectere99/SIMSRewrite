@@ -30,9 +30,9 @@ export class AuthenticationService {
     login(username: string, password: string): Observable<string> {
         return this.http.post(this.baseURL, null, { headers: this.getHeaders(username, password)})
         .map((response: Response) => {
-            console.log('Return from login', response);
+            // console.log('Return from login', response);
             const token = response.json();
-            console.log(token);
+            // console.log(token);
             if (token) {
                 this.token = token;
                 sessionStorage.setItem('currentUser', JSON.stringify(token));
@@ -42,7 +42,7 @@ export class AuthenticationService {
             }
         },
         error => {
-            console.log('Error returned', error);
+            // console.log('Error returned', error);
             return '';
         });
 
@@ -74,7 +74,7 @@ export class AuthenticationService {
 
     isAuthenticated(): boolean {
         const currentUser = JSON.parse(sessionStorage.getItem('currentUser'));
-        console.log('isAuthenticated - currentUser', currentUser);
+        // console.log('isAuthenticated - currentUser', currentUser);
          this._isLoggedIn = false;
          if (currentUser) {
             this.token = currentUser.profile;
@@ -95,7 +95,7 @@ export class AuthenticationService {
     }
 
     clear(): void {
-        console.log('Clearing Local Storage');
+        // console.log('Clearing Local Storage');
         sessionStorage.removeItem('currentUser');
     }
 }
