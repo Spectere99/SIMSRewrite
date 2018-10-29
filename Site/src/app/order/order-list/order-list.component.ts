@@ -2,14 +2,13 @@ import { Component, Injectable, OnInit, Output, ViewChild, Input } from '@angula
 import { environment } from '../../../environments/environment';
 import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { Http, HttpModule, Headers, Response } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
 import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
-import { NgModel } from '@angular/forms';
-import { NgbTabset } from '@ng-bootstrap/ng-bootstrap';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { UserService, User } from '../../_services/user.service';
+import { CorrespondenceService } from '../../_services/correspondence.service';
 import { AuthenticationService } from '../../_services/authentication.service';
-import { Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement, OrderFee } from '../../_services/order.service';
+import { CustomerService, Customer } from '../../_services/customer.service';
+import { Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement, OrderFee, OrderMaster } from '../../_services/order.service';
 import { OrderInfoComponent } from '../order-info/order-info.component';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { OrderArtComponent } from '../order-art/order-art.component';
@@ -18,7 +17,9 @@ import { OrderSummaryComponent } from '../order-summary/order-summary.component'
 import { OrderNotesHistoryComponent } from '../order-notes-history/order-notes-history.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar } from '@angular/material';
-
+import { WindowRef } from '../../_services/window-ref.service'
+import { Observable } from 'rxjs/Observable';
+import { forkJoin } from 'rxjs/observable/forkJoin';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
 
@@ -39,7 +40,7 @@ import 'rxjs/add/operator/map';
 @Component({
   selector: 'app-order-list',
   templateUrl: './order-list.component.html',
-  providers: [LookupService, UserService, OrderService],
+  providers: [LookupService, UserService, OrderService, CorrespondenceService, CustomerService],
   styleUrls: ['./order-list.component.scss']
 })
 
@@ -54,6 +55,22 @@ export class OrderListComponent implements OnInit {
   @ViewChild(OrderTaskListComponent) orderTaskList: OrderTaskListComponent;
   @ViewChild(OrderSummaryComponent) orderSummary: OrderSummaryComponent;
   @ViewChild(OrderNotesHistoryComponent) orderNotesHistory: OrderNotesHistoryComponent;
+
+
+  selectedOrderMaster: OrderMaster;
+  /* Data Strutures for Orders */
+  selectedOrder: any;
+  selectedTasks: any;
+  selectedOrderLines: any;
+  selectedArtPlacements: any;
+  selectedFees: any;
+  selectedPayments: any;
+  selectedCorrespondence: any;
+  selectedOrderFees: any;
+  selectedArtFiles: any;
+  selectedNotes: any;
+  selectedStatusHistory: any;
+
   baseUrl = environment.odataEndpoint;
   odataLookup;
   summaryVisible = false;
@@ -61,17 +78,18 @@ export class OrderListComponent implements OnInit {
   order_statusSource: Array<LookupItem>;
   order_typeSource: Array<LookupItem>;
   userDataSource: Array<User>;
-  selectedOrder: any;
   lookupDataSource: Array<LookupItem>;
   customerId: number;
   userProfile;
   filterDate = new Date(2008, 1, 1);
   leaveWindowOpen = false;
-
+  loading: boolean;
+  loadingOrder: boolean;
+  window;
   popupVisible = false;
 
-    constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, public snackBar: MatSnackBar,
-                authService: AuthenticationService) {
+    constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, public correspondenceService: CorrespondenceService,
+                public snackBar: MatSnackBar, public customerService: CustomerService, authService: AuthenticationService) {
       this.userProfile = JSON.parse(authService.getUserToken());
       this.lookupDataSource = globalDataProvider.getLookups();
       this.createStatusDataSource();
@@ -171,20 +189,176 @@ export class OrderListComponent implements OnInit {
     this.order_typeSource = this.lookupDataSource.filter(item => item.class === 'otyps');
   }
 
-  private getHeaders(userId) {
-    const headers = new Headers({ 'Accept': 'application/json' });
-    headers.append('Content-Type', 'application/json; charset=UTF-8');
-    headers.append('userid', userId);
-    return headers;
+  createNewOrder(customer_id) {
+    // console.log('Creating Order!!!', customer_id);
+    this.selectedOrder = new Order();
+    this.selectedOrder.order_id = 0;
+    this.selectedOrder.tax_rate = '7.0';
+    this.selectedOrder.customer_id = customer_id;
+    this.selectedOrder.customer_name = this.customer.customer_name;
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+    this.selectedOrder.order_number = this.formatOrderNumber(today);
+    this.selectedOrder.order_date = today;
+    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
+
+    this.selectedOrderMaster = new OrderMaster();
+    this.selectedOrderMaster.order_id = 0;
+    this.selectedOrderMaster.tax_rate = '7.0';
+    this.selectedOrderMaster.customer_id = customer_id;
+    this.selectedOrderMaster.customer = this.customer;
+    this.selectedOrderMaster.order_number = this.formatOrderNumber(today);
+    this.selectedOrderMaster.order_date = today.toISOString();
+    this.selectedOrderMaster.taken_user_id = this.userProfile.profile.user_id;
+    this.selectedOrderMaster.order_detail = [];
+    this.selectedOrderMaster.order_art_placements = [];
+    this.selectedOrderMaster.order_fees = [];
+    this.selectedOrderMaster.order_payments = [];
+    this.selectedOrderMaster.order_art_file = [];
+    this.selectedOrderMaster.order_tasks = [];
+    this.selectedOrderMaster.order_notes = [];
+    this.selectedOrderMaster.order_status_histories = [];
+    this.selectedOrderMaster.order_correspondence = [];
+
+    this.setOrderContact();
+    this.setOrderBillAndShipAddresses();
+    if (this.orderDetail) {
+      this.orderDetail.order.order_detail = [];
+    }
+    // this.selectedOrder.ship_attn = this.customer
+    this.popupVisible = true;
   }
 
-  selectionChanged(e) {
-    this.selectedOrder = e.selectedRowsData[0];
-    // console.log('In selectionChanged', this.selectedOrder);
+  reOrder(customer_id) {
+    console.log('Reorder Function', this.selectedOrder);
+    const reOrderObj = this.cloneOrder(this.selectedOrder);
+
+    reOrderObj.taken_user_id = this.userProfile.profile.user_id;
+    reOrderObj.assigned_user_id = this.userProfile.profile.user_id;
+
+    console.log ('customer_order-list:reOrder-reOrderObj', reOrderObj);
+    this.orderService.addOrderInfo(this.userProfile.profile.login_id, reOrderObj).subscribe(res => {
+      console.log('Order ID Return', res);
+      reOrderObj.order_id = res.order_id;
+      reOrderObj.order_number = res.order_number;
+      const reOrderDetails = this.cloneOrderDetails(this.selectedOrderMaster.order_detail, res.order_id);
+      reOrderDetails.forEach((item) => {
+        // console.log('Cloning OrderLine', item);
+        this.orderService.addOrderLineItem(this.userProfile.profile.login_id, item).subscribe();
+      });
+
+      const reOrderArtFiles = this.cloneOrderArtFiles(this.selectedOrderMaster.order_art_file, res.order_id);
+      reOrderArtFiles.forEach((item) => {
+        // console.log('Cloning Art File', item);
+        this.orderService.addOrderArtFile(this.userProfile.profile.login_id, item).subscribe();
+      });
+
+      const reOrderFees = this.cloneOrderFees(this.orderDetail.orderFees, res.order_id);
+      reOrderFees.forEach((item) => {
+        // console.log('Cloning Order Fees', item);
+        this.orderService.addOrderFee(this.userProfile.profile.login_id, item).subscribe();
+      });
+
+      const reOrderArtPlacement = this.cloneOrderArtPlacement(this.selectedOrderMaster.order_art_placements, res.order_id);
+      reOrderArtPlacement.forEach((item) => {
+        // console.log('Cloning Art Placements', item);
+        this.orderService.addOrderArtPlacement(this.userProfile.profile.login_id, item).subscribe();
+      });
+
+      const reOrderTaskList = this.orderTaskList.createOrderTaskList(res.order_id, reOrderObj.order_type);
+      reOrderTaskList.forEach((item) => {
+        // console.log('Cloning Order Task', item);
+        this.orderService.addOrderTask(this.userProfile.profile.login_id, item).subscribe();
+      });
+
+      setTimeout(() => {
+        this.gridOrders.instance.refresh();
+        this.loadOrder(reOrderObj);
+        this.snackBar.open('Re-Order Created.', '', {
+          duration: 4000,
+          verticalPosition: 'top'
+        });
+      }, 2000);
+    });
+
   }
-  setReorderInd(data) {
-    if (data === undefined) { return false; }
-    return data.reorder_ind === 'Y';
+
+  setOrderContact() {
+    // Add logic to pull primary contact???
+    this.selectedOrder.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
+    this.selectedOrder.contact_email = this.customer.customer_person[0].email_address;
+    this.selectedOrder.contact_phone1 = this.customer.customer_person[0].phone_1;
+    this.selectedOrder.contact_phone1_ext = this.customer.customer_person[0].phone_1_ext;
+    this.selectedOrder.contact_phone1_type = this.customer.customer_person[0].phone_1_type;
+    this.selectedOrder.contact_phone2 = this.customer.customer_person[0].phone_2;
+    this.selectedOrder.contact_phone2_ext = this.customer.customer_person[0].phone_2_ext;
+    this.selectedOrder.contact_phone2_type = this.customer.customer_person[0].phone_2_type;
+
+    this.selectedOrderMaster.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
+    this.selectedOrderMaster.contact_email = this.customer.customer_person[0].email_address;
+    this.selectedOrderMaster.contact_phone1 = this.customer.customer_person[0].phone_1;
+    this.selectedOrderMaster.contact_phone1_ext = this.customer.customer_person[0].phone_1_ext;
+    this.selectedOrderMaster.contact_phone1_type = this.customer.customer_person[0].phone_1_type;
+    this.selectedOrderMaster.contact_phone2 = this.customer.customer_person[0].phone_2;
+    this.selectedOrderMaster.contact_phone2_ext = this.customer.customer_person[0].phone_2_ext;
+    this.selectedOrderMaster.contact_phone2_type = this.customer.customer_person[0].phone_2_type;
+  }
+
+  setOrderBillAndShipAddresses() {
+    // Get the Billing Address if available
+    // console.log('setBillingAndShipmentAddress', this.customer);
+    const billingAddress = this.customer.customer_address.filter(item => item.type_code === 'bill');
+    this.selectedOrder.ship_attn = this.customer.customer_name;
+    if (billingAddress && billingAddress.length > 0) {
+      // console.log('Billing Adr', billingAddress[0]);
+      this.selectedOrder.BILL_ADDRESS_1 = billingAddress[0].address_1;
+      this.selectedOrder.BILL_ADDRESS_2 = billingAddress[0].address_2;
+      this.selectedOrder.BILL_CITY = billingAddress[0].city;
+      this.selectedOrder.BILL_STATE = billingAddress[0].state;
+      this.selectedOrder.BILL_ZIP = billingAddress[0].zip;
+      if (this.customer.ship_to_bill_ind === 'Y') {
+        this.selectedOrder.SHIP_ADDRESS_1 = billingAddress[0].address_1;
+        this.selectedOrder.SHIP_ADDRESS_2 = billingAddress[0].address_2;
+        this.selectedOrder.SHIP_CITY = billingAddress[0].city;
+        this.selectedOrder.SHIP_STATE = billingAddress[0].state;
+        this.selectedOrder.SHIP_ZIP = billingAddress[0].zip;
+      } else {
+        const shippingAddress = this.customer.customer_address.filter(item => item.type_code === 'ship');
+        if (shippingAddress && shippingAddress.length > 0) {
+          this.selectedOrder.SHIP_ADDRESS_1 = shippingAddress[0].address_1;
+          this.selectedOrder.SHIP_ADDRESS_2 = shippingAddress[0].address_2;
+          this.selectedOrder.SHIP_CITY = shippingAddress[0].city;
+          this.selectedOrder.SHIP_STATE = shippingAddress[0].state;
+          this.selectedOrder.SHIP_ZIP = shippingAddress[0].zip;
+        }
+      }
+    }
+
+    this.selectedOrderMaster.ship_attn = this.customer.customer_name;
+    if (billingAddress && billingAddress.length > 0) {
+      // console.log('Billing Adr', billingAddress[0]);
+      this.selectedOrderMaster.BILL_ADDRESS_1 = billingAddress[0].address_1;
+      this.selectedOrderMaster.BILL_ADDRESS_2 = billingAddress[0].address_2;
+      this.selectedOrderMaster.BILL_CITY = billingAddress[0].city;
+      this.selectedOrderMaster.BILL_STATE = billingAddress[0].state;
+      this.selectedOrderMaster.BILL_ZIP = billingAddress[0].zip;
+      if (this.customer.ship_to_bill_ind === 'Y') {
+        this.selectedOrderMaster.SHIP_ADDRESS_1 = billingAddress[0].address_1;
+        this.selectedOrderMaster.SHIP_ADDRESS_2 = billingAddress[0].address_2;
+        this.selectedOrderMaster.SHIP_CITY = billingAddress[0].city;
+        this.selectedOrderMaster.SHIP_STATE = billingAddress[0].state;
+        this.selectedOrderMaster.SHIP_ZIP = billingAddress[0].zip;
+      } else {
+        const shippingAddress = this.customer.customer_address.filter(item => item.type_code === 'ship');
+        if (shippingAddress && shippingAddress.length > 0) {
+          this.selectedOrderMaster.SHIP_ADDRESS_1 = shippingAddress[0].address_1;
+          this.selectedOrderMaster.SHIP_ADDRESS_2 = shippingAddress[0].address_2;
+          this.selectedOrderMaster.SHIP_CITY = shippingAddress[0].city;
+          this.selectedOrderMaster.SHIP_STATE = shippingAddress[0].state;
+          this.selectedOrderMaster.SHIP_ZIP = shippingAddress[0].zip;
+        }
+      }
+    }
   }
 
   formatOrderNumber(today): string {
@@ -200,76 +374,10 @@ export class OrderListComponent implements OnInit {
     return mm + dd + yyyy;
   }
 
-  showEditPopup(e) {
-    // e.cancel = true;
-    // console.log('E', e);
-    this.selectedOrder = e.data;
-    // console.log('Selected Order', this.selectedOrder);
-    // alert('Editing!');
-    // console.log('Tab', this.listTab);
-    /* if (this.listTab) {
-      this.listTab.select('Info');
-    } */
-    this.popupVisible = true;
+  refreshGrid() {
+    this.gridOrders.instance.refresh();
   }
 
-  closeEditor() {
-    // this.selectedOrder = undefined;
-    this.popupVisible = false;
-  }
-  reOrder(customer_id) {
-    console.log('Reorder Function', this.selectedOrder);
-    const reOrderObj = this.cloneOrder(this.selectedOrder);
-
-    reOrderObj.taken_user_id = this.userProfile.profile.user_id;
-    reOrderObj.assigned_user_id = this.userProfile.profile.user_id;
-
-
-    this.orderService.addOrderInfo(this.userProfile.profile.login_id, reOrderObj).subscribe(res => {
-      console.log('Order ID Return', res);
-      reOrderObj.order_id = res.order_id;
-      reOrderObj.order_number = res.order_number;
-      const reOrderDetails = this.cloneOrderDetails(this.orderDetail.order.order_detail, res.order_id);
-      reOrderDetails.forEach((item) => {
-        // console.log('Cloning OrderLine', item);
-        this.orderService.addOrderLineItem(this.userProfile.profile.login_id, item).subscribe();
-      });
-
-      const reOrderArtFiles = this.cloneOrderArtFiles(this.orderArt.orderArtFiles, res.order_id);
-      reOrderArtFiles.forEach((item) => {
-        // console.log('Cloning Art File', item);
-        this.orderService.addOrderArtFile(this.userProfile.profile.login_id, item).subscribe();
-      });
-
-      const reOrderFees = this.cloneOrderFees(this.orderDetail.orderFees, res.order_id);
-      reOrderFees.forEach((item) => {
-        // console.log('Cloning Order Fees', item);
-        this.orderService.addOrderFee(this.userProfile.profile.login_id, item).subscribe();
-      });
-
-      const reOrderArtPlacement = this.cloneOrderArtPlacement(this.orderDetail.orderArtPlacement, res.order_id);
-      reOrderArtPlacement.forEach((item) => {
-        // console.log('Cloning Art Placements', item);
-        this.orderService.addOrderArtPlacement(this.userProfile.profile.login_id, item).subscribe();
-      });
-
-      const reOrderTaskList = this.orderTaskList.createOrderTaskList(res.order_id, reOrderObj.order_type);
-      reOrderTaskList.forEach((item) => {
-        // console.log('Cloning Order Task', item);
-        this.orderService.addOrderTask(this.userProfile.profile.login_id, item).subscribe();
-      });
-
-      this.gridOrders.instance.refresh();
-      this.snackBar.open('Re-Order Created.', '', {
-        duration: 4000,
-        verticalPosition: 'top'
-      });
-      console.log('Reorder Object after Refresh', reOrderObj);
-      this.selectedOrder = reOrderObj;
-      // this.popupVisible = false;
-    });
-
-  }
   cloneOrder(origOrder: Order): Order {
     const newOrder = new Order();
     newOrder.previous_order = origOrder.order_number;
@@ -289,7 +397,7 @@ export class OrderListComponent implements OnInit {
     newOrder.contact_phone2 = origOrder.contact_phone2;
     newOrder.contact_phone2_ext = origOrder.contact_phone2_ext;
     newOrder.contact_phone2_type = origOrder.contact_phone2_type;
-    newOrder.balance_due = origOrder.balance_due;
+    newOrder.balance_due = origOrder.balance_due.toString();
     newOrder.BILL_ADDRESS_1 = origOrder.BILL_ADDRESS_1;
     newOrder.BILL_ADDRESS_2 = origOrder.BILL_ADDRESS_2;
     newOrder.BILL_CITY = origOrder.BILL_CITY;
@@ -304,19 +412,19 @@ export class OrderListComponent implements OnInit {
     newOrder.SHIP_ZIP = origOrder.SHIP_ZIP;
     newOrder.order_type = this.setReOrderType(origOrder.order_type);
     newOrder.order_number = this.formatOrderNumber(today);
-    newOrder.subtotal = origOrder.subtotal;
-    newOrder.tax_amount = origOrder.tax_amount;
-    newOrder.tax_rate = origOrder.tax_rate;
-    newOrder.shipping = origOrder.shipping;
-    newOrder.total = origOrder.total;
-    newOrder.balance_due = origOrder.total;
+    newOrder.subtotal = origOrder.subtotal.toString();
+    newOrder.tax_amount = origOrder.tax_amount.toString();
+    newOrder.tax_rate = origOrder.tax_rate.toString();
+    newOrder.shipping = origOrder.shipping.toString();
+    newOrder.total = origOrder.total.toString();
+    newOrder.balance_due = origOrder.total.toString();
 
     return newOrder;
   }
 
   cloneOrderDetails(origDetails: Array<OrderDetail>, order_id: number): Array<OrderDetail> {
     const newDetails = new Array<OrderDetail>();
-
+    console.log('customer-order-list:cloneOrderDetails - origDetails', origDetails)
     origDetails.forEach((item) => { // foreach statement
       const newDetail = new OrderDetail();
       newDetail.order_detail_id = 0;
@@ -451,29 +559,164 @@ export class OrderListComponent implements OnInit {
     return ordType;
   }
 
+  getOrderQty(data) {
+    //console.log('getOrderQty', data.order_detail);
+    if (data.order_detail !== undefined) {
+      let itemQty = 0;
+      data.order_detail.forEach(element => {
+        itemQty = itemQty + element.item_quantity;
+      });
+      return itemQty;
+    }
+    return 0;
+  }
+
+  getUserName(data) {
+    // console.log('getUserName', data);
+    return data.first_name + ' ' + data.last_name;
+  }
   applyChanges() {
     this.orderInfo.batchSave().subscribe(res => {
       this.orderDetail.batchSave(res);
       // Still need art tab batch save.
       this.orderArt.batchSave(res);
-      // this.selectedOrder = null;
+      // console.log('orderTaskList on ApplyChanges', this.orderTaskList.orderTask);
+      console.log('order balance_due', this.selectedOrder.balance_due);
+      console.log('order', this.selectedOrder);
+      this.selectedOrder.order_id = res;
+      if (+this.selectedOrder.balance_due === 0.00 && this.selectedOrder.order_payments.length > 0) {
+        console.log('balance is paid!');
+        const fpmtTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'fnpmt');
+        if (fpmtTask) {
+          fpmtTask[0].is_complete = 'Y';
+          fpmtTask[0].completed_by = this.userProfile.profile.login_id;
+          fpmtTask[0].completed_date = new Date().toISOString();
+        }
+      }
+      if (this.selectedOrder.order_payments){
+        if (this.selectedOrder.order_payments.length >= 1) {
+          const depTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'deprc');
+          if (depTask) {
+            depTask[0].is_complete = 'Y';
+            depTask[0].completed_by = this.userProfile.profile.login_id;
+            depTask[0].completed_date = new Date().toISOString();
+          }
+          console.log('depost is paid!', this.selectedOrder.order_payments);
+        }
+      }
+      
+
       this.orderTaskList.batchSave(res);
       this.orderNotesHistory.batchSave(res);
       setTimeout(() => {
         this.gridOrders.instance.refresh();
+        this.loadOrder(this.selectedOrder);
       }, 1000);
       this.popupVisible = this.leaveWindowOpen;
     });
   }
 
+  selectionChanged(e) {
+    // this.selectedOrder = e.selectedRowsData[0];
+    // console.log('In selectionChanged', this.selectedOrder);
+  }
+  setReorderInd(data) {
+    if (data === undefined) { return false; }
+    return data.reorder_ind === 'Y';
+  }
+  showEditPopup(e) {
+    // e.cancel = true;
+    // console.log('E', e);
+    console.log('*** customer-order-list-comopnent:showEditPopup - START', e.data);
+    this.loadOrder(e.data);
+    console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
+    // console.log('Selected Order', this.selectedOrder);
+  }
+
+  closeEditor() {
+    // Need to reset the selected order so the child components to scream
+    //  about not having a reference value (undefined)
+    this.selectedOrder = new Order();
+    this.selectedOrder.order_id = 0;
+    this.selectedOrder.tax_rate = '7.0';
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    this.selectedOrder.customer_id = this.customer.customer_id;
+    this.selectedOrder.order_number = this.formatOrderNumber(today);
+    this.selectedOrder.order_date = today;
+    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
+
+    this.selectedOrderMaster = new OrderMaster();
+    this.selectedOrderMaster.order_id = 0;
+    this.selectedOrderMaster.tax_rate = '7.0';
+    this.selectedOrderMaster.customer_id = this.customer.customer_id;
+    this.selectedOrderMaster.order_number = this.formatOrderNumber(today);
+    this.selectedOrderMaster.order_date = today.toISOString();
+    this.selectedOrderMaster.taken_user_id = this.userProfile.profile.user_id;
+    this.popupVisible = false;
+  }
+  cancelChanges() {
+    this.popupVisible = false;
+  }
+
+  loadOrder(e) {
+    this.loadingOrder = true;
+    this.loading = true;
+    this.selectedOrder = e;
+    this.selectedOrderMaster = e;
+    console.log('order-list-component:this.loadOrder',  e.customer_id);
+    forkJoin(
+      this.orderService.loadOrderData('', this.selectedOrder.order_id), // 0
+      this.orderService.loadArtPlacementData('', this.selectedOrder.order_id), // 1
+      this.orderService.loadOrderFeeData('', this.selectedOrder.order_id), // 2
+      this.orderService.loadOrderPaymentData('', this.selectedOrder.order_id), // 3
+      this.orderService.loadOrderArtFileData('', this.selectedOrder.order_id), // 4
+      this.orderService.loadOrderNotesData('', this.selectedOrder.order_id), // 5
+      this.orderService.loadOrderStatusHistoryData('', this.selectedOrder.order_id), // 6
+      this.orderService.loadOrderTaskData('', this.selectedOrder.order_id), // 7
+      this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 8
+      this.customerService.getCustomerData('', e.customer_id) // 9
+    ).subscribe(results => {
+      console.log('selectedOrder', this.selectedOrder);
+      console.log('forkJoin Return', results);
+      this.selectedOrderLines = results[0].order_detail;
+      this.selectedOrderMaster.order_detail = results[0].order_detail;
+      this.selectedArtPlacements = results[1].order_art_placement;
+      this.selectedOrderMaster.order_art_placements = results[1].order_art_placement;
+      this.selectedOrderFees = results[2].order_fees;
+      this.selectedOrderMaster.order_fees = results[2].order_fees;
+      this.selectedPayments = results[3].order_payments;
+      this.selectedOrderMaster.order_payments = results[3].order_payments;
+      this.selectedArtFiles = results[4].order_art_file;
+      this.selectedOrderMaster.order_art_file = results[4].order_art_file;
+      this.selectedNotes = results[5].order_notes;
+      this.selectedOrderMaster.order_notes = results[5].order_notes;
+      this.selectedStatusHistory = results[6].order_status_history;
+      this.selectedOrderMaster.order_status_histories = results[6].order_status_history;
+      this.selectedTasks = results[7].order_task;
+      this.selectedOrderMaster.order_tasks = results[7].order_task;
+      this.selectedCorrespondence = results[8].correspondences;
+      this.selectedOrderMaster.order_correspondence = results[8].correspondences;
+      this.customer = results[9];
+      this.selectedOrderMaster.customer = this.customer;
+      console.log('Order Master Return', this.selectedOrderMaster);
+      this.loadingOrder = false;
+      this.loading = false;
+      this.popupVisible = true;
+    });
+  }
+  
   showOrderSummary(e) {
     console.log('showOrderSummary', e);
 
     this.selectedOrder = e;
     this.summaryVisible = true;
   }
-
   ngOnInit() {
+    // console.log('ngInit on customer-order-list', this.customer);
+    if (this.customer) {
+      this.customerId = this.customer.customer_id;
+    }
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
