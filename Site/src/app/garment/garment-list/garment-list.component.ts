@@ -216,54 +216,11 @@ export class GarmentListComponent implements OnInit {
         'other1_qty',
         'order/order_number',
         'order/customer_id'
-        /* 'order/order_date',
-        'order/order_status',
-        'order/order_id',
-        'order/customer_id',
-        'order/reorder_ind',
-        'order/order_number',
-        'order/ship_attn',
-        'order/order_type',
-        'order/purchase_order',
-        'order/order_due_date',
-        'order/assigned_user_id',
-        'order/taken_user_id',
-        'order/est_begin_date',
-        'order/act_begin_date',
-        'order/est_complete_date',
-        'order/act_complete_date',
-        'order/shipped_date',
-        'order/subtotal',
-        'order/tax_rate',
-        'order/tax_amount',
-        'order/shipping',
-        'order/total',
-        'order/payments',
-        'order/balance_due',
-        'order/IMAGE_FILE',
-        'order/BILL_ADDRESS_1',
-        'order/BILL_ADDRESS_2',
-        'order/BILL_CITY',
-        'order/BILL_STATE',
-        'order/BILL_ZIP',
-        'order/SHIP_ADDRESS_1',
-        'order/SHIP_ADDRESS_2',
-        'order/SHIP_CITY',
-        'order/SHIP_STATE',
-        'order/SHIP_ZIP',
-        'order/ship_carrier',
-        'order/ship_tracking',
-        'order/previous_order',
-        'order/contact',
-        'order/contact_email',
-        'order/contact_phone1',
-        'order/contact_phone1_ext',
-        'order/contact_phone1_type',
-        'order/contact_phone2',
-        'order/contact_phone2_ext',
-        'order/contact_phone2_type', */
       ],
-       filter: this.currentFilter
+      beforeSend: function(request) {
+        request.timeout = environment.connectionTimeout;
+      },
+      filter: this.currentFilter
    };
   }
 
@@ -330,7 +287,6 @@ export class GarmentListComponent implements OnInit {
       this.popupVisible = true;
     });
     console.log('*** garment-list-comopnent:showEditPopup - LEAVING');
-    
   }
 
   ngOnInit() {

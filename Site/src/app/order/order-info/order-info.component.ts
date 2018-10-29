@@ -98,7 +98,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     orderToSave.purchase_order =  order.purchase_order;
     const fixedOrderDate = new Date(order.order_date);
     console.log('order-info:convertOrderInfo - fixedOrderDate', fixedOrderDate.toISOString());
-    fixedOrderDate.setUTCHours(0,0,0,0);
+    fixedOrderDate.setUTCHours(0, 0, 0, 0);
     console.log('order-info:convertOrderInfo - fixedOrderDate-After', fixedOrderDate.toISOString());
     orderToSave.order_date =  fixedOrderDate.toISOString();
     orderToSave.order_due_date =  new Date(order.order_due_date).toISOString();

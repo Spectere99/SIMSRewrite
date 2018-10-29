@@ -7,8 +7,13 @@ import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { UserService, User } from '../../_services/user.service';
 import { CorrespondenceService } from '../../_services/correspondence.service';
 import { AuthenticationService } from '../../_services/authentication.service';
+<<<<<<< HEAD
 import { CustomerService, Customer } from '../../_services/customer.service';
 import { Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement, OrderFee, OrderMaster } from '../../_services/order.service';
+=======
+import { OrderMaster, Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement, OrderFee } from '../../_services/order.service';
+import { CorrespondenceService } from '../../_services/correspondence.service';
+>>>>>>> 8382fad25cc8c027ca0d2892ea979cc3180959d4
 import { OrderInfoComponent } from '../order-info/order-info.component';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { OrderArtComponent } from '../order-art/order-art.component';
@@ -17,7 +22,12 @@ import { OrderSummaryComponent } from '../order-summary/order-summary.component'
 import { OrderNotesHistoryComponent } from '../order-notes-history/order-notes-history.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar } from '@angular/material';
+<<<<<<< HEAD
 import { WindowRef } from '../../_services/window-ref.service'
+=======
+
+import { WindowRef } from '../../_services/window-ref.service';
+>>>>>>> 8382fad25cc8c027ca0d2892ea979cc3180959d4
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import 'rxjs/add/operator/toPromise';
@@ -40,7 +50,11 @@ import 'rxjs/add/operator/map';
 @Component({
   selector: 'app-order-list',
   templateUrl: './order-list.component.html',
+<<<<<<< HEAD
   providers: [LookupService, UserService, OrderService, CorrespondenceService, CustomerService],
+=======
+  providers: [LookupService, UserService, OrderService, CorrespondenceService],
+>>>>>>> 8382fad25cc8c027ca0d2892ea979cc3180959d4
   styleUrls: ['./order-list.component.scss']
 })
 
@@ -56,7 +70,10 @@ export class OrderListComponent implements OnInit {
   @ViewChild(OrderSummaryComponent) orderSummary: OrderSummaryComponent;
   @ViewChild(OrderNotesHistoryComponent) orderNotesHistory: OrderNotesHistoryComponent;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8382fad25cc8c027ca0d2892ea979cc3180959d4
   selectedOrderMaster: OrderMaster;
   /* Data Strutures for Orders */
   selectedOrder: any;
@@ -70,7 +87,10 @@ export class OrderListComponent implements OnInit {
   selectedArtFiles: any;
   selectedNotes: any;
   selectedStatusHistory: any;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 8382fad25cc8c027ca0d2892ea979cc3180959d4
   baseUrl = environment.odataEndpoint;
   odataLookup;
   summaryVisible = false;
@@ -85,11 +105,18 @@ export class OrderListComponent implements OnInit {
   leaveWindowOpen = false;
   loading: boolean;
   loadingOrder: boolean;
+<<<<<<< HEAD
   window;
   popupVisible = false;
 
     constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, public correspondenceService: CorrespondenceService,
                 public snackBar: MatSnackBar, public customerService: CustomerService, authService: AuthenticationService) {
+=======
+  popupVisible = false;
+
+    constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, public snackBar: MatSnackBar,
+                authService: AuthenticationService, public correspondenceService: CorrespondenceService) {
+>>>>>>> 8382fad25cc8c027ca0d2892ea979cc3180959d4
       this.userProfile = JSON.parse(authService.getUserToken());
       this.lookupDataSource = globalDataProvider.getLookups();
       this.createStatusDataSource();
@@ -173,6 +200,9 @@ export class OrderListComponent implements OnInit {
         'customer/customer_name',
         'order_art_file/image_file'
       ],
+      beforeSend: function(request) {
+        request.timeout = environment.connectionTimeout;
+      },
        // filter: ['order_date', '>', this.filterDate]
    };
   }
@@ -225,7 +255,26 @@ export class OrderListComponent implements OnInit {
     if (this.orderDetail) {
       this.orderDetail.order.order_detail = [];
     }
+<<<<<<< HEAD
     // this.selectedOrder.ship_attn = this.customer
+=======
+    return mm.toString() + dd.toString() + yyyy.toString();
+  }
+
+  showEditPopup(e) {
+    // e.cancel = true;
+    // console.log('E', e);
+    this.selectedOrder = e.data;
+    console.log('*** customer-order-list-comopnent:showEditPopup - START', e.data);
+    this.loadOrder(e.data);
+    console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
+    // console.log('Selected Order', this.selectedOrder);
+    // alert('Editing!');
+    // console.log('Tab', this.listTab);
+    /* if (this.listTab) {
+      this.listTab.select('Info');
+    } */
+>>>>>>> 8382fad25cc8c027ca0d2892ea979cc3180959d4
     this.popupVisible = true;
   }
 
@@ -712,6 +761,54 @@ export class OrderListComponent implements OnInit {
     this.selectedOrder = e;
     this.summaryVisible = true;
   }
+<<<<<<< HEAD
+=======
+
+  loadOrder(e) {
+    this.loadingOrder = true;
+    this.loading = true;
+    this.selectedOrder = e;
+    this.selectedOrderMaster = e;
+    forkJoin(
+      this.orderService.loadOrderData('', this.selectedOrder.order_id), // 0
+      this.orderService.loadArtPlacementData('', this.selectedOrder.order_id), // 1
+      this.orderService.loadOrderFeeData('', this.selectedOrder.order_id), // 2
+      this.orderService.loadOrderPaymentData('', this.selectedOrder.order_id), // 3
+      this.orderService.loadOrderArtFileData('', this.selectedOrder.order_id), // 4
+      this.orderService.loadOrderNotesData('', this.selectedOrder.order_id), // 5
+      this.orderService.loadOrderStatusHistoryData('', this.selectedOrder.order_id), // 6
+      this.orderService.loadOrderTaskData('', this.selectedOrder.order_id), // 7
+      this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 8
+    ).subscribe(results => {
+      console.log('selectedOrder', this.selectedOrder);
+      console.log('forkJoin Return', results);
+      this.selectedOrderLines = results[0].order_detail;
+      this.selectedOrderMaster.order_detail = results[0].order_detail;
+      this.selectedArtPlacements = results[1].order_art_placement;
+      this.selectedOrderMaster.order_art_placements = results[1].order_art_placement;
+      this.selectedOrderFees = results[2].order_fees;
+      this.selectedOrderMaster.order_fees = results[2].order_fees;
+      this.selectedPayments = results[3].order_payments;
+      this.selectedOrderMaster.order_payments = results[3].order_payments;
+      this.selectedArtFiles = results[4].order_art_file;
+      this.selectedOrderMaster.order_art_file = results[4].order_art_file;
+      this.selectedNotes = results[5].order_notes;
+      this.selectedOrderMaster.order_notes = results[5].order_notes;
+      this.selectedStatusHistory = results[6].order_status_history;
+      this.selectedOrderMaster.order_status_histories = results[6].order_status_history;
+      this.selectedTasks = results[7].order_task;
+      this.selectedOrderMaster.order_tasks = results[7].order_task;
+      this.selectedCorrespondence = results[8].correspondences;
+      this.selectedOrderMaster.order_correspondence = results[8].correspondences;
+      this.selectedOrderMaster.customer = this.customer;
+      console.log('Order Master Return', this.selectedOrderMaster);
+      this.loadingOrder = false;
+      this.loading = false;
+      this.popupVisible = true;
+    });
+  }
+
+>>>>>>> 8382fad25cc8c027ca0d2892ea979cc3180959d4
   ngOnInit() {
     // console.log('ngInit on customer-order-list', this.customer);
     if (this.customer) {

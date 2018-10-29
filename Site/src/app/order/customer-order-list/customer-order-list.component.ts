@@ -17,7 +17,7 @@ import { OrderSummaryComponent } from '../order-summary/order-summary.component'
 import { OrderNotesHistoryComponent } from '../order-notes-history/order-notes-history.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar } from '@angular/material';
-import { WindowRef } from '../../_services/window-ref.service'
+import { WindowRef } from '../../_services/window-ref.service';
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 
@@ -173,6 +173,7 @@ export class CustomerOrderListComponent implements OnInit {
     this.selectedOrder.customer_name = this.customer.customer_name;
     const today = new Date();
     today.setUTCHours(0, 0, 0, 0);
+    console.log('createNewOrder - before formatOrderNumber', today);
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
     this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
@@ -337,6 +338,7 @@ export class CustomerOrderListComponent implements OnInit {
   }
 
   formatOrderNumber(today): string {
+    console.log('formatOrderNumber - today', today);
     let dd = today.getDate();
     let mm = (today.getMonth() + 1); // January is 0!
     const yyyy = today.getFullYear().toString();
@@ -346,7 +348,8 @@ export class CustomerOrderListComponent implements OnInit {
     if (mm < 10) {
       mm = '0' + mm;
     }
-    return mm + dd + yyyy;
+    console.log('formatOrderNumber return', mm.toString() + dd.toString() + yyyy.toString());
+    return mm.toString() + dd.toString() + yyyy.toString();
   }
 
   refreshGrid() {
@@ -399,7 +402,7 @@ export class CustomerOrderListComponent implements OnInit {
 
   cloneOrderDetails(origDetails: Array<OrderDetail>, order_id: number): Array<OrderDetail> {
     const newDetails = new Array<OrderDetail>();
-    console.log('customer-order-list:cloneOrderDetails - origDetails', origDetails)
+    console.log('customer-order-list:cloneOrderDetails - origDetails', origDetails);
     origDetails.forEach((item) => { // foreach statement
       const newDetail = new OrderDetail();
       newDetail.order_detail_id = 0;
@@ -535,7 +538,7 @@ export class CustomerOrderListComponent implements OnInit {
   }
 
   getOrderQty(data) {
-    //console.log('getOrderQty', data.order_detail);
+    // console.log('getOrderQty', data.order_detail);
     if (data.order_detail !== undefined) {
       let itemQty = 0;
       data.order_detail.forEach(element => {
@@ -568,7 +571,7 @@ export class CustomerOrderListComponent implements OnInit {
           fpmtTask[0].completed_date = new Date().toISOString();
         }
       }
-      if (this.selectedOrder.order_payments){
+      if (this.selectedOrder.order_payments) {
         if (this.selectedOrder.order_payments.length >= 1) {
           const depTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'deprc');
           if (depTask) {
@@ -579,7 +582,6 @@ export class CustomerOrderListComponent implements OnInit {
           console.log('depost is paid!', this.selectedOrder.order_payments);
         }
       }
-      
 
       this.orderTaskList.batchSave(res);
       this.orderNotesHistory.batchSave(res);
@@ -680,7 +682,7 @@ export class CustomerOrderListComponent implements OnInit {
       this.popupVisible = true;
     });
   }
-  
+
   showOrderSummary(e) {
     console.log('showOrderSummary', e);
 

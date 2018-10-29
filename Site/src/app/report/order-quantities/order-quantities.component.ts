@@ -41,18 +41,18 @@ export class OrderQuantitiesComponent implements OnInit {
       });
       reportService.getOrderQuantityData('').subscribe(res2 => {
         this.orderQuantities2 = res2.value;
-        console.log('order-quantities:constructor -', this.orderQuantities2);
+        // console.log('order-quantities:constructor -', this.orderQuantities2);
       });
       userService.getUsers('').subscribe(res => {
         this.userDataSource = res.value;
-        console.log(this.userDataSource);
+        // console.log(this.userDataSource);
       });
 
 
     }
 
     customizeArgLabelText(pointInfo: any) {
-      console.log('customizeArgLabelText', pointInfo);
+      // console.log('customizeArgLabelText', pointInfo);
       const labelDate = new Date(pointInfo.value);
       return labelDate.toLocaleDateString();
     }
@@ -81,9 +81,12 @@ export class OrderQuantitiesComponent implements OnInit {
           'order_due_date',
           'total',
           'customer_name',
-          'TOTAL_QTY']
+          'TOTAL_QTY'],
+        beforeSend: function(request) {
+            request.timeout = environment.connectionTimeout;
+          },
       };
-      console.log('order-quantities-component:createOrderQuantitiesDataSource', this.dataSource);
+      // console.log('order-quantities-component:createOrderQuantitiesDataSource', this.dataSource);
     }
 
     getUserFullName(item) {
@@ -97,11 +100,11 @@ export class OrderQuantitiesComponent implements OnInit {
     }
 
     setOrderDate(e) {
-      console.log(e);
-      console.log('dateValue', this.paymentDate);
+      // console.log(e);
+      // console.log('dateValue', this.paymentDate);
       const newDateVal = new Date(e);
 
-      console.log('newDateVal', newDateVal.toLocaleDateString());
+      // console.log('newDateVal', newDateVal.toLocaleDateString());
       this.paymentDate = newDateVal.toLocaleDateString();
       this.dataGrid.instance.filter(['order_date', '=', newDateVal]);
 
