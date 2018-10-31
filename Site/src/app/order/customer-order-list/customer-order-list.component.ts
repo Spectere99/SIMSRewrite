@@ -172,7 +172,7 @@ export class CustomerOrderListComponent implements OnInit {
     this.selectedOrder.customer_id = customer_id;
     this.selectedOrder.customer_name = this.customer.customer_name;
     const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
     console.log('createNewOrder - before formatOrderNumber', today);
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
@@ -589,7 +589,7 @@ export class CustomerOrderListComponent implements OnInit {
         this.gridOrders.instance.refresh();
         this.loadOrder(this.selectedOrder);
       }, 1000);
-      this.popupVisible = this.leaveWindowOpen;
+      this.popupVisible = false;
     });
   }
   showValues() {
@@ -609,6 +609,7 @@ export class CustomerOrderListComponent implements OnInit {
     // console.log('E', e);
     console.log('*** customer-order-list-comopnent:showEditPopup - START', e.data);
     this.loadOrder(e.data);
+    this.popupVisible = true
     console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
     // console.log('Selected Order', this.selectedOrder);
   }
@@ -679,7 +680,7 @@ export class CustomerOrderListComponent implements OnInit {
       console.log('Order Master Return', this.selectedOrderMaster);
       this.loadingOrder = false;
       this.loading = false;
-      this.popupVisible = true;
+      // this.popupVisible = true;
     });
   }
 
