@@ -609,7 +609,7 @@ export class CustomerOrderListComponent implements OnInit {
     // console.log('E', e);
     console.log('*** customer-order-list-comopnent:showEditPopup - START', e.data);
     this.loadOrder(e.data);
-    this.popupVisible = true
+    this.popupVisible = true;
     console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
     // console.log('Selected Order', this.selectedOrder);
   }
