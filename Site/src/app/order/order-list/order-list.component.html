@@ -86,10 +86,10 @@
             </mat-tab>
           </mat-tab-group>
           <div *ngIf="!loadingOrder" class="col-md-12">
-            <div class="col-md-2 float-right">
+            <!-- <div class="col-md-2 float-right">
               <input type="checkbox" id="chkLeaveWindowOpen" name="chkLeaveWindowOpen" [checked]="leaveWindowOpen" (change)="leaveWindowOpen=!leaveWindowOpen">
               <label for="chkLeaveWindowOpen" style="font-size: 10px;">Leave Open</label>
-            </div>
+            </div> -->
             <div class="col-md-2 float-right">
               <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
             </div>

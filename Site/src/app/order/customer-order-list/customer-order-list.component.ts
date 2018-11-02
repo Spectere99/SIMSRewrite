@@ -7,7 +7,7 @@ import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { UserService, User } from '../../_services/user.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { OrderMaster, Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement,
-          OrderFee, OrderTask } from '../../_services/order.service';
+          OrderFee, OrderTask, OrderStatusHistory } from '../../_services/order.service';
 import { CorrespondenceService } from '../../_services/correspondence.service';
 import { OrderInfoComponent } from '../order-info/order-info.component';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
@@ -246,6 +246,8 @@ export class CustomerOrderListComponent implements OnInit {
         // console.log('Cloning Order Task', item);
         this.orderService.addOrderTask(this.userProfile.profile.login_id, item).subscribe();
       });
+
+      this.createCloneHistoryStatus(reOrderObj);
 
       setTimeout(() => {
         this.gridOrders.instance.refresh();
@@ -506,6 +508,22 @@ export class CustomerOrderListComponent implements OnInit {
     return newArtPlacements;
   }
 
+  createCloneHistoryStatus(orderObj: Order): any {
+    console.log('Saving Order Status History orderId=', orderObj.order_id);
+    console.log('user', this.userProfile);
+    const orderStatusHistory = new OrderStatusHistory();
+    orderStatusHistory.order_status_history_id = 0;
+    orderStatusHistory.order_id = orderObj.order_id;
+    orderStatusHistory.order_status = orderObj.order_status;
+    const today = new Date();
+    // today.setHours(0, 0, 0, 0);
+    orderStatusHistory.status_date = today.toISOString();
+    orderStatusHistory.set_by_user_id = this.userProfile.profile.user_id;
+
+    console.log('order-info:saveOrderStatusHistory - OrderStatusHistory', orderStatusHistory);
+    return this.orderService.addOrderStatus(this.userProfile.login_id, orderStatusHistory).subscribe();
+  }
+
   setReOrderType(orderType: string): string {
     let ordType = '';
     switch (orderType) {
@@ -554,6 +572,7 @@ export class CustomerOrderListComponent implements OnInit {
     return data.first_name + ' ' + data.last_name;
   }
   applyChanges() {
+    console.log('customer-order_list: applyChanges');
     this.orderInfo.batchSave().subscribe(res => {
       this.orderDetail.batchSave(res);
       // Still need art tab batch save.
@@ -589,7 +608,7 @@ export class CustomerOrderListComponent implements OnInit {
         this.gridOrders.instance.refresh();
         this.loadOrder(this.selectedOrder);
       }, 1000);
-      this.popupVisible = false;
+      // this.popupVisible = false;
     });
   }
   showValues() {

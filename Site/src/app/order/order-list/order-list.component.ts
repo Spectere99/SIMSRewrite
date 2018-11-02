@@ -17,7 +17,7 @@ import { OrderSummaryComponent } from '../order-summary/order-summary.component'
 import { OrderNotesHistoryComponent } from '../order-notes-history/order-notes-history.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   MatSnackBar } from '@angular/material';
-import { WindowRef } from '../../_services/window-ref.service'
+import { WindowRef } from '../../_services/window-ref.service';
 import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import 'rxjs/add/operator/toPromise';
@@ -86,7 +86,8 @@ export class OrderListComponent implements OnInit {
   window;
   popupVisible = false;
 
-    constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, public correspondenceService: CorrespondenceService,
+    constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService,
+                public correspondenceService: CorrespondenceService,
                 public snackBar: MatSnackBar, public customerService: CustomerService, authService: AuthenticationService) {
       this.userProfile = JSON.parse(authService.getUserToken());
       this.lookupDataSource = globalDataProvider.getLookups();
@@ -425,7 +426,7 @@ export class OrderListComponent implements OnInit {
 
   cloneOrderDetails(origDetails: Array<OrderDetail>, order_id: number): Array<OrderDetail> {
     const newDetails = new Array<OrderDetail>();
-    console.log('customer-order-list:cloneOrderDetails - origDetails', origDetails)
+    console.log('customer-order-list:cloneOrderDetails - origDetails', origDetails);
     origDetails.forEach((item) => { // foreach statement
       const newDetail = new OrderDetail();
       newDetail.order_detail_id = 0;
@@ -561,7 +562,7 @@ export class OrderListComponent implements OnInit {
   }
 
   getOrderQty(data) {
-    //console.log('getOrderQty', data.order_detail);
+    // console.log('getOrderQty', data.order_detail);
     if (data.order_detail !== undefined) {
       let itemQty = 0;
       data.order_detail.forEach(element => {
@@ -594,7 +595,7 @@ export class OrderListComponent implements OnInit {
           fpmtTask[0].completed_date = new Date().toISOString();
         }
       }
-      if (this.selectedOrder.order_payments){
+      if (this.selectedOrder.order_payments) {
         if (this.selectedOrder.order_payments.length >= 1) {
           const depTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'deprc');
           if (depTask) {
@@ -605,7 +606,6 @@ export class OrderListComponent implements OnInit {
           console.log('depost is paid!', this.selectedOrder.order_payments);
         }
       }
-      
 
       this.orderTaskList.batchSave(res);
       this.orderNotesHistory.batchSave(res);
@@ -613,7 +613,7 @@ export class OrderListComponent implements OnInit {
         this.gridOrders.instance.refresh();
         this.loadOrder(this.selectedOrder);
       }, 1000);
-      this.popupVisible = this.leaveWindowOpen;
+      // this.popupVisible = this.leaveWindowOpen;
     });
   }
 
@@ -630,6 +630,7 @@ export class OrderListComponent implements OnInit {
     // console.log('E', e);
     console.log('*** customer-order-list-comopnent:showEditPopup - START', e.data);
     this.loadOrder(e.data);
+    this.popupVisible = true;
     console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
     // console.log('Selected Order', this.selectedOrder);
   }
@@ -703,10 +704,10 @@ export class OrderListComponent implements OnInit {
       console.log('Order Master Return', this.selectedOrderMaster);
       this.loadingOrder = false;
       this.loading = false;
-      this.popupVisible = true;
+      // this.popupVisible = true;
     });
   }
-  
+
   showOrderSummary(e) {
     console.log('showOrderSummary', e);
 
