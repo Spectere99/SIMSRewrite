@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { GlobalDataProvider } from '../../_providers/global-data.provider';
-import { OrderService, Order, OrderDetail, OrderArtPlacement, OrderFee,
+import { OrderService, Order, OrderMaster, OrderDetail, OrderArtPlacement, OrderFee,
           OrderPayment, OrderArtFile, OrderNote } from '../../_services/order.service';
 // import { AuthenticationService } from '../../_services/authentication.service';
 // import { CorrespondenceService, Correspondence } from '../../_services/correspondence.service';
@@ -15,7 +15,7 @@ import { PriceListService, PriceListItem } from '../../_services/pricelist.servi
   providers: [OrderService, LookupService, PriceListService]
 })
 export class OrderSummaryComponent implements OnInit {
-  @Input() currentOrder: any;
+  @Input() currentOrder: OrderMaster;
   @Input() orderDetail: any;
   lookupDataSource: Array<LookupItem>;
   priceListDataSource: Array<PriceListItem>;
@@ -92,9 +92,9 @@ export class OrderSummaryComponent implements OnInit {
 
   getUserName(userId: number): string {
     let val = '';
-    console.log('getUserName', userId);
+    // console.log('getUserName', userId);
     if (this.userDataSource) {
-      console.log('userDataSource', this.userDataSource);
+      // console.log('userDataSource', this.userDataSource);
       const foundVal = this.userDataSource.find(p => p.user_id === userId);
 
       if (foundVal) {
@@ -171,7 +171,7 @@ export class OrderSummaryComponent implements OnInit {
           }
           </style>
         </head>
-    <body onload="window.print();window.close()"><img src="/assets/wts.gif">${printContents}</body>
+    <body onload="window.print();window.close()">${printContents}</body>
       </html>`
     );
     popupWin.document.close();

@@ -50,7 +50,6 @@
     <!-- START POPUP EDITOR MARKUP -->
     <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible" (onHiding)="popupHiding($event)">
       <div *dxTemplate="let data of 'content'">
-        {{orderTabDisabled}}
         <mat-tab-group [dynamicHeight]="true"  style="height: 90%; width: 100%">
             <mat-tab label="Info">
               <dx-scroll-view style="height: 100%; width: 100%">
@@ -62,6 +61,7 @@
             <mat-tab label="Notes" [disabled]="true">
             </mat-tab>
             <mat-tab label="Orders" [disabled]="orderTabDisabled">
+              <div class="col-lg-12"><h6>{{selectedCustomer?.customer_name}}</h6></div>
               <dx-scroll-view style="height: 100%; width: 100%">
                 <app-customer-order-list [customer]="selectedCustomer"></app-customer-order-list>
               </dx-scroll-view>

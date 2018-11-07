@@ -322,7 +322,7 @@ export class OrderInvoiceComponent implements OnInit {
     // Bill To information
     doc.text(136, lineLocation, this.masterOrder.customer == null ? '' : this.masterOrder.customer.customer_name);
     lineLocation = lineLocation + lineOffset;
-    if (this.masterOrder.BILL_ADDRESS_2 !== null && this.masterOrder.BILL_ADDRESS_1.length > 0) {
+    if (this.masterOrder.BILL_ADDRESS_1 !== null && this.masterOrder.BILL_ADDRESS_1.length > 0) {
       doc.text(136, lineLocation, this.masterOrder.BILL_ADDRESS_1 == null ? '' : this.masterOrder.BILL_ADDRESS_1);
     }
     lineLocation = lineLocation + lineOffset;

@@ -392,12 +392,12 @@ export class CustomerOrderListComponent implements OnInit {
     newOrder.SHIP_ZIP = origOrder.SHIP_ZIP;
     newOrder.order_type = this.setReOrderType(origOrder.order_type);
     newOrder.order_number = this.formatOrderNumber(today);
-    newOrder.subtotal = origOrder.subtotal.toString();
-    newOrder.tax_amount = origOrder.tax_amount.toString();
-    newOrder.tax_rate = origOrder.tax_rate.toString();
-    newOrder.shipping = origOrder.shipping.toString();
-    newOrder.total = origOrder.total.toString();
-    newOrder.balance_due = origOrder.total.toString();
+    newOrder.subtotal = (origOrder.subtotal === undefined || origOrder.subtotal === null) ? '' : origOrder.subtotal.toString();
+    newOrder.tax_amount = (origOrder.tax_amount === undefined || origOrder.tax_amount === null) ? '' : origOrder.tax_amount.toString();
+    newOrder.tax_rate = (origOrder.tax_rate === undefined || origOrder.tax_rate === null) ? '' : origOrder.tax_rate.toString();
+    newOrder.shipping = (origOrder.shipping === undefined || origOrder.shipping === null) ? '' : origOrder.shipping.toString();
+    newOrder.total = (origOrder.total === undefined || origOrder.total === null) ? '' : origOrder.total.toString();
+    newOrder.balance_due = (origOrder.balance_due === undefined || origOrder.balance_due === null) ? '' : origOrder.total.toString();
 
     return newOrder;
   }
@@ -548,7 +548,7 @@ export class CustomerOrderListComponent implements OnInit {
         break;
       }
       default: {
-        ordType = 'rescr';
+        ordType = orderType;
         break;
       }
     }

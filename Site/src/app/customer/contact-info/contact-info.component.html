@@ -5,7 +5,7 @@
                 <mat-expansion-panel [expanded]="true">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
-                            Contacts ({{customer?.customer_person.length}})
+                            Contacts ({{customer?.customer_person?.length}})
                         </mat-panel-title>
                         <mat-panel-description>
                             <button mat-raised-button color="primary" aria-hidden="true" (click)="addContact(customer.customer_id, $event);" style="outline:none;">

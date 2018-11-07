@@ -4,7 +4,7 @@
       <mat-expansion-panel [expanded]="panelExpanded === true">
         <mat-expansion-panel-header>
           <mat-panel-title>
-            Addresses ({{customer?.customer_address.length}})
+            Addresses ({{customer?.customer_address?.length}})
           </mat-panel-title>
           <mat-panel-description>
             <button mat-raised-button color="primary" aria-hidden="true" (click)="addAddress(customer.customer_id, $event);" style="outline:none; padding-bottom: 35px; font-size:14px; width:30px; height:20px;">

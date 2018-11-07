@@ -1,8 +1,8 @@
-<div class="col-lg-12" style="height:90%; overflow-y: scroll;">
-  <img src="\assets\wts.png">
+<div class="col-lg-12">
   <button (click)="print();">Print</button>
   <div id="print-section" class="row">
     <div class="col-lg-8">
+      <img src="\assets\wts.png" width="191" height="68">
       <div class="col-md-12" id="order_info" *ngIf="currentOrder !== undefined">
         <fieldset>
           <legend class="SmallBodyText">
@@ -75,9 +75,9 @@
             <b>Items:</b>
           </legend>
           <!--includeif tableempty="ORDER_DETAIL"-->
-          <div *ngIf="orderSum?.order_detail === undefined || orderSum?.order_detail.length === 0">No line items.</div>
+          <div *ngIf="currentOrder?.order_detail === undefined || currentOrder?.order_detail.length === 0">No line items.</div>
           <!--else-->
-          <div *ngFor="let lineItem of orderSum?.order_detail">
+          <div *ngFor="let lineItem of currentOrder?.order_detail">
             <table class="SmallBodyText" cellpadding="1" cellspacing="0">
               <!--foreachrow table="ORDER_DETAIL"-->
               <tr>
@@ -181,9 +181,9 @@
             <b>Setup Fees:</b>
           </legend>
           <!--includeif tableempty="order_fees"-->
-          <div *ngIf="orderFees === undefined || orderFees.length === 0">No setup fees.</div>
+          <div *ngIf="currentOrder.order_fees === undefined || currentOrder.order_fees.length === 0">No setup fees.</div>
           <!--else-->
-          <div *ngFor="let orderFee of orderFees">
+          <div *ngFor="let orderFee of currentOrder.order_fees">
             <table class="SmallBodyText" cellpadding="1" cellspacing="0">
               <tr>
                 <td width="50">
@@ -227,9 +227,9 @@
             <b>Art Placement:</b>
           </legend>
           <!--includeif tableempty="order_art_placement"-->
-          <div *ngIf="orderArtPlacement === undefined || orderArtPlacement.length === 0">No art placement selected</div> 
+          <div *ngIf="currentOrder.order_art_placements === undefined || currentOrder.order_art_placements.length === 0">No art placement selected</div> 
           <!--else-->
-          <div *ngFor="let placement of orderArtPlacement">
+          <div *ngFor="let placement of currentOrder.order_art_placements">
           <table class="SmallBodyText" cellpadding="1" cellspacing="0">
             <tr>
               <td width="150">
@@ -263,9 +263,9 @@
             <b>Order Art:</b>
           </legend>
           <!--includeif tableempty="ORDER_ART_FILE"-->
-          <div *ngIf="orderArtFile === undefined || orderArtFile.length === 0">No art files</div>
+          <div *ngIf="currentOrder.order_art_file === undefined || currentOrder.order_art_file.length === 0">No art files</div>
           <!--else-->
-          <div *ngFor="let artFile of orderArtFile">
+          <div *ngFor="let artFile of currentOrder.order_art_file">
           <table class="SmallBodyText" cellpadding="1" cellspacing="0">
             <tr>
               <td width="250">
@@ -301,8 +301,8 @@
           <table class="SmallBodyText" cellpadding="1" cellspacing="0">
             <!--foreachrow table="ORDER_NOTES"-->
             <!--includeif function="IS_PUBLIC"-->
-            <tr *ngFor="let note of orderNotes">
-              <td>{{note.notes_value}}&nbsp;&nbsp;</td>
+            <tr *ngFor="let note of currentOrder.order_notes">
+              <td *ngIf="note.private_ind != 'Y'">{{note.notes_value}}&nbsp;&nbsp;</td>
             </tr>
             <!--endincludeif-->
             <!--endforeachrow-->

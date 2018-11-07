@@ -124,7 +124,9 @@
         <!-- START POPUP ORDER SUMMARY MARKUP -->
         <dx-popup class="popup" [showTitle]="true" title="Order Summary" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="summaryVisible">
           <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
-            <app-order-summary [currentOrder]="selectedOrder"></app-order-summary>
+              <dx-scroll-view style="height: 100%; width: 100%">
+            <app-order-summary [currentOrder]="selectedOrderMaster"></app-order-summary>
+          </dx-scroll-view>
           </div>
         </dx-popup>
       </div>
