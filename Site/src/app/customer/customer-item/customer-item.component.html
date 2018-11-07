@@ -1,0 +1,28 @@
+<mat-tab-group [dynamicHeight]="true" style="height: 90%; width: 100%">
+    <mat-tab label="Info">
+      <dx-scroll-view style="height: 100%; width: 100%">
+        <app-customer-info [customer]="customer"></app-customer-info>
+        <app-contact-address [customer]="customer"></app-contact-address>
+        <app-contact-info [customer]="customer"></app-contact-info>
+      </dx-scroll-view>
+    </mat-tab>
+    <mat-tab label="Notes" [disabled]="true">
+    </mat-tab>
+    <mat-tab label="Orders" [disabled]="orderTabDisabled">
+      <dx-scroll-view style="height: 100%; width: 100%">
+        <app-customer-order-list [customer]="customer"></app-customer-order-list>
+      </dx-scroll-view>
+    </mat-tab>
+  </mat-tab-group>
+  <div class="col-md-12">
+    <div class="col-md-2 float-right">
+      <input type="checkbox" id="chkLeaveWindowOpen" name="chkLeaveWindowOpen" [checked]="leaveWindowOpen" (change)="leaveWindowOpen=!leaveWindowOpen">
+      <label for="chkLeaveWindowOpen" style="font-size: 10px;">Leave Open</label>
+    </div>
+    <div class="col-md-2 float-right">
+      <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
+    </div>
+    <div class="col-md-2 float-right">
+      <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="cancelChanges();">
+    </div>
+  </div>

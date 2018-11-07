@@ -50,7 +50,8 @@
     <!-- START POPUP EDITOR MARKUP -->
     <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible" (onHiding)="popupHiding($event)">
       <div *dxTemplate="let data of 'content'">
-        <mat-tab-group [dynamicHeight]="true"  style="height: 90%; width: 100%">
+        <app-customer-item [customer]="selectedCustomer" (onCustomerSaved)="customerSaved($event);" (onCancel)="closePopup();"></app-customer-item>
+        <!-- <mat-tab-group [dynamicHeight]="true"  style="height: 90%; width: 100%">
             <mat-tab label="Info">
               <dx-scroll-view style="height: 100%; width: 100%">
                 <app-customer-info [customer]="selectedCustomer"></app-customer-info>
@@ -79,7 +80,7 @@
           <div class="col-md-2 float-right">
             <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="cancelChanges();">
           </div>
-        </div>
+        </div> -->
       </div>
 
     </dx-popup>

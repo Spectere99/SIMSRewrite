@@ -68,6 +68,7 @@ import { PriceListService } from './_services/pricelist.service';
 import { UserService } from './_services/user.service';
 import { WindowRef } from './_services/window-ref.service';
 import { OrderQuantitiesComponent } from './report/order-quantities/order-quantities.component';
+import { CustomerItemComponent } from './customer/customer-item/customer-item.component';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -118,6 +119,7 @@ import { OrderQuantitiesComponent } from './report/order-quantities/order-quanti
     ContactInfoComponent,
     ContactAddressComponent,
     OrderQuantitiesComponent,
+    CustomerItemComponent,
   ],
   imports: [
     NgbModule.forRoot(),

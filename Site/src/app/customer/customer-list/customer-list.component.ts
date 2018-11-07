@@ -120,6 +120,15 @@ export class CustomerListComponent implements OnInit {
       this.phoneTypes = this.lookupDataSource.filter(item => item.class === 'PHON');
     }
 
+    customerSaved(closeWindow) {
+      this.gridCustomers.instance.refresh();
+      this.popupVisible = closeWindow;
+    }
+  
+    closePopup() {
+      this.popupVisible = false;
+    }
+    
     LoadCustomerListData() {
 
     }
@@ -204,7 +213,22 @@ export class CustomerListComponent implements OnInit {
     }
 
     showAddPopup(e) {
-      console.log('Adding', e);
+      // initialize a new Customer object
+      this.selectedCustomer = new Customer;
+      const today = new Date();
+      this.selectedCustomer.customer_id = 0;
+      this.selectedCustomer.customer_name = '';
+      this.selectedCustomer.ship_to_bill_ind = 'N';
+      this.selectedCustomer.customer_address = [];
+      this.selectedCustomer.customer_person = [];
+      this.selectedCustomer.orders = [];
+      this.selectedCustomer.status_code = 'act';
+      this.selectedCustomer.setup_date = today.toISOString();
+      this.selectedCustomer.setup_by = this.userProfile.profile.user_id;
+
+      this.orderTabDisabled = true;
+      this.popupVisible = true;
+/*       console.log('Adding', e);
       this.selectedCustomer = new Customer;
       const today = new Date();
       // console.log('SelectedCustomer', this.selectedCustomer);
@@ -215,7 +239,7 @@ export class CustomerListComponent implements OnInit {
       this.popupVisible = true;
       if (this.selectedCustomer.customer_id < 0) {
         this.orderTabDisabled = true; } else {this.orderTabDisabled = false;
-      }
+      } */
     }
     showEditPopup(e) {
       // e.cancel = true;

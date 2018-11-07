@@ -60,16 +60,6 @@ export class ContactListComponent implements OnInit {
     this.createPhoneTypeDataSource();
     this.CreateContactDataSource();
     this.gridHeight = 525;
-    /* lookupService.loadLookupData('').subscribe(res => {
-      this.lookupDataSource = res.value;
-      this.createPersonTypeDataSource();
-      this.createPhoneTypeDataSource();
-    });
-    userService.getUsers('').subscribe(res => {
-      this.userDataSource = res.value;
-      // this.userDataSource = this.userDataSource.filter(f => f.status_code === 'ACTIV');
-      console.log(this.userDataSource);
-    }); */
   }
 
   contentReady(e) {
@@ -196,6 +186,15 @@ export class ContactListComponent implements OnInit {
       this.orderTabDisabled = false;
       }
     });
+  }
+
+  customerSaved(closeWindow) {
+    this.gridCustomers.instance.refresh();
+    this.popupVisible = closeWindow;
+  }
+
+  closePopup() {
+    this.popupVisible = false;
   }
 
   applyChanges() {
