@@ -155,7 +155,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
         this.currentOrder.order_id = 0;
         return this.orderService.addOrderInfo('rwflowers', insOrder)
         .map(res => {
-          // console.log('Save orderInfo Return', res);
+          console.log('Save orderInfo Return', res);
           this.currentOrder.order_id = res.order_id;
           this.snackBar.open('Order Added!', '', {
             duration: 4000,

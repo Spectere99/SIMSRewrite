@@ -675,8 +675,9 @@ export class CustomerOrderListComponent implements OnInit {
       this.orderService.loadOrderTaskData('', this.selectedOrder.order_id), // 7
       this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 8
     ).subscribe(results => {
-      console.log('selectedOrder', this.selectedOrder);
+      console.log('selectedOrder', this.selectedOrderMaster);
       console.log('forkJoin Return', results);
+      this.selectedOrderMaster = results[0];
       this.selectedOrderLines = results[0].order_detail;
       this.selectedOrderMaster.order_detail = results[0].order_detail;
       this.selectedArtPlacements = results[1].order_art_placement;

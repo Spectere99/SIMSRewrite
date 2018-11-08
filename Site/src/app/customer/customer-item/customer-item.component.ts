@@ -28,7 +28,7 @@ export class CustomerItemComponent implements OnInit {
   @ViewChild(ContactInfoComponent) contactInfoCmpt: ContactInfoComponent;
   @ViewChild(ContactAddressComponent) contactAddressCmpt: ContactAddressComponent;
   @ViewChild(DxDataGridComponent) gridCustomers: DxDataGridComponent;
-  
+
   customerService: CustomerService;
   userDataSource: any;
   selectedCustomer: Customer;
