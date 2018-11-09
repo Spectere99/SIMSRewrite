@@ -193,17 +193,44 @@ export class OrderDetailComponent implements OnInit {
 
   copyOrderLine(e, idx) {
     const orderLine = new OrderDetail();
-    Object.assign(orderLine, this.order.order_detail[idx]);  // TODO:  Change to use orderLineItems
+    Object.assign(orderLine, this.masterOrder.order_detail[idx]);  // TODO:  Change to use orderLineItems
     // orderLine = this.order.order_detail[idx];
-    orderLine.order_detail_id = (this.order.order_detail.length + 1) * -1;
+    orderLine.order_detail_id = (this.masterOrder.order_detail.length + 1) * -1;
     orderLine.garment_order_date = undefined;
     orderLine.garment_recvd_date = undefined;
     orderLine.shipping_po = undefined;
-    orderLine.order_number = this.order.order_number;
+    orderLine.size_code = null;
+    orderLine.taxable_ind = 'Y';
+    orderLine.shipping_po = null;
+    orderLine.notes = null;
+    orderLine.checked_in_ind = null;
+    orderLine.checked_out_ind = null;
+    orderLine.xsmall_qty = null;
+    orderLine.small_qty = null;
+    orderLine.med_qty = null;
+    orderLine.large_qty = null;
+    orderLine.xl_qty = null;
+    orderLine.C2xl_qty = null;
+    orderLine.C3xl_qty = null;
+    orderLine.C4xl_qty = null;
+    orderLine.C5xl_qty = null;
+    orderLine.other1_type = null;
+    orderLine.other1_qty = null;
+    orderLine.other2_type = null;
+    orderLine.other2_qty = null;
+    orderLine.other3_type = null;
+    orderLine.other3_qty = null;
+    orderLine.item_type = this.masterOrder.order_detail[idx].item_type;
+    orderLine.manufacturer = this.masterOrder.order_detail[idx].manufacturer;
+    orderLine.color_code = this.masterOrder.order_detail[idx].color_code;
+    orderLine.vendor = this.masterOrder.order_detail[idx].vendor;
+    orderLine.style_code = this.masterOrder.order_detail[idx].style_code;
+    orderLine.item_price_each = this.masterOrder.order_detail[idx].item_price_each;
+    orderLine.order_number = this.masterOrder.order_number;
     orderLine.customer_name = this.customer.customer_name;
     this.order.order_detail.unshift(orderLine);
     this.masterOrder.order_detail.unshift(orderLine);
-    console.log('Original Order Line', this.order.order_detail[idx]);
+    console.log('Original Order Line', this.masterOrder.order_detail[idx]);
     console.log('Copied Order Line', orderLine);
   }
 
@@ -244,7 +271,7 @@ export class OrderDetailComponent implements OnInit {
     artPlacement.added_date = today.toISOString(); // this.formatOrderNumber(today);
     // console.log('ArtPlacement Added By', artPlacement.added_by);
     // console.log('UserList', this.userDataSource);
-    this.masterOrder.order_art_placements.unshift(artPlacement);
+    this.masterOrder.order_art_placements.push(artPlacement);
   }
   deleteArtPlacement(e) {
     // console.log('deletingArtPlacement', e);
