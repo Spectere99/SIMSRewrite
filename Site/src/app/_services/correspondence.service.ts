@@ -50,10 +50,10 @@ export class CorrespondenceService {
     }
 
     addCorrespondence(userId: string, correspondence: Correspondence): Observable<any> {
-        console.log('Correspondence', correspondence);
+        // console.log('Correspondence', correspondence);
         return this.http.post(this.docURL, correspondence, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
-            console.log('Correspondence return', res.json());
+            // console.log('Correspondence return', res.json());
             return res.json();
         },
         err => console.log(err));

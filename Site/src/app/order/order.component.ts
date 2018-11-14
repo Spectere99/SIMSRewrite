@@ -60,8 +60,8 @@ export class OrderComponent implements OnInit {
     }
 
   checkValues() {
-    console.log('order_statusSource', this.order_statusSource );
-    console.log('order_typeSource', this.order_typeSource );
+    // console.log('order_statusSource', this.order_statusSource );
+    // console.log('order_typeSource', this.order_typeSource );
   }
   createOrderDataSource() {
     this.dataSource = {

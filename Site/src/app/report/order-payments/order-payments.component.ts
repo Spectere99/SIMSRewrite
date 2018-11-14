@@ -39,7 +39,7 @@ export class OrderPaymentsComponent implements OnInit {
       });
       userService.getUsers('').subscribe(res => {
         this.userDataSource = res.value;
-        console.log(this.userDataSource);
+        // console.log(this.userDataSource);
       });
     }
 
@@ -84,11 +84,11 @@ export class OrderPaymentsComponent implements OnInit {
     }
 
     setOrderDate(e) {
-      console.log(e);
-      console.log('dateValue', this.paymentDate);
+      // console.log(e);
+      // console.log('dateValue', this.paymentDate);
       const newDateVal = new Date(e);
 
-      console.log('newDateVal', newDateVal.toLocaleDateString());
+      // console.log('newDateVal', newDateVal.toLocaleDateString());
       this.paymentDate = newDateVal.toLocaleDateString();
       this.dataGrid.instance.filter(['order_date', '=', newDateVal]);
 

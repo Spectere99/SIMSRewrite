@@ -122,8 +122,9 @@ namespace SIMSDataService.Controllers
 
             order.order_date = startDate;
 
-            List<order> todaysOrders = db.orders.Where(p => p.order_date == order.order_date).ToList();
+            List<order> todaysOrders = db.orders.Where(p => p.order_date == startDate).ToList();
             order.order_number = order.order_number + (todaysOrders.Count + 1);
+
             db.orders.Add(order);
 
             try

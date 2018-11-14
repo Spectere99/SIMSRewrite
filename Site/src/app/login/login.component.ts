@@ -27,7 +27,7 @@ window;
         public windowRef: WindowRef ) {
 
         this.window = windowRef.nativeWindow;
-        console.log('Creating Form');
+        // console.log('Creating Form');
         this.createForm();
 }
     private createForm(): void {
@@ -38,7 +38,7 @@ window;
     }
 
     submitted() {
-        console.log('submitting Login Request', this.loginForm);
+        // console.log('submitting Login Request', this.loginForm);
         if (this.loginForm.invalid) { return; }
 
         this.loading = true;
@@ -51,7 +51,7 @@ window;
             }, (error) => {
                 this.loading = false;
                 this.message = 'Invalid User Name or Password.  Unable to Authenticate';
-                console.error('auth error', error);
+                // console.error('auth error', error);
             });
     }
 

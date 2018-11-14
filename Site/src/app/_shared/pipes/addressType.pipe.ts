@@ -11,7 +11,7 @@ export class AddressLookup implements PipeTransform {
 
         if (addressTypes !== undefined) {
             const returnedDesc = addressTypes.filter(p => p.char_mod === val);
-            console.log('lookup Desc', returnedDesc);
+            // console.log('lookup Desc', returnedDesc);
             if (returnedDesc.length > 0) {
                 return returnedDesc[0].description;
             }

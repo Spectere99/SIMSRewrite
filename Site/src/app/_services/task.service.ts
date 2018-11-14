@@ -51,7 +51,7 @@ export class TaskService {
     }
 
     saveTaskData(userId, task: Task) {
-        console.log('Task in saveTaskData', task);
+        // console.log('Task in saveTaskData', task);
         return this.http.post(this.baseURL + this._TASK_ACTION, task, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());

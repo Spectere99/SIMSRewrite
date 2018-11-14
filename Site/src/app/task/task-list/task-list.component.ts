@@ -61,7 +61,7 @@ export class TaskListComponent implements OnInit {
   constructor(public lookupService: LookupService, public userService: UserService,
               public orderService: OrderService, public authService: AuthenticationService,
               public customerService: CustomerService,  public correspondenceService: CorrespondenceService) {
-    console.log('Constructor');
+    // console.log('Constructor');
     this.userProfile = JSON.parse(authService.getUserToken());
     this.currentFilter = this.defaultLoadFilter;
     lookupService.loadLookupData('').subscribe(res => {
@@ -79,7 +79,7 @@ export class TaskListComponent implements OnInit {
     });
 
     this.createTaskDataSource();
-    console.log(this.dataSource);
+    // console.log(this.dataSource);
   }
 
   createLookupTypeSource(className: string): any {
@@ -109,7 +109,7 @@ export class TaskListComponent implements OnInit {
           jsonp: false,
           beforeSend: function (url, async, method, timeout, params, payload, headers) {
 
-            console.log('beforeSend', url, async, method, timeout, params, payload, headers);
+            // console.log('beforeSend', url, async, method, timeout, params, payload, headers);
           }
       },
       expand: ['order'],
@@ -146,8 +146,8 @@ export class TaskListComponent implements OnInit {
 
   showEditPopup(e) {
     // e.cancel = true;
-    console.log('E', e);
-    console.log('task-list:showEditPopup Calling loadOrder');
+    // console.log('E', e);
+    // console.log('task-list:showEditPopup Calling loadOrder');
     // this.customerService.getCustomerData('', e.data.order.customer_id).subscribe(res => {
       // this.customer = res;
       this.loadOrder(e.data);
@@ -155,7 +155,7 @@ export class TaskListComponent implements OnInit {
       // console.log('pulled Customer', this.orderCustomer);
     //});
     // console.log('showPopup order', e.data);
-    console.log('Selected Order', this.selectedOrder);
+    // console.log('Selected Order', this.selectedOrder);
     // alert('Editing!');
 
     /* this.popupVisible = true; */
@@ -179,8 +179,8 @@ export class TaskListComponent implements OnInit {
       this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 9
       this.customerService.getCustomerData('', this.selectedOrder.customer_id) // 10
     ).subscribe(results => {
-      console.log('selectedOrder', this.selectedOrder);
-      console.log('forkJoin Return', results);
+      // console.log('selectedOrder', this.selectedOrder);
+      // console.log('forkJoin Return', results);
       this.customer = results[10];
       this.selectedOrder = results[0];
       this.selectedOrderMaster = results[0];
@@ -203,7 +203,7 @@ export class TaskListComponent implements OnInit {
       this.selectedCorrespondence = results[9].correspondences;
       this.selectedOrderMaster.order_correspondence = results[9].correspondences;
       this.selectedOrderMaster.customer = this.customer;
-      console.log('Order Master Return', this.selectedOrderMaster);
+      // console.log('Order Master Return', this.selectedOrderMaster);
       this.loadingOrder = false;
       this.loading = false;
       this.popupVisible = true;
@@ -247,15 +247,15 @@ export class TaskListComponent implements OnInit {
   }
 
   setCompletedValue(rowData, value) {
-    console.log('SetCompletedValue', rowData, value);
+    // console.log('SetCompletedValue', rowData, value);
     rowData.is_complete = (value === true) ? 'Y' : 'N';
   }
   setCustomerName(e) {
-    console.log('setCustomerName', e);
+    // console.log('setCustomerName', e);
   }
 
   ngOnInit() {
-    console.log('OnInit');
+    // console.log('OnInit');
   }
 
 }

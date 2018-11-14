@@ -230,8 +230,8 @@ export class OrderDetailComponent implements OnInit {
     orderLine.customer_name = this.customer.customer_name;
     this.order.order_detail.unshift(orderLine);
     this.masterOrder.order_detail.unshift(orderLine);
-    console.log('Original Order Line', this.masterOrder.order_detail[idx]);
-    console.log('Copied Order Line', orderLine);
+    // console.log('Original Order Line', this.masterOrder.order_detail[idx]);
+    // console.log('Copied Order Line', orderLine);
   }
 
   deleteLineItem(e) {
@@ -341,7 +341,7 @@ export class OrderDetailComponent implements OnInit {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     payment.payment_date = today.toISOString(); // this.formatOrderNumber(today);
-    console.log('Added Payment', payment);
+    // console.log('Added Payment', payment);
     // this.orderPayments.push(payment);
     this.masterOrder.order_payments.push(payment);
   }
@@ -432,8 +432,8 @@ export class OrderDetailComponent implements OnInit {
         nonTaxSubTotal = nonTaxSubTotal + +this.masterOrder.order_detail[x].item_price_ext;
       }
     }
-    console.log('subTotal', subTotal);
-    console.log('nonTaxSubTotal', nonTaxSubTotal);
+    // console.log('subTotal', subTotal);
+    // console.log('nonTaxSubTotal', nonTaxSubTotal);
     this.masterOrder.subtotal = subTotal;
 
     // Add Shipping Fees to SubTotal.
@@ -524,7 +524,7 @@ export class OrderDetailComponent implements OnInit {
       orderDetail.order_id = this.masterOrder.order_id;
       orderDetail.customer_name = this.customer.customer_name;
       orderDetail.order_number = this.currentOrder.order_number;
-      console.log('OrderDetail on Save', orderDetail);
+      // console.log('OrderDetail on Save', orderDetail);
       this.orderService.addOrderLineItem(this.userProfile.login_id, orderDetail)
         .subscribe(res => {
           // console.log('Save orderInfo Return', res);
@@ -537,7 +537,7 @@ export class OrderDetailComponent implements OnInit {
     } else {
       orderDetail.customer_name = this.customer.customer_name;
       orderDetail.order_number = this.masterOrder.order_number;
-      console.log('OrderDetail on Save', orderDetail);
+      // console.log('OrderDetail on Save', orderDetail);
       this.orderService.updateOrderLineItem(this.userProfile.login_id, orderDetail)
         .subscribe(res => {
           // console.log('Update orderLineItem Return', res);
@@ -550,7 +550,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   saveArtPlacement(artPlacement: OrderArtPlacement) {
-    console.log('Art Placement on Save', artPlacement);
+    // console.log('Art Placement on Save', artPlacement);
     if (artPlacement.order_art_placement_id <= 0) {
       artPlacement.order_art_placement_id = 0;
       this.orderService.addOrderArtPlacement(this.userProfile.login_id, artPlacement)
@@ -600,7 +600,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   savePayments(orderPayment: OrderPayment) {
-    console.log('Order Payment on Save', orderPayment);
+    // console.log('Order Payment on Save', orderPayment);
     if (orderPayment.order_payment_id <= 0) {
       orderPayment.order_payment_id = 0;
       this.orderService.addOrderPayment(this.userProfile.login_id, orderPayment)
@@ -633,7 +633,7 @@ export class OrderDetailComponent implements OnInit {
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
     // console.log('order-detail-component currentOrder', this.currentOrder);
-    console.log('order-detail-component:ngOnChanges()', this.masterOrder);
+    // console.log('order-detail-component:ngOnChanges()', this.masterOrder);
     this.loading = true;
     this.updateTotals();
     this.editMode = this.currentOrder.order_id !== 0;
@@ -641,7 +641,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   formatOrderNumber(today): string {
-    console.log('formatOrderNumber - today', today);
+    // console.log('formatOrderNumber - today', today);
     let dd = today.getDate();
     let mm = (today.getMonth() + 1); // January is 0!
     const yyyy = today.getFullYear().toString();

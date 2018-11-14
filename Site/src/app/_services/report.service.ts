@@ -25,7 +25,7 @@ export class ReportingService {
     getOrderBalanceData(userId, orderDate): Observable<any> {
         return this.http.get(this.baseURL + 'Reporting', {headers: this.getHeaders(userId, orderDate)})
         .map((res: Response) => {
-            console.log(res.json());
+            // console.log(res.json());
             return res.json();
         });
     }
@@ -33,7 +33,7 @@ export class ReportingService {
     getOrderQuantityData(userId): Observable<any> {
         return this.http.get(this.baseURL + 'OrderQuantitiesRollup', {headers: this.getHeaders(userId, undefined)})
         .map((res: Response) => {
-            console.log(res.json());
+            // console.log(res.json());
             return res.json();
         });
     }

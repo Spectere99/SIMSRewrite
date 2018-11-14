@@ -62,7 +62,7 @@ export class CustomerListComponent implements OnInit {
       this.defaultPageSize = 10;
       this.currentPageSize = this.defaultPageSize;
       this.CreateCustomerDataSource();
-      console.log('customerDataSource', this.dataSource);
+      // console.log('customerDataSource', this.dataSource);
       this.lookupDataSource = globalDataProvider.getLookups();
       this.createPersonTypeDataSource();
       this.createPhoneTypeDataSource();
@@ -87,12 +87,12 @@ export class CustomerListComponent implements OnInit {
 
       if (!this.expandedResults) {
         this.gridHeight = 525;
-        console.log('Page size-Collapse', this.currentPageSize);
-        console.log('gridHeight-Collapse', this.gridHeight);
+        // console.log('Page size-Collapse', this.currentPageSize);
+        // console.log('gridHeight-Collapse', this.gridHeight);
       } else {
         this.gridHeight = this.gridHeight * currentPageCount;
-        console.log('Page size-Expand', this.currentPageSize);
-        console.log('gridHeight-Expand', this.gridHeight);
+        // console.log('Page size-Expand', this.currentPageSize);
+        // console.log('gridHeight-Expand', this.gridHeight);
       }
       this.pagingEnabled = !this.pagingEnabled;
       this.scrollMode = 'virtual';
@@ -102,11 +102,11 @@ export class CustomerListComponent implements OnInit {
     filterByContactName(e) {
       const searchCriteria = e.component.option('text');
       const grid = this.gridCustomers.instance;
-      console.log('valueChanged', grid);
+      // console.log('valueChanged', grid);
 
     }
     getPersonTypes() {
-      console.log('In Get Person Types', this.personTypes);
+      // console.log('In Get Person Types', this.personTypes);
       return this.personTypes;
     }
     selectCustomer(e) {
@@ -134,7 +134,7 @@ export class CustomerListComponent implements OnInit {
     }
 
     CreateCustomerDataSource() {
-      console.log('in CreateCustomerDataSource');
+      // console.log('in CreateCustomerDataSource');
       this.dataSource = {
         store: {
             type: 'odata',
@@ -196,7 +196,7 @@ export class CustomerListComponent implements OnInit {
       const filter = this.gridCustomers.instance.getCombinedFilter();
       // console.log('filter', filter);
       if (filter[2] !== null) {
-        console.log('Filter', filter[2]);
+        // console.log('Filter', filter[2]);
         this.disableExpand = filter[2].length < 3;
         // this.disableExpand = (filter === undefined);
         if (this.disableExpand) {
@@ -243,12 +243,12 @@ export class CustomerListComponent implements OnInit {
     }
     showEditPopup(e) {
       // e.cancel = true;
-      console.log('E', e.data.customer_id);
-      console.log('customer-list:showEditPopup Calling getCustomerData');
+      // console.log('E', e.data.customer_id);
+      // console.log('customer-list:showEditPopup Calling getCustomerData');
       this.customerService.getCustomerData('', e.data.customer_id).subscribe(res => {
         this.selectedCustomer = res;
         this.selectedCustomer.customer_person = this.selectedCustomer.customer_person.filter(f => f.status_code === 'act');
-        console.log('getCustomerData Return', res);
+        // console.log('getCustomerData Return', res);
         if (this.selectedCustomer.customer_id < 0) {
           this.orderTabDisabled = true; } else {this.orderTabDisabled = false;
         }
@@ -278,14 +278,14 @@ export class CustomerListComponent implements OnInit {
       let outputNames = '';
       if (data.customer_person !== undefined) {
         for (let x = 0; x < data.customer_person.length; x++) {
-          console.log('Customer', data.customer_person[x]);
+          // console.log('Customer', data.customer_person[x]);
           outputNames = outputNames.concat(data.customer_person[x].first_name);
           outputNames = outputNames.concat(' ');
           outputNames = outputNames.concat(data.customer_person[x].last_name);
           outputNames = outputNames.concat(' ');
         }
       }
-      console.log('OutputNames', outputNames);
+      // console.log('OutputNames', outputNames);
       return outputNames;
     }
 
@@ -347,13 +347,13 @@ export class CustomerListComponent implements OnInit {
         // console.log('contact-list calling contactsComponent batchSave', res);
         const cnt = this.contactInfoCmpt.batchSave(res);
         const adr = this.contactAddressCmpt.batchSave(res);
-          console.log('contactInfo batch Saved Result', cnt);
-          console.log('contactAddress batch Saved Result', adr);
+          // console.log('contactInfo batch Saved Result', cnt);
+          // console.log('contactAddress batch Saved Result', adr);
             setTimeout(() => {
               this.gridCustomers.instance.refresh();
               this.customerService.getCustomerData('', res).subscribe(cust => {
-                console.log('contact-list applyChanges - selectedCustomer', this.selectedCustomer);
-                console.log('contact-list applyChanges - Customer', cust);
+                // console.log('contact-list applyChanges - selectedCustomer', this.selectedCustomer);
+                // console.log('contact-list applyChanges - Customer', cust);
               this.selectedCustomer = cust;
               });
             }, 1000);

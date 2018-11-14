@@ -62,7 +62,7 @@ export class CustomerOrderListComponent implements OnInit {
 
   lookupDataSource: Array<LookupItem>;
   customerId: number;
-  enableSave = false;
+  readOnly = false;
   userProfile;
   leaveWindowOpen: true;
   loading: boolean;
@@ -75,7 +75,9 @@ export class CustomerOrderListComponent implements OnInit {
     // Pull User Role to set activities
     this.window = windowRef.nativeWindow;
     this.userProfile = JSON.parse(authService.getUserToken());
-    this.enableSave = this.userProfile.profile.role !== 'Readonly';
+    console.log('customer-order-list.component:constructor - userProfile', this.userProfile);
+    this.readOnly = this.userProfile.profile.role.filter(item => item === 'Readonly').length > 0;
+    console.log('customer-order-list.component:constructor - readOnly', this.readOnly);
     this.lookupDataSource = globalDataProvider.getLookups();
     this.createStatusDataSource();
     this.createOrderTypeDataSource();
@@ -158,6 +160,7 @@ export class CustomerOrderListComponent implements OnInit {
     };
     // console.log('Return from Order List', this.dataSource);
   }
+
   createStatusDataSource() {
     this.order_statusSource = this.lookupDataSource.filter(item => item.class === 'ord');
   }
@@ -206,8 +209,8 @@ export class CustomerOrderListComponent implements OnInit {
   }
 
   reOrder(customer_id) {
-    console.log('Reorder Function', this.selectedOrder);
-    const reOrderObj = this.cloneOrder(this.selectedOrder);
+    console.log('Reorder Function', this.selectedOrderMaster);
+    const reOrderObj = this.cloneOrder(this.selectedOrderMaster);
 
     reOrderObj.taken_user_id = this.userProfile.profile.user_id;
     reOrderObj.assigned_user_id = this.userProfile.profile.user_id;
@@ -340,7 +343,7 @@ export class CustomerOrderListComponent implements OnInit {
   }
 
   formatOrderNumber(today): string {
-    console.log('formatOrderNumber - today', today);
+    // console.log('formatOrderNumber - today', today);
     let dd = today.getDate();
     let mm = (today.getMonth() + 1); // January is 0!
     const yyyy = today.getFullYear().toString();
@@ -350,7 +353,7 @@ export class CustomerOrderListComponent implements OnInit {
     if (mm < 10) {
       mm = '0' + mm;
     }
-    console.log('formatOrderNumber return', mm.toString() + dd.toString() + yyyy.toString());
+    // console.log('formatOrderNumber return', mm.toString() + dd.toString() + yyyy.toString());
     return mm.toString() + dd.toString() + yyyy.toString();
   }
 
@@ -358,7 +361,7 @@ export class CustomerOrderListComponent implements OnInit {
     this.gridOrders.instance.refresh();
   }
 
-  cloneOrder(origOrder: Order): Order {
+  cloneOrder(origOrder: OrderMaster): Order {
     const newOrder = new Order();
     newOrder.previous_order = origOrder.order_number;
     newOrder.reorder_ind = 'Y';
@@ -369,6 +372,7 @@ export class CustomerOrderListComponent implements OnInit {
     newOrder.order_number = this.formatOrderNumber(today);
     newOrder.order_status = 'inq';
     newOrder.customer_id = origOrder.customer_id;
+    // console.log('cloneOrder: contact', origOrder.contact);
     newOrder.contact = origOrder.contact;
     newOrder.contact_email = origOrder.contact_email;
     newOrder.contact_phone1 = origOrder.contact_phone1;
@@ -612,7 +616,7 @@ export class CustomerOrderListComponent implements OnInit {
     });
   }
   showValues() {
-    console.log('Showing Order Values', this.selectedOrder);
+    console.log('Showing Order Values', this.selectedOrderMaster);
   }
 
   selectionChanged(e) {

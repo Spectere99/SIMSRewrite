@@ -26,9 +26,9 @@
               <td></td>
             </tr>
             <tr>
-              <td nowrap width="75">{{currentOrder.order_number}}&nbsp;&nbsp;</td>
-              <td nowrap width="75">{{currentOrder.order_due_date | date: 'MM/dd/yyyy' }}&nbsp;&nbsp;</td>
-              <td nowrap colspan="3">{{currentOrder.customer.customer_name}}&nbsp;</td>
+              <td nowrap width="75">{{currentOrder?.order_number}}&nbsp;&nbsp;</td>
+              <td nowrap width="75">{{currentOrder?.order_due_date | date: 'MM/dd/yyyy' }}&nbsp;&nbsp;</td>
+              <td nowrap colspan="3">{{currentOrder?.customer?.customer_name}}&nbsp;</td>
               <td nowrap width="175">{{getLookupDescription(currentOrder.order_type)}}&nbsp;&nbsp;</td>
               <td nowrap>
                 <img src="\assets\greybox.gif"> Pick up</td>

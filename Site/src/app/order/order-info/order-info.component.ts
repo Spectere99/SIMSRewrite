@@ -78,11 +78,11 @@ export class OrderInfoComponent implements OnInit, OnChanges {
 
   batchSave() {
     return this.saveOrderInfo().map(res => {
-      console.log('Order Info Saved', res);
-      console.log('Order Status Changed', this.orderStatusChanged);
+      // console.log('Order Info Saved', res);
+      // console.log('Order Status Changed', this.orderStatusChanged);
       if (this.orderStatusChanged === true) {
         this.saveOrderStatusHistory(res).subscribe(res2 => {
-          console.log('Order Status History Saved', res2);
+          // console.log('Order Status History Saved', res2);
         });
       }
       return res;
@@ -97,9 +97,9 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     orderToSave.order_type =  order.order_type;
     orderToSave.purchase_order =  order.purchase_order;
     const fixedOrderDate = new Date(order.order_date);
-    console.log('order-info:convertOrderInfo - fixedOrderDate', fixedOrderDate.toISOString());
+    // console.log('order-info:convertOrderInfo - fixedOrderDate', fixedOrderDate.toISOString());
     fixedOrderDate.setHours(0, 0, 0, 0);
-    console.log('order-info:convertOrderInfo - fixedOrderDate-After', fixedOrderDate.toISOString());
+    // console.log('order-info:convertOrderInfo - fixedOrderDate-After', fixedOrderDate.toISOString());
     orderToSave.order_date =  fixedOrderDate.toISOString();
     orderToSave.order_due_date =  new Date(order.order_due_date).toISOString();
     orderToSave.order_status =  order.order_status;
@@ -150,12 +150,12 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   saveOrderInfo() {
     // console.log('Order on Save', this.currentOrder);
       const insOrder = this.convertOrderInfo(this.currentOrder);
-      console.log('Converted Order on Save', insOrder);
+      // console.log('Converted Order on Save', insOrder);
       if (this.currentOrder.order_id <= 0) {
         this.currentOrder.order_id = 0;
         return this.orderService.addOrderInfo('rwflowers', insOrder)
         .map(res => {
-          console.log('Save orderInfo Return', res);
+          // console.log('Save orderInfo Return', res);
           this.currentOrder.order_id = res.order_id;
           this.snackBar.open('Order Added!', '', {
             duration: 4000,
@@ -178,8 +178,8 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   saveOrderStatusHistory(orderId: number) {
-    console.log('Saving Order Status History orderId=', orderId);
-    console.log('user', this.userProfile);
+    // console.log('Saving Order Status History orderId=', orderId);
+    // console.log('user', this.userProfile);
     const orderStatusHistory = new OrderStatusHistory();
     orderStatusHistory.order_status_history_id = 0;
     orderStatusHistory.order_id = orderId;
@@ -189,7 +189,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     orderStatusHistory.status_date = today.toISOString();
     orderStatusHistory.set_by_user_id = this.userProfile.profile.user_id;
 
-    console.log('order-info:saveOrderStatusHistory - OrderStatusHistory', orderStatusHistory);
+    // console.log('order-info:saveOrderStatusHistory - OrderStatusHistory', orderStatusHistory);
     return this.orderService.addOrderStatus(this.userProfile.login_id, orderStatusHistory)
     .map(res => {
       this.orderStatusChanged = false;
@@ -212,14 +212,14 @@ export class OrderInfoComponent implements OnInit, OnChanges {
       this.orderStatusChanged = false;
     }
     this.currentOrder.order_status = e;
-    console.log('Order Status value(s)', this.currentOrder.order_status, this.originalOrderStatus);
-    console.log('Save Order Status', this.orderStatusChanged);
+    // console.log('Order Status value(s)', this.currentOrder.order_status, this.originalOrderStatus);
+    // console.log('Save Order Status', this.orderStatusChanged);
   }
 
   ngOnInit() {
-    console.log('OnInit currentOrder', this.currentOrder);
+    // console.log('OnInit currentOrder', this.currentOrder);
     // this.editMode = this.currentOrder !== undefined;
-    console.log('OnInit customer', this.customer);
+    // console.log('OnInit customer', this.customer);
     this.newMode = this.currentOrder.order_id === 0;
     this.orderCustomer = this.customer;
     this.contactPersons = this.customer.customer_person;
@@ -237,8 +237,8 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    console.log('OnChanges currentOrder', this.currentOrder);
-    console.log('OnChanges customer', this.customer);
+    // console.log('OnChanges currentOrder', this.currentOrder);
+    // console.log('OnChanges customer', this.customer);
     this.newMode = this.currentOrder.order_id === 0;
     this.orderStatusChanged = this.newMode;
     this.orderCustomer = this.customer;

@@ -73,11 +73,11 @@ orderStartDate;
   }
 
   setOrderDate(e) {
-    console.log(e);
-    console.log('dateValue', this.orderStartDate);
+    // console.log(e);
+    // console.log('dateValue', this.orderStartDate);
     const newDateVal = new Date(e);
 
-    console.log('newDateVal', newDateVal.toLocaleDateString());
+    // console.log('newDateVal', newDateVal.toLocaleDateString());
     this.orderStartDate = newDateVal.toLocaleDateString();
     this.dataGrid.instance.filter(['order_date', '=', newDateVal]);
 

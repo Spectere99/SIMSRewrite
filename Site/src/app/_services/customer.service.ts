@@ -118,7 +118,7 @@ export class CustomerService {
 
         return this.http.get(this.baseURL + '/customers' + this.options, {headers: this.getHeaders(userId)})
         .map((res: Response) => {
-            console.log(res.json());
+            // console.log(res.json());
             return res.json();
         });
     }
@@ -131,14 +131,14 @@ export class CustomerService {
 
         return this.http.get(this.baseURL + '/customers' + this.options, {headers: this.getHeaders(userId)})
         .map((res: Response) => {
-            console.log('customer-service:getCustomerData', res.json());
+            // console.log('customer-service:getCustomerData', res.json());
             return res.json();
         });
     }
     addCustomer(userId, customer: CustomerDTO): Observable<any> {
         // Build customer odata Options
         // this.options = '(' + customerPersonId + ')';
-        console.log('Customer in addCustomer', customer);
+        // console.log('Customer in addCustomer', customer);
         return this.http.post(this.baseURL + '/customers', customer, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -148,7 +148,7 @@ export class CustomerService {
     updateCustomer(userId, customer: CustomerDTO): Observable<any> {
         // Build customer odata Options
         this.options = '(' + customer.customer_id + ')';
-        console.log('Customer in updateCustomer', customer);
+        // console.log('Customer in updateCustomer', customer);
         return this.http.put(this.baseURL + '/customers' + this.options, customer, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -158,7 +158,7 @@ export class CustomerService {
     addCustomerContact(userId, customerPerson: CustomerPerson): Observable<any> {
         // Build customer odata Options
         // this.options = '(' + customerPersonId + ')';
-        console.log('CustomerPerson in addCustomerContact', customerPerson);
+        // console.log('CustomerPerson in addCustomerContact', customerPerson);
         return this.http.post(this.baseURL + '/CustomerPerson', customerPerson, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -168,8 +168,8 @@ export class CustomerService {
     updateCustomerContact(userId, customerPerson: CustomerPerson): Observable<any> {
         // Build customer odata Options
         this.options = '(' + customerPerson.customer_person_id + ')';
-        console.log('updateCustomercontact - customerPerson', customerPerson);
-        console.log('updateCustomerContact - options', this.options);
+        // console.log('updateCustomercontact - customerPerson', customerPerson);
+        // console.log('updateCustomerContact - options', this.options);
 
         return this.http.put(this.baseURL + '/CustomerPerson' + this.options, customerPerson, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
@@ -190,10 +190,10 @@ export class CustomerService {
     addCustomerAddress(userId, customerAddress: CustomerAddress): Observable<any> {
         // Build customer odata Options
         // this.options = '(' + customerPersonId + ')';
-        console.log('CustomerAddress in addCustomerAddress', customerAddress);
+        // console.log('CustomerAddress in addCustomerAddress', customerAddress);
         return this.http.post(this.baseURL + '/CustomerAddress', customerAddress, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
-            console.log('Customer Address return', res.json());
+            // console.log('Customer Address return', res.json());
             return res.json();
         },
         err => console.log(err));

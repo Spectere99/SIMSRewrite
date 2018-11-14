@@ -92,7 +92,6 @@ namespace SIMSDataService.Controllers
                             LastName = usr.last_name,
                             LoginId = usr.login_id,
                             UserId = usr.user_id,
-                            Role = "",
                             pwd = usr.password
                         }).FirstOrDefault();
 
@@ -101,9 +100,16 @@ namespace SIMSDataService.Controllers
                             userTry.pwd = null;
                             // Need to grab the role (HotJas_Group) the person belongs to so we can return it to the client.
                             var groups = db.hotjas_group.ToList();
-                            var userGroup = db.user_group.FirstOrDefault(p => p.user_id == userTry.UserId);
-                            var foundGroup = groups.FirstOrDefault(p => userGroup != null && p.hotjas_group_id == userGroup.hotjas_group_id);
-                            if (foundGroup != null) userTry.Role = foundGroup.name;
+                            var userGroup = db.user_group.Where(p => p.user_id == userTry.UserId).ToList();
+                            //  var foundGroup = groups.Where(p => userGroup != null && p.hotjas_group_id == userGroup.hotjas_group_id).ToList();
+                            userTry.Role = new List<string>();
+                            foreach (user_group ug in userGroup)
+                            {
+                                var foundGroup = groups.SingleOrDefault(p => p.hotjas_group_id == ug.hotjas_group_id);
+                                userTry.Role.Add(foundGroup.name);
+                            }
+                            
+                            // if (foundGroup.Count > 0) userTry.Role = foundGroup;
                             // Generate Token
                             //var claimList = new[]
                             //{

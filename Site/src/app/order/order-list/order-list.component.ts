@@ -109,8 +109,8 @@ export class OrderListComponent implements OnInit {
     }
 
   checkValues() {
-    console.log('order_statusSource', this.order_statusSource );
-    console.log('order_typeSource', this.order_typeSource );
+    // console.log('order_statusSource', this.order_statusSource );
+    // console.log('order_typeSource', this.order_typeSource );
   }
 
   createOrderDataSource() {
@@ -199,7 +199,7 @@ export class OrderListComponent implements OnInit {
     this.selectedOrder.customer_id = customer_id;
     this.selectedOrder.customer_name = this.customer.customer_name;
     const today = new Date();
-    today.setUTCHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
     this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
@@ -232,15 +232,15 @@ export class OrderListComponent implements OnInit {
   }
 
   reOrder(customer_id) {
-    console.log('Reorder Function', this.selectedOrder);
+    // console.log('Reorder Function', this.selectedOrder);
     const reOrderObj = this.cloneOrder(this.selectedOrder);
 
     reOrderObj.taken_user_id = this.userProfile.profile.user_id;
     reOrderObj.assigned_user_id = this.userProfile.profile.user_id;
 
-    console.log ('customer_order-list:reOrder-reOrderObj', reOrderObj);
+    // console.log ('customer_order-list:reOrder-reOrderObj', reOrderObj);
     this.orderService.addOrderInfo(this.userProfile.profile.login_id, reOrderObj).subscribe(res => {
-      console.log('Order ID Return', res);
+      // console.log('Order ID Return', res);
       reOrderObj.order_id = res.order_id;
       reOrderObj.order_number = res.order_number;
       const reOrderDetails = this.cloneOrderDetails(this.selectedOrderMaster.order_detail, res.order_id);
@@ -426,7 +426,7 @@ export class OrderListComponent implements OnInit {
 
   cloneOrderDetails(origDetails: Array<OrderDetail>, order_id: number): Array<OrderDetail> {
     const newDetails = new Array<OrderDetail>();
-    console.log('customer-order-list:cloneOrderDetails - origDetails', origDetails);
+   // console.log('customer-order-list:cloneOrderDetails - origDetails', origDetails);
     origDetails.forEach((item) => { // foreach statement
       const newDetail = new OrderDetail();
       newDetail.order_detail_id = 0;
@@ -583,11 +583,11 @@ export class OrderListComponent implements OnInit {
       // Still need art tab batch save.
       this.orderArt.batchSave(res);
       // console.log('orderTaskList on ApplyChanges', this.orderTaskList.orderTask);
-      console.log('order balance_due', this.selectedOrder.balance_due);
-      console.log('order', this.selectedOrder);
+      // ('order balance_due', this.selectedOrder.balance_due);
+      // console.log('order', this.selectedOrder);
       this.selectedOrder.order_id = res;
       if (+this.selectedOrder.balance_due === 0.00 && this.selectedOrder.order_payments.length > 0) {
-        console.log('balance is paid!');
+        // console.log('balance is paid!');
         const fpmtTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'fnpmt');
         if (fpmtTask) {
           fpmtTask[0].is_complete = 'Y';
@@ -603,7 +603,7 @@ export class OrderListComponent implements OnInit {
             depTask[0].completed_by = this.userProfile.profile.login_id;
             depTask[0].completed_date = new Date().toISOString();
           }
-          console.log('depost is paid!', this.selectedOrder.order_payments);
+          // console.log('depost is paid!', this.selectedOrder.order_payments);
         }
       }
 
@@ -628,10 +628,10 @@ export class OrderListComponent implements OnInit {
   showEditPopup(e) {
     // e.cancel = true;
     // console.log('E', e);
-    console.log('*** customer-order-list-comopnent:showEditPopup - START', e.data);
+    // console.log('*** customer-order-list-comopnent:showEditPopup - START', e.data);
     this.loadOrder(e.data);
     this.popupVisible = true;
-    console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
+    // console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
     // console.log('Selected Order', this.selectedOrder);
   }
 
@@ -666,7 +666,7 @@ export class OrderListComponent implements OnInit {
     this.loading = true;
     this.selectedOrder = e;
     this.selectedOrderMaster = e;
-    console.log('order-list-component:this.loadOrder',  e.customer_id);
+    // console.log('order-list-component:this.loadOrder',  e.customer_id);
     forkJoin(
       this.orderService.loadOrderData('', this.selectedOrder.order_id), // 0
       this.orderService.loadArtPlacementData('', this.selectedOrder.order_id), // 1
@@ -679,8 +679,8 @@ export class OrderListComponent implements OnInit {
       this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 8
       this.customerService.getCustomerData('', e.customer_id) // 9
     ).subscribe(results => {
-      console.log('selectedOrder', this.selectedOrder);
-      console.log('forkJoin Return', results);
+      // console.log('selectedOrder', this.selectedOrder);
+      // console.log('forkJoin Return', results);
       this.selectedOrderLines = results[0].order_detail;
       this.selectedOrderMaster.order_detail = results[0].order_detail;
       this.selectedArtPlacements = results[1].order_art_placement;
@@ -701,7 +701,7 @@ export class OrderListComponent implements OnInit {
       this.selectedOrderMaster.order_correspondence = results[8].correspondences;
       this.customer = results[9];
       this.selectedOrderMaster.customer = this.customer;
-      console.log('Order Master Return', this.selectedOrderMaster);
+      // console.log('Order Master Return', this.selectedOrderMaster);
       this.loadingOrder = false;
       this.loading = false;
       // this.popupVisible = true;
@@ -709,7 +709,7 @@ export class OrderListComponent implements OnInit {
   }
 
   showOrderSummary(e) {
-    console.log('showOrderSummary', e);
+    // console.log('showOrderSummary', e);
 
     this.selectedOrder = e;
     this.summaryVisible = true;

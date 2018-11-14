@@ -65,11 +65,11 @@ export class AdminComponent implements OnInit {
 
   onRowClick(e) {
     if (e.data) {
-      console.log('Selected User: ', e.data);
+      // console.log('Selected User: ', e.data);
       this.editUser = e.data;
       const pwd = this.editUser.password;
       this.editUser.password = atob(pwd);
-      console.log('editUser: ', this.editUser);
+      // console.log('editUser: ', this.editUser);
     }
   }
 
@@ -130,7 +130,7 @@ export class AdminComponent implements OnInit {
     if (this.editUser.user_id > 0) {
       this.userService.updateUser(this.userProfile.login_id, saveUsr).subscribe(res => {
         this.userService.deleteUserGroup(this.userProfile.login_id, this.editUser.user_id).subscribe(res2 => {
-          console.log('return from updateUser', res);
+          // console.log('return from updateUser', res);
           this.editUser.user_group.forEach(element => {
             const newUserGroup: UserGroupDTO = {
               user_id: this.editUser.user_id,
@@ -163,11 +163,11 @@ export class AdminComponent implements OnInit {
   }
 
   deleteUserRole(user_id, role_id) {
-    console.log('deleteUserRole', role_id);
-    console.log('deleteUserRole', this.editUser.user_group);
+    // console.log('deleteUserRole', role_id);
+    // console.log('deleteUserRole', this.editUser.user_group);
     const index = this.editUser.user_group.findIndex(x => x.hotjas_group_id === role_id);
 
-    console.log('deleteUserRole:index', index);
+    // console.log('deleteUserRole:index', index);
     this.editUser.user_group.splice(index);
   }
 }

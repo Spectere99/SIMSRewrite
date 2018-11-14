@@ -3,7 +3,7 @@
     <h6>Filter by using the corresponding column. (Expand each row to view associated image files).</h6>
     <hr>
     <div class="col-md-2">
-      <input *ngIf="enableSave" type="button" class="btn btn-primary btn-sm" value="New Order" (click)="createNewOrder(customerId);">
+      <input *ngIf="!readOnly" type="button" class="btn btn-primary btn-sm" value="New Order" (click)="createNewOrder(customerId);">
     </div>
     <div class="row">
       <div class="col-lg-12">
@@ -64,11 +64,14 @@
                 <strong>Customer:</strong>{{customer?.customer_name}}
               </div>
               <!-- <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showValues();">Show Values</button> -->
-              <div class="col-md-1">
+              <div *ngIf="!readOnly" class="col-md-1">
                 <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="reOrder(customerId)">ReOrder</button>
               </div>
               <div class="col-md-2">
                 <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showOrderSummary(selectedOrder)">Order Summary</button>
+              </div>
+              <div class="col-md-2">
+                <button class="form-control btn-primary" type="button" style="font-size:10px;" (click)="showValues()">Show Values</button>
               </div>
             </div>
             <div *ngIf="loadingOrder">
@@ -111,7 +114,7 @@
                 <input type="checkbox" id="chkLeaveWindowOpen" name="chkLeaveWindowOpen" [checked]="leaveWindowOpen" (change)="leaveWindowOpen=!leaveWindowOpen">
                 <label for="chkLeaveWindowOpen" style="font-size: 10px;">Leave Open</label>
               </div> -->
-              <div class="col-md-2 float-right">
+              <div *ngIf="!readOnly" class="col-md-2 float-right">
                 <input type="button" style="font-size:10px;" class="form-control btn-primary" value="Save" (click)="applyChanges();">
               </div>
               <div class="col-md-2 float-right">

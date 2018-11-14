@@ -182,14 +182,14 @@ export class OrderSummaryComponent implements OnInit {
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
     this.allDataFetched = false;
-    console.log('Chg-Current Order', this.currentOrder);
-    console.log('Chg-The Order', this.orderSum);
+    // console.log('Chg-Current Order', this.currentOrder);
+    // console.log('Chg-The Order', this.orderSum);
     if (this.currentOrder.order_id !== 0) {
       this.orderService.loadOrderData('', this.currentOrder.order_id).subscribe(res => {
-        this.orderSum = res;
+        // this.orderSum = res;
         this.order_detail = res.order_detail;
-        console.log('pulled order', this.orderSum);
-        console.log('order_detail', this.orderSum.order_detail);
+        // console.log('pulled order', this.orderSum);
+        // console.log('order_detail', this.orderSum.order_detail);
         this.allDataFetched = true;
       });
       this.orderService.loadArtPlacementData('', this.currentOrder.order_id).subscribe(res => {
@@ -208,12 +208,13 @@ export class OrderSummaryComponent implements OnInit {
         this.orderArtFile = res.order_art_file;
       });
       this.orderService.loadOrderNotesData('', this.currentOrder.order_id).subscribe(res => {
-        console.log('Retreiving Order Notes', this.orderNotes);
+        // console.log('Retreiving Order Notes', this.orderNotes);
         this.orderNotes = res.order_notes;
       });
     } else {
       /// this.currentOrder = new Order();
-      this.orderSum.order_detail = new Array<OrderDetail>();
+      // this.orderSum.order_detail = new Array<OrderDetail>();
+      this.orderDetail = new Array<OrderDetail>();
       this.orderArtPlacement = new Array<OrderArtPlacement>();
       this.orderFees = new Array<OrderFee>();
       this.orderPayments = new Array<OrderPayment>();

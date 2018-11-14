@@ -40,10 +40,14 @@ export class CustomerItemComponent implements OnInit {
   gridHeight;
   popupVisible = false;
   leaveWindowOpen = true;
+  readOnly = false;
 
   constructor(globalDataProvider: GlobalDataProvider, customerSvc: CustomerService,
     public authService: AuthenticationService, private globals: Globals) {
     this.userProfile = JSON.parse(authService.getUserToken());
+    // console.log('customer_item.component:constructor - userProfile', this.userProfile);
+    this.readOnly = this.userProfile.profile.role.filter(item => item === 'Readonly').length > 0;
+    // console.log('customer-item.component:constructor - readOnly', this.readOnly);
     this.customerService = customerSvc;
     this.userDataSource = globalDataProvider.getUsers();
     this.lookupDataSource = globalDataProvider.getLookups();
@@ -65,23 +69,23 @@ export class CustomerItemComponent implements OnInit {
   applyChanges() {
     this.customerInfoCmpt.batchSave(this.customer.customer_id).subscribe(res => {
       // console.log('contact-list calling contactsComponent batchSave', res);
-      const cnt = this.contactInfoCmpt.batchSave(res);
-      const adr = this.contactAddressCmpt.batchSave(res);
-        console.log('contactInfo batch Saved Result', cnt);
-        console.log('contactAddress batch Saved Result', adr);
-          setTimeout(() => {
+      this.contactInfoCmpt.batchSave(res);
+      this.contactAddressCmpt.batchSave(res);
+        // console.log('contactInfo batch Saved Result', cnt);
+        // console.log('contactAddress batch Saved Result', adr);
+      this.customerService.getCustomerData('', res).subscribe(cust => {
+      // console.log('contact-list applyChanges - selectedCustomer', this.customer);
+      // console.log('contact-list applyChanges - Customer', cust);
+        this.customer = cust;
+        this.onCustomerSaved.emit(this.leaveWindowOpen);
+/*           setTimeout(() => {
             // this.gridCustomers.instance.refresh();
-            this.customerService.getCustomerData('', res).subscribe(cust => {
-              console.log('contact-list applyChanges - selectedCustomer', this.customer);
-              console.log('contact-list applyChanges - Customer', cust);
-            this.customer = cust;
-            });
-          }, 1000);
-          console.log('Emitting onCustomerSaved', this.customer);
-          this.onCustomerSaved.emit(this.leaveWindowOpen);
-          // this.orderTabDisabled = false;
-          // this.popupVisible = this.leaveWindowOpen;
-        });
+            }); */
+        });  
+      });
+      // console.log('Emitting onCustomerSaved', this.customer);
+      // this.orderTabDisabled = false;
+      // this.popupVisible = this.leaveWindowOpen;
   }
   cancelChanges() {
     this.onCancel.emit();

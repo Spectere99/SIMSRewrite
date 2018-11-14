@@ -176,14 +176,14 @@ export class OrderInvoiceComponent implements OnInit {
     const doc = new jsPDF();
     const lineLocation = 15;
     const lineOffset = 5;
-    console.log('Master Order', this.masterOrder);
+    // console.log('Master Order', this.masterOrder);
     doc.addImage(logoData, 'JPEG', 15, 15, 60, 50);
 
     this.buildInvoiceBoxes(doc);
     this.buildHeader(doc, lineLocation, lineOffset);
     this.buildLineItemHeader(doc, 95, 5);
 
-    console.log('Line Items', this.order.order_detail);
+    // console.log('Line Items', this.order.order_detail);
     let detailLineLocation = 105;
     if (this.order.order_detail) {
       this.order.order_detail.forEach(lineItem => {
@@ -193,7 +193,7 @@ export class OrderInvoiceComponent implements OnInit {
     }
 
     this.buildFeeItemHeader(doc, detailLineLocation, 8);
-    console.log('Fee Item', this.orderFees);
+    // console.log('Fee Item', this.orderFees);
     let feeLineLocation = detailLineLocation + 14;
     if (this.orderFees) {
       this.orderFees.forEach(feeItem => {
@@ -228,7 +228,7 @@ export class OrderInvoiceComponent implements OnInit {
         paymentLineLocation = paymentLineLocation + 5;
       });
     }
-    console.log('PaymentLineLocation', paymentLineLocation);
+    // console.log('PaymentLineLocation', paymentLineLocation);
     this.buildTotalSummaryHeader(doc, 250);
     this.buildTotalSummary(doc, 250);
 
@@ -333,7 +333,7 @@ export class OrderInvoiceComponent implements OnInit {
     let cityLine = this.masterOrder.BILL_CITY == null ? '' : this.masterOrder.BILL_CITY;
     cityLine = cityLine.concat(' ', this.masterOrder.BILL_STATE == null ? '' : this.masterOrder.BILL_STATE);
     cityLine = cityLine.concat(' ', this.masterOrder.BILL_ZIP == null ? '' : this.masterOrder.BILL_ZIP);
-    console.log('cityLine', cityLine);
+    // console.log('cityLine', cityLine);
     doc.text(136, lineLocation, cityLine);
     lineLocation = lineLocation + (lineOffset);
     // Ship to information
@@ -351,7 +351,7 @@ export class OrderInvoiceComponent implements OnInit {
     let cityLine2 = this.masterOrder.SHIP_CITY == null ? '' : this.masterOrder.SHIP_CITY;
     cityLine2 = cityLine2.concat(' ', this.masterOrder.SHIP_STATE == null ? '' : this.masterOrder.SHIP_STATE);
     cityLine2 = cityLine2.concat(' ', this.masterOrder.SHIP_ZIP == null ? '' : this.masterOrder.SHIP_ZIP);
-    console.log('cityLine2', cityLine2);
+    // console.log('cityLine2', cityLine2);
     doc.text(136, lineLocation, cityLine2);
     lineLocation = lineLocation + (lineOffset * 2);
 
@@ -587,7 +587,7 @@ export class OrderInvoiceComponent implements OnInit {
   private buildTotalSummary(doc, lineLocation: number) {
     doc.setFontSize(10);
     doc.setFontType('normal');
-    console.log('buildTotalSummary', this.masterOrder);
+    // console.log('buildTotalSummary', this.masterOrder);
     doc.text(195, lineLocation, (this.masterOrder.subtotal === null ? '-' :
       this.cp.transform(this.masterOrder.subtotal.toString(), 'USD', 'symbol')), 'right');
     doc.text(195, lineLocation + 5, (this.masterOrder.tax_rate === null ? '-' :
@@ -689,9 +689,9 @@ export class OrderInvoiceComponent implements OnInit {
 
   getUserName(userId: number): string {
     let val = '';
-    console.log('getUserName', userId);
+    // console.log('getUserName', userId);
     if (this.userDataSource) {
-      console.log('userDataSource', this.userDataSource);
+      // console.log('userDataSource', this.userDataSource);
       const foundVal = this.userDataSource.find(p => p.user_id === userId);
 
       if (foundVal) {
@@ -702,7 +702,7 @@ export class OrderInvoiceComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('order-invoice:ngOnInit: Master Order', this.masterOrder);
+    // console.log('order-invoice:ngOnInit: Master Order', this.masterOrder);
     if (this.masterOrder) {
       this.order = this.masterOrder;
       this.orderArtPlacement = this.masterOrder.order_art_placements;
@@ -722,7 +722,7 @@ export class OrderInvoiceComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    console.log('order-invoice:ngOnChanges: Master Order', this.masterOrder);
+    // console.log('order-invoice:ngOnChanges: Master Order', this.masterOrder);
     if (this.masterOrder) {
       this.order = this.masterOrder;
       this.orderArtPlacement = this.masterOrder.order_art_placements;

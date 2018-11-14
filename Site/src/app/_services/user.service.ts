@@ -98,7 +98,7 @@ export class UserService {
     addUser(userId, user: UserDTO): Observable<any> {
         // Build customer odata Options
         // this.options = '(' + customerPersonId + ')';
-        console.log('User in addUser', user);
+        // console.log('User in addUser', user);
         return this.http.post(this.baseURL + '/Users', user, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -108,7 +108,7 @@ export class UserService {
     updateUser(userId, user: UserDTO): Observable<any> {
         // Build customer odata Options
         this.options = '(' + user.user_id + ')';
-        console.log('User in updateUser', user);
+        // console.log('User in updateUser', user);
         return this.http.put(this.baseURL + '/Users' + this.options, user, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -119,7 +119,7 @@ export class UserService {
     addUserGroup(userId, userGroup: UserGroupDTO): Observable<any> {
         // Build customer odata Options
         // this.options = '(' + customerPersonId + ')';
-        console.log('User in addUserGroup', userGroup);
+        // console.log('User in addUserGroup', userGroup);
         return this.http.post(this.baseURL + '/UserGroup', userGroup, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());
@@ -129,7 +129,7 @@ export class UserService {
     deleteUserGroup(userId, usrId: number): Observable<any> {
         // Build customer odata Options
         this.options = '(' + usrId + ')';
-        console.log('UserId in deleteUserGroup', usrId);
+        // console.log('UserId in deleteUserGroup', usrId);
         return this.http.delete(this.baseURL + '/UserGroup' + this.options, {headers: this.getHeaders(userId) })
         .map((res: Response) => {
             // console.log(res.json());

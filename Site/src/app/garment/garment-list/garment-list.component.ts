@@ -103,15 +103,15 @@ export class GarmentListComponent implements OnInit {
               public orderService: OrderService, public customerService: CustomerService, public authService: AuthenticationService,
               public windowRef: WindowRef) {
     this.window = windowRef.nativeWindow;
-    console.log('garment-list.component:constructor');
+    // console.log('garment-list.component:constructor');
     this.userProfile = JSON.parse(authService.getUserToken());
     this.lookupDataSource = globalDataProvider.getLookups();
     this.priceListDataSource = globalDataProvider.getPriceList();
-    console.log('garment-list.component:constructor - lookupDataSource', this.lookupDataSource);
+    // console.log('garment-list.component:constructor - lookupDataSource', this.lookupDataSource);
     this.vendorTypes = this.createLookupTypeSource('vend');
     this.itemTypes = this.createItemTypeSource('orddi');
     this.userDataSource = globalDataProvider.getUsers();
-    console.log('User Profile', this.userProfile);
+    // console.log('User Profile', this.userProfile);
     this.enableSave = this.userProfile.profile.role !== 'Readonly';
     this.customGarmentOrderDate = this.getToday();
     this.currentFilter = this.defaultLoadFilter;
@@ -140,25 +140,25 @@ export class GarmentListComponent implements OnInit {
   }
 
   onValueChanged(event) {
-    console.log(event);
-    console.log('Custom Hour value', this.customGarmentOrderDate);
+    // console.log(event);
+    // console.log('Custom Hour value', this.customGarmentOrderDate);
     this.currentFilterName = event.value;
     switch (event.value) {
       case 'Default': {
         this.currentFilter = this.defaultLoadFilter;
-        console.log('Default Filter', this.currentFilter);
+        // console.log('Default Filter', this.currentFilter);
         // this.gridOrders.instance.refresh();
         break;
       }
       case 'Today': {
         this.currentFilter = this.todayOrderFilter;
-        console.log('Todays Filter', this.currentFilter);
+        // console.log('Todays Filter', this.currentFilter);
         // this.gridOrders.instance.refresh();
         break;
       }
       case 'All': {
         this.currentFilter = this.allOrderFilter;
-        console.log('Custom Filter', this.currentFilter);
+        // console.log('Custom Filter', this.currentFilter);
         // this.gridOrders.instance.refresh();
         break;
       }
@@ -186,7 +186,7 @@ export class GarmentListComponent implements OnInit {
           version: 3,
           jsonp: false,
           beforeSend: function (url, async, method, timeout, params, payload, headers) {
-            console.log('beforeSend', url, async, method, timeout, params, payload, headers);
+            // console.log('beforeSend', url, async, method, timeout, params, payload, headers);
           }
       },
       expand: ['order'],
@@ -225,7 +225,7 @@ export class GarmentListComponent implements OnInit {
   }
 
   updatingGarmentOrderData(key, values) {
-    console.log('updating', key, values);
+    // console.log('updating', key, values);
   }
 
   setCheckedInInd(data) {
@@ -241,7 +241,7 @@ export class GarmentListComponent implements OnInit {
   showEditPopup(e) {
     // e.cancel = true;
     // console.log('E', e);
-    console.log('*** garment-list-comopnent:showEditPopup - START');
+    // console.log('*** garment-list-comopnent:showEditPopup - START');
     this.loadingOrder = true;
     this.loading = true;
     this.selectedOrder = e.data;
@@ -258,8 +258,8 @@ export class GarmentListComponent implements OnInit {
       this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 8
       this.customerService.getCustomerData('', e.data.order.customer_id) // 9
     ).subscribe(results => {
-      console.log('selectedOrder', this.selectedOrder);
-      console.log('forkJoin Return', results);
+      // console.log('selectedOrder', this.selectedOrder);
+      // console.log('forkJoin Return', results);
       this.selectedOrderLines = results[0].order_detail;
       this.selectedOrderMaster = results[0];
       this.selectedOrderMaster.order_detail = results[0].order_detail;
@@ -281,16 +281,16 @@ export class GarmentListComponent implements OnInit {
       this.customer = results[9];
       this.selectedOrderMaster.order_correspondence = results[8].correspondences;
       this.selectedOrderMaster.customer = this.customer;
-      console.log('Order Master Return', this.selectedOrderMaster);
+      // console.log('Order Master Return', this.selectedOrderMaster);
       this.loadingOrder = false;
       this.loading = false;
       this.popupVisible = true;
     });
-    console.log('*** garment-list-comopnent:showEditPopup - LEAVING');
+    // console.log('*** garment-list-comopnent:showEditPopup - LEAVING');
   }
 
   ngOnInit() {
-    console.log('garment-list.component:ngOnInit');
+    // console.log('garment-list.component:ngOnInit');
   }
 
 }

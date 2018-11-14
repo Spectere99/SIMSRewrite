@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   private performCheck(next: ActivatedRouteSnapshot,
                        state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
 
-    console.log('performCheck', this._authService.isAuthenticated());
+    // ('performCheck', this._authService.isAuthenticated());
     if (this._authService.isAuthenticated()) {
         return true;
       }

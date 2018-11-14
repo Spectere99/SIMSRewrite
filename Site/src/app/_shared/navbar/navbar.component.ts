@@ -14,7 +14,12 @@ export class NavbarComponent implements OnInit {
   environmentName = environmentName;
   version = version;
   constructor(public _authService: AuthenticationService, public _router: Router) {
-    console.log('User Token', _authService.getUserToken);
+    const userToken = JSON.parse(_authService.getUserToken());
+    if (userToken) {
+      this.isAdmin = userToken.profile.role.indexOf('Security Administrator') !== -1;
+      // console.log('User Token', userToken);
+    }
+    
   }
 
   ngOnInit() {
@@ -22,11 +27,11 @@ export class NavbarComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    console.log('NavBar On Changes');
+    // console.log('NavBar On Changes');
   }
 
   logout(): void {
-    console.log('logging out');
+    // console.log('logging out');
     this._authService.logout();
     this._router.navigate(['/login']);
   }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Newtonsoft.Json;
+using SIMSEntities;
 
 namespace SIMSDataService.Models
 {
@@ -22,7 +23,7 @@ namespace SIMSDataService.Models
 
         public string pwd { get; set; }
         [JsonProperty("role")]
-        public string Role { get; set; }
+        public List<string> Role { get; set; }
 
 
     }
