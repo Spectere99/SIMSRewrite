@@ -491,7 +491,7 @@ export class OrderInvoiceComponent implements OnInit {
     doc.rect(5, lineLocation - 4, 175, 5);
     doc.text(185, lineLocation, feeItem.fee_price_ext === null ? '' : feeItem.fee_price_ext.toString());
     doc.rect(5, lineLocation - 4, 195, 5);
-    doc.text(201, lineLocation, feeItem.taxable_ind);
+    doc.text(201, lineLocation, feeItem.taxable_ind === null ? 'N' : feeItem.taxable_ind.toString());
 
     doc.rect(5, lineLocation - 4, 200, 5);
     // doc.rect(5, lineLocation + 1, 200, 5);

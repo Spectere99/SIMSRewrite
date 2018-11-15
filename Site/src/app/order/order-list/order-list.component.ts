@@ -8,7 +8,8 @@ import { UserService, User } from '../../_services/user.service';
 import { CorrespondenceService } from '../../_services/correspondence.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { CustomerService, Customer } from '../../_services/customer.service';
-import { Order, OrderService, OrderDetail, OrderArtFile, OrderArtPlacement, OrderFee, OrderMaster } from '../../_services/order.service';
+import { Order, OrderService, OrderDetail, OrderArtFile,
+        OrderArtPlacement, OrderFee, OrderMaster, OrderStatusHistory } from '../../_services/order.service';
 import { OrderInfoComponent } from '../order-info/order-info.component';
 import { OrderDetailComponent } from '../order-detail/order-detail.component';
 import { OrderArtComponent } from '../order-art/order-art.component';
@@ -233,6 +234,7 @@ export class OrderListComponent implements OnInit {
 
   reOrder(customer_id) {
     // console.log('Reorder Function', this.selectedOrder);
+    this.loading = true;
     const reOrderObj = this.cloneOrder(this.selectedOrder);
 
     reOrderObj.taken_user_id = this.userProfile.profile.user_id;
@@ -272,6 +274,8 @@ export class OrderListComponent implements OnInit {
         // console.log('Cloning Order Task', item);
         this.orderService.addOrderTask(this.userProfile.profile.login_id, item).subscribe();
       });
+
+      this.createCloneHistoryStatus(reOrderObj);
 
       setTimeout(() => {
         this.gridOrders.instance.refresh();
@@ -373,7 +377,7 @@ export class OrderListComponent implements OnInit {
     if (mm < 10) {
       mm = '0' + mm;
     }
-    return mm + dd + yyyy;
+    return mm.toString() + dd.toString() + yyyy.toString();
   }
 
   refreshGrid() {
@@ -414,12 +418,12 @@ export class OrderListComponent implements OnInit {
     newOrder.SHIP_ZIP = origOrder.SHIP_ZIP;
     newOrder.order_type = this.setReOrderType(origOrder.order_type);
     newOrder.order_number = this.formatOrderNumber(today);
-    newOrder.subtotal = origOrder.subtotal.toString();
-    newOrder.tax_amount = origOrder.tax_amount.toString();
-    newOrder.tax_rate = origOrder.tax_rate.toString();
-    newOrder.shipping = origOrder.shipping.toString();
-    newOrder.total = origOrder.total.toString();
-    newOrder.balance_due = origOrder.total.toString();
+    newOrder.subtotal = (origOrder.subtotal === undefined || origOrder.subtotal === null) ? '' : origOrder.subtotal.toString();
+    newOrder.tax_amount = (origOrder.tax_amount === undefined || origOrder.tax_amount === null) ? '' : origOrder.tax_amount.toString();
+    newOrder.tax_rate = (origOrder.tax_rate === undefined || origOrder.tax_rate === null) ? '' : origOrder.tax_rate.toString();
+    newOrder.shipping = (origOrder.shipping === undefined || origOrder.shipping === null) ? '' : origOrder.shipping.toString();
+    newOrder.total = (origOrder.total === undefined || origOrder.total === null) ? '' : origOrder.total.toString();
+    newOrder.balance_due = (origOrder.balance_due === undefined || origOrder.balance_due === null) ? '' : origOrder.total.toString();
 
     return newOrder;
   }
@@ -528,6 +532,22 @@ export class OrderListComponent implements OnInit {
       newArtPlacements.push(newArtPlacement);
     });
     return newArtPlacements;
+  }
+
+  createCloneHistoryStatus(orderObj: Order): any {
+    console.log('Saving Order Status History orderId=', orderObj.order_id);
+    console.log('user', this.userProfile);
+    const orderStatusHistory = new OrderStatusHistory();
+    orderStatusHistory.order_status_history_id = 0;
+    orderStatusHistory.order_id = orderObj.order_id;
+    orderStatusHistory.order_status = orderObj.order_status;
+    const today = new Date();
+    // today.setHours(0, 0, 0, 0);
+    orderStatusHistory.status_date = today.toISOString();
+    orderStatusHistory.set_by_user_id = this.userProfile.profile.user_id;
+
+    console.log('order-info:saveOrderStatusHistory - OrderStatusHistory', orderStatusHistory);
+    return this.orderService.addOrderStatus(this.userProfile.login_id, orderStatusHistory).subscribe();
   }
 
   setReOrderType(orderType: string): string {

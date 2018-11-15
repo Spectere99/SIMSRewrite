@@ -210,6 +210,7 @@ export class CustomerOrderListComponent implements OnInit {
 
   reOrder(customer_id) {
     console.log('Reorder Function', this.selectedOrderMaster);
+    this.loading = true;
     const reOrderObj = this.cloneOrder(this.selectedOrderMaster);
 
     reOrderObj.taken_user_id = this.userProfile.profile.user_id;
