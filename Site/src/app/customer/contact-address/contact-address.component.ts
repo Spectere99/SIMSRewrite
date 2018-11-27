@@ -131,7 +131,7 @@ export class ContactAddressComponent implements OnInit {
     this.expansionPanel.open();
   }
 
-  batchSave(customer_id: number) {
+  batchSave(customer_id: number) : Observable<any> {
     if (this.customer.customer_address) {
       for (let x = 0; x < this.customer.customer_address.length; x++) {
         this.customer.customer_address[x].customer_id = customer_id;
@@ -139,7 +139,9 @@ export class ContactAddressComponent implements OnInit {
         this.saveAddress(this.customer.customer_address[x]).subscribe();
       }
     }
-    return this.customer.customer_address;
+    return Observable.create(observer => {
+      this.customer.customer_address;
+    });
   }
   saveAddress(customerAddress: CustomerAddress) {
     // console.log('Customer Address on Save', customerAddress);
@@ -178,7 +180,7 @@ export class ContactAddressComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    console.log('contact-address:ngOnChange', this.customer);
+    // console.log('contact-address:ngOnChange', this.customer);
   }
 
 }

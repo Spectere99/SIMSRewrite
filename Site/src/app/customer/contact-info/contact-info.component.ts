@@ -8,6 +8,7 @@ import {
   MatSnackBar
 } from '@angular/material';
 import { ConfirmDialogComponent } from '../../_shared/confirm/confirm.component';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-contact-info',
@@ -82,7 +83,7 @@ export class ContactInfoComponent implements OnInit {
     });
   }
 
-  batchSave(customer_id: number) {
+  batchSave(customer_id: number) : Observable<any> {
     // Loop through the Customer Contacts and Save each.
     // console.log('customer-contacts batchSave', customer_id);
     if (this.customer.customer_person) {
@@ -94,7 +95,9 @@ export class ContactInfoComponent implements OnInit {
       }
     }
     console.log('contact-info:batchSave - customer', this.customer);
-    return this.customer.customer_person;
+    return Observable.create(observer => {
+      this.customer.customer_person;
+    });
   }
 
   addContact(customerId: number, event: Event) {

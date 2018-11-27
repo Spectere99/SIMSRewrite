@@ -55,6 +55,11 @@ export class OrderSummaryComponent implements OnInit {
     this.vendorTypes = this.createLookupTypeSource('vend');
     this.artLocations = this.createLookupTypeSource('aloc');
 
+    priceListService.loadPricelistData('').subscribe(res => {
+      this.priceListDataSource = res.value;
+      this.itemTypes = this.createItemTypeSource('orddi');
+      this.setupItems = this.createItemTypeSource('setup');
+    });
     /* lookupService.loadLookupData('').subscribe(res => {
       this.lookupDataSource = res.value;
       console.log('Lookup Data Source', this.lookupDataSource);
@@ -64,11 +69,7 @@ export class OrderSummaryComponent implements OnInit {
       this.artLocations = this.createLookupTypeSource('aloc');
 
     });
-    priceListService.loadPricelistData('').subscribe(res => {
-      this.priceListDataSource = res.value;
-      this.itemTypes = this.createItemTypeSource('orddi');
-      this.setupItems = this.createItemTypeSource('setup');
-    }); */
+     */
   }
 
   createLookupTypeSource(className: string): any {
@@ -82,8 +83,10 @@ export class OrderSummaryComponent implements OnInit {
   getItemDescription(priceList_id: number): string {
     let val = '';
     if (this.itemTypes) {
+      // console.log('itemTypes', this.itemTypes);
       const foundVal = this.itemTypes.find(p => p.pricelist_id === priceList_id);
       if (foundVal) {
+        // console.log('itemType', foundVal.pricelist_description);
         val = foundVal.pricelist_description;
       }
     }
@@ -109,10 +112,12 @@ export class OrderSummaryComponent implements OnInit {
     let val = '';
     if (this.lookupDataSource) {
       const foundVal = this.lookupDataSource.find(p => p.char_mod === lookup_code);
+      // console.log('foundVal', foundVal);
       if (foundVal) {
         val = foundVal.description;
       }
     }
+    // console.log(val);
     return val;
   }
 

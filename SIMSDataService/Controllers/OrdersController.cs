@@ -117,7 +117,7 @@ namespace SIMSDataService.Controllers
             DateTime startDate = DateTime.Now.Date;
             if (order.order_date != null)
             {
-                startDate = order.order_date.Value.Date;
+                startDate = order.order_date.Value;
             }
 
             order.order_date = startDate;

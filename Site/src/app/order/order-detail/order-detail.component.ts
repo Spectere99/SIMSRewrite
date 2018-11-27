@@ -8,6 +8,7 @@ import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { WindowRef } from '../../_services/window-ref.service';
+import { ArraySortPipe } from '../../_shared/pipes/orderBy.pipe';
 import { OrderTaskListComponent } from '../order-task-list/order-task-list.component';
 
 
@@ -147,10 +148,12 @@ export class OrderDetailComponent implements OnInit {
 
   addLineItem(e) {
     const lineItem = new OrderDetail();
-    lineItem.order_detail_id = (this.order.order_detail.length + 1) * -1;
-    lineItem.order_id = this.order.order_id;
+    
+    console.log('add Line Item - line_item_number', lineItem.item_line_number);
+    lineItem.order_detail_id = (this.masterOrder.order_detail.length + 1) * -1;
+    lineItem.order_id = this.masterOrder.order_id;
     lineItem.item_type = null;
-    lineItem.item_line_number = null;
+    lineItem.item_line_number = (this.masterOrder.order_detail.length + 1);
     lineItem.item_quantity = null;
     lineItem.pricelist_id = null;
     lineItem.style_code = null;
@@ -189,6 +192,8 @@ export class OrderDetailComponent implements OnInit {
     }
     this.order.order_detail.unshift(lineItem);
     this.masterOrder.order_detail.unshift(lineItem);
+    console.log('addItem - order_detail', this.masterOrder.order_detail);
+    console.log('addItem - order_detail', this.order.order_detail);
   }
 
   copyOrderLine(e, idx) {
@@ -196,6 +201,7 @@ export class OrderDetailComponent implements OnInit {
     Object.assign(orderLine, this.masterOrder.order_detail[idx]);  // TODO:  Change to use orderLineItems
     // orderLine = this.order.order_detail[idx];
     orderLine.order_detail_id = (this.masterOrder.order_detail.length + 1) * -1;
+    orderLine.item_line_number = (this.masterOrder.order_detail.length + 1);
     orderLine.garment_order_date = undefined;
     orderLine.garment_recvd_date = undefined;
     orderLine.shipping_po = undefined;

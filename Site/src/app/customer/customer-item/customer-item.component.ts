@@ -69,14 +69,15 @@ export class CustomerItemComponent implements OnInit {
   applyChanges() {
     this.customerInfoCmpt.batchSave(this.customer.customer_id).subscribe(res => {
       // console.log('contact-list calling contactsComponent batchSave', res);
-      this.contactInfoCmpt.batchSave(res);
-      this.contactAddressCmpt.batchSave(res);
+      this.contactInfoCmpt.batchSave(res).subscribe();
+      this.contactAddressCmpt.batchSave(res).subscribe();
         // console.log('contactInfo batch Saved Result', cnt);
         // console.log('contactAddress batch Saved Result', adr);
       this.customerService.getCustomerData('', res).subscribe(cust => {
-      // console.log('contact-list applyChanges - selectedCustomer', this.customer);
+      console.log('contact-list applyChanges - selectedCustomer', this.customer);
       // console.log('contact-list applyChanges - Customer', cust);
         this.customer = cust;
+        this.customer.customer_person = this.customer.customer_person.filter(item => item.status_code === 'act');
         this.onCustomerSaved.emit(this.leaveWindowOpen);
 /*           setTimeout(() => {
             // this.gridCustomers.instance.refresh();

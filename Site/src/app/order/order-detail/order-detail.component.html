@@ -15,7 +15,7 @@
       <div *ngIf="noOrderItems()">
         <div class="alert alert-warning">No line items.</div>
       </div>
-      <div *ngFor="let orderDetail of masterOrder.order_detail; index as i">
+      <div *ngFor="let orderDetail of masterOrder.order_detail | sort: 'item_line_number'; index as i;">
         <mat-card>
           <table>
             <tr>
@@ -39,6 +39,7 @@
             </tr>
             <tr>
               <td>
+                {{orderDetail.item_line_number}}
                 <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;" (click)="deleteLineItem(orderDetail);">
                   <mat-icon style="padding-bottom: 35px; padding-right: 26px; font-size:15px;">delete</mat-icon>
                 </button>

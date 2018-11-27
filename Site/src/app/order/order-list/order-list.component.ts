@@ -23,6 +23,7 @@ import { Observable } from 'rxjs/Observable';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 /* export interface ILookup {
   id: number;
@@ -385,13 +386,16 @@ export class OrderListComponent implements OnInit {
   }
 
   cloneOrder(origOrder: Order): Order {
+    // let newOrder = new Object();
     const newOrder = new Order();
     newOrder.previous_order = origOrder.order_number;
     newOrder.reorder_ind = 'Y';
     newOrder.order_id = 0;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    newOrder.order_date = today.toISOString();
+    //newOrder.order_date = today.toDateString();
+    newOrder.order_date = this.toISOLocal(today);
+    console.log('!!!cloneOrder: newOrder.order_date', newOrder.order_date);
     newOrder.order_number = this.formatOrderNumber(today);
     newOrder.order_status = 'inq';
     newOrder.customer_id = origOrder.customer_id;
@@ -748,6 +752,17 @@ export class OrderListComponent implements OnInit {
       this.customerId = this.customer.customer_id;
     }
     this.createOrderDataSource();
+  }
+
+  toISOLocal(d) {
+    var z = n => (n<10? '0':'')+n;
+    var off = d.getTimezoneOffset();
+    var sign = off < 0? '+' : '-';
+    off = Math.abs(off);
+  
+    return d.getFullYear() + '-' + z(d.getMonth()+1) + '-' +
+           z(d.getDate()) + 'T' + z(d.getHours()) + ':'  + z(d.getMinutes()) + 
+           ':' + z(d.getSeconds()); // + sign + z(off/60|0) + z(off%60); 
   }
 
 }

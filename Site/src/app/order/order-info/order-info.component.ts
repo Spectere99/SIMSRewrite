@@ -96,11 +96,12 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     orderToSave.order_number = order.order_number;
     orderToSave.order_type =  order.order_type;
     orderToSave.purchase_order =  order.purchase_order;
-    const fixedOrderDate = new Date(order.order_date);
+    // const fixedOrderDate = new Date(order.order_date);
     // console.log('order-info:convertOrderInfo - fixedOrderDate', fixedOrderDate.toISOString());
-    fixedOrderDate.setHours(0, 0, 0, 0);
+    // fixedOrderDate.setHours(0, 0, 0, 0);
     // console.log('order-info:convertOrderInfo - fixedOrderDate-After', fixedOrderDate.toISOString());
-    orderToSave.order_date =  fixedOrderDate.toISOString();
+    // orderToSave.order_date =  fixedOrderDate.toISOString();
+    orderToSave.order_date = order.order_date;
     orderToSave.order_due_date =  new Date(order.order_due_date).toISOString();
     orderToSave.order_status =  order.order_status;
     orderToSave.taken_user_id =  order.taken_user_id;
@@ -148,7 +149,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   saveOrderInfo() {
-    // console.log('Order on Save', this.currentOrder);
+      console.log('Order on Save', this.currentOrder);
       const insOrder = this.convertOrderInfo(this.currentOrder);
       // console.log('Converted Order on Save', insOrder);
       if (this.currentOrder.order_id <= 0) {
@@ -254,6 +255,17 @@ export class OrderInfoComponent implements OnInit, OnChanges {
       // this.currentOrder = new Order();
     } */
     this.originalOrderStatus = this.currentOrder.order_status;
+  }
+
+  toISOLocal(d) {
+    var z = n => (n<10? '0':'')+n;
+    var off = d.getTimezoneOffset();
+    var sign = off < 0? '+' : '-';
+    off = Math.abs(off);
+  
+    return d.getFullYear() + '-' + z(d.getMonth()+1) + '-' +
+           z(d.getDate()) + 'T' + z(d.getHours()) + ':'  + z(d.getMinutes()) + 
+           ':' + z(d.getSeconds()); // + sign + z(off/60|0) + z(off%60); 
   }
 
 }
