@@ -128,7 +128,7 @@ export class CustomerListComponent implements OnInit {
     closePopup() {
       this.popupVisible = false;
     }
-    
+
     LoadCustomerListData() {
 
     }

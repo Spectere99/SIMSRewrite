@@ -178,7 +178,7 @@ export class CustomerOrderListComponent implements OnInit {
     today.setHours(0, 0, 0, 0);
     console.log('createNewOrder - before formatOrderNumber', today);
     this.selectedOrder.order_number = this.formatOrderNumber(today);
-    this.selectedOrder.order_date = today;
+    this.selectedOrder.order_date = this.toISOLocal(today);
     this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
 
     this.selectedOrderMaster = new OrderMaster();
