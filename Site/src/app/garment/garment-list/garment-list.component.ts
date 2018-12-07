@@ -82,11 +82,12 @@ export class GarmentListComponent implements OnInit {
                         'and',
                         ['vendor', '<>', 'gmtpr'],
                         'and',
-                        [
-                          ['garment_order_date', '=', null],
-                          'or',
-                          ['garment_recvd_date', '=', null],
-                        ]
+                        ['garment_order_date', '=', null]
+                        /*  [
+                          ['garment_order_date', '=', null]
+                            'or',
+                          ['garment_recvd_date', '=', null], 
+                        ]*/
                       ];
   todayOrderFilter = [
                   ['order/order_status', '=', 'ord'],

@@ -262,10 +262,10 @@ export class OrderInvoiceComponent implements OnInit {
   private buildInvoiceMessage(doc) {
     doc.setFontSize(8);
     doc.setFontType('bold');
-    doc.text(105, 285, 'Thank you for your order! We appreciate your business', 'center');
+    doc.text(105, 285, 'Thank you for your order! We appreciate your business.', 'center');
     doc.setFontSize(8);
     doc.setFontType('bolditalic');
-    doc.text(105, 288, 'A 50% deposit is required to initiate all orders. Balance is due upon shipment of order', 'center');
+    doc.text(105, 288, 'A 50% deposit is required to initiate all orders. Balance is due upon shipment of order.', 'center');
     doc.setFontSize(6);
     doc.setFontType('normal');
     let disclaimer = 'All artwork and custom designs are for the use only of the individual or organization paying for the designs.';
@@ -299,72 +299,74 @@ export class OrderInvoiceComponent implements OnInit {
     doc.setFontType('bold');
     lineLocation = 25;
     doc.text(106, lineLocation, 'Order Number');
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 30
     doc.text(106, lineLocation, 'Bill To');
-    lineLocation = lineLocation + (lineOffset * 4);
+    lineLocation = lineLocation + (lineOffset * 4); // 50
     doc.text(106, lineLocation, 'Ship To');
-    lineLocation = lineLocation + (lineOffset * 5);
+    lineLocation = lineLocation + (lineOffset * 5); // 75
     doc.text(106, lineLocation, 'Order Date');
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 80
     doc.text(106, lineLocation, 'Due Date');
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 85
     doc.text(106, lineLocation, 'PO #');
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 90
     doc.text(106, lineLocation, 'Sales Rep');
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 95
 
     // Header Data information
     doc.setFontSize(8);
     doc.setFontType('normal');
     lineLocation = 25;
     doc.text(136, lineLocation, this.masterOrder.order_number);
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 30
     // Bill To information
     doc.text(136, lineLocation, this.masterOrder.customer == null ? '' : this.masterOrder.customer.customer_name);
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 35
     if (this.masterOrder.BILL_ADDRESS_1 !== null && this.masterOrder.BILL_ADDRESS_1.length > 0) {
       doc.text(136, lineLocation, this.masterOrder.BILL_ADDRESS_1 == null ? '' : this.masterOrder.BILL_ADDRESS_1);
     }
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 40
     if (this.masterOrder.BILL_ADDRESS_2 !== null && this.masterOrder.BILL_ADDRESS_2.length > 0) {
       doc.text(136, lineLocation, this.masterOrder.BILL_ADDRESS_2 == null ? '' : this.masterOrder.BILL_ADDRESS_2);
     }
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 45
     let cityLine = this.masterOrder.BILL_CITY == null ? '' : this.masterOrder.BILL_CITY;
     cityLine = cityLine.concat(' ', this.masterOrder.BILL_STATE == null ? '' : this.masterOrder.BILL_STATE);
     cityLine = cityLine.concat(' ', this.masterOrder.BILL_ZIP == null ? '' : this.masterOrder.BILL_ZIP);
     // console.log('cityLine', cityLine);
     doc.text(136, lineLocation, cityLine);
-    lineLocation = lineLocation + (lineOffset);
+    lineLocation = lineLocation + (lineOffset); // 50
     // Ship to information
     doc.text(136, lineLocation, this.masterOrder.customer == null ? '' : this.masterOrder.customer.customer_name);
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 55
     const attnLine = 'Attn: ';
     doc.text(136, lineLocation, attnLine.concat(this.masterOrder.ship_attn == null ? '' : this.masterOrder.ship_attn));
-    lineLocation = lineLocation + lineOffset;
-    doc.text(136, lineLocation, this.masterOrder.SHIP_ADDRESS_1 == null ? '' : this.masterOrder.SHIP_ADDRESS_1);
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 60
+    if (this.masterOrder.SHIP_ADDRESS_1 !== null && this.masterOrder.SHIP_ADDRESS_1.length > 0) {
+      doc.text(136, lineLocation, this.masterOrder.SHIP_ADDRESS_1 == null ? '' : this.masterOrder.SHIP_ADDRESS_1);
+    }
+    lineLocation = lineLocation + lineOffset; // 65
     if (this.masterOrder.SHIP_ADDRESS_2 !== null) {
       doc.text(136, lineLocation, this.masterOrder.SHIP_ADDRESS_2 == null ? '' : this.masterOrder.SHIP_ADDRESS_2);
-      lineLocation = lineLocation + lineOffset;
     }
+    lineLocation = lineLocation + lineOffset; // 70
     let cityLine2 = this.masterOrder.SHIP_CITY == null ? '' : this.masterOrder.SHIP_CITY;
     cityLine2 = cityLine2.concat(' ', this.masterOrder.SHIP_STATE == null ? '' : this.masterOrder.SHIP_STATE);
     cityLine2 = cityLine2.concat(' ', this.masterOrder.SHIP_ZIP == null ? '' : this.masterOrder.SHIP_ZIP);
-    // console.log('cityLine2', cityLine2);
     doc.text(136, lineLocation, cityLine2);
-    lineLocation = lineLocation + (lineOffset * 2);
 
+    lineLocation = lineLocation + lineOffset; // 80
+    console.log('Order Date - lineLocation', lineLocation);
     doc.text(136, lineLocation, this.masterOrder.order_date == null ? ''
                               : new Date(this.masterOrder.order_date).toLocaleDateString());
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 85
     doc.text(136, lineLocation, this.masterOrder.order_due_date == null ? ''
                               : new Date(this.masterOrder.order_due_date).toLocaleDateString());
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 90
     doc.text(136, lineLocation, this.masterOrder.purchase_order == null ? '' : this.masterOrder.purchase_order);
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 95
     doc.text(136, lineLocation, this.masterOrder.taken_user_id == null ? '' : this.getUserName(this.masterOrder.taken_user_id));
-    lineLocation = lineLocation + lineOffset;
+    lineLocation = lineLocation + lineOffset; // 100
 
   }
 
