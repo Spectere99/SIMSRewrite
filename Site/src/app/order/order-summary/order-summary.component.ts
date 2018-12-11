@@ -95,10 +95,10 @@ export class OrderSummaryComponent implements OnInit {
 
   getUserName(userId: number): string {
     let val = '';
-    // console.log('getUserName', userId);
+    console.log('getUserName', userId);
     if (this.userDataSource) {
       // console.log('userDataSource', this.userDataSource);
-      const foundVal = this.userDataSource.find(p => p.user_id === userId);
+      const foundVal = this.userDataSource.find(p => p.user_id === +userId);
 
       if (foundVal) {
         val = foundVal.first_name + ' ' + foundVal.last_name;

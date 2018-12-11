@@ -86,7 +86,7 @@ export class GarmentListComponent implements OnInit {
                         /*  [
                           ['garment_order_date', '=', null]
                             'or',
-                          ['garment_recvd_date', '=', null], 
+                          ['garment_recvd_date', '=', null],
                         ]*/
                       ];
   todayOrderFilter = [
@@ -147,6 +147,7 @@ export class GarmentListComponent implements OnInit {
     switch (event.value) {
       case 'Default': {
         this.currentFilter = this.defaultLoadFilter;
+        this.gridOrders.instance.filter(this.defaultLoadFilter);
         // console.log('Default Filter', this.currentFilter);
         // this.gridOrders.instance.refresh();
         break;
@@ -221,7 +222,7 @@ export class GarmentListComponent implements OnInit {
       beforeSend: function(request) {
         request.timeout = environment.connectionTimeout;
       },
-      filter: this.currentFilter
+      // filter: this.currentFilter
    };
   }
 

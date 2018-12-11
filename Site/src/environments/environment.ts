@@ -4,8 +4,9 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 // export const baseUrl = 'http://spserver:8888';
 export const baseUrl = 'http://localhost:56543';
+// export const baseUrl = 'http://192.168.1.5:8888';
 export const environmentName = 'Test';
-export const version = '0.80';
+export const version = '0.81';
 export const connectionTimeout = 100000;
 export const environment = {
   production: false,

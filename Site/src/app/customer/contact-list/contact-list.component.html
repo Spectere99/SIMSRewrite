@@ -6,7 +6,7 @@
       (onContentReady)="contentReady($event)">
       <dxo-selection mode="single"></dxo-selection>
       <dxi-column dataField="customer_person_id" caption="Contact ID" [width]="100" [allowFiltering]="true" [visible]="false"></dxi-column>
-      <dxi-column dataField="customers.customer_name" caption="Customer Name" [width]="300" sortOrder="asc" [allowFiltering]="true"
+      <dxi-column dataField="customers.customer_name" caption="Customer Name"  sortOrder="asc" [width]="300" sortOrder="asc" [allowFiltering]="true"
         cellTemplate="customerCell"></dxi-column>
       <dxi-column dataField="person_type" caption="Person Type" [width]="140" [allowFiltering]="true">
         <dxo-lookup [dataSource]="personTypes" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
@@ -46,7 +46,7 @@
     <dx-popup class="popup" [showTitle]="true" title="Details" [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible"
       (onHiding)="popupHiding($event)">
       <div *dxTemplate="let data of 'content'">
-        <app-customer-item [customer]="selectedCustomer" (onCustomerSaved)="customerSaved($event);" (onCancel)="closePopup();"></app-customer-item>
+        <app-customer-item [(customer)]="selectedCustomer" (onCustomerSaved)="customerSaved($event);" (onCancel)="closePopup();"></app-customer-item>
         <!-- <mat-tab-group [dynamicHeight]="true" style="height: 90%; width: 100%">
           <mat-tab label="Info">
             <dx-scroll-view style="height: 100%; width: 100%">

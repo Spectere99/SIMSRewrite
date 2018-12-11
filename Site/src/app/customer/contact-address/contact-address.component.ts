@@ -86,13 +86,14 @@ export class ContactAddressComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       // console.log('The dialog was closed');
-      // console.log('The Result', result);
+      console.log('The Result', result);
       if (result) {
         // this.customer = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
         console.log('CustomerAddressId', customerAddressId);
         if (customerAddressId > 0) {
           // Remove contact from the database using Web service call.
           // console.log('Calling Delete Web Service');
+          console.log('CustomerAddress Remove', customerAddressId);
           this.customerService.deleteCustomerAddress('rwflowers', customerAddressId)
             .subscribe(res => {
               this.customer.customer_address = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
@@ -102,6 +103,7 @@ export class ContactAddressComponent implements OnInit {
               });
             });
         } else {
+          console.log('removing unsaved Address', customerAddressId);
           this.customer.customer_address = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
         }
       }
@@ -111,7 +113,7 @@ export class ContactAddressComponent implements OnInit {
   addAddress(customerId: number, event: Event) {
     event.stopPropagation();
     const newAddress: CustomerAddress = {
-      'customer_address_id': 0,
+      'customer_address_id': (this.customer.customer_address.length + 1) * -1,
       'customer_id': customerId,
       'type_code': null,
       'address_1': null,
@@ -131,25 +133,26 @@ export class ContactAddressComponent implements OnInit {
     this.expansionPanel.open();
   }
 
-  batchSave(customer_id: number) : Observable<any> {
+  batchSave(customer_id: number): Observable<any> {
     if (this.customer.customer_address) {
       for (let x = 0; x < this.customer.customer_address.length; x++) {
         this.customer.customer_address[x].customer_id = customer_id;
-        // console.log('Address on Save Customer', this.customer.customer_address);
+        console.log('Address on Save Customer', this.customer.customer_address);
         this.saveAddress(this.customer.customer_address[x]).subscribe();
       }
     }
     return Observable.create(observer => {
+      // tslint:disable-next-line:no-unused-expression
       this.customer.customer_address;
     });
   }
   saveAddress(customerAddress: CustomerAddress) {
     // console.log('Customer Address on Save', customerAddress);
     if (customerAddress.customer_address_id <= 0) {
-      customerAddress.customer_address_id = 0;
+      // customerAddress.customer_address_id = 0;
       return this.customerService.addCustomerAddress('rwflowers', customerAddress)
         .map(res => {
-          // console.log('Save address Return', res);
+          console.log('Save address Return', res);
           this.snackBar.open('Customer Address Added!', '', {
             duration: 4000,
             verticalPosition: 'top'
@@ -159,7 +162,7 @@ export class ContactAddressComponent implements OnInit {
     } else {
       return this.customerService.updateCustomerAddress('rwflowers', customerAddress)
         .map(res => {
-          // console.log('Update address Return', res);
+          console.log('Update address Return', res);
           this.snackBar.open('Customer Address Updated!', '', {
             duration: 4000,
             verticalPosition: 'top'

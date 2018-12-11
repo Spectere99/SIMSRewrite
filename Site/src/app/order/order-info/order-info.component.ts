@@ -3,7 +3,7 @@ import { Globals } from '../../globals';
 import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { Customer, CustomerService } from '../../_services/customer.service';
 import { AuthenticationService } from '../../_services/authentication.service';
-import { OrderService, Order, OrderDetail, OrderStatusHistory } from '../../_services/order.service';
+import { OrderService, Order, OrderMaster, OrderDetail, OrderStatusHistory } from '../../_services/order.service';
 import { StateService, StateInfo } from '../../_shared/states.service';
 import { OrderTaskListComponent } from '../order-task-list/order-task-list.component';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
@@ -17,7 +17,7 @@ import { WindowRef } from '../../_services/window-ref.service';
   providers: [CustomerService, OrderService, StateService]
 })
 export class OrderInfoComponent implements OnInit, OnChanges {
-  @Input() currentOrder: Order;
+  @Input() currentOrder: OrderMaster;
   @Input() customer: Customer;
   @Input() taskList: OrderTaskListComponent;
   orderCustomer: any;
@@ -89,7 +89,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     });
   }
 
-  convertOrderInfo(order: Order): Order {
+  convertOrderInfo(order: OrderMaster): Order {
     const orderToSave = new Order();
     orderToSave.order_id = order.order_id;
     orderToSave.customer_id = order.customer_id;
@@ -178,6 +178,18 @@ export class OrderInfoComponent implements OnInit, OnChanges {
       }
   }
 
+  isValid(): boolean {
+    let valid = false;
+    valid = this.currentOrder.order_due_date !== undefined && this.currentOrder.order_due_date.length > 0;
+    if (valid) {
+      valid = this.currentOrder.order_type !== undefined && this.currentOrder.order_type.length > 0;
+    }
+    if (valid) {
+      valid = this.currentOrder.order_status !== undefined && this.currentOrder.order_status.length > 0;
+    }
+    return valid;
+  }
+
   saveOrderStatusHistory(orderId: number) {
     // console.log('Saving Order Status History orderId=', orderId);
     // console.log('user', this.userProfile);
@@ -205,7 +217,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   onOrderStatusChange(e) {
-    // console.log('onOrderStatusChange', e);
+    console.log('onOrderStatusChange', e);
     // console.log('Current Order Status', this.currentOrder.order_status);
     if (e !== this.originalOrderStatus) {
       this.orderStatusChanged = true;
@@ -217,6 +229,10 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     // console.log('Save Order Status', this.orderStatusChanged);
   }
 
+  onTakenUserIdChange(e) {
+    console.log('TakenUserIdChange', e);
+    this.currentOrder.taken_user_id = e;
+  }
   ngOnInit() {
     // console.log('OnInit currentOrder', this.currentOrder);
     // this.editMode = this.currentOrder !== undefined;
@@ -258,14 +274,14 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   toISOLocal(d) {
-    var z = n => (n<10? '0':'')+n;
-    var off = d.getTimezoneOffset();
-    var sign = off < 0? '+' : '-';
+    const z = n => (n < 10 ? '0' : '') + n;
+    let off = d.getTimezoneOffset();
+    const sign = off < 0 ? '+' : '-';
     off = Math.abs(off);
-  
-    return d.getFullYear() + '-' + z(d.getMonth()+1) + '-' +
-           z(d.getDate()) + 'T' + z(d.getHours()) + ':'  + z(d.getMinutes()) + 
-           ':' + z(d.getSeconds()); // + sign + z(off/60|0) + z(off%60); 
+
+    return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' +
+           z(d.getDate()) + 'T' + z(d.getHours()) + ':'  + z(d.getMinutes()) +
+           ':' + z(d.getSeconds()); // + sign + z(off/60|0) + z(off%60);
   }
 
 }
