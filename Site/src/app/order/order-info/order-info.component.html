@@ -125,7 +125,7 @@
               </select>
             </td>
             <td>
-              <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="currentOrder.taken_user_id" [disabled]="true">
+              <select class="form-control form-control-sm" style="width:auto;" [ngModel]="currentOrder.taken_user_id" (ngModelChange)="onTakenUserIdChange($event);" [disabled]="false">
                 <option *ngFor="let user of userDataSource" [value]="user.user_id">
                   {{user.first_name + ' ' + user.last_name}}
                 </option>

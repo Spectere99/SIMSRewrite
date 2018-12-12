@@ -34,6 +34,7 @@ namespace SIMSDataService.Controllers
         [EnableQuery]
         public IQueryable<order> GetOrders()
         {
+            db.Database.CommandTimeout = 180;
             return db.orders;
         }
 

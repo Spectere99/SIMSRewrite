@@ -82,7 +82,7 @@ export class CustomerItemComponent implements OnInit {
 /*           setTimeout(() => {
             // this.gridCustomers.instance.refresh();
             }); */
-        });  
+        });
       });
       // console.log('Emitting onCustomerSaved', this.customer);
       // this.orderTabDisabled = false;

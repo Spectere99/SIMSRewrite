@@ -1,7 +1,7 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { GlobalDataProvider } from '../../_providers/global-data.provider';
 import { LookupService, LookupItem } from '../../_services/lookups.service';
-import { OrderService, OrderTask, OrderStatusHistory, OrderNote } from '../../_services/order.service';
+import { OrderService, OrderTask, OrderMaster, OrderStatusHistory, OrderNote } from '../../_services/order.service';
 import { UserService } from '../../_services/user.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { ArraySortPipe } from '../../_shared/pipes/orderBy.pipe';
@@ -15,7 +15,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA,
   providers: [OrderService, LookupService, UserService, AuthenticationService]
 })
 export class OrderNotesHistoryComponent implements OnInit {
-  @Input() currentOrder: any;
+  @Input() currentOrder: OrderMaster;
   @Input() orderStatusHistory: Array<OrderStatusHistory>;
   @Input() orderNotes: Array<OrderNote>;
   lookupDataSource: Array<LookupItem>;

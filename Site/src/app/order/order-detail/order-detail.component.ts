@@ -148,7 +148,7 @@ export class OrderDetailComponent implements OnInit {
 
   addLineItem(e) {
     const lineItem = new OrderDetail();
-    
+
     console.log('add Line Item - line_item_number', lineItem.item_line_number);
     lineItem.order_detail_id = (this.masterOrder.order_detail.length + 1) * -1;
     lineItem.order_id = this.masterOrder.order_id;
@@ -159,7 +159,7 @@ export class OrderDetailComponent implements OnInit {
     lineItem.style_code = null;
     lineItem.color_code = null;
     lineItem.size_code = null;
-    lineItem.vendor = null;
+    lineItem.vendor = 'TBDV';
     lineItem.manufacturer = null;
     lineItem.product_code = null;
     lineItem.item_price_each = null;
@@ -206,7 +206,7 @@ export class OrderDetailComponent implements OnInit {
     orderLine.garment_recvd_date = undefined;
     orderLine.shipping_po = undefined;
     orderLine.size_code = null;
-    orderLine.taxable_ind = 'Y';
+    orderLine.taxable_ind = this.masterOrder.order_detail[idx].taxable_ind;
     orderLine.shipping_po = null;
     orderLine.notes = null;
     orderLine.checked_in_ind = null;
@@ -428,10 +428,9 @@ export class OrderDetailComponent implements OnInit {
     let shippingTotal = 0;
     let taxAmount = 0;
     let orderTotal = 0;
-    let balanceDue = 0;
 
     // Calculate Taxable and Non Taxable Sub Totals
-    for (let x = 0; x < this.masterOrder.order_detail.length; x++) { 
+    for (let x = 0; x < this.masterOrder.order_detail.length; x++) {
       if (this.masterOrder.order_detail[x].taxable_ind === 'Y') {
         subTotal = subTotal + +this.masterOrder.order_detail[x].item_price_ext;
       } else {
@@ -468,7 +467,7 @@ export class OrderDetailComponent implements OnInit {
 
     // Get Payments that were made
     let paymentTotal = 0;
-  
+
     for (let x = 0; x < this.masterOrder.order_payments.length; x++) {
       paymentTotal = paymentTotal + +this.masterOrder.order_payments[x].payment_amount;
     }
