@@ -27,7 +27,7 @@ import {
 export class OrderDetailComponent implements OnInit {
   @Input() customer: Customer;
   @Input() masterOrder: OrderMaster;
-  @Input() currentOrder: any;
+  // @Input() currentOrder: any;
   @Input() orderArtPlacement: Array<OrderArtPlacement>;
   @Input() orderFees: Array<OrderFee>;
   @Input() orderPayments: Array<OrderPayment>;
@@ -140,7 +140,7 @@ export class OrderDetailComponent implements OnInit {
           for (let x = 0; x < shippingFees.length; x++) {
             totalShipping = +(totalShipping + shippingFees[x].fee_price_ext);
           }
-          this.currentOrder.shipping = totalShipping.toFixed(2);
+          this.masterOrder.shipping = +totalShipping.toFixed(2);
         } // Need to set an error?
       }
     }
@@ -269,7 +269,7 @@ export class OrderDetailComponent implements OnInit {
   addArtPlacement(e) {
     const artPlacement = new OrderArtPlacement();
     artPlacement.order_art_placement_id = (this.masterOrder.order_art_placements.length + 1) * -1;
-    artPlacement.added_by = this.userProfile.profile.login_id;
+    artPlacement.added_by = this.userProfile.profile.login_id.toUpperCase();
     artPlacement.notes = null;
     artPlacement.order = null;
     const today = new Date();
@@ -474,13 +474,6 @@ export class OrderDetailComponent implements OnInit {
 
     // Total it all up.
     orderTotal = (+subTotal + +this.masterOrder.tax_amount + nonTaxSubTotal + shippingTotal);
-/*     console.log('SubTotal:', subTotal);
-    console.log('TaxAmount', taxAmount);
-    console.log('NonTaxSubTotal', nonTaxSubTotal);
-    console.log('ShippingTotal', shippingTotal);
-    console.log('OrderTotal', orderTotal);
-    console.log('Payments', paymentTotal);
-    console.log('BalanceDue', orderTotal - paymentTotal); */
 
     this.masterOrder.subtotal = +subTotal.toFixed(2);
     this.masterOrder.tax_amount = +taxAmount.toFixed(2);
@@ -489,13 +482,16 @@ export class OrderDetailComponent implements OnInit {
     this.masterOrder.payments = +paymentTotal.toFixed(2);
     this.masterOrder.balance_due = +(+orderTotal.toFixed(2) - +paymentTotal.toFixed(2)).toFixed(2);
     this.nonTaxableSubTotal = nonTaxSubTotal.toFixed(2);
+  }
 
-/*     console.log('Master-SubTotal:', this.masterOrder.subtotal);
-    console.log('Master-TaxAmount', this.masterOrder.tax_amount);
-    console.log('Master-ShippingTotal', this.masterOrder.shipping);
-    console.log('Master-OrderTotal', this.masterOrder.total);
-    console.log('Master-Payments', this.masterOrder.payments);
-    console.log('Master-BalanceDue', this.masterOrder.balance_due); */
+  onOtherTypeChange(e, idx) {
+    console.log('onOtherTypeChange', e);
+    console.log('onOtherTypeChange : idx', idx);
+    if (e.length === 0) {
+      this.masterOrder.order_detail[idx].other1_type = null;
+      this.masterOrder.order_detail[idx].other1_qty = null;
+      console.log('onOtherTypeChange: order_detail[idx]', this.masterOrder.order_detail[idx]);
+    }
   }
 
   batchSave(order_id: number) {
@@ -528,7 +524,7 @@ export class OrderDetailComponent implements OnInit {
       orderDetail.order_detail_id = 0;
       orderDetail.order_id = this.masterOrder.order_id;
       orderDetail.customer_name = this.customer.customer_name;
-      orderDetail.order_number = this.currentOrder.order_number;
+      orderDetail.order_number = this.masterOrder.order_number;
       // console.log('OrderDetail on Save', orderDetail);
       this.orderService.addOrderLineItem(this.userProfile.login_id, orderDetail)
         .subscribe(res => {
@@ -630,7 +626,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.editMode = this.currentOrder.order_id !== 0;
+    this.editMode = this.masterOrder.order_id !== 0;
     this.updateTotals();
     // console.log('Current Order', this.currentOrder);
   }
@@ -641,7 +637,7 @@ export class OrderDetailComponent implements OnInit {
     // console.log('order-detail-component:ngOnChanges()', this.masterOrder);
     this.loading = true;
     this.updateTotals();
-    this.editMode = this.currentOrder.order_id !== 0;
+    this.editMode = this.masterOrder.order_id !== 0;
     // console.log('Current Order', this.currentOrder);
   }
 

@@ -95,7 +95,7 @@
                 <input type="text" size="1" [(ngModel)]="orderDetail.C5xl_qty" (keyup)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <select class="form-control form-control-sm" style="font-size: 1vw; width:auto;" [(ngModel)]="orderDetail.other1_type">
+                <select class="form-control form-control-sm" style="font-size: 1vw; width:auto;" [ngModel]="orderDetail.other1_type" (ngModelChange)="onOtherTypeChange($event, i)">
                   <option></option>
                   <option *ngFor="let itm of sizeTypes" [value]="itm.char_mod">
                     {{itm.description}}
@@ -319,7 +319,7 @@
               </tr>
               <tr>
                 <td>Tax Rate:</td>
-                <td><input type="text" size="5" [(ngModel)]="currentOrder.tax_rate" style="height: 25px;" (keyup)="onTaxRateChange($event)">%</td>
+                <td><input type="text" size="5" [(ngModel)]="masterOrder.tax_rate" style="height: 25px;" (keyup)="onTaxRateChange($event)">%</td>
               </tr>
               <tr>
                 <td>Tax:</td>

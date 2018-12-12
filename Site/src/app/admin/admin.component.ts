@@ -106,7 +106,7 @@ export class AdminComponent implements OnInit {
       language_code: null,
       last_name: this.editUser.last_name,
       login_attempt_count: null,
-      login_id: this.editUser.login_id,
+      login_id: this.editUser.login_id.toUpperCase(),
       lookup_item_code: null,
       manager_id: this.editUser.manager_id,
       order_parent_search_for: null,
@@ -129,14 +129,14 @@ export class AdminComponent implements OnInit {
 
     if (this.editUser.user_id > 0) {
       this.userService.updateUser(this.userProfile.login_id, saveUsr).subscribe(res => {
-        this.userService.deleteUserGroup(this.userProfile.login_id, this.editUser.user_id).subscribe(res2 => {
+        this.userService.deleteUserGroup(this.userProfile.login_id.toUpperCase(), this.editUser.user_id).subscribe(res2 => {
           // console.log('return from updateUser', res);
           this.editUser.user_group.forEach(element => {
             const newUserGroup: UserGroupDTO = {
               user_id: this.editUser.user_id,
               hotjas_group_id: element.hotjas_group_id
             };
-            this.userService.addUserGroup(this.userProfile.login_id, newUserGroup).subscribe();
+            this.userService.addUserGroup(this.userProfile.login_id.toUpperCase(), newUserGroup).subscribe();
           });
           this.snackBar.open('User Saved!', '', {
             duration: 4000,
@@ -146,7 +146,7 @@ export class AdminComponent implements OnInit {
         });
       });
     } else {
-      this.userService.addUser(this.userProfile.login_id, saveUsr).subscribe(res => {
+      this.userService.addUser(this.userProfile.login_id.toUpperCase(), saveUsr).subscribe(res => {
         this.snackBar.open('User Created!', '', {
           duration: 4000,
           verticalPosition: 'top'

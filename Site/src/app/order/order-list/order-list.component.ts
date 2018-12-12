@@ -526,7 +526,7 @@ export class OrderListComponent implements OnInit {
 
       newArtPlacement.order_id = order_id;
       newArtPlacement.order_art_placement_id = 0;
-      newArtPlacement.added_by = this.userProfile.profile.login_id;
+      newArtPlacement.added_by = this.userProfile.profile.login_id.toUpperCase();
       newArtPlacement.added_date = new Date().toISOString();
       newArtPlacement.art_placement_code = item.art_placement_code;
       newArtPlacement.color_codes = item.color_codes;
@@ -602,43 +602,41 @@ export class OrderListComponent implements OnInit {
     return data.first_name + ' ' + data.last_name;
   }
   applyChanges() {
-    this.orderInfo.batchSave().subscribe(res => {
-      this.orderDetail.batchSave(res);
-      // Still need art tab batch save.
-      this.orderArt.batchSave(res);
-      // console.log('orderTaskList on ApplyChanges', this.orderTaskList.orderTask);
-      // ('order balance_due', this.selectedOrder.balance_due);
-      // console.log('order', this.selectedOrder);
-      this.selectedOrder.order_id = res;
-      if (+this.selectedOrder.balance_due === 0.00 && this.selectedOrder.order_payments.length > 0) {
-        // console.log('balance is paid!');
-        const fpmtTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'fnpmt');
-        if (fpmtTask) {
-          fpmtTask[0].is_complete = 'Y';
-          fpmtTask[0].completed_by = this.userProfile.profile.login_id;
-          fpmtTask[0].completed_date = new Date().toISOString();
-        }
-      }
-      if (this.selectedOrder.order_payments) {
-        if (this.selectedOrder.order_payments.length >= 1) {
-          const depTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'deprc');
-          if (depTask) {
-            depTask[0].is_complete = 'Y';
-            depTask[0].completed_by = this.userProfile.profile.login_id;
-            depTask[0].completed_date = new Date().toISOString();
+    if (this.orderInfo.isValid()) {
+      this.orderInfo.batchSave().subscribe(res => {
+        this.orderDetail.batchSave(res);
+        this.orderArt.batchSave(res);
+        this.selectedOrder.order_id = res;
+        if (+this.selectedOrder.balance_due === 0.00 && this.selectedOrder.order_payments.length > 0) {
+          const fpmtTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'fnpmt');
+          if (fpmtTask) {
+            fpmtTask[0].is_complete = 'Y';
+            fpmtTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();
+            fpmtTask[0].completed_date = new Date().toISOString();
           }
-          // console.log('depost is paid!', this.selectedOrder.order_payments);
         }
-      }
+        if (this.selectedOrder.order_payments) {
+          if (this.selectedOrder.order_payments.length >= 1) {
+            const depTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'deprc');
+            if (depTask) {
+              depTask[0].is_complete = 'Y';
+              depTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();
+              depTask[0].completed_date = new Date().toISOString();
+            }
+          }
+        }
 
-      this.orderTaskList.batchSave(res);
-      this.orderNotesHistory.batchSave(res);
-      setTimeout(() => {
-        this.gridOrders.instance.refresh();
-        this.loadOrder(this.selectedOrder);
-      }, 1000);
-      // this.popupVisible = this.leaveWindowOpen;
-    });
+        this.orderTaskList.batchSave(res);
+        this.orderNotesHistory.batchSave(res);
+        setTimeout(() => {
+          this.gridOrders.instance.refresh();
+          this.loadOrder(this.selectedOrder);
+        }, 1000);
+        // this.popupVisible = this.leaveWindowOpen;
+      });
+    } else {
+      alert('Due Date, Order Type and Status are required to save an order.');
+    }
   }
 
   selectionChanged(e) {
