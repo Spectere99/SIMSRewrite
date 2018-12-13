@@ -378,6 +378,10 @@ export class OrderDetailComponent implements OnInit {
   onQtyPriceChange(e, idx) {
     // console.log('Order Detail onChange Event', e.target.value);
     // console.log('Order Index item', idx);
+    // console.log('Order Item Price Change', e.target);
+    if (e.target.value.legnth === 0) {
+      e.target.value = null;
+    }
     let totalItemQty = 0;
     // const orderLine = this.order.order_detail[idx];
     const orderLine = this.masterOrder.order_detail[idx];
@@ -524,6 +528,7 @@ export class OrderDetailComponent implements OnInit {
 
   saveOrderLines(orderDetail: OrderDetail) {
     // console.log('OrderDetail on Save', orderDetail);
+    orderDetail = this.fixOrderDetailFields(orderDetail);
     if (orderDetail.order_detail_id <= 0) {
       orderDetail.order_detail_id = 0;
       orderDetail.order_id = this.masterOrder.order_id;
@@ -553,7 +558,27 @@ export class OrderDetailComponent implements OnInit {
         });
     }
   }
-
+  onOtherQtyChange(e, idx) {
+    console.log('onOtherQtyChange', e);
+    if (e === null) {
+      this.masterOrder.order_detail[idx].other1_type = null;
+      this.masterOrder.order_detail[idx].other1_qty = null;
+    }
+  }
+  fixOrderDetailFields(orderDetail: OrderDetail): OrderDetail {
+    /* console.log('fixOrderDetailFields:med_qty is undefined?', orderDetail.med_qty === undefined);
+    console.log('fixOrderDetailFields:med_qty is null?', orderDetail.med_qty === null);
+    console.log('fixOrderDetailFields:med_qty is 0', +orderDetail.med_qty === 0); */
+    orderDetail.small_qty = +orderDetail.small_qty === 0 ? null : +orderDetail.small_qty;
+    orderDetail.med_qty = +orderDetail.med_qty === 0 ? null : +orderDetail.med_qty;
+    orderDetail.large_qty = +orderDetail.large_qty === 0 ? null : +orderDetail.large_qty;
+    orderDetail.xl_qty = +orderDetail.xl_qty === 0 ? null : +orderDetail.xl_qty;
+    orderDetail.C2xl_qty = +orderDetail.C2xl_qty === 0 ? null : +orderDetail.C2xl_qty;
+    orderDetail.C3xl_qty = +orderDetail.C3xl_qty === 0 ? null : +orderDetail.C3xl_qty;
+    orderDetail.C4xl_qty = +orderDetail.C4xl_qty === 0 ? null : +orderDetail.C4xl_qty;
+    orderDetail.C5xl_qty = +orderDetail.C5xl_qty === 0 ? null : +orderDetail.C5xl_qty;
+    return orderDetail;
+  }
   saveArtPlacement(artPlacement: OrderArtPlacement) {
     // console.log('Art Placement on Save', artPlacement);
     if (artPlacement.order_art_placement_id <= 0) {
