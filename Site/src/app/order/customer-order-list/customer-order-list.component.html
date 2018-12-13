@@ -11,6 +11,7 @@
           [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onSelectionChanged)="selectionChanged($event)" [masterDetail]="{ enabled: true, template: 'detail' }">
           <dxo-selection mode="single"></dxo-selection>
           <!-- <dxi-column dataField="reorder_ind" caption="Reorder?" [width]="100" [allowFiltering]="false" [calculateCellValue]="setReorderInd"></dxi-column> -->
+          <dxi-column dataField="order_id" caption="Order Id" [visible]=false sortOrder="desc"></dxi-column>
           <dxi-column dataField="order_number" caption="Order #" [width]="100" [allowSearch]="true" [allowFiltering]="true" cellTemplate="orderCell"></dxi-column>
           <dxi-column dataField="order_date" sortOrder="desc" caption="Order Date" dataType="date" [width]="110"></dxi-column>
           <dxi-column dataField="order_type" caption="Order Type" [width]="225">
@@ -90,7 +91,7 @@
               </mat-tab>
               <mat-tab label="Details">
                 <dx-scroll-view style="height: 100%; width: 100%">
-                  <app-order-detail [(customer)]="customer" [(masterOrder)]="selectedOrderMaster" [(currentOrder)]="selectedOrder"></app-order-detail>
+                  <app-order-detail [(customer)]="customer" [(masterOrder)]="selectedOrderMaster"></app-order-detail>
                 </dx-scroll-view>
               </mat-tab>
               <mat-tab label="Art">

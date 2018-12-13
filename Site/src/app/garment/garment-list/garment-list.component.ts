@@ -222,7 +222,7 @@ export class GarmentListComponent implements OnInit {
       beforeSend: function(request) {
         request.timeout = environment.connectionTimeout;
       },
-      // filter: this.currentFilter
+      filter: this.currentFilter
    };
   }
 

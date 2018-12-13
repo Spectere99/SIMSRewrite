@@ -39,7 +39,7 @@ export class CustomerOrderListComponent implements OnInit {
 
   selectedOrderMaster: OrderMaster;
   /* Data Strutures for Orders */
-  selectedOrder: any;
+  // selectedOrder: any;
   selectedTasks: any;
   selectedOrderLines: any;
   selectedArtPlacements: any;
@@ -169,18 +169,18 @@ export class CustomerOrderListComponent implements OnInit {
   }
   createNewOrder(customer_id) {
     // console.log('Creating Order!!!', customer_id);
-    this.selectedOrder = new Order();
+    /* this.selectedOrder = new Order();
     this.selectedOrder.order_id = 0;
     this.selectedOrder.tax_rate = '7.0';
     this.selectedOrder.customer_id = customer_id;
     this.selectedOrder.customer_name = this.customer.customer_name;
+    this.selectedOrder.order_number = this.formatOrderNumber(today);
+    this.selectedOrder.order_date = this.toISOLocal(today);
+    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id; */
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     console.log('createNewOrder - before formatOrderNumber', today);
-    this.selectedOrder.order_number = this.formatOrderNumber(today);
-    this.selectedOrder.order_date = this.toISOLocal(today);
-    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
-
     this.selectedOrderMaster = new OrderMaster();
     this.selectedOrderMaster.order_id = 0;
     this.selectedOrderMaster.tax_rate = '7.0';
@@ -218,38 +218,38 @@ export class CustomerOrderListComponent implements OnInit {
     reOrderObj.assigned_user_id = this.userProfile.profile.user_id;
 
     console.log ('customer_order-list:reOrder-reOrderObj', reOrderObj);
-    this.orderService.addOrderInfo(this.userProfile.profile.login_id, reOrderObj).subscribe(res => {
+    this.orderService.addOrderInfo(this.userProfile.profile.login_id.toUpperCase(), reOrderObj).subscribe(res => {
       console.log('Order ID Return', res);
       reOrderObj.order_id = res.order_id;
       reOrderObj.order_number = res.order_number;
       const reOrderDetails = this.cloneOrderDetails(this.selectedOrderMaster.order_detail, res.order_id);
       reOrderDetails.forEach((item) => {
         // console.log('Cloning OrderLine', item);
-        this.orderService.addOrderLineItem(this.userProfile.profile.login_id, item).subscribe();
+        this.orderService.addOrderLineItem(this.userProfile.profile.login_id.toUpperCase(), item).subscribe();
       });
 
       const reOrderArtFiles = this.cloneOrderArtFiles(this.selectedOrderMaster.order_art_file, res.order_id);
       reOrderArtFiles.forEach((item) => {
         // console.log('Cloning Art File', item);
-        this.orderService.addOrderArtFile(this.userProfile.profile.login_id, item).subscribe();
+        this.orderService.addOrderArtFile(this.userProfile.profile.login_id.toUpperCase(), item).subscribe();
       });
 
       const reOrderFees = this.cloneOrderFees(this.orderDetail.orderFees, res.order_id);
       reOrderFees.forEach((item) => {
         // console.log('Cloning Order Fees', item);
-        this.orderService.addOrderFee(this.userProfile.profile.login_id, item).subscribe();
+        this.orderService.addOrderFee(this.userProfile.profile.login_id.toUpperCase(), item).subscribe();
       });
 
       const reOrderArtPlacement = this.cloneOrderArtPlacement(this.selectedOrderMaster.order_art_placements, res.order_id);
       reOrderArtPlacement.forEach((item) => {
         // console.log('Cloning Art Placements', item);
-        this.orderService.addOrderArtPlacement(this.userProfile.profile.login_id, item).subscribe();
+        this.orderService.addOrderArtPlacement(this.userProfile.profile.login_id.toUpperCase(), item).subscribe();
       });
 
       const reOrderTaskList = this.orderTaskList.createOrderTaskList(res.order_id, reOrderObj.order_type);
       reOrderTaskList.forEach((item) => {
         // console.log('Cloning Order Task', item);
-        this.orderService.addOrderTask(this.userProfile.profile.login_id, item).subscribe();
+        this.orderService.addOrderTask(this.userProfile.profile.login_id.toUpperCase(), item).subscribe();
       });
 
       this.createCloneHistoryStatus(reOrderObj);
@@ -268,14 +268,14 @@ export class CustomerOrderListComponent implements OnInit {
 
   setOrderContact() {
     // Add logic to pull primary contact???
-    this.selectedOrder.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
+  /*   this.selectedOrder.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
     this.selectedOrder.contact_email = this.customer.customer_person[0].email_address;
     this.selectedOrder.contact_phone1 = this.customer.customer_person[0].phone_1;
     this.selectedOrder.contact_phone1_ext = this.customer.customer_person[0].phone_1_ext;
     this.selectedOrder.contact_phone1_type = this.customer.customer_person[0].phone_1_type;
     this.selectedOrder.contact_phone2 = this.customer.customer_person[0].phone_2;
     this.selectedOrder.contact_phone2_ext = this.customer.customer_person[0].phone_2_ext;
-    this.selectedOrder.contact_phone2_type = this.customer.customer_person[0].phone_2_type;
+    this.selectedOrder.contact_phone2_type = this.customer.customer_person[0].phone_2_type; */
 
     this.selectedOrderMaster.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
     this.selectedOrderMaster.contact_email = this.customer.customer_person[0].email_address;
@@ -291,7 +291,7 @@ export class CustomerOrderListComponent implements OnInit {
     // Get the Billing Address if available
     // console.log('setBillingAndShipmentAddress', this.customer);
     const billingAddress = this.customer.customer_address.filter(item => item.type_code === 'bill');
-    this.selectedOrder.ship_attn = this.customer.customer_name;
+    /* this.selectedOrder.ship_attn = this.customer.customer_name;
     if (billingAddress && billingAddress.length > 0) {
       // console.log('Billing Adr', billingAddress[0]);
       this.selectedOrder.BILL_ADDRESS_1 = billingAddress[0].address_1;
@@ -315,7 +315,7 @@ export class CustomerOrderListComponent implements OnInit {
           this.selectedOrder.SHIP_ZIP = shippingAddress[0].zip;
         }
       }
-    }
+    } */
 
     this.selectedOrderMaster.ship_attn = this.customer.customer_name;
     if (billingAddress && billingAddress.length > 0) {
@@ -504,7 +504,7 @@ export class CustomerOrderListComponent implements OnInit {
 
       newArtPlacement.order_id = order_id;
       newArtPlacement.order_art_placement_id = 0;
-      newArtPlacement.added_by = this.userProfile.profile.login_id;
+      newArtPlacement.added_by = this.userProfile.profile.login_id.toUpperCase();
       newArtPlacement.added_date = new Date().toISOString();
       newArtPlacement.art_placement_code = item.art_placement_code;
       newArtPlacement.color_codes = item.color_codes;
@@ -592,11 +592,11 @@ export class CustomerOrderListComponent implements OnInit {
         this.selectedOrderMaster.order_id = res;
         // tslint:disable-next-line:max-line-length
         if (+this.selectedOrderMaster.balance_due === 0.00 && (this.selectedOrderMaster.order_payments && this.selectedOrderMaster.order_payments.length > 0)) {
-          console.log('balance is paid!');
+          // console.log('balance is paid!');
           const fpmtTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'fnpmt');
           if (fpmtTask) {
             fpmtTask[0].is_complete = 'Y';
-            fpmtTask[0].completed_by = this.userProfile.profile.login_id;
+            fpmtTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();;
             fpmtTask[0].completed_date = new Date().toISOString();
           }
         }
@@ -605,7 +605,7 @@ export class CustomerOrderListComponent implements OnInit {
             const depTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'deprc');
             if (depTask) {
               depTask[0].is_complete = 'Y';
-              depTask[0].completed_by = this.userProfile.profile.login_id;
+              depTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();;
               depTask[0].completed_date = new Date().toISOString();
             }
             console.log('depost is paid!', this.selectedOrderMaster.order_payments);
@@ -649,16 +649,16 @@ export class CustomerOrderListComponent implements OnInit {
   closeEditor() {
     // Need to reset the selected order so the child components to scream
     //  about not having a reference value (undefined)
-    this.selectedOrder = new Order();
+/*     this.selectedOrder = new Order();
     this.selectedOrder.order_id = 0;
     this.selectedOrder.tax_rate = '7.0';
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
     this.selectedOrder.customer_id = this.customer.customer_id;
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
-    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
+    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id; */
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     this.selectedOrderMaster = new OrderMaster();
     this.selectedOrderMaster.order_id = 0;
     this.selectedOrderMaster.tax_rate = '7.0';
@@ -675,18 +675,18 @@ export class CustomerOrderListComponent implements OnInit {
   loadOrder(e) {
     this.loadingOrder = true;
     this.loading = true;
-    this.selectedOrder = e;
+    // this.selectedOrder = e;
     this.selectedOrderMaster = e;
     forkJoin(
-      this.orderService.loadOrderData('', this.selectedOrder.order_id), // 0
-      this.orderService.loadArtPlacementData('', this.selectedOrder.order_id), // 1
-      this.orderService.loadOrderFeeData('', this.selectedOrder.order_id), // 2
-      this.orderService.loadOrderPaymentData('', this.selectedOrder.order_id), // 3
-      this.orderService.loadOrderArtFileData('', this.selectedOrder.order_id), // 4
-      this.orderService.loadOrderNotesData('', this.selectedOrder.order_id), // 5
-      this.orderService.loadOrderStatusHistoryData('', this.selectedOrder.order_id), // 6
-      this.orderService.loadOrderTaskData('', this.selectedOrder.order_id), // 7
-      this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 8
+      this.orderService.loadOrderData('', this.selectedOrderMaster.order_id), // 0
+      this.orderService.loadArtPlacementData('', this.selectedOrderMaster.order_id), // 1
+      this.orderService.loadOrderFeeData('', this.selectedOrderMaster.order_id), // 2
+      this.orderService.loadOrderPaymentData('', this.selectedOrderMaster.order_id), // 3
+      this.orderService.loadOrderArtFileData('', this.selectedOrderMaster.order_id), // 4
+      this.orderService.loadOrderNotesData('', this.selectedOrderMaster.order_id), // 5
+      this.orderService.loadOrderStatusHistoryData('', this.selectedOrderMaster.order_id), // 6
+      this.orderService.loadOrderTaskData('', this.selectedOrderMaster.order_id), // 7
+      this.correspondenceService.getCorrespondenceData('', this.selectedOrderMaster.order_id), // 8
     ).subscribe(results => {
       console.log('selectedOrder', this.selectedOrderMaster);
       console.log('forkJoin Return', results);
@@ -720,7 +720,8 @@ export class CustomerOrderListComponent implements OnInit {
   showOrderSummary(e) {
     console.log('showOrderSummary', e);
 
-    this.selectedOrder = e;
+    //this.selectedOrder = e;
+    this.selectedOrderMaster = e;
     this.summaryVisible = true;
   }
   ngOnInit() {
