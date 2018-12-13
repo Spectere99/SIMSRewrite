@@ -60,7 +60,7 @@ export class OrderListComponent implements OnInit {
 
   selectedOrderMaster: OrderMaster;
   /* Data Strutures for Orders */
-  selectedOrder: any;
+  // selectedOrder: any;
   selectedTasks: any;
   selectedOrderLines: any;
   selectedArtPlacements: any;
@@ -182,7 +182,7 @@ export class OrderListComponent implements OnInit {
   }
 
   showValues() {
-    console.log('Showing Order Values', this.selectedOrder);
+    console.log('Showing Order Values', this.selectedOrderMaster);
   }
   createStatusDataSource() {
 
@@ -195,16 +195,17 @@ export class OrderListComponent implements OnInit {
 
   createNewOrder(customer_id) {
     // console.log('Creating Order!!!', customer_id);
-    this.selectedOrder = new Order();
+    /* this.selectedOrder = new Order();
     this.selectedOrder.order_id = 0;
     this.selectedOrder.tax_rate = '7.0';
     this.selectedOrder.customer_id = customer_id;
     this.selectedOrder.customer_name = this.customer.customer_name;
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
-    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
+    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id; */
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
 
     this.selectedOrderMaster = new OrderMaster();
     this.selectedOrderMaster.order_id = 0;
@@ -236,7 +237,7 @@ export class OrderListComponent implements OnInit {
   reOrder(customer_id) {
     // console.log('Reorder Function', this.selectedOrder);
     this.loading = true;
-    const reOrderObj = this.cloneOrder(this.selectedOrder);
+    const reOrderObj = this.cloneOrder(this.selectedOrderMaster);
 
     reOrderObj.taken_user_id = this.userProfile.profile.user_id;
     reOrderObj.assigned_user_id = this.userProfile.profile.user_id;
@@ -292,14 +293,14 @@ export class OrderListComponent implements OnInit {
 
   setOrderContact() {
     // Add logic to pull primary contact???
-    this.selectedOrder.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
+    /* this.selectedOrder.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
     this.selectedOrder.contact_email = this.customer.customer_person[0].email_address;
     this.selectedOrder.contact_phone1 = this.customer.customer_person[0].phone_1;
     this.selectedOrder.contact_phone1_ext = this.customer.customer_person[0].phone_1_ext;
     this.selectedOrder.contact_phone1_type = this.customer.customer_person[0].phone_1_type;
     this.selectedOrder.contact_phone2 = this.customer.customer_person[0].phone_2;
     this.selectedOrder.contact_phone2_ext = this.customer.customer_person[0].phone_2_ext;
-    this.selectedOrder.contact_phone2_type = this.customer.customer_person[0].phone_2_type;
+    this.selectedOrder.contact_phone2_type = this.customer.customer_person[0].phone_2_type; */
 
     this.selectedOrderMaster.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
     this.selectedOrderMaster.contact_email = this.customer.customer_person[0].email_address;
@@ -315,7 +316,7 @@ export class OrderListComponent implements OnInit {
     // Get the Billing Address if available
     // console.log('setBillingAndShipmentAddress', this.customer);
     const billingAddress = this.customer.customer_address.filter(item => item.type_code === 'bill');
-    this.selectedOrder.ship_attn = this.customer.customer_name;
+    /* this.selectedOrder.ship_attn = this.customer.customer_name;
     if (billingAddress && billingAddress.length > 0) {
       // console.log('Billing Adr', billingAddress[0]);
       this.selectedOrder.BILL_ADDRESS_1 = billingAddress[0].address_1;
@@ -339,7 +340,7 @@ export class OrderListComponent implements OnInit {
           this.selectedOrder.SHIP_ZIP = shippingAddress[0].zip;
         }
       }
-    }
+    } */
 
     this.selectedOrderMaster.ship_attn = this.customer.customer_name;
     if (billingAddress && billingAddress.length > 0) {
@@ -385,7 +386,7 @@ export class OrderListComponent implements OnInit {
     this.gridOrders.instance.refresh();
   }
 
-  cloneOrder(origOrder: Order): Order {
+  cloneOrder(origOrder: OrderMaster): Order {
     // let newOrder = new Object();
     const newOrder = new Order();
     newOrder.previous_order = origOrder.order_number;
@@ -606,18 +607,18 @@ export class OrderListComponent implements OnInit {
       this.orderInfo.batchSave().subscribe(res => {
         this.orderDetail.batchSave(res);
         this.orderArt.batchSave(res);
-        this.selectedOrder.order_id = res;
-        if (+this.selectedOrder.balance_due === 0.00 && this.selectedOrder.order_payments.length > 0) {
-          const fpmtTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'fnpmt');
+        this.selectedOrderMaster.order_id = res;
+        if (+this.selectedOrderMaster.balance_due === 0.00 && this.selectedOrderMaster.order_payments.length > 0) {
+          const fpmtTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'fnpmt');
           if (fpmtTask) {
             fpmtTask[0].is_complete = 'Y';
             fpmtTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();
             fpmtTask[0].completed_date = new Date().toISOString();
           }
         }
-        if (this.selectedOrder.order_payments) {
-          if (this.selectedOrder.order_payments.length >= 1) {
-            const depTask = this.selectedOrder.order_tasks.filter(p => p.task_code === 'deprc');
+        if (this.selectedOrderMaster.order_payments) {
+          if (this.selectedOrderMaster.order_payments.length >= 1) {
+            const depTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'deprc');
             if (depTask) {
               depTask[0].is_complete = 'Y';
               depTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();
@@ -630,7 +631,7 @@ export class OrderListComponent implements OnInit {
         this.orderNotesHistory.batchSave(res);
         setTimeout(() => {
           this.gridOrders.instance.refresh();
-          this.loadOrder(this.selectedOrder);
+          this.loadOrder(this.selectedOrderMaster);
         }, 1000);
         // this.popupVisible = this.leaveWindowOpen;
       });
@@ -660,16 +661,17 @@ export class OrderListComponent implements OnInit {
   closeEditor() {
     // Need to reset the selected order so the child components to scream
     //  about not having a reference value (undefined)
-    this.selectedOrder = new Order();
+/*     this.selectedOrder = new Order();
     this.selectedOrder.order_id = 0;
     this.selectedOrder.tax_rate = '7.0';
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
     this.selectedOrder.customer_id = this.customer.customer_id;
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
-    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
+    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id; */
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
     this.selectedOrderMaster = new OrderMaster();
     this.selectedOrderMaster.order_id = 0;
     this.selectedOrderMaster.tax_rate = '7.0';
@@ -686,19 +688,19 @@ export class OrderListComponent implements OnInit {
   loadOrder(e) {
     this.loadingOrder = true;
     this.loading = true;
-    this.selectedOrder = e;
+    // this.selectedOrder = e;
     this.selectedOrderMaster = e;
     // console.log('order-list-component:this.loadOrder',  e.customer_id);
     forkJoin(
-      this.orderService.loadOrderData('', this.selectedOrder.order_id), // 0
-      this.orderService.loadArtPlacementData('', this.selectedOrder.order_id), // 1
-      this.orderService.loadOrderFeeData('', this.selectedOrder.order_id), // 2
-      this.orderService.loadOrderPaymentData('', this.selectedOrder.order_id), // 3
-      this.orderService.loadOrderArtFileData('', this.selectedOrder.order_id), // 4
-      this.orderService.loadOrderNotesData('', this.selectedOrder.order_id), // 5
-      this.orderService.loadOrderStatusHistoryData('', this.selectedOrder.order_id), // 6
-      this.orderService.loadOrderTaskData('', this.selectedOrder.order_id), // 7
-      this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 8
+      this.orderService.loadOrderData('', this.selectedOrderMaster.order_id), // 0
+      this.orderService.loadArtPlacementData('', this.selectedOrderMaster.order_id), // 1
+      this.orderService.loadOrderFeeData('', this.selectedOrderMaster.order_id), // 2
+      this.orderService.loadOrderPaymentData('', this.selectedOrderMaster.order_id), // 3
+      this.orderService.loadOrderArtFileData('', this.selectedOrderMaster.order_id), // 4
+      this.orderService.loadOrderNotesData('', this.selectedOrderMaster.order_id), // 5
+      this.orderService.loadOrderStatusHistoryData('', this.selectedOrderMaster.order_id), // 6
+      this.orderService.loadOrderTaskData('', this.selectedOrderMaster.order_id), // 7
+      this.correspondenceService.getCorrespondenceData('', this.selectedOrderMaster.order_id), // 8
       this.customerService.getCustomerData('', e.customer_id) // 9
     ).subscribe(results => {
       // console.log('selectedOrder', this.selectedOrder);
@@ -733,7 +735,7 @@ export class OrderListComponent implements OnInit {
   showOrderSummary(e) {
     // console.log('showOrderSummary', e);
 
-    this.selectedOrder = e;
+    this.selectedOrderMaster = e;
     this.summaryVisible = true;
   }
   ngOnInit() {

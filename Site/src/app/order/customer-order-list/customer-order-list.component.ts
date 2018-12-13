@@ -39,7 +39,7 @@ export class CustomerOrderListComponent implements OnInit {
 
   selectedOrderMaster: OrderMaster;
   /* Data Strutures for Orders */
-  selectedOrder: any;
+  // selectedOrder: any;
   selectedTasks: any;
   selectedOrderLines: any;
   selectedArtPlacements: any;
@@ -169,18 +169,18 @@ export class CustomerOrderListComponent implements OnInit {
   }
   createNewOrder(customer_id) {
     // console.log('Creating Order!!!', customer_id);
-    this.selectedOrder = new Order();
+    /* this.selectedOrder = new Order();
     this.selectedOrder.order_id = 0;
     this.selectedOrder.tax_rate = '7.0';
     this.selectedOrder.customer_id = customer_id;
     this.selectedOrder.customer_name = this.customer.customer_name;
+    this.selectedOrder.order_number = this.formatOrderNumber(today);
+    this.selectedOrder.order_date = this.toISOLocal(today);
+    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id; */
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     console.log('createNewOrder - before formatOrderNumber', today);
-    this.selectedOrder.order_number = this.formatOrderNumber(today);
-    this.selectedOrder.order_date = this.toISOLocal(today);
-    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
-
     this.selectedOrderMaster = new OrderMaster();
     this.selectedOrderMaster.order_id = 0;
     this.selectedOrderMaster.tax_rate = '7.0';
@@ -268,14 +268,14 @@ export class CustomerOrderListComponent implements OnInit {
 
   setOrderContact() {
     // Add logic to pull primary contact???
-    this.selectedOrder.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
+  /*   this.selectedOrder.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
     this.selectedOrder.contact_email = this.customer.customer_person[0].email_address;
     this.selectedOrder.contact_phone1 = this.customer.customer_person[0].phone_1;
     this.selectedOrder.contact_phone1_ext = this.customer.customer_person[0].phone_1_ext;
     this.selectedOrder.contact_phone1_type = this.customer.customer_person[0].phone_1_type;
     this.selectedOrder.contact_phone2 = this.customer.customer_person[0].phone_2;
     this.selectedOrder.contact_phone2_ext = this.customer.customer_person[0].phone_2_ext;
-    this.selectedOrder.contact_phone2_type = this.customer.customer_person[0].phone_2_type;
+    this.selectedOrder.contact_phone2_type = this.customer.customer_person[0].phone_2_type; */
 
     this.selectedOrderMaster.contact = this.customer.customer_person[0].first_name + ' ' + this.customer.customer_person[0].last_name;
     this.selectedOrderMaster.contact_email = this.customer.customer_person[0].email_address;
@@ -291,7 +291,7 @@ export class CustomerOrderListComponent implements OnInit {
     // Get the Billing Address if available
     // console.log('setBillingAndShipmentAddress', this.customer);
     const billingAddress = this.customer.customer_address.filter(item => item.type_code === 'bill');
-    this.selectedOrder.ship_attn = this.customer.customer_name;
+    /* this.selectedOrder.ship_attn = this.customer.customer_name;
     if (billingAddress && billingAddress.length > 0) {
       // console.log('Billing Adr', billingAddress[0]);
       this.selectedOrder.BILL_ADDRESS_1 = billingAddress[0].address_1;
@@ -315,7 +315,7 @@ export class CustomerOrderListComponent implements OnInit {
           this.selectedOrder.SHIP_ZIP = shippingAddress[0].zip;
         }
       }
-    }
+    } */
 
     this.selectedOrderMaster.ship_attn = this.customer.customer_name;
     if (billingAddress && billingAddress.length > 0) {
@@ -649,16 +649,16 @@ export class CustomerOrderListComponent implements OnInit {
   closeEditor() {
     // Need to reset the selected order so the child components to scream
     //  about not having a reference value (undefined)
-    this.selectedOrder = new Order();
+/*     this.selectedOrder = new Order();
     this.selectedOrder.order_id = 0;
     this.selectedOrder.tax_rate = '7.0';
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
     this.selectedOrder.customer_id = this.customer.customer_id;
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
-    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id;
+    this.selectedOrder.taken_user_id = this.userProfile.profile.user_id; */
 
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
     this.selectedOrderMaster = new OrderMaster();
     this.selectedOrderMaster.order_id = 0;
     this.selectedOrderMaster.tax_rate = '7.0';
@@ -675,18 +675,18 @@ export class CustomerOrderListComponent implements OnInit {
   loadOrder(e) {
     this.loadingOrder = true;
     this.loading = true;
-    this.selectedOrder = e;
+    // this.selectedOrder = e;
     this.selectedOrderMaster = e;
     forkJoin(
-      this.orderService.loadOrderData('', this.selectedOrder.order_id), // 0
-      this.orderService.loadArtPlacementData('', this.selectedOrder.order_id), // 1
-      this.orderService.loadOrderFeeData('', this.selectedOrder.order_id), // 2
-      this.orderService.loadOrderPaymentData('', this.selectedOrder.order_id), // 3
-      this.orderService.loadOrderArtFileData('', this.selectedOrder.order_id), // 4
-      this.orderService.loadOrderNotesData('', this.selectedOrder.order_id), // 5
-      this.orderService.loadOrderStatusHistoryData('', this.selectedOrder.order_id), // 6
-      this.orderService.loadOrderTaskData('', this.selectedOrder.order_id), // 7
-      this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 8
+      this.orderService.loadOrderData('', this.selectedOrderMaster.order_id), // 0
+      this.orderService.loadArtPlacementData('', this.selectedOrderMaster.order_id), // 1
+      this.orderService.loadOrderFeeData('', this.selectedOrderMaster.order_id), // 2
+      this.orderService.loadOrderPaymentData('', this.selectedOrderMaster.order_id), // 3
+      this.orderService.loadOrderArtFileData('', this.selectedOrderMaster.order_id), // 4
+      this.orderService.loadOrderNotesData('', this.selectedOrderMaster.order_id), // 5
+      this.orderService.loadOrderStatusHistoryData('', this.selectedOrderMaster.order_id), // 6
+      this.orderService.loadOrderTaskData('', this.selectedOrderMaster.order_id), // 7
+      this.correspondenceService.getCorrespondenceData('', this.selectedOrderMaster.order_id), // 8
     ).subscribe(results => {
       console.log('selectedOrder', this.selectedOrderMaster);
       console.log('forkJoin Return', results);
@@ -720,7 +720,8 @@ export class CustomerOrderListComponent implements OnInit {
   showOrderSummary(e) {
     console.log('showOrderSummary', e);
 
-    this.selectedOrder = e;
+    //this.selectedOrder = e;
+    this.selectedOrderMaster = e;
     this.summaryVisible = true;
   }
   ngOnInit() {
