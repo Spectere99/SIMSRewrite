@@ -88,7 +88,7 @@ export class AdminComponent implements OnInit {
   }
 
   saveUser() {
-    // console.log('saveUser', this.editUser);
+    console.log('saveUser', this.userProfile);
     const saveUsr: UserDTO = {
       active_order_ind: null,
       assigned_to_search_for: null,
@@ -146,7 +146,8 @@ export class AdminComponent implements OnInit {
         });
       });
     } else {
-      this.userService.addUser(this.userProfile.login_id.toUpperCase(), saveUsr).subscribe(res => {
+      console.log('adding new User', this.userProfile);
+      this.userService.addUser('admin', saveUsr).subscribe(res => {
         this.snackBar.open('User Created!', '', {
           duration: 4000,
           verticalPosition: 'top'
