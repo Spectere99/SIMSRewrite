@@ -75,7 +75,7 @@ export class AdminComponent implements OnInit {
 
   newUser() {
     const newUsr: User = {
-      user_id: -1,
+      user_id: 0,
       login_id: '',
       manager_id: null,
       first_name: '',
@@ -88,7 +88,7 @@ export class AdminComponent implements OnInit {
   }
 
   saveUser() {
-    console.log('saveUser', this.userProfile);
+    console.log('saveUser', this.editUser);
     const saveUsr: UserDTO = {
       active_order_ind: null,
       assigned_to_search_for: null,
@@ -106,7 +106,7 @@ export class AdminComponent implements OnInit {
       language_code: null,
       last_name: this.editUser.last_name,
       login_attempt_count: null,
-      login_id: this.editUser.login_id.toUpperCase(),
+      login_id: this.editUser.login_id,
       lookup_item_code: null,
       manager_id: this.editUser.manager_id,
       order_parent_search_for: null,
@@ -119,24 +119,26 @@ export class AdminComponent implements OnInit {
       password: btoa(this.editUser.password),
       pricelist_type: null,
       report_sel: null,
-      status_code: 'act',
+      status_code: 'ACTIV',
       task_list_type: null,
       task_type_code: null,
       user_id: this.editUser.user_id,
       wu_id: 0
     };
 
-
+    console.log('saveUser - userGroup', this.editUser.user_group);
     if (this.editUser.user_id > 0) {
+      console.log('userProfile', this.userProfile);
       this.userService.updateUser(this.userProfile.login_id, saveUsr).subscribe(res => {
-        this.userService.deleteUserGroup(this.userProfile.login_id.toUpperCase(), this.editUser.user_id).subscribe(res2 => {
-          // console.log('return from updateUser', res);
+        console.log('userProfile', this.userProfile);
+        this.userService.deleteUserGroup(this.userProfile.login_id, this.editUser.user_id).subscribe(res2 => {
+          console.log('return from updateUser', res);
           this.editUser.user_group.forEach(element => {
             const newUserGroup: UserGroupDTO = {
               user_id: this.editUser.user_id,
               hotjas_group_id: element.hotjas_group_id
             };
-            this.userService.addUserGroup(this.userProfile.login_id.toUpperCase(), newUserGroup).subscribe();
+            this.userService.addUserGroup(this.userProfile.login_id, newUserGroup).subscribe();
           });
           this.snackBar.open('User Saved!', '', {
             duration: 4000,
@@ -148,6 +150,7 @@ export class AdminComponent implements OnInit {
     } else {
       console.log('adding new User', this.userProfile);
       this.userService.addUser('admin', saveUsr).subscribe(res => {
+        console.log('New User Added', res);
         this.snackBar.open('User Created!', '', {
           duration: 4000,
           verticalPosition: 'top'

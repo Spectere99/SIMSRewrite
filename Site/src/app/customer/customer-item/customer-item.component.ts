@@ -45,7 +45,7 @@ export class CustomerItemComponent implements OnInit {
   constructor(globalDataProvider: GlobalDataProvider, customerSvc: CustomerService,
     public authService: AuthenticationService, private globals: Globals) {
     this.userProfile = JSON.parse(authService.getUserToken());
-    // console.log('customer_item.component:constructor - userProfile', this.userProfile);
+    console.log('customer_item.component:constructor - userProfile', this.userProfile);
     this.readOnly = this.userProfile.profile.role.filter(item => item === 'Readonly').length > 0;
     // console.log('customer-item.component:constructor - readOnly', this.readOnly);
     this.customerService = customerSvc;

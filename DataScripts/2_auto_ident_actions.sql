@@ -1,4 +1,4 @@
-ALTER TABLE `printmgr`.`customer` 
+ ALTER TABLE `printmgr`.`customer` 
 CHANGE COLUMN `customer_id` `customer_id` INT(10) NOT NULL AUTO_INCREMENT ;
 
 ALTER TABLE `printmgr`.`customer_address` 
@@ -40,3 +40,5 @@ CHANGE COLUMN `order_status_history_id` `order_status_history_id` INT(10) NOT NU
 ALTER TABLE `printmgr`.`correspondence` 
 CHANGE COLUMN `correspondence_id` `correspondence_id` INT(10) NOT NULL AUTO_INCREMENT ;
 
+ALTER TABLE `printmgr`.`users` 
+CHANGE COLUMN `user_id` `user_id` INT(10) NOT NULL AUTO_INCREMENT ;

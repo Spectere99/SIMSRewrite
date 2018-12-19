@@ -150,10 +150,10 @@ namespace SIMSDataService.Controllers
         {
             // user_group user_group = await db.user_group.FindAsync(key);
             List<user_group> user_group = db.user_group.Where(p => p.user_id == key).ToList();
-            if (user_group.Count == 0)
-            {
-                return NotFound();
-            }
+            //if (user_group.Count == 0)
+            //{
+            //    return NotFound();
+            //}
 
             foreach (user_group aGroup in user_group)
             {

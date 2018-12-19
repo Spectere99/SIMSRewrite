@@ -529,8 +529,11 @@ export class OrderInvoiceComponent implements OnInit {
     doc.rect(5, lineLocation - 4, 128, 5);
     doc.text(135, lineLocation, lineItem.C5xl_qty === null ? '' : lineItem.C5xl_qty.toString());
     doc.rect(5, lineLocation - 4, 135, 5);
-    doc.text(143, lineLocation, this.getSizeTypeDescription(lineItem.other1_type));
-    doc.text(152, lineLocation, lineItem.other1_qty === null ? '' : lineItem.other1_qty.toString());
+    // console.log('other1_type', lineItem);
+    if (lineItem.other1_qty !== null) {
+      doc.text(143, lineLocation, this.getSizeTypeDescription(lineItem.other1_type) + '(' + (lineItem.other1_qty === null ? '' : lineItem.other1_qty.toString()) + ')');
+    }
+    //doc.text(152, lineLocation, );
     doc.rect(5, lineLocation - 4, 152, 5);
     doc.text(160, lineLocation, lineItem.item_quantity === null ? '' : lineItem.item_quantity.toString());
     doc.rect(5, lineLocation - 4, 160, 5);

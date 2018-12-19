@@ -95,7 +95,7 @@
                 <input type="text" size="1" [(ngModel)]="orderDetail.C5xl_qty" (keyup)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <select class="form-control form-control-sm" style="font-size: 1vw; width:auto;" (ngModel)="orderDetail.other1_type" (ngModelChange)="onOtherQtyChange($event, i);">
+                <select class="form-control form-control-sm" style="font-size: 1vw; width:auto;" [(ngModel)]="orderDetail.other1_type">
                   <option></option>
                   <option *ngFor="let itm of sizeTypes" [value]="itm.char_mod">
                     {{itm.description}}
