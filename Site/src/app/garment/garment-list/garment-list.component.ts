@@ -126,7 +126,7 @@ export class GarmentListComponent implements OnInit {
   }
 
   applyChanges() {
-    this.orderInfo.batchSave().subscribe(res => {
+    /* this.orderInfo.batchSave().subscribe(res => {
       this.orderDetail.batchSave(res);
       // Still need art tab batch save.
       this.orderArt.batchSave(res);
@@ -137,7 +137,51 @@ export class GarmentListComponent implements OnInit {
         this.gridOrders.instance.refresh();
       }, 1000);
       this.popupVisible = false;
-    });
+    }); */
+    // console.log('customer-order_list: applyChanges');
+    if (this.orderInfo.isValid()) {
+      this.orderInfo.batchSave().subscribe(res => {
+        this.orderDetail.batchSave(res);
+        // Still need art tab batch save.
+        this.orderArt.batchSave(res);
+        // console.log('orderTaskList on ApplyChanges', this.orderTaskList.orderTask);
+        // console.log('order balance_due', this.selectedOrderMaster.balance_due);
+        // console.log('order', this.selectedOrderMaster);
+        this.selectedOrderMaster.order_id = res;
+        // tslint:disable-next-line:max-line-length
+        if (+this.selectedOrderMaster.balance_due === 0.00 && (this.selectedOrderMaster.order_payments && this.selectedOrderMaster.order_payments.length > 0)) {
+          // console.log('balance is paid!');
+          const fpmtTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'fnpmt');
+          if (fpmtTask) {
+            fpmtTask[0].is_complete = 'Y';
+            fpmtTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();;
+            fpmtTask[0].completed_date = new Date().toISOString();
+          }
+        }
+        if (this.selectedOrderMaster.order_payments) {
+          if (this.selectedOrderMaster.order_payments.length >= 1) {
+            const depTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'deprc');
+            if (depTask) {
+              depTask[0].is_complete = 'Y';
+              depTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();;
+              depTask[0].completed_date = new Date().toISOString();
+            }
+            // console.log('depost is paid!', this.selectedOrderMaster.order_payments);
+          }
+        }
+
+        this.orderTaskList.batchSave(res);
+        this.orderNotesHistory.batchSave(res);
+        setTimeout(() => {
+          this.gridOrders.instance.refresh();
+          this.loadOrder(this.selectedOrderMaster);
+          this.popupVisible = false;
+        }, 1000);
+        
+      });
+    } else {
+      alert('Order Due Date, Order Type, and Order Status are required.');
+    }
   }
 
   onValueChanged(event) {
@@ -241,10 +285,14 @@ export class GarmentListComponent implements OnInit {
   }
 
   showEditPopup(e) {
+    // console.log('E', e);
+    // console.log('customer', e.data.order.customer_id);
+    this.loadOrder(e.data);
+    this.popupVisible = true;
     // e.cancel = true;
     // console.log('E', e);
     // console.log('*** garment-list-comopnent:showEditPopup - START');
-    this.loadingOrder = true;
+    /* this.loadingOrder = true;
     this.loading = true;
     this.selectedOrder = e.data;
     this.selectedOrderMaster = e.data;
@@ -287,8 +335,63 @@ export class GarmentListComponent implements OnInit {
       this.loadingOrder = false;
       this.loading = false;
       this.popupVisible = true;
-    });
+    }); */
     // console.log('*** garment-list-comopnent:showEditPopup - LEAVING');
+  }
+
+  loadOrder(e) {
+    this.loadingOrder = true;
+    this.loading = true;
+    // this.selectedOrder = e;
+    this.selectedOrderMaster = e;
+    let customerId = 0;
+    // console.log('loadOrder', e);
+    if (e.order) {
+      customerId = e.order.customer_id;
+    } else {
+      customerId = e.customer_id;
+    }
+    forkJoin(
+      this.orderService.loadOrderData('', this.selectedOrderMaster.order_id), // 0
+      this.orderService.loadArtPlacementData('', this.selectedOrderMaster.order_id), // 1
+      this.orderService.loadOrderFeeData('', this.selectedOrderMaster.order_id), // 2
+      this.orderService.loadOrderPaymentData('', this.selectedOrderMaster.order_id), // 3
+      this.orderService.loadOrderArtFileData('', this.selectedOrderMaster.order_id), // 4
+      this.orderService.loadOrderNotesData('', this.selectedOrderMaster.order_id), // 5
+      this.orderService.loadOrderStatusHistoryData('', this.selectedOrderMaster.order_id), // 6
+      this.orderService.loadOrderTaskData('', this.selectedOrderMaster.order_id), // 7
+      this.correspondenceService.getCorrespondenceData('', this.selectedOrderMaster.order_id), // 8
+      this.customerService.getCustomerData('', customerId) // 9
+    ).subscribe(results => {
+      // console.log('selectedOrder', this.selectedOrderMaster);
+      // console.log('forkJoin Return', results);
+      this.selectedOrderMaster = results[0];
+      this.selectedOrderLines = results[0].order_detail;
+      this.selectedOrderMaster.order_detail = results[0].order_detail;
+      this.selectedArtPlacements = results[1].order_art_placement;
+      this.selectedOrderMaster.order_art_placements = results[1].order_art_placement;
+      this.selectedOrderFees = results[2].order_fees;
+      this.selectedOrderMaster.order_fees = results[2].order_fees;
+      this.selectedPayments = results[3].order_payments;
+      this.selectedOrderMaster.order_payments = results[3].order_payments;
+      this.selectedArtFiles = results[4].order_art_file;
+      this.selectedOrderMaster.order_art_file = results[4].order_art_file;
+      this.selectedNotes = results[5].order_notes;
+      this.selectedOrderMaster.order_notes = results[5].order_notes;
+      this.selectedStatusHistory = results[6].order_status_history;
+      this.selectedOrderMaster.order_status_histories = results[6].order_status_history;
+      this.selectedTasks = results[7].order_task;
+      this.selectedOrderMaster.order_tasks = results[7].order_task;
+      this.selectedCorrespondence = results[8].correspondences;
+      this.selectedOrderMaster.order_correspondence = results[8].correspondences;
+      this.selectedOrderMaster.customer = this.customer;
+      this.customer = results[9];
+      // console.log('Order Master Return', this.selectedOrderMaster);
+      // console.log('Customer Return from Load-Data', this.customer);
+      this.loadingOrder = false;
+      this.loading = false;
+      // this.popupVisible = true;
+    });
   }
 
   ngOnInit() {

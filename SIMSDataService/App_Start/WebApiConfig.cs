@@ -19,6 +19,8 @@ namespace SIMSDataService
     {
         public static void Register(HttpConfiguration config)
         {
+            log4net.Config.XmlConfigurator.Configure();
+
             // Web API configuration and services
             // Web API configuration and services
             var cors = new EnableCorsAttribute(

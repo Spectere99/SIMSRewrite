@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Cors;
 using System.Web.Http.OData;
+using log4net;
 using SIMSEntities;
 
 namespace SIMSDataService.Controllers
@@ -29,13 +30,24 @@ namespace SIMSDataService.Controllers
     public class OrdersController : ODataController
     {
         private simsEntities db = new simsEntities();
-
+        static ILog _log = log4net.LogManager.GetLogger(
+            System.Reflection.MethodBase.GetCurrentMethod().DeclaringType
+        );
         // GET: odata/Orders
         [EnableQuery]
         public IQueryable<order> GetOrders()
         {
             db.Database.CommandTimeout = 180;
-            return db.orders;
+            try
+            {
+                return db.orders;
+            }
+            catch (Exception e)
+            {
+                _log.Error("An error occurred while getting Orders.", e);
+                return null;
+            }
+            
         }
 
         // GET: odata/Orders(5)
@@ -101,6 +113,9 @@ namespace SIMSDataService.Controllers
         // POST: odata/Orders
         public async Task<IHttpActionResult> Post(order order)
         {
+            Boolean usePrefix = Boolean.Parse(System.Configuration.ConfigurationManager.AppSettings["UseLocationPrefix"]);
+            string locationPrefix = System.Configuration.ConfigurationManager.AppSettings["LocationPrefix"];
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -124,7 +139,15 @@ namespace SIMSDataService.Controllers
             order.order_date = startDate;
 
             List<order> todaysOrders = db.orders.Where(p => p.order_date == startDate).ToList();
-            order.order_number = order.order_number + (todaysOrders.Count + 1);
+
+            if (usePrefix)
+            {
+                order.order_number = locationPrefix + order.order_number + (todaysOrders.Count + 1);
+            }
+            else
+            {
+                order.order_number = order.order_number + (todaysOrders.Count + 1);
+            }
 
             db.orders.Add(order);
 

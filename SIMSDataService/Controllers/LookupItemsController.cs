@@ -11,6 +11,7 @@ using System.Web.Http.Cors;
 using System.Web.Http.ModelBinding;
 using System.Web.Http.OData;
 using System.Web.Http.OData.Routing;
+using log4net;
 using SIMSEntities;
 
 namespace SIMSDataService.Controllers
@@ -29,12 +30,22 @@ namespace SIMSDataService.Controllers
     public class LookupItemsController : ODataController
     {
         private simsEntities db = new simsEntities();
-
+        static ILog _log = log4net.LogManager.GetLogger(
+            System.Reflection.MethodBase.GetCurrentMethod().DeclaringType
+        );
         // GET: odata/LookupItems
         [EnableQuery]
         public IQueryable<lookup_items> GetLookupItems()
         {
-            return db.lookup_items;
+            try
+            {
+                return db.lookup_items;
+            }
+            catch (Exception e)
+            {
+                _log.Error("An error occurred while getting Lookup Items.", e);
+                return null;
+            }
         }
 
         // GET: odata/LookupItems(5)

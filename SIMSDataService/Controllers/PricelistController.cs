@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Web.Http.ModelBinding;
 using System.Web.Http.OData;
 using System.Web.Http.OData.Routing;
+using log4net;
 using SIMSEntities;
 
 namespace SIMSDataService.Controllers
@@ -28,12 +29,23 @@ namespace SIMSDataService.Controllers
     public class PricelistController : ODataController
     {
         private simsEntities db = new simsEntities();
-
+        static ILog _log = log4net.LogManager.GetLogger(
+            System.Reflection.MethodBase.GetCurrentMethod().DeclaringType
+        );
         // GET: odata/Pricelist
         [EnableQuery]
         public IQueryable<pricelist> GetPricelist()
         {
-            return db.pricelists;
+            try
+            {
+                return db.pricelists;
+            }
+            catch (Exception e)
+            {
+                _log.Error("An error occurred while getting Pricelist Items.", e);
+                return null;
+            }
+            
         }
 
         // GET: odata/Pricelist(5)

@@ -11,6 +11,7 @@ using System.Web.Http;
 using System.Web.Http.ModelBinding;
 using System.Web.Http.OData;
 using System.Web.Http.OData.Routing;
+using log4net;
 using SIMSEntities;
 
 namespace SIMSDataService.Controllers
@@ -28,12 +29,23 @@ namespace SIMSDataService.Controllers
     public class UsersController : ODataController
     {
         private simsEntities db = new simsEntities();
-
+        static ILog _log = log4net.LogManager.GetLogger(
+            System.Reflection.MethodBase.GetCurrentMethod().DeclaringType
+        );
         // GET: odata/Users
         [EnableQuery]
         public IQueryable<user> GetUsers()
         {
-            return db.users;
+            try
+            {
+                return db.users;
+            }
+            catch (Exception e)
+            {
+                _log.Error("An error occurred while getting User Items.", e);
+                return null;
+            }
+            
         }
 
         // GET: odata/Users(5)
