@@ -73,7 +73,8 @@ export class GarmentListComponent implements OnInit {
   filterNames = [
     'Default',
     'Today',
-    'All'
+    'All',
+    'Arriving Today'
   ];
   currentFilter = undefined;
 
@@ -97,6 +98,9 @@ export class GarmentListComponent implements OnInit {
 
   allOrderFilter = [
                 ['order/order_status', '=', 'ord']];
+
+  arrivingTodayFilter = [
+                    ['garment_recvd_date', '=', this.getToday()]];
 
   window;
   constructor(globalDataProvider: GlobalDataProvider, public lookupService: LookupService, public userService: UserService,
@@ -206,6 +210,10 @@ export class GarmentListComponent implements OnInit {
         this.currentFilter = this.allOrderFilter;
         // console.log('Custom Filter', this.currentFilter);
         // this.gridOrders.instance.refresh();
+        break;
+      }
+      case 'Arriving Today': {
+        this.currentFilter = this.arrivingTodayFilter;
         break;
       }
     }

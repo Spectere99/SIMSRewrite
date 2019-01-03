@@ -733,7 +733,7 @@ export class OrderListComponent implements OnInit {
   }
 
   showOrderSummary(e) {
-    // console.log('showOrderSummary', e);
+    console.log('showOrderSummary', e);
 
     this.selectedOrderMaster = e;
     this.summaryVisible = true;

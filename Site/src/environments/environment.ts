@@ -6,7 +6,7 @@
 export const baseUrl = 'http://localhost:56543';
 // export const baseUrl = 'http://192.168.1.5:8888';
 export const environmentName = 'Test';
-export const version = '0.82';
+export const version = '0.85';
 export const connectionTimeout = 100000;
 export const environment = {
   production: false,

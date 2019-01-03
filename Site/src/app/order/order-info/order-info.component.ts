@@ -179,17 +179,31 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   isValid(): boolean {
+    console.log('isValid', this.currentOrder);
     let valid = false;
-    valid = this.currentOrder.order_due_date !== undefined && this.currentOrder.order_due_date !== null
-            && this.currentOrder.order_due_date.length > 0;
-    if (valid) {
+    // valid = this.currentOrder.order_due_date !== undefined && this.currentOrder.order_due_date !== null
+    //         && this.currentOrder.order_due_date.length > 0;
+    if (this.currentOrder.order_due_date) {
+      valid = true;
+      if (this.currentOrder.order_type) {
+        valid = true
+        if (this.currentOrder.order_status) {
+          valid = true;
+        } else {
+          valid = false;
+        }
+      } else {
+        valid = false;
+      }
+    }
+    /* if (valid) {
       valid = this.currentOrder.order_type !== undefined && this.currentOrder.order_type !== null
             && this.currentOrder.order_type.length > 0;
     }
     if (valid) {
       valid = this.currentOrder.order_status !== undefined && this.currentOrder.order_status !== null 
             && this.currentOrder.order_status.length > 0;
-    }
+    } */
     return valid;
   }
 
