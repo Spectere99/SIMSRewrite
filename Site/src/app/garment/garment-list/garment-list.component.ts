@@ -241,6 +241,16 @@ export class GarmentListComponent implements OnInit {
           jsonp: false,
           beforeSend: function (url, async, method, timeout, params, payload, headers) {
             // console.log('beforeSend', url, async, method, timeout, params, payload, headers);
+          },
+          onUpdating: function (key, values) {
+            console.log('key', key);
+            console.log('values', values);
+            if (values.hasOwnProperty('checked_in_ind')) {
+              values.checked_in_ind = values.checked_in_ind ? 'Y' : 'N';
+            }
+            if (values.hasOwnProperty('checked_out_ind')) {
+              values.checked_out_ind = values.checked_out_ind ? 'Y' : 'N';
+            }
           }
       },
       expand: ['order'],
