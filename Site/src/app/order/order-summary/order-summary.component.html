@@ -76,23 +76,23 @@
           </legend>
           <!--includeif tableempty="ORDER_DETAIL"-->
           <div *ngIf="currentOrder?.order_detail === undefined || currentOrder?.order_detail.length === 0">No line items.</div>
-          <table class="SmallBodyText" cellpadding="0" cellspacing="0" border="0">
+          <table class="SmallBodyText" cellpadding="0" cellspacing="0" border="1">
             <tr>
               <th>#</th>
               <th>Qty</th>
               <th>Item</th>
               <th>Y/A</th>
               <th>Color</th>
-              <th>XS</th>
-              <th>S</th>
-              <th>M</th>
-              <th>L
-              <th>XL</th>
-              <th>2XL</th>
-              <th>3XL</th>
-              <th>4XL</th>
-              <th>5XL</th>
-              <th>Qty</th>
+              <th style="width:20px">XS</th>
+              <th style="width:20px">S</th>
+              <th style="width:20px">M</th>
+              <th style="width:20px">L</th>
+              <th style="width:20px">XL</th>
+              <th style="width:20px">2XL</th>
+              <th style="width:20px">3XL</th>
+              <th style="width:20px">4XL</th>
+              <th style="width:20px">5XL</th>
+              <th style="width:50px"></th>
               <th>Vendor</th>
               <th>Mfgr</th>
               <th>Style #</th>
@@ -104,7 +104,8 @@
                     <b>{{lineItem.item_line_number}}</b>
                   </td>
                   <td>{{lineItem.item_quantity}}</td>
-                  <td>{{getItemDescription(lineItem.pricelist_id)}}</td>
+                  <td>{{getItemDescription(lineItem.pricelist_id)}}<br>
+                      <i>{{lineItem.notes}}</i></td>
                   <td>{{getStyleDescription(lineItem.style_code)}}</td>
                   <td>{{lineItem.color_code}}</td>
                   <td>{{lineItem.xsmall_qty}}</td>
@@ -116,7 +117,7 @@
                   <td>{{lineItem.C3xl_qty}}</td>
                   <td>{{lineItem.C4xl_qty}}</td>
                   <td>{{lineItem.C5xl_qty}}</td>
-                  <td>{{lineItem.other1_qty}}</td>
+                  <td><i><b>{{getLookupDescription(lineItem.other1_type)}}</b></i> {{lineItem.other1_qty}}</td>
                   <td>{{getLookupDescription(lineItem.vendor)}}</td>
                   <td>{{lineItem.manufacturer}}</td>
                   <td>{{lineItem.product_code}}</td>

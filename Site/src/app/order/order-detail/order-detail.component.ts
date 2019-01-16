@@ -74,7 +74,7 @@ export class OrderDetailComponent implements OnInit {
     this.lookupDataSource = globalDataProvider.getLookups();
     this.priceListDataSource = globalDataProvider.getPriceList();
     this.userDataSource = globalDataProvider.getUsers();
-
+    console.log('userDataSource', this.userDataSource);
     this.sizeTypes = this.createLookupTypeSource('ssiz');
     this.styleTypes = this.createLookupTypeSource('sclas');
     this.vendorTypes = this.createLookupTypeSource('vend');
@@ -146,6 +146,28 @@ export class OrderDetailComponent implements OnInit {
     }
   }
 
+  onOrderItemClick(e, orderDetail, idx) {
+    orderDetail.item_price_each = 0.00;
+    orderDetail.pricelist_id = e;
+    this.onQtyPriceChange(e, idx);
+  }
+
+  onVendorSelect(e, orderDetail, idx) {
+    console.log('onVendorSelect', e);
+    if (e==='gmtpr') {
+      orderDetail.taxable_ind = 'N'
+      this.onTaxRateChange('N');
+      this.onQtyPriceChange(e, idx);
+    }
+    
+  }
+
+  onOther1TypeSelect(e, orderDetail, idx) {
+    console.log('onOther1TypeSelect', e);
+    if (e==='') {
+      orderDetail.other1_type = null;
+    }
+  }
   addLineItem(e) {
     const lineItem = new OrderDetail();
 
@@ -379,9 +401,15 @@ export class OrderDetailComponent implements OnInit {
     // console.log('Order Detail onChange Event', e.target.value);
     // console.log('Order Index item', idx);
     // console.log('Order Item Price Change', e.target);
-    if (e.target.value.legnth === 0) {
-      e.target.value = null;
+    if (e.target) {
+      // console.log('onQtyPriceChange', e.target.value.length);
+      if (e.target.value.length === 0) {
+        e.target.value = null;
+        // console.log('onQtyPriceChange', e.target);
+      }
     }
+    // console.log('onQtyPriceChange:orderDetail', this.masterOrder.order_detail[idx]);
+    
     let totalItemQty = 0;
     // const orderLine = this.order.order_detail[idx];
     const orderLine = this.masterOrder.order_detail[idx];
@@ -573,6 +601,7 @@ export class OrderDetailComponent implements OnInit {
     orderDetail.C3xl_qty = +orderDetail.C3xl_qty === 0 ? null : +orderDetail.C3xl_qty;
     orderDetail.C4xl_qty = +orderDetail.C4xl_qty === 0 ? null : +orderDetail.C4xl_qty;
     orderDetail.C5xl_qty = +orderDetail.C5xl_qty === 0 ? null : +orderDetail.C5xl_qty;
+    orderDetail.other1_qty = +orderDetail.other1_qty === 0 ? null : +orderDetail.other1_qty;
     return orderDetail;
   }
   saveArtPlacement(artPlacement: OrderArtPlacement) {

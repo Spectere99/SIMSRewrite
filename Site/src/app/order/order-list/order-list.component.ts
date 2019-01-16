@@ -243,38 +243,38 @@ export class OrderListComponent implements OnInit {
     reOrderObj.assigned_user_id = this.userProfile.profile.user_id;
 
     // console.log ('customer_order-list:reOrder-reOrderObj', reOrderObj);
-    this.orderService.addOrderInfo(this.userProfile.profile.login_id, reOrderObj).subscribe(res => {
+    this.orderService.addOrderInfo(this.userProfile.profile.login_id.toUpperCase(), reOrderObj).subscribe(res => {
       // console.log('Order ID Return', res);
       reOrderObj.order_id = res.order_id;
       reOrderObj.order_number = res.order_number;
       const reOrderDetails = this.cloneOrderDetails(this.selectedOrderMaster.order_detail, res.order_id);
       reOrderDetails.forEach((item) => {
         // console.log('Cloning OrderLine', item);
-        this.orderService.addOrderLineItem(this.userProfile.profile.login_id, item).subscribe();
+        this.orderService.addOrderLineItem(this.userProfile.profile.login_id.toUpperCase(), item).subscribe();
       });
 
       const reOrderArtFiles = this.cloneOrderArtFiles(this.selectedOrderMaster.order_art_file, res.order_id);
       reOrderArtFiles.forEach((item) => {
         // console.log('Cloning Art File', item);
-        this.orderService.addOrderArtFile(this.userProfile.profile.login_id, item).subscribe();
+        this.orderService.addOrderArtFile(this.userProfile.profile.login_id.toUpperCase(), item).subscribe();
       });
 
       const reOrderFees = this.cloneOrderFees(this.orderDetail.orderFees, res.order_id);
       reOrderFees.forEach((item) => {
         // console.log('Cloning Order Fees', item);
-        this.orderService.addOrderFee(this.userProfile.profile.login_id, item).subscribe();
+        this.orderService.addOrderFee(this.userProfile.profile.login_id.toUpperCase(), item).subscribe();
       });
 
       const reOrderArtPlacement = this.cloneOrderArtPlacement(this.selectedOrderMaster.order_art_placements, res.order_id);
       reOrderArtPlacement.forEach((item) => {
         // console.log('Cloning Art Placements', item);
-        this.orderService.addOrderArtPlacement(this.userProfile.profile.login_id, item).subscribe();
+        this.orderService.addOrderArtPlacement(this.userProfile.profile.login_id.toUpperCase(), item).subscribe();
       });
 
       const reOrderTaskList = this.orderTaskList.createOrderTaskList(res.order_id, reOrderObj.order_type);
       reOrderTaskList.forEach((item) => {
         // console.log('Cloning Order Task', item);
-        this.orderService.addOrderTask(this.userProfile.profile.login_id, item).subscribe();
+        this.orderService.addOrderTask(this.userProfile.profile.login_id.toUpperCase(), item).subscribe();
       });
 
       this.createCloneHistoryStatus(reOrderObj);

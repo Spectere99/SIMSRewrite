@@ -51,7 +51,7 @@
                 <input type="checkbox" id="checkedout_ind" name="chkOut" value="'Y'" [checked]="orderDetail.checked_out_ind === 'Y'" (change)="orderDetail.checked_out_ind = $event.target.checked ? 'Y' : 'N'">
               </td>
               <td>
-                <select class="form-control form-control-sm" style="font-size: 11px; width:auto;" [(ngModel)]="orderDetail.pricelist_id">
+                <select class="form-control form-control-sm" style="font-size: 11px; width:auto;" [ngModel]="orderDetail.pricelist_id" (ngModelChange)="onOrderItemClick($event, orderDetail, i)">
                   <option *ngFor="let itm of itemTypes" [value]="itm.pricelist_id">
                     {{itm.pricelist_description}}
                   </option>
@@ -95,7 +95,7 @@
                 <input type="text" size="1" [(ngModel)]="orderDetail.C5xl_qty" (keyup)="onQtyPriceChange($event, i)">
               </td>
               <td>
-                <select class="form-control form-control-sm" style="font-size: 1vw; width:auto;" [(ngModel)]="orderDetail.other1_type">
+                <select class="form-control form-control-sm" style="font-size: 1vw; width:auto;" [ngModel]="orderDetail.other1_type" (ngModelChange)="onOther1TypeSelect($event, orderDetail, 1)">
                   <option></option>
                   <option *ngFor="let itm of sizeTypes" [value]="itm.char_mod">
                     {{itm.description}}
@@ -146,7 +146,7 @@
                 <input class="form-control" type="date" [ngModel]="orderDetail.garment_recvd_date | date:'yyyy-MM-dd'" (ngModelChange)="orderDetail.garment_recvd_date = $event">
               </td>
               <td>
-                <select class="form-control form-control-sm" style="font-size: 11px; width:auto;" [(ngModel)]="orderDetail.vendor">
+                <select class="form-control form-control-sm" style="font-size: 11px; width:auto;" [ngModel]="orderDetail.vendor" (ngModelChange)="onVendorSelect($event, orderDetail, i)">
                   <option *ngFor="let itm of vendorTypes" [value]="itm.char_mod">
                     {{itm.description}}
                   </option>
@@ -196,7 +196,7 @@
             <td style="font-size:10px;"></td>
             <td style="font-size:10px;">Art Placement</td>
             <td style="font-size:10px;">Colors</td>
-            <td style="font-size:10px;">Color Codes</td>
+            <!-- <td style="font-size:10px;">Color Codes</td> -->
             <td style="font-size:10px;">Added By</td>
             <td style="font-size:10px;">Added Date</td>
           </tr>
@@ -216,12 +216,12 @@
             <td>
               <input class="form-control" type="text" size="40"  [(ngModel)]="artPlacement.colors">
             </td>
-            <td>
+            <!-- <td>
               <input class="form-control" type="text" size="40"  [(ngModel)]="artPlacement.color_codes">
-            </td>
+            </td> -->
             <td>
               <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="artPlacement.added_by">
-                  <option *ngFor="let user of userDataSource" [value]="user.login_id">
+                  <option *ngFor="let user of userDataSource" [value]="user.login_id?.toUpperCase()">
                       {{user.first_name + ' ' + user.last_name}}
                   </option>
                 </select>

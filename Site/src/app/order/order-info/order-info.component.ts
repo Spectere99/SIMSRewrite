@@ -112,7 +112,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     orderToSave.act_complete_date =  order.act_complete_date;
     orderToSave.shipped_date =  order.shipped_date;
     orderToSave.subtotal =  order.subtotal.toString();
-    orderToSave.tax_rate =  order.tax_rate.toString();
+    orderToSave.tax_rate =  order.tax_rate == null ? '0.0' : order.tax_rate.toString();
     orderToSave.tax_amount =  order.tax_amount.toString();
     orderToSave.shipping =  order.shipping.toString();
     orderToSave.total =  order.total.toString();

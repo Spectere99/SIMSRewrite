@@ -67,6 +67,7 @@ export class CustomerOrderListComponent implements OnInit {
   leaveWindowOpen: true;
   loading: boolean;
   loadingOrder: boolean;
+  currentTab = 0;
   window;
 
   constructor(globalDataProvider: GlobalDataProvider, public orderService: OrderService, lookupService: LookupService,
@@ -252,7 +253,7 @@ export class CustomerOrderListComponent implements OnInit {
         this.orderService.addOrderTask(this.userProfile.profile.login_id.toUpperCase(), item).subscribe();
       });
 
-      this.createCloneHistoryStatus(reOrderObj);
+      // this.createCloneHistoryStatus(reOrderObj);
 
       setTimeout(() => {
         this.gridOrders.instance.refresh();

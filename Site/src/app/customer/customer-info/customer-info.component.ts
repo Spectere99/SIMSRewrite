@@ -81,15 +81,10 @@ ctrlHasFocus: string;
     // Save General Customer Information from the model.
     this.customer.customer_id = customer_id;
     return this.saveCustomer(this.customer).map(res => {
-      // console.log('return from Save Customer Subscribe', res);
-      // Loop throught this.customer.customer_address Array
-      /* if (this.customer.customer_address) {
-        for (let x = 0; x < this.customer.customer_address.length; x++) {
-          this.customer.customer_address[x].customer_id = res;
-          // console.log('Address on Save Customer', this.customer.customer_address);
-          this.saveAddress(this.customer.customer_address[x]);
-        }
-      } */
+      this.customerService.getActiveParentCustomers('rwflowers').subscribe(res => {
+        this.customerList = res.value;
+        console.log('customerList', this.customerList);
+      });
       return res;
     });
 
@@ -107,7 +102,7 @@ ctrlHasFocus: string;
         setup_date: formattedDate,
         setup_by: customer.setup_by === undefined ? null : customer.setup_by,
         status_code: customer.status_code === undefined ? 'act' : customer.status_code,
-        ship_to_bill_ind: customer.ship_to_bill_ind === undefined ? 'N' : customer.ship_to_bill_ind ? 'Y' : 'N',
+        ship_to_bill_ind: customer.ship_to_bill_ind === undefined ? 'N' : customer.ship_to_bill_ind, // ? 'Y' : 'N',
         website_url: customer.website_url === undefined ? null : customer.website_url,
         account_number: customer.account_number === undefined ? null : customer.account_number,
         override_validation_ind: customer.override_validation_ind === undefined ? 'N' : customer.override_validation_ind,

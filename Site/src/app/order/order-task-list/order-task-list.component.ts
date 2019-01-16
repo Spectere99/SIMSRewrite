@@ -92,10 +92,10 @@ userProfile;
     // console.log('Saving Order Task - OrderId:', orderId);
     // Need to pull the existing tasks and loop through to delete them
     // before adding the new task list updates.
-    this.orderService.loadOrderTaskData(this.userProfile.profile.login_id, orderId)
+    this.orderService.loadOrderTaskData(this.userProfile.profile.login_id.toUpperCase(), orderId)
       .subscribe(res => {
         const toDelete = res;
-        this.orderService.deleteOrderTask(this.userProfile.profile.login_id, orderId)
+        this.orderService.deleteOrderTask(this.userProfile.profile.login_id.toUpperCase(), orderId)
         .subscribe(delRes => {
           // console.log('Delete Response', delRes);
           for (let x = 0; x < this.orderTask.length; x++) {

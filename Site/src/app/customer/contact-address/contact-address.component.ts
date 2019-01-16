@@ -15,6 +15,7 @@ import { ConfirmDialogComponent } from '../../_shared/confirm/confirm.component'
 import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { validateConfig } from '@angular/router/src/config';
 
 @Component({
   selector: 'app-contact-address',
@@ -178,6 +179,24 @@ export class ContactAddressComponent implements OnInit {
   showValues() {
     alert(this.customer.customer_name);
   }
+
+  isValid(): boolean {
+    let valid = true;
+    if (this.customer.customer_address && this.customer.customer_address.length > 0) {
+      console.log('isValid', this.customer.customer_address);
+      valid = false;
+      for (let x = 0; x < this.customer.customer_address.length; x++) {
+        if (this.customer.customer_address[x].type_code) {
+          valid = true;
+          } else {
+            valid = false;
+            break;
+          }
+      }
+    }
+    return valid;
+  }
+    
   ngOnInit() {
   }
 
