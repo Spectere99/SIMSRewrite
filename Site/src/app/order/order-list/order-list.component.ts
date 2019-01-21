@@ -213,7 +213,7 @@ export class OrderListComponent implements OnInit {
     this.selectedOrderMaster.customer_id = customer_id;
     this.selectedOrderMaster.customer = this.customer;
     this.selectedOrderMaster.order_number = this.formatOrderNumber(today);
-    this.selectedOrderMaster.order_date = today.toISOString();
+    this.selectedOrderMaster.order_date = this.toISOLocal(today);
     this.selectedOrderMaster.taken_user_id = this.userProfile.profile.user_id;
     this.selectedOrderMaster.order_detail = [];
     this.selectedOrderMaster.order_art_placements = [];
@@ -277,7 +277,7 @@ export class OrderListComponent implements OnInit {
         this.orderService.addOrderTask(this.userProfile.profile.login_id.toUpperCase(), item).subscribe();
       });
 
-      this.createCloneHistoryStatus(reOrderObj);
+      // this.createCloneHistoryStatus(reOrderObj);
 
       setTimeout(() => {
         this.gridOrders.instance.refresh();
@@ -394,7 +394,7 @@ export class OrderListComponent implements OnInit {
     newOrder.order_id = 0;
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    //newOrder.order_date = today.toDateString();
+    // newOrder.order_date = today.toDateString();
     newOrder.order_date = this.toISOLocal(today);
     console.log('!!!cloneOrder: newOrder.order_date', newOrder.order_date);
     newOrder.order_number = this.formatOrderNumber(today);
@@ -671,7 +671,7 @@ export class OrderListComponent implements OnInit {
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    
+
     this.selectedOrderMaster = new OrderMaster();
     this.selectedOrderMaster.order_id = 0;
     this.selectedOrderMaster.tax_rate = '7.0';
@@ -755,14 +755,14 @@ export class OrderListComponent implements OnInit {
   }
 
   toISOLocal(d) {
-    var z = n => (n<10? '0':'')+n;
-    var off = d.getTimezoneOffset();
-    var sign = off < 0? '+' : '-';
+    const z = n => (n < 10 ? '0' : '' ) + n;
+    let off = d.getTimezoneOffset();
+    const sign = off < 0 ? '+' : '-';
     off = Math.abs(off);
-  
-    return d.getFullYear() + '-' + z(d.getMonth()+1) + '-' +
-           z(d.getDate()) + 'T' + z(d.getHours()) + ':'  + z(d.getMinutes()) + 
-           ':' + z(d.getSeconds()); // + sign + z(off/60|0) + z(off%60); 
+
+    return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' +
+           z(d.getDate()) + 'T' + z(d.getHours()) + ':'  + z(d.getMinutes()) +
+           ':' + z(d.getSeconds()); // + sign + z(off/60|0) + z(off%60);
   }
 
 }

@@ -188,7 +188,7 @@ export class CustomerOrderListComponent implements OnInit {
     this.selectedOrderMaster.customer_id = customer_id;
     this.selectedOrderMaster.customer = this.customer;
     this.selectedOrderMaster.order_number = this.formatOrderNumber(today);
-    this.selectedOrderMaster.order_date = today.toISOString();
+    this.selectedOrderMaster.order_date = this.toISOLocal(today);
     this.selectedOrderMaster.taken_user_id = this.userProfile.profile.user_id;
     this.selectedOrderMaster.order_detail = [];
     this.selectedOrderMaster.order_art_placements = [];
@@ -597,7 +597,7 @@ export class CustomerOrderListComponent implements OnInit {
           const fpmtTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'fnpmt');
           if (fpmtTask) {
             fpmtTask[0].is_complete = 'Y';
-            fpmtTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();;
+            fpmtTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();
             fpmtTask[0].completed_date = new Date().toISOString();
           }
         }
@@ -606,7 +606,7 @@ export class CustomerOrderListComponent implements OnInit {
             const depTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'deprc');
             if (depTask) {
               depTask[0].is_complete = 'Y';
-              depTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();;
+              depTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();
               depTask[0].completed_date = new Date().toISOString();
             }
             console.log('depost is paid!', this.selectedOrderMaster.order_payments);
@@ -721,7 +721,7 @@ export class CustomerOrderListComponent implements OnInit {
   showOrderSummary(e) {
     console.log('showOrderSummary', e);
 
-    //this.selectedOrder = e;
+    // this.selectedOrder = e;
     this.selectedOrderMaster = e;
     this.summaryVisible = true;
   }
