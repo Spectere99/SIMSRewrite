@@ -1,12 +1,15 @@
+import * as Rollbar from 'rollbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { NgModule, APP_INITIALIZER, ErrorHandler } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector, InjectionToken} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Http, HttpModule, Headers, RequestMethod, RequestOptions } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { CustomErrorHandler } from './custom-error-handler';
 
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { DevExtremeModule, DxTemplateModule, DxPopupModule,
@@ -80,6 +83,28 @@ import { CustomerItemComponent } from './customer/customer-item/customer-item.co
   { path: '',   redirectTo: '/Login', pathMatch: 'full' },
 ]; */
 
+const rollbarConfig = {
+  accessToken: '3de9236eacb74fd3b2bebb5106204c2c',
+  captureUncaught: true,
+  captureUnhandledRejections: true,
+};
+
+@Injectable()
+export class RollbarErrorHandler implements ErrorHandler {
+  constructor(private injector: Injector) {}
+
+  handleError(err:any) : void {
+    var rollbar = this.injector.get(RollbarService);
+    rollbar.error(err.originalError || err);
+  }
+}
+
+export function rollbarFactory() {
+    return new Rollbar(rollbarConfig);
+}
+
+export const RollbarService = new InjectionToken<Rollbar>('rollbar');
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -151,7 +176,9 @@ import { CustomerItemComponent } from './customer/customer-item/customer-item.co
   providers: [DatePipe, ArraySortPipe, UpperCasePipe, AuthenticationService, AuthGuard,
               LookupService, PriceListService, UserService, GlobalDataProvider, WindowRef,
               { provide: APP_INITIALIZER, useFactory: globalDataProviderFactory, deps:
-                [GlobalDataProvider], multi: true}],
+                [GlobalDataProvider], multi: true},
+                { provide: ErrorHandler, useClass: RollbarErrorHandler },
+                { provide: RollbarService, useFactory: rollbarFactory }],
   entryComponents: [ConfirmDialogComponent],
   bootstrap: [AppComponent]
 })

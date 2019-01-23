@@ -12,6 +12,7 @@ using System.Web.Http.Cors;
 using System.Web.Http.ModelBinding;
 using System.Web.Http.OData;
 using System.Web.Http.OData.Routing;
+using log4net;
 using SIMSEntities;
 
 namespace SIMSDataService.Controllers
@@ -31,7 +32,9 @@ namespace SIMSDataService.Controllers
     public class OrderDetailsController : ODataController
     {
         private simsEntities db = new simsEntities();
-
+        static ILog _log = log4net.LogManager.GetLogger(
+            System.Reflection.MethodBase.GetCurrentMethod().DeclaringType
+        );
         // GET: odata/OrderDetails
         [EnableQuery]
         public IQueryable<order_detail> GetOrderDetails()
@@ -57,12 +60,15 @@ namespace SIMSDataService.Controllers
             //{
             //    id = headers.GetValues("id").First();
             //}
-
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(patch);
+            _log.Info($"Model Object: {json}");
             Validate(patch.GetEntity());
 
             
             if (!ModelState.IsValid)
             {
+                _log.Error("OrderDetailsController:Put - Model was Invalid");
+                _log.Info($"Model Object: {json}");
                 return BadRequest(ModelState);
             }
 
@@ -86,7 +92,7 @@ namespace SIMSDataService.Controllers
             {
                 await db.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!order_detailExists(key))
                 {
@@ -94,6 +100,7 @@ namespace SIMSDataService.Controllers
                 }
                 else
                 {
+                    _log.Error("An Error Occurred in OrderDetailsController:Put", ex);
                     throw;
                 }
             }
@@ -106,6 +113,7 @@ namespace SIMSDataService.Controllers
         {
             if (!ModelState.IsValid)
             {
+                _log.Error("OrderDetailsController:Put - Model was Invalid");
                 return BadRequest(ModelState);
             }
 
@@ -134,6 +142,9 @@ namespace SIMSDataService.Controllers
         [AcceptVerbs("PATCH", "MERGE")]
         public async Task<IHttpActionResult> Patch([FromODataUri] int key, Delta<order_detail> patch)
         {
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(patch);
+            _log.Info($"Model Object: {json}");
+
             Validate(patch.GetEntity());
 
             if (!ModelState.IsValid)

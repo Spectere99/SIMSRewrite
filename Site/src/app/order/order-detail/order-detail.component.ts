@@ -147,7 +147,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   onOrderItemClick(e, orderDetail, idx) {
-    orderDetail.item_price_each = 0.00;
+    orderDetail.item_price_each = '0.00';
     orderDetail.pricelist_id = e;
     this.onQtyPriceChange(e, idx);
   }
@@ -248,6 +248,8 @@ export class OrderDetailComponent implements OnInit {
     orderLine.other2_qty = null;
     orderLine.other3_type = null;
     orderLine.other3_qty = null;
+    orderLine.item_quantity = null;
+    orderLine.item_price_ext = null;
     orderLine.item_type = this.masterOrder.order_detail[idx].item_type;
     orderLine.manufacturer = this.masterOrder.order_detail[idx].manufacturer;
     orderLine.color_code = this.masterOrder.order_detail[idx].color_code;
@@ -407,6 +409,7 @@ export class OrderDetailComponent implements OnInit {
         e.target.value = null;
         // console.log('onQtyPriceChange', e.target);
       }
+      
     }
     // console.log('onQtyPriceChange:orderDetail', this.masterOrder.order_detail[idx]);
     

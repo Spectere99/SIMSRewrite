@@ -34,8 +34,8 @@
           <dxo-lookup [dataSource]="userDataSource" valueExpr="user_id" [displayExpr]="getUserDisplayExpr"></dxo-lookup>
         </dxi-column>
         <!-- <dxi-column dataField="" caption="Customer Name" [width]="350" [allowSearch]="false" [allowFiltering]="false"></dxi-column> -->
-        <dxi-column dataField="order.order_date" caption="Order Date" [visible]="true" [width]="100" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
-        <dxi-column dataField="order.order_due_date" caption="Due Date" [visible]="true" [width]="100" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="order.order_date" caption="Order Date" [visible]="true" [width]="100" [allowFiltering]="true" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="order.order_due_date" caption="Due Date" [visible]="true" [width]="100" [allowFiltering]="true" [allowEditing]="false"></dxi-column>
         <!-- <dxi-column dataField="" caption="Items" [calculateCellValue]="getOrderQty" [visible]="true" [width]="100" [allowFiltering]="false" [allowEditing]="false"></dxi-column> -->
         <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
         <dxo-filter-row [visible]="true"></dxo-filter-row>
