@@ -375,7 +375,7 @@ export class CustomerOrderListComponent implements OnInit {
     newOrder.order_date = this.toISOLocal(today);
     console.log('!!!cloneOrder: newOrder.order_date', newOrder.order_date);
     newOrder.order_number = this.formatOrderNumber(today);
-    newOrder.order_status = 'inq';
+    newOrder.order_status = null;
     newOrder.customer_id = origOrder.customer_id;
     // console.log('cloneOrder: contact', origOrder.contact);
     newOrder.contact = origOrder.contact;

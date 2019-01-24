@@ -189,7 +189,7 @@
       <div *ngIf="noArtPlacementItems()">
         <div class="alert alert-warning">No items.</div>
       </div>
-      <div *ngFor="let artPlacement of masterOrder.order_art_placements | sort: 'order_art_placement_id';">
+      <div *ngFor="let artPlacement of masterOrder.order_art_placements | sort: '-order_art_placement_id';">
       <mat-card>
         <table>
           <tr>

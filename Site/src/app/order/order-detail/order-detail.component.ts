@@ -154,6 +154,7 @@ export class OrderDetailComponent implements OnInit {
 
   onVendorSelect(e, orderDetail, idx) {
     console.log('onVendorSelect', e);
+    orderDetail.vendor = e;
     if (e==='gmtpr') {
       orderDetail.taxable_ind = 'N'
       this.onTaxRateChange('N');
@@ -166,6 +167,8 @@ export class OrderDetailComponent implements OnInit {
     console.log('onOther1TypeSelect', e);
     if (e==='') {
       orderDetail.other1_type = null;
+    } else {
+      orderDetail.other1_type = e;
     }
   }
   addLineItem(e) {

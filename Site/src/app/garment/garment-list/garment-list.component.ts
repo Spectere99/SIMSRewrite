@@ -302,6 +302,11 @@ export class GarmentListComponent implements OnInit {
     return data.checked_out_ind === 'Y';
   }
 
+  onEditorPreparing (e) { 
+    if (e.dataField == "vendor") {
+       e.editorOptions.searchEnabled = false;
+    }
+}
   showEditPopup(e) {
     // console.log('E', e);
     // console.log('customer', e.data.order.customer_id);

@@ -1,10 +1,8 @@
-import * as Rollbar from 'rollbar';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule, APP_INITIALIZER, ErrorHandler } from '@angular/core';
+import { NgModule, APP_INITIALIZER, ErrorHandler, Injectable, Injector, InjectionToken } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
-import { Injectable, Injector, InjectionToken} from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Http, HttpModule, Headers, RequestMethod, RequestOptions } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -72,6 +70,8 @@ import { UserService } from './_services/user.service';
 import { WindowRef } from './_services/window-ref.service';
 import { OrderQuantitiesComponent } from './report/order-quantities/order-quantities.component';
 import { CustomerItemComponent } from './customer/customer-item/customer-item.component';
+// import * as Sentry from '@sentry/node';
+import * as Raven from 'raven-js';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -82,28 +82,21 @@ import { CustomerItemComponent } from './customer/customer-item/customer-item.co
   { path: 'Login', component: LoginComponent },
   { path: '',   redirectTo: '/Login', pathMatch: 'full' },
 ]; */
+/* Sentry.init({
+  dsn: "https://c938625c58394da1910a741f4c48eca8@sentry.io/1378247",
+  release: "0.89",
+  environment: "Test"
+}); */
+Raven.config('https://c938625c58394da1910a741f4c48eca8@sentry.io/1378247').install();
 
-const rollbarConfig = {
-  accessToken: '3de9236eacb74fd3b2bebb5106204c2c',
-  captureUncaught: true,
-  captureUnhandledRejections: true,
-};
-
-@Injectable()
-export class RollbarErrorHandler implements ErrorHandler {
-  constructor(private injector: Injector) {}
-
-  handleError(err:any) : void {
-    var rollbar = this.injector.get(RollbarService);
-    rollbar.error(err.originalError || err);
+/* @Injectable()
+export class SentryErrorHandler implements ErrorHandler {
+  constructor() {}
+  handleError(error) {
+    Sentry.captureException(error.originalError || error);
+    throw error;
   }
-}
-
-export function rollbarFactory() {
-    return new Rollbar(rollbarConfig);
-}
-
-export const RollbarService = new InjectionToken<Rollbar>('rollbar');
+} */
 
 @NgModule({
   declarations: [
@@ -177,8 +170,7 @@ export const RollbarService = new InjectionToken<Rollbar>('rollbar');
               LookupService, PriceListService, UserService, GlobalDataProvider, WindowRef,
               { provide: APP_INITIALIZER, useFactory: globalDataProviderFactory, deps:
                 [GlobalDataProvider], multi: true},
-                { provide: ErrorHandler, useClass: RollbarErrorHandler },
-                { provide: RollbarService, useFactory: rollbarFactory }],
+                { provide: ErrorHandler, useClass: CustomErrorHandler }],
   entryComponents: [ConfirmDialogComponent],
   bootstrap: [AppComponent]
 })

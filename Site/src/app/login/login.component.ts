@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { DxButtonModule, DxLoadPanelModule, DxCheckBoxModule } from 'devextreme-angular';
 import { WindowRef } from '../_services/window-ref.service';
 import { AuthenticationService } from '../_services/authentication.service';
+// import { SentryError } from '@sentry/core';
+import * as Raven from 'raven-js';
 
 @Component({
   selector: 'app-login',
@@ -45,7 +47,7 @@ window;
         this._authService.login(this.loginForm.value.userName, this.loginForm.value.passwordText)
             .subscribe(() => {
                 this.loading = false;
-
+                Raven.captureMessage('User: ' + this.loginForm.value.userName + ' logging in.');
                 const to: string = this._authService.getRedirectUrl() || '/Customer';
                 this._router.navigate([to]);
             }, (error) => {
