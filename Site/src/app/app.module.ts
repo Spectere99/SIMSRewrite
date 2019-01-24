@@ -8,7 +8,7 @@ import { Http, HttpModule, Headers, RequestMethod, RequestOptions } from '@angul
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CustomErrorHandler } from './custom-error-handler';
-
+import { environment, version } from '../environments/environment';
 import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { DevExtremeModule, DxTemplateModule, DxPopupModule,
   DxFilterBuilderModule, DxTextBoxModule, DxSelectBoxModule,
@@ -70,8 +70,10 @@ import { UserService } from './_services/user.service';
 import { WindowRef } from './_services/window-ref.service';
 import { OrderQuantitiesComponent } from './report/order-quantities/order-quantities.component';
 import { CustomerItemComponent } from './customer/customer-item/customer-item.component';
-// import * as Sentry from '@sentry/node';
+import * as Sentry from '@sentry/browser';
 import * as Raven from 'raven-js';
+import { LookupsComponent } from './admin/lookups/lookups.component';
+import { LookupListComponent } from './admin/lookups/lookup-list/lookup-list.component';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -82,12 +84,12 @@ import * as Raven from 'raven-js';
   { path: 'Login', component: LoginComponent },
   { path: '',   redirectTo: '/Login', pathMatch: 'full' },
 ]; */
-/* Sentry.init({
+Sentry.init({
   dsn: "https://c938625c58394da1910a741f4c48eca8@sentry.io/1378247",
-  release: "0.89",
+  release: version,
   environment: "Test"
-}); */
-Raven.config('https://c938625c58394da1910a741f4c48eca8@sentry.io/1378247').install();
+});
+// Raven.config('https://c938625c58394da1910a741f4c48eca8@sentry.io/1378247').install();
 
 /* @Injectable()
 export class SentryErrorHandler implements ErrorHandler {
@@ -138,6 +140,8 @@ export class SentryErrorHandler implements ErrorHandler {
     ContactAddressComponent,
     OrderQuantitiesComponent,
     CustomerItemComponent,
+    LookupsComponent,
+    LookupListComponent,
   ],
   imports: [
     NgbModule.forRoot(),
@@ -169,8 +173,7 @@ export class SentryErrorHandler implements ErrorHandler {
   providers: [DatePipe, ArraySortPipe, UpperCasePipe, AuthenticationService, AuthGuard,
               LookupService, PriceListService, UserService, GlobalDataProvider, WindowRef,
               { provide: APP_INITIALIZER, useFactory: globalDataProviderFactory, deps:
-                [GlobalDataProvider], multi: true},
-                { provide: ErrorHandler, useClass: CustomErrorHandler }],
+                [GlobalDataProvider], multi: true}],
   entryComponents: [ConfirmDialogComponent],
   bootstrap: [AppComponent]
 })

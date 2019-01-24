@@ -42,3 +42,6 @@ CHANGE COLUMN `correspondence_id` `correspondence_id` INT(10) NOT NULL AUTO_INCR
 
 ALTER TABLE `printmgr`.`users` 
 CHANGE COLUMN `user_id` `user_id` INT(10) NOT NULL AUTO_INCREMENT ;
+
+ALTER TABLE `printmgr`.`lookup_items` 
+CHANGE COLUMN `id` `id` INT(10) NOT NULL AUTO_INCREMENT ;

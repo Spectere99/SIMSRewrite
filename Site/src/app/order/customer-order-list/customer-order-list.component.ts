@@ -447,7 +447,7 @@ export class CustomerOrderListComponent implements OnInit {
       newDetail.small_qty = item.small_qty;
       newDetail.style_code = item.style_code;
       newDetail.taxable_ind = item.taxable_ind;
-      newDetail.vendor = item.vendor;
+      newDetail.vendor = 'TBDV';
       newDetail.xl_qty = item.xl_qty;
       newDetail.xsmall_qty = item.xsmall_qty;
 

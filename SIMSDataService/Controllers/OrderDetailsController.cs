@@ -64,7 +64,6 @@ namespace SIMSDataService.Controllers
             _log.Info($"Model Object: {json}");
             Validate(patch.GetEntity());
 
-            
             if (!ModelState.IsValid)
             {
                 _log.Error("OrderDetailsController:Put - Model was Invalid");

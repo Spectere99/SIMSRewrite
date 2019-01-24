@@ -1,149 +1,166 @@
 <div class="container col-md-12">
-  <h5>
-    <span class="material-icons" style="text-align: center;">group</span> User & Security Administration</h5>
+  <h5><span class="material-icons" style="text-align: center;">settings</span> Administration</h5>
   <hr>
-  <p>Filter by using the corresponding column. To add a new Customer, click on the Plus (+) button.</p>
-  <div class="row">
-    <div class="col-lg-4">
-      <dx-data-grid id="gridUsers" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true" [showBorders]="true"
-        [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onRowClick)="onRowClick($event)">
-        <dxo-selection mode="single"></dxo-selection>
-        <dxi-column dataField="user_id" caption="User ID" sortOrder="asc" [width]="100" [allowFiltering]="true" [visible]="true"
-          [allowEditing]="false"></dxi-column>
-        <dxi-column dataField="first_name" caption="First Name" [width]="100" [allowFiltering]="true"></dxi-column>
-        <dxi-column dataField="last_name" caption="Last Name" [width]="150" [allowFiltering]="true"></dxi-column>
-        <!-- <dxi-column dataField="login_id" caption="User Name" [width]="125" [allowFiltering]="true"></dxi-column>
-        <dxi-column dataField="manager_id" caption="Manager" [width]="100" [allowFiltering]="true"></dxi-column>
-        <dxi-column dataField="manager_id" caption="Manager" [width]="200" [allowFiltering]="true">
-          <dxo-lookup [dataSource]="userDataSource" valueExpr="user_id" displayExpr="login_id"></dxo-lookup>
-        </dxi-column> -->
-        <dxi-column dataField="email" caption="Email" [width]="225" [allowFiltering]="true"></dxi-column>
-        <dxo-search-panel [visible]="false"></dxo-search-panel>
-        <dxo-header-filter [visible]="true"></dxo-header-filter>
-        <dxo-filter-row [visible]="true"></dxo-filter-row>
-        <dxo-sorting mode="single">
-          <!-- or "multiple" | "none" -->
-        </dxo-sorting>
-        <dxo-paging [pageSize]="10" [enabled]="true"></dxo-paging>
-        <dxo-pager [showPageSizeSelector]="true" [showInfo]="true" [allowedPageSizes]="[10, 20, 50]"></dxo-pager>
-        <dxo-group-panel [visible]="true"></dxo-group-panel>
-        <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
-        <dxo-scrolling mode="scrollMode"></dxo-scrolling>
-        <dxo-export [enabled]="true" fileName="Customers"></dxo-export>
-        <!-- <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true">
-        </dxo-editing> -->
-        <div *dxTemplate="let item of 'detail'">
-          <input type="button" value="Add Role" (click)="addRoleItem(item);">
-          <table>
-            <tr>
-              <td></td>
-              <td>Role/Group</td>
-            </tr>
-            <tr *ngFor="let group of item.data.user_group">
-              <td></td>
-              <td>
-                <select class="form-control form-control-sm" style="font-size: 11px; width:auto;" [(ngModel)]="group.hotjas_group_id">
-                  <option *ngFor="let grp of groupList" [value]="grp.hotjas_group_id">
-                    {{grp.name}}
-                  </option>
-                </select>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </dx-data-grid>
-    </div>
-    <div class="col-md-6">
-      <div class="row">
-        <div class="col-md-2">
-          <input class="form-control btn-primary" style="font-size:10px;" type="button" value="New User" (click)="newUser();">
-        </div>
-        {{message}}
-      </div>
-      <div *ngIf="editUser" class="col-lg-12">
-        User Details
+  <ngb-tabset #customerTabs>
+    <ngb-tab id='tbUsers' title="Users">
+      <ng-template ngbTabContent>
+        <h5>
+          <span class="material-icons" style="text-align: center;">group</span> User & Security Administration</h5>
         <hr>
-        <table>
-          <tr>
-            <td style="font-size:10px;" width="150">First Name</td>
-            <td style="font-size:10px;" width="150">Last Name</td>
-          </tr>
-          <tr>
-            <td>
-              <input class="form-control" type="text" size="45" [(ngModel)]="editUser.first_name">
-            </td>
-            <td>
-              <input class="form-control" type="text" size="45" [(ngModel)]="editUser.last_name">
-            </td>
-          </tr>
-          <tr>
-            <td style="font-size:10px;" width="75">User Name</td>
-            <td style="font-size:10px;" width="75">Password</td>
-          </tr>
-          <tr>
-            <td>
-              <input class="form-control" type="text" size="45" [(ngModel)]="editUser.login_id">
-            </td>
-            <td>
-              <input class="form-control" type="password" size="45" [(ngModel)]="editUser.password">
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2" style="font-size:10px;">Email</td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <input class="form-control" type="text" size="75" [(ngModel)]="editUser.email">
-            </td>
-          </tr>
-          <tr>
-            <td colspan="0" style="font-size:10px;">Manager</td>
-          </tr>
-          <tr>
-            <td colspan="0">
-              <select class="form-control form-control-sm" [(ngModel)]="editUser.manager_id">
-                <option *ngFor="let itm of userDataSource" [value]="itm.user_id">
-                  {{itm.first_name + ' ' + itm.last_name}}
-                </option>
-              </select>
-            </td>
-          </tr>
-        </table>
-        <br/> Group Membership
-        <hr>
-        <table>
-          <tr>
-            <td></td>
-            <td style="font-size:10px;" width="75">Role/Group
-            </td>
-          </tr>
-          <tr *ngFor="let group of editUser.user_group">
-            <td>
-              <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;" (click)="deleteUserRole(editUser.user_id, group.hotjas_group_id);">
-                <mat-icon style="padding-bottom: 35px; padding-right: 27px; font-size:15px;">close</mat-icon>
-              </button>
-            </td>
-            <td>
-              <select class="form-control form-control-sm" style="font-size: 11px; width:auto;" [(ngModel)]="group.hotjas_group_id">
-                <option *ngFor="let grp of groupList" [value]="grp.hotjas_group_id">
-                  {{grp.name}}
-                </option>
-              </select>
-            </td>
-          </tr>
-        </table>
-        <div class="col-md-3">
-          <input class="form-control btn-primary" style="font-size:10px;" type="button" value="Add Role" (click)="addRoleItem();">
-        </div>
-
-        <div class="row"></div>
-        <hr>
+        <p>Filter by using the corresponding column. To add a new Customer, click on the Plus (+) button.</p>
         <div class="row">
-          <div class="col-md-3">
-            <input class="form-control btn-primary" style="font-size:10px;" type="button" value="Save User" (click)="saveUser();">
+          <div class="col-lg-4">
+            <dx-data-grid id="gridUsers" [dataSource]="dataSource" [showColumnLines]="false" [showRowLines]="true"
+              [showBorders]="true" [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onRowClick)="onRowClick($event)">
+              <dxo-selection mode="single"></dxo-selection>
+              <dxi-column dataField="user_id" caption="User ID" sortOrder="asc" [width]="100" [allowFiltering]="true"
+                [visible]="true" [allowEditing]="false"></dxi-column>
+              <dxi-column dataField="first_name" caption="First Name" [width]="100" [allowFiltering]="true"></dxi-column>
+              <dxi-column dataField="last_name" caption="Last Name" [width]="150" [allowFiltering]="true"></dxi-column>
+              <!-- <dxi-column dataField="login_id" caption="User Name" [width]="125" [allowFiltering]="true"></dxi-column>
+              <dxi-column dataField="manager_id" caption="Manager" [width]="100" [allowFiltering]="true"></dxi-column>
+              <dxi-column dataField="manager_id" caption="Manager" [width]="200" [allowFiltering]="true">
+                <dxo-lookup [dataSource]="userDataSource" valueExpr="user_id" displayExpr="login_id"></dxo-lookup>
+              </dxi-column> -->
+              <dxi-column dataField="email" caption="Email" [width]="225" [allowFiltering]="true"></dxi-column>
+              <dxo-search-panel [visible]="false"></dxo-search-panel>
+              <dxo-header-filter [visible]="true"></dxo-header-filter>
+              <dxo-filter-row [visible]="true"></dxo-filter-row>
+              <dxo-sorting mode="single">
+                <!-- or "multiple" | "none" -->
+              </dxo-sorting>
+              <dxo-paging [pageSize]="10" [enabled]="true"></dxo-paging>
+              <dxo-pager [showPageSizeSelector]="true" [showInfo]="true" [allowedPageSizes]="[10, 20, 50]"></dxo-pager>
+              <dxo-group-panel [visible]="true"></dxo-group-panel>
+              <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+              <dxo-scrolling mode="scrollMode"></dxo-scrolling>
+              <dxo-export [enabled]="true" fileName="Customers"></dxo-export>
+              <!-- <dxo-editing mode="row" [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true">
+              </dxo-editing> -->
+              <div *dxTemplate="let item of 'detail'">
+                <input type="button" value="Add Role" (click)="addRoleItem(item);">
+                <table>
+                  <tr>
+                    <td></td>
+                    <td>Role/Group</td>
+                  </tr>
+                  <tr *ngFor="let group of item.data.user_group">
+                    <td></td>
+                    <td>
+                      <select class="form-control form-control-sm" style="font-size: 11px; width:auto;" [(ngModel)]="group.hotjas_group_id">
+                        <option *ngFor="let grp of groupList" [value]="grp.hotjas_group_id">
+                          {{grp.name}}
+                        </option>
+                      </select>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </dx-data-grid>
+          </div>
+          <div class="col-md-6">
+            <div class="row">
+              <div class="col-md-2">
+                <input class="form-control btn-primary" style="font-size:10px;" type="button" value="New User" (click)="newUser();">
+              </div>
+              {{message}}
+            </div>
+            <div *ngIf="editUser" class="col-lg-12">
+              User Details
+              <hr>
+              <table>
+                <tr>
+                  <td style="font-size:10px;" width="150">First Name</td>
+                  <td style="font-size:10px;" width="150">Last Name</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input class="form-control" type="text" size="45" [(ngModel)]="editUser.first_name">
+                  </td>
+                  <td>
+                    <input class="form-control" type="text" size="45" [(ngModel)]="editUser.last_name">
+                  </td>
+                </tr>
+                <tr>
+                  <td style="font-size:10px;" width="75">User Name</td>
+                  <td style="font-size:10px;" width="75">Password</td>
+                </tr>
+                <tr>
+                  <td>
+                    <input class="form-control" type="text" size="45" [(ngModel)]="editUser.login_id">
+                  </td>
+                  <td>
+                    <input class="form-control" type="password" size="45" [(ngModel)]="editUser.password">
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" style="font-size:10px;">Email</td>
+                </tr>
+                <tr>
+                  <td colspan="2">
+                    <input class="form-control" type="text" size="75" [(ngModel)]="editUser.email">
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="0" style="font-size:10px;">Manager</td>
+                </tr>
+                <tr>
+                  <td colspan="0">
+                    <select class="form-control form-control-sm" [(ngModel)]="editUser.manager_id">
+                      <option *ngFor="let itm of userDataSource" [value]="itm.user_id">
+                        {{itm.first_name + ' ' + itm.last_name}}
+                      </option>
+                    </select>
+                  </td>
+                </tr>
+              </table>
+              <br /> Group Membership
+              <hr>
+              <table>
+                <tr>
+                  <td></td>
+                  <td style="font-size:10px;" width="75">Role/Group
+                  </td>
+                </tr>
+                <tr *ngFor="let group of editUser.user_group">
+                  <td>
+                    <button mat-button color="warn" mat-icon-button aria-hidden="true" style="outline:none;" (click)="deleteUserRole(editUser.user_id, group.hotjas_group_id);">
+                      <mat-icon style="padding-bottom: 35px; padding-right: 27px; font-size:15px;">close</mat-icon>
+                    </button>
+                  </td>
+                  <td>
+                    <select class="form-control form-control-sm" style="font-size: 11px; width:auto;" [(ngModel)]="group.hotjas_group_id">
+                      <option *ngFor="let grp of groupList" [value]="grp.hotjas_group_id">
+                        {{grp.name}}
+                      </option>
+                    </select>
+                  </td>
+                </tr>
+              </table>
+              <div class="col-md-3">
+                <input class="form-control btn-primary" style="font-size:10px;" type="button" value="Add Role" (click)="addRoleItem();">
+              </div>
+
+              <div class="row"></div>
+              <hr>
+              <div class="row">
+                <div class="col-md-3">
+                  <input class="form-control btn-primary" style="font-size:10px;" type="button" value="Save User"
+                    (click)="saveUser();">
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
+      </ng-template>
+    </ngb-tab>
+    <ngb-tab id='tbLookups' title="Lookups">
+      <ng-template ngbTabContent>
+        <app-lookups></app-lookups>
+      </ng-template>
+    </ngb-tab>
+  </ngb-tabset>
 </div>
+<!-- <div class="container col-md-12">
+
+</div> -->
