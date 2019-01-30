@@ -113,7 +113,7 @@ export class GarmentListComponent implements OnInit {
     this.lookupDataSource = globalDataProvider.getLookups();
     this.priceListDataSource = globalDataProvider.getPriceList();
     // console.log('garment-list.component:constructor - lookupDataSource', this.lookupDataSource);
-    this.vendorTypes = this.createLookupTypeSource('vend');
+    this.vendorTypes = this.createSortedLookupTypeSource('vend');
     this.itemTypes = this.createItemTypeSource('orddi');
     this.userDataSource = globalDataProvider.getUsers();
     // console.log('User Profile', this.userProfile);
@@ -225,7 +225,36 @@ export class GarmentListComponent implements OnInit {
   createLookupTypeSource(className: string): any {
     return this.lookupDataSource.filter(item => item.class === className);
   }
+  createSortedLookupTypeSource(className: string): any {
+    let sortedArray = this.lookupDataSource.filter(item => item.class === className).sort(this.compareValues('description'));
+    console.log('sortedLookupType Array', sortedArray);
+    return sortedArray;
+  }
 
+  compareValues(key, order='asc') {
+    return function(a, b) {
+      if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+        // property doesn't exist on either object
+        return 0;
+      }
+  
+      const varA = (typeof a[key] === 'string') ?
+        a[key].toUpperCase() : a[key];
+      const varB = (typeof b[key] === 'string') ?
+        b[key].toUpperCase() : b[key];
+  
+      let comparison = 0;
+      if (varA > varB) {
+        comparison = 1;
+      } else if (varA < varB) {
+        comparison = -1;
+      }
+      return (
+        (order == 'desc') ? (comparison * -1) : comparison
+      );
+    }
+  }
+  
   createItemTypeSource(type: string): any {
     return this.priceListDataSource.filter(item => item.pricelist_type === type);
   }

@@ -1,32 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { GlobalDataProvider } from '../../../_providers/global-data.provider';
-import { LookupService, LookupItem } from '../../../_services/lookups.service';
-import { OrderMaster, OrderService, Order, OrderDetail } from '../../../_services/order.service';
+import { PriceListService, PriceListItem } from '../../../_services/pricelist.service';
+import { LookupItem } from '../../../_services/lookups.service';
 import { AuthenticationService } from '../../../_services/authentication.service';
 import { UserService, User } from '../../../_services/user.service';
-
 @Component({
-  selector: 'app-lookup-list',
-  templateUrl: './lookup-list.component.html',
-  styleUrls: ['./lookup-list.component.scss']
+  selector: 'app-pricelist-list',
+  templateUrl: './pricelist-list.component.html',
+  styleUrls: ['./pricelist-list.component.scss']
 })
-export class LookupListComponent implements OnInit {
+export class PricelistListComponent implements OnInit {
   dataSource: any;
   baseUrl = environment.odataEndpoint;
   userProfile;
   lookupDataSource: Array<LookupItem>;
-  lookupClassDataSource: Array<LookupItem>;
+  priceListTypeDataSource: Array<LookupItem>;
 
-  constructor(globalDataProvider: GlobalDataProvider, public lookupService: LookupService, 
+  constructor(globalDataProvider: GlobalDataProvider, public priceListService: PriceListService, 
               public userService: UserService, public authService: AuthenticationService) {
     this.userProfile = JSON.parse(authService.getUserToken());
     this.lookupDataSource = globalDataProvider.getLookups();
-    this.lookupClassDataSource = this.createSortedLookupTypeSource('CLASS');
+    this.priceListTypeDataSource = this.createSortedLookupTypeSource('price');
     this.createLookupItemsDataSource();
    }
 
-   createLookupTypeSource(className: string): any {
+  createLookupTypeSource(className: string): any {
     return this.lookupDataSource.filter(item => item.class === className);
   }
 
@@ -59,13 +58,13 @@ export class LookupListComponent implements OnInit {
       );
     }
   }
-
+  
   createLookupItemsDataSource() {
     this.dataSource = {
       store: {
           type: 'odata',
-          url: this.baseUrl + 'LookupItems',
-          key: 'id',
+          url: this.baseUrl + 'Pricelist',
+          key: 'pricelist_id',
           keyType: 'Int32',
           version: 3,
           jsonp: false,
@@ -75,8 +74,11 @@ export class LookupListComponent implements OnInit {
           onInserting: function (values) {
             
             const today = new Date();
-            if (values.hasOwnProperty('is_active')) {
-              values.is_active = values.is_active ? 'Y' : 'N';
+            if (values.hasOwnProperty('taxable_ind')) {
+              values.taxable_ind = values.taxable_ind ? 'Y' : 'N';
+            }
+            if (values.hasOwnProperty('default_ind')) {
+              values.default_ind = values.default_ind ? 'Y' : 'N';
             }
             // console.log('values', values);
           },
@@ -84,19 +86,22 @@ export class LookupListComponent implements OnInit {
             // console.log('key', key);
             // console.log('values', values);
             const today = new Date();
-            if (values.hasOwnProperty('is_active')) {
-              values.is_active = values.is_active ? 'Y' : 'N';
+            if (values.hasOwnProperty('taxable_ind')) {
+              values.taxable_ind = values.taxable_ind ? 'Y' : 'N';
+            }
+            if (values.hasOwnProperty('default_ind')) {
+              values.default_ind = values.default_ind ? 'Y' : 'N';
             }
           }
       },
       select: [
-        'id',
-        'class',
-        'description',
-        'char_mod',
-        'is_active',
+        'pricelist_id',
         'order_by',
-        'filter_function',
+        'pricelist_type',
+        'pricelist_description',
+        'pricelist_code',
+        'taxable_ind',
+        'default_ind',
         'created_by',
         'created_date',
         'updated_by',
@@ -126,12 +131,17 @@ export class LookupListComponent implements OnInit {
     e.newData.updated_date = today.toISOString();
   }
   
-  setIsActiveInd(data) {
-    // console.log('setIsActiveInd', data);
+  setTaxableInd(data) {
+    // console.log('setTaxableInd', data);
     if (data === undefined) { return false; }
-    return data.is_active === 'Y';
+    return data.taxable_ind === 'Y';
+  }
+
+  setDefaultInd(data) {
+    // console.log('setDefaultInd', data);
+    if (data === undefined) { return false; }
+    return data.default_ind === 'Y';
   }
   ngOnInit() {
   }
-
 }

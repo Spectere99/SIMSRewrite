@@ -74,6 +74,8 @@ import * as Sentry from '@sentry/browser';
 import * as Raven from 'raven-js';
 import { LookupsComponent } from './admin/lookups/lookups.component';
 import { LookupListComponent } from './admin/lookups/lookup-list/lookup-list.component';
+import { PriceListComponent } from './admin/price-list/price-list.component';
+import { PricelistListComponent } from './admin/price-list/pricelist-list/pricelist-list.component';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -142,6 +144,8 @@ export class SentryErrorHandler implements ErrorHandler {
     CustomerItemComponent,
     LookupsComponent,
     LookupListComponent,
+    PriceListComponent,
+    PricelistListComponent,
   ],
   imports: [
     NgbModule.forRoot(),

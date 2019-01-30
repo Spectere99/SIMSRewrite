@@ -755,6 +755,15 @@ export class OrderListComponent implements OnInit {
   }
 
   toISOLocal(d) {
+    var timezoneOffset = d.getMinutes() + d.getTimezoneOffset();
+    var timestamp = d.getTime() + timezoneOffset * 1000;
+    var correctDate = new Date(timestamp);
+    
+    correctDate.setUTCHours(0, 0, 0, 0);
+
+    return correctDate.toISOString();
+  }
+  /* toISOLocal(d) {
     const z = n => (n < 10 ? '0' : '' ) + n;
     let off = d.getTimezoneOffset();
     const sign = off < 0 ? '+' : '-';
@@ -763,6 +772,6 @@ export class OrderListComponent implements OnInit {
     return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' +
            z(d.getDate()) + 'T' + z(d.getHours()) + ':'  + z(d.getMinutes()) +
            ':' + z(d.getSeconds()); // + sign + z(off/60|0) + z(off%60);
-  }
+  } */
 
 }

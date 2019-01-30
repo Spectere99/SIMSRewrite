@@ -90,6 +90,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   convertOrderInfo(order: OrderMaster): Order {
+    console.log('convertOrderInfo');
     const orderToSave = new Order();
     orderToSave.order_id = order.order_id;
     orderToSave.customer_id = order.customer_id;
@@ -102,7 +103,18 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     // console.log('order-info:convertOrderInfo - fixedOrderDate-After', fixedOrderDate.toISOString());
     // orderToSave.order_date =  fixedOrderDate.toISOString();
     orderToSave.order_date = order.order_date;
-    orderToSave.order_due_date =  new Date(order.order_due_date).toISOString();
+    const orderDueDate = new Date(order.order_due_date);
+    console.log('orderDueDate', orderDueDate);
+    // var date = new Date();
+    /* var timezoneOffset = orderDueDate.getMinutes() + orderDueDate.getTimezoneOffset();
+    var timestamp = orderDueDate.getTime() + timezoneOffset * 1000;
+    var correctDate = new Date(timestamp);
+    
+    correctDate.setUTCHours(0, 0, 0, 0); */
+    
+    orderToSave.order_due_date =  this.toISOLocal(orderDueDate);
+    // console.log('orderDueDate after toISOLocal', orderToSave.order_due_date);
+    // console.log('orderDueDate: toISOString', new Date(order.order_due_date).toISOString());
     orderToSave.order_status =  order.order_status;
     orderToSave.taken_user_id =  order.taken_user_id;
     orderToSave.assigned_user_id =  order.assigned_user_id;
@@ -145,6 +157,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     orderToSave.contact_phone2_ext =  order.contact_phone2_ext;
     orderToSave.contact_phone2_type =  order.contact_phone2_type;
 
+    console.log('convertOrderInfo: return value', orderToSave);
     return orderToSave;
   }
 
@@ -154,6 +167,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
       // console.log('Converted Order on Save', insOrder);
       if (this.currentOrder.order_id <= 0) {
         this.currentOrder.order_id = 0;
+        console.log('saveOrderInfo:insOrder', insOrder);
         return this.orderService.addOrderInfo('rwflowers', insOrder)
         .map(res => {
           // console.log('Save orderInfo Return', res);
@@ -166,6 +180,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
         });
       } else {
         const updOrder = this.convertOrderInfo(this.currentOrder);
+        console.log('saveOrderInfo:updOrder', updOrder);
         return this.orderService.updateOrderInfo('rwflowers', updOrder)
         .map(res => {
           // console.log('Update orderInfo Return', res);
@@ -291,14 +306,27 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   toISOLocal(d) {
+    var timezoneOffset = d.getMinutes() + d.getTimezoneOffset();
+    var timestamp = d.getTime() + timezoneOffset * 1000;
+    var correctDate = new Date(timestamp);
+    
+    correctDate.setUTCHours(0, 0, 0, 0);
+
+    return correctDate.toISOString();
+  }
+
+ /*  toISOLocal(d) {
     const z = n => (n < 10 ? '0' : '') + n;
     let off = d.getTimezoneOffset();
+    // console.log('toISOLocal: z', z);
+    // console.log('toISOLocal: offset', off);
     const sign = off < 0 ? '+' : '-';
     off = Math.abs(off);
 
+    // console.log('toISOLocal: getDate', d.getDate());
     return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' +
            z(d.getDate()) + 'T' + z(d.getHours()) + ':'  + z(d.getMinutes()) +
            ':' + z(d.getSeconds()); // + sign + z(off/60|0) + z(off%60);
-  }
+  } */
 
 }

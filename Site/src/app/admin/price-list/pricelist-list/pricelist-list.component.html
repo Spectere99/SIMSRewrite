@@ -1,21 +1,21 @@
 <div class="container col-md-12">
   <div class="row">
-      <dx-data-grid id="gridLookups" [dataSource]="dataSource" [showColumnLines]="true" [showRowLines]="true" [showBorders]="true"
+      <dx-data-grid id="gridPricelist" [dataSource]="dataSource" [showColumnLines]="true" [showRowLines]="true" [showBorders]="true"
         [hoverStateEnabled]="true" [rowAlternationEnabled]="false" (onInitNewRow)="onInitNewRow($event)" (onRowUpdating)="onRowUpdating($event)">
         <dxo-selection mode="single"></dxo-selection>
-        <dxi-column dataField="id" caption="Lookup ID" [visible]="false" [width]="40" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
-        <dxi-column dataField="class" caption="Class" [width]="100" [allowSearch]="true" [allowFiltering]="true"  sortOrder="asc">
-          <dxo-lookup [dataSource]="lookupClassDataSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
+        <dxi-column dataField="pricelist_id" caption="Pricelist ID" [visible]="false" [width]="40" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="pricelist_type" caption="Price List Type" [width]="150" [allowSearch]="true" [allowFiltering]="true" sortOrder="desc">
+          <dxo-lookup [dataSource]="priceListTypeDataSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
         </dxi-column>
-        <dxi-column dataField="description" caption="Description" [width]="250" [allowSearch]="true" [allowFiltering]="true"sortOrder="asc"></dxi-column>
-        <dxi-column dataField="char_mod" caption="Character Code" [width]="150" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
-        <dxi-column dataField="order_by" caption="Order By" [width]="150" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
-        <dxi-column dataField="filter_function" caption="Filter Fnc" [width]="150" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
+        <dxi-column dataField="pricelist_description" caption="Description" [width]="250" [allowSearch]="true" [allowFiltering]="true" sortOrder="asc"></dxi-column>
+        <dxi-column dataField="pricelist_code" caption="Item Code" [width]="100" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
+        <dxi-column dataField="pricelist_price" caption="Price (Not Used)" [width]="150" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
+        <dxi-column dataField="taxable_ind" caption="Taxable" [width]="150" [allowSearch]="true" [allowFiltering]="true" [calculateCellValue]="setTaxableInd"></dxi-column>
+        <dxi-column dataField="default_ind" caption="Default" [width]="150" [allowSearch]="true" [allowFiltering]="true" [calculateCellValue]="setDefaultInd"></dxi-column>
         <dxi-column dataField="created_by" caption="Created By" [width]="150" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
         <dxi-column dataField="created_date" caption="Created" [width]="150" dataType="date" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
         <dxi-column dataField="updated_by" caption="Updated By" [width]="150" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
         <dxi-column dataField="updated_date" caption="Updated" [width]="150" dataType="date" [allowSearch]="true" [allowFiltering]="true"></dxi-column>
-        <dxi-column dataField="is_active" caption="Is Active" dataType="boolean" [width]="35" [allowSearch]="true" [allowFiltering]="true" [calculateCellValue]="setIsActiveInd"></dxi-column>
         <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
         <dxo-filter-row [visible]="true"></dxo-filter-row>
         <dxo-header-filter [visible]="true"></dxo-header-filter>
@@ -24,7 +24,7 @@
           <!-- or "multiple" | "none" -->
         </dxo-sorting>
         <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
-        <dxo-export [enabled]="true" fileName="Lookup List"></dxo-export>
+        <dxo-export [enabled]="true" fileName="Price List"></dxo-export>
         <dxo-paging [pageSize]="50"></dxo-paging>
         <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 50]" [showInfo]="true"></dxo-pager>
         <dxo-group-panel [visible]="true"></dxo-group-panel>
@@ -33,3 +33,4 @@
       </dx-data-grid>
     </div>
 </div>
+
