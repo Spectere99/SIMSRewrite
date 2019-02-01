@@ -85,6 +85,7 @@ userProfile;
     // Need to lookup task list based on the order type and create new records for them
     // in the orderTask Array.
     this.orderTask = this.createOrderTaskList(orderId, taskTypeCode);
+    this.masterOrder.order_tasks = this.orderTask;
   }
 
   batchSave(orderId: number) {

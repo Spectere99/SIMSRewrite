@@ -519,7 +519,7 @@ export class CustomerOrderListComponent implements OnInit {
 
   createCloneHistoryStatus(orderObj: Order): any {
     console.log('Saving Order Status History orderId=', orderObj.order_id);
-    console.log('user', this.userProfile);
+    // console.log('user', this.userProfile);
     const orderStatusHistory = new OrderStatusHistory();
     orderStatusHistory.order_status_history_id = 0;
     orderStatusHistory.order_id = orderObj.order_id;
@@ -593,7 +593,7 @@ export class CustomerOrderListComponent implements OnInit {
         this.selectedOrderMaster.order_id = res;
         // tslint:disable-next-line:max-line-length
         if (+this.selectedOrderMaster.balance_due === 0.00 && (this.selectedOrderMaster.order_payments && this.selectedOrderMaster.order_payments.length > 0)) {
-          // console.log('balance is paid!');
+          console.log('balance is paid!');
           const fpmtTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'fnpmt');
           if (fpmtTask) {
             fpmtTask[0].is_complete = 'Y';
@@ -603,6 +603,7 @@ export class CustomerOrderListComponent implements OnInit {
         }
         if (this.selectedOrderMaster.order_payments) {
           if (this.selectedOrderMaster.order_payments.length >= 1) {
+            console.log('Order Tasks', this.selectedOrderMaster.order_tasks);
             const depTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'deprc');
             if (depTask) {
               depTask[0].is_complete = 'Y';

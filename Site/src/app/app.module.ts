@@ -86,11 +86,13 @@ import { PricelistListComponent } from './admin/price-list/pricelist-list/pricel
   { path: 'Login', component: LoginComponent },
   { path: '',   redirectTo: '/Login', pathMatch: 'full' },
 ]; */
+
 Sentry.init({
-  dsn: "https://c938625c58394da1910a741f4c48eca8@sentry.io/1378247",
+  dsn: 'https://c938625c58394da1910a741f4c48eca8@sentry.io/1378247',
   release: version,
-  environment: "Test"
+  environment: 'Test'
 });
+
 // Raven.config('https://c938625c58394da1910a741f4c48eca8@sentry.io/1378247').install();
 
 /* @Injectable()
