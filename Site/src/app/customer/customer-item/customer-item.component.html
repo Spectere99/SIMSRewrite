@@ -13,7 +13,7 @@
     </mat-tab>
     <mat-tab label="Orders" [disabled]="orderTabDisabled">
       <dx-scroll-view style="height: 100%; width: 100%">
-        <app-customer-order-list [customer]="customer"></app-customer-order-list>
+        <app-customer-order-list [(customer)]="customer"></app-customer-order-list>
       </dx-scroll-view>
     </mat-tab>
   </mat-tab-group>
@@ -29,3 +29,8 @@
       <input type="button" style="font-size:10px;" class="form-control btn-default" value="Cancel" (click)="cancelChanges();">
     </div>
   </div>
+  <dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: window }" message="Loading..." [(visible)]="loading"
+      [showIndicator]="true" [showPane]="true" [shading]="true" [closeOnOutsideClick]="false">
+      <!--   (onShown)="onShown()"
+      (onHidden)="onHidden()"> -->
+  </dx-load-panel>

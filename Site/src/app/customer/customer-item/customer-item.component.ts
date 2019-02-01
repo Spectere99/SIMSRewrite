@@ -41,6 +41,7 @@ export class CustomerItemComponent implements OnInit {
   popupVisible = false;
   leaveWindowOpen = true;
   readOnly = false;
+  loading: boolean;
 
   constructor(globalDataProvider: GlobalDataProvider, customerSvc: CustomerService,
     public authService: AuthenticationService, private globals: Globals) {
@@ -57,6 +58,7 @@ export class CustomerItemComponent implements OnInit {
     this.createPhoneTypeDataSource();
     // this.CreateContactDataSource();
     this.gridHeight = 525;
+    this.loading = false;
   }
 
   createPersonTypeDataSource() {
@@ -68,31 +70,40 @@ export class CustomerItemComponent implements OnInit {
 
   applyChanges() {
     console.log('Address is Valid', this.contactAddressCmpt.isValid());
+    this.loading = true;
     if (this.contactAddressCmpt.isValid()) {
       this.customerInfoCmpt.batchSave(this.customer.customer_id).subscribe(res => {
         // console.log('contact-list calling contactsComponent batchSave', res);
-        this.contactInfoCmpt.batchSave(res).subscribe();
-        this.contactAddressCmpt.batchSave(res).subscribe();
-          // console.log('contactInfo batch Saved Result', cnt);
-          // console.log('contactAddress batch Saved Result', adr);
-        this.customerService.getCustomerData('', res).subscribe(cust => {
-        console.log('contact-list applyChanges - selectedCustomer', this.customer);
-        // console.log('contact-list applyChanges - Customer', cust);
-          this.customer = cust;
-          this.customer.customer_person = this.customer.customer_person.filter(item => item.status_code === 'act');
-          this.onCustomerSaved.emit(this.leaveWindowOpen);
-  /*           setTimeout(() => {
-              // this.gridCustomers.instance.refresh();
-              }); */
+        this.contactInfoCmpt.batchSave(res);
+        this.contactAddressCmpt.batchSave(res);
+        // console.log('contactInfo batch Saved Result', cnt);
+        // console.log('contactAddress batch Saved Result', adr);
+        /*           setTimeout(() => {
+                    // this.gridCustomers.instance.refresh();
+                    }); */
+        setTimeout(() => {
+          // this.gridOrders.instance.refresh();
+          this.customerService.getCustomerData('', res).subscribe(cust => {
+            console.log('contact-list applyChanges - selectedCustomer', this.customer);
+            // console.log('contact-list applyChanges - Customer', cust);
+            this.customer = cust;
+            this.customer.customer_person = this.customer.customer_person.filter(item => item.status_code === 'act');
+            this.onCustomerSaved.emit(this.leaveWindowOpen);
+            this.loading = false;
           });
-        });
-        // console.log('Emitting onCustomerSaved', this.customer);
-        // this.orderTabDisabled = false;
-        // this.popupVisible = this.leaveWindowOpen;
-      } else {
-        alert ('Customer contact Address Type is required.');
-      }
+        }, 1000);
+      });
+      // console.log('contactInfo batch Saved Result', cnt);
+      // console.log('contactAddress batch Saved Result', adr);
+      // console.log('Emitting onCustomerSaved', this.customer);
+      // this.orderTabDisabled = false;
+      // this.popupVisible = this.leaveWindowOpen;
+    } else {
+      this.loading = false;
+      alert('Customer contact Address Type is required.');
+    }
   }
+
   cancelChanges() {
     this.onCancel.emit();
   }

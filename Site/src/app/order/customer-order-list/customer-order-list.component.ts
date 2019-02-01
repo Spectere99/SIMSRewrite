@@ -727,18 +727,25 @@ export class CustomerOrderListComponent implements OnInit {
   }
   ngOnInit() {
     // console.log('ngInit on customer-order-list', this.customer);
+    this.dataSource = null;
     if (this.customer) {
-      this.customerId = this.customer.customer_id;
+      if (this.customer.customer_id > 0) {
+        this.customerId = this.customer.customer_id;
+        this.createOrderDataSource();
+      }
     }
   }
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
     console.log('ngChanges on customer-order-list', this.customer);
+    this.dataSource = null;
     if (this.customer) {
-      this.customerId = this.customer.customer_id;
+      if (this.customer.customer_id > 0) {
+        this.customerId = this.customer.customer_id;
+        this.createOrderDataSource();
+      }
     }
-    this.createOrderDataSource();
   }
 
   toISOLocal(d) {
