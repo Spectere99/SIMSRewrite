@@ -88,7 +88,7 @@ export class AdminComponent implements OnInit {
   }
 
   saveUser() {
-    console.log('saveUser', this.editUser);
+    // console.log('saveUser', this.editUser);
     const saveUsr: UserDTO = {
       active_order_ind: null,
       assigned_to_search_for: null,
@@ -126,13 +126,13 @@ export class AdminComponent implements OnInit {
       wu_id: 0
     };
 
-    console.log('saveUser - userGroup', this.editUser.user_group);
+    // ('saveUser - userGroup', this.editUser.user_group);
     if (this.editUser.user_id > 0) {
-      console.log('userProfile', this.userProfile);
+      // console.log('userProfile', this.userProfile);
       this.userService.updateUser(this.userProfile.login_id, saveUsr).subscribe(res => {
-        console.log('userProfile', this.userProfile);
+        // console.log('userProfile', this.userProfile);
         this.userService.deleteUserGroup(this.userProfile.login_id, this.editUser.user_id).subscribe(res2 => {
-          console.log('return from updateUser', res);
+          // console.log('return from updateUser', res);
           this.editUser.user_group.forEach(element => {
             const newUserGroup: UserGroupDTO = {
               user_id: this.editUser.user_id,
@@ -148,9 +148,9 @@ export class AdminComponent implements OnInit {
         });
       });
     } else {
-      console.log('adding new User', this.userProfile);
+      // console.log('adding new User', this.userProfile);
       this.userService.addUser('admin', saveUsr).subscribe(res => {
-        console.log('New User Added', res);
+        // console.log('New User Added', res);
         this.snackBar.open('User Created!', '', {
           duration: 4000,
           verticalPosition: 'top'

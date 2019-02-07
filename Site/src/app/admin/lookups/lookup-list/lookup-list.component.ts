@@ -31,23 +31,21 @@ export class LookupListComponent implements OnInit {
   }
 
   createSortedLookupTypeSource(className: string): any {
-    let sortedArray = this.lookupDataSource.filter(item => item.class === className).sort(this.compareValues('description'));
-    console.log('sortedLookupType Array', sortedArray);
+    const sortedArray = this.lookupDataSource.filter(item => item.class === className).sort(this.compareValues('description'));
+    // console.log('sortedLookupType Array', sortedArray);
     return sortedArray;
   }
 
-  compareValues(key, order='asc') {
+  compareValues(key, order = 'asc') {
     return function(a, b) {
-      if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+      if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
         // property doesn't exist on either object
         return 0;
       }
-  
       const varA = (typeof a[key] === 'string') ?
         a[key].toUpperCase() : a[key];
       const varB = (typeof b[key] === 'string') ?
         b[key].toUpperCase() : b[key];
-  
       let comparison = 0;
       if (varA > varB) {
         comparison = 1;
@@ -55,9 +53,9 @@ export class LookupListComponent implements OnInit {
         comparison = -1;
       }
       return (
-        (order == 'desc') ? (comparison * -1) : comparison
+        (order === 'desc') ? (comparison * -1) : comparison
       );
-    }
+    };
   }
 
   createLookupItemsDataSource() {
@@ -73,7 +71,6 @@ export class LookupListComponent implements OnInit {
             // console.log('beforeSend', url, async, method, timeout, params, payload, headers);
           },
           onInserting: function (values) {
-            
             const today = new Date();
             if (values.hasOwnProperty('is_active')) {
               values.is_active = values.is_active ? 'Y' : 'N';
@@ -125,7 +122,6 @@ export class LookupListComponent implements OnInit {
     e.newData.updated_by = this.userProfile.profile.login_id.toString().toUpperCase();
     e.newData.updated_date = today.toISOString();
   }
-  
   setIsActiveInd(data) {
     // console.log('setIsActiveInd', data);
     if (data === undefined) { return false; }

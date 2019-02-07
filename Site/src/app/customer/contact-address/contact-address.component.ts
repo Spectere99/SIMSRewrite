@@ -39,7 +39,7 @@ export class ContactAddressComponent implements OnInit {
     private globals: Globals) {
 
     this.stateList = this.usStateService.getStateList();
-    console.log('global LookupData', globals.lookupData);
+    // console.log('global LookupData', globals.lookupData);
     this.lookupDataSource = globalDataProvider.getLookups();
     this.createAddressTypeDataSource();
     /* lookupService.loadLookupData('').subscribe(res => {
@@ -87,14 +87,14 @@ export class ContactAddressComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       // console.log('The dialog was closed');
-      console.log('The Result', result);
+      // console.log('The Result', result);
       if (result) {
         // this.customer = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
-        console.log('CustomerAddressId', customerAddressId);
+        // console.log('CustomerAddressId', customerAddressId);
         if (customerAddressId > 0) {
           // Remove contact from the database using Web service call.
           // console.log('Calling Delete Web Service');
-          console.log('CustomerAddress Remove', customerAddressId);
+          // console.log('CustomerAddress Remove', customerAddressId);
           this.customerService.deleteCustomerAddress('rwflowers', customerAddressId)
             .subscribe(res => {
               this.customer.customer_address = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
@@ -104,7 +104,7 @@ export class ContactAddressComponent implements OnInit {
               });
             });
         } else {
-          console.log('removing unsaved Address', customerAddressId);
+          // console.log('removing unsaved Address', customerAddressId);
           this.customer.customer_address = this.customer.customer_address.filter(p => p.customer_address_id !== customerAddressId);
         }
       }
@@ -138,7 +138,7 @@ export class ContactAddressComponent implements OnInit {
     if (this.customer.customer_address) {
       for (let x = 0; x < this.customer.customer_address.length; x++) {
         this.customer.customer_address[x].customer_id = customer_id;
-        console.log('Address on Save Customer', this.customer.customer_address);
+        // console.log('Address on Save Customer', this.customer.customer_address);
         this.saveAddress(this.customer.customer_address[x]).subscribe();
       }
     }
@@ -153,7 +153,7 @@ export class ContactAddressComponent implements OnInit {
       // customerAddress.customer_address_id = 0;
       return this.customerService.addCustomerAddress('rwflowers', customerAddress)
         .map(res => {
-          console.log('Save address Return', res);
+          // console.log('Save address Return', res);
           this.snackBar.open('Customer Address Added!', '', {
             duration: 4000,
             verticalPosition: 'top'
@@ -163,7 +163,7 @@ export class ContactAddressComponent implements OnInit {
     } else {
       return this.customerService.updateCustomerAddress('rwflowers', customerAddress)
         .map(res => {
-          console.log('Update address Return', res);
+          // console.log('Update address Return', res);
           this.snackBar.open('Customer Address Updated!', '', {
             duration: 4000,
             verticalPosition: 'top'
@@ -183,7 +183,7 @@ export class ContactAddressComponent implements OnInit {
   isValid(): boolean {
     let valid = true;
     if (this.customer.customer_address && this.customer.customer_address.length > 0) {
-      console.log('isValid', this.customer.customer_address);
+      // console.log('isValid', this.customer.customer_address);
       valid = false;
       for (let x = 0; x < this.customer.customer_address.length; x++) {
         if (this.customer.customer_address[x].type_code) {

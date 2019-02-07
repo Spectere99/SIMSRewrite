@@ -76,9 +76,9 @@ export class CustomerOrderListComponent implements OnInit {
     // Pull User Role to set activities
     this.window = windowRef.nativeWindow;
     this.userProfile = JSON.parse(authService.getUserToken());
-    console.log('customer-order-list.component:constructor - userProfile', this.userProfile);
+    // console.log('customer-order-list.component:constructor - userProfile', this.userProfile);
     this.readOnly = this.userProfile.profile.role.filter(item => item === 'Readonly').length > 0;
-    console.log('customer-order-list.component:constructor - readOnly', this.readOnly);
+    // console.log('customer-order-list.component:constructor - readOnly', this.readOnly);
     this.lookupDataSource = globalDataProvider.getLookups();
     this.createStatusDataSource();
     this.createOrderTypeDataSource();
@@ -181,7 +181,7 @@ export class CustomerOrderListComponent implements OnInit {
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    console.log('createNewOrder - before formatOrderNumber', today);
+    // console.log('createNewOrder - before formatOrderNumber', today);
     this.selectedOrderMaster = new OrderMaster();
     this.selectedOrderMaster.order_id = 0;
     this.selectedOrderMaster.tax_rate = '7.0';
@@ -211,16 +211,16 @@ export class CustomerOrderListComponent implements OnInit {
   }
 
   reOrder(customer_id) {
-    console.log('Reorder Function', this.selectedOrderMaster);
+    // console.log('Reorder Function', this.selectedOrderMaster);
     this.loading = true;
     const reOrderObj = this.cloneOrder(this.selectedOrderMaster);
 
     reOrderObj.taken_user_id = this.userProfile.profile.user_id;
     reOrderObj.assigned_user_id = this.userProfile.profile.user_id;
 
-    console.log ('customer_order-list:reOrder-reOrderObj', reOrderObj);
+    // console.log ('customer_order-list:reOrder-reOrderObj', reOrderObj);
     this.orderService.addOrderInfo(this.userProfile.profile.login_id.toUpperCase(), reOrderObj).subscribe(res => {
-      console.log('Order ID Return', res);
+      // console.log('Order ID Return', res);
       reOrderObj.order_id = res.order_id;
       reOrderObj.order_number = res.order_number;
       const reOrderDetails = this.cloneOrderDetails(this.selectedOrderMaster.order_detail, res.order_id);
@@ -243,7 +243,7 @@ export class CustomerOrderListComponent implements OnInit {
 
       const reOrderArtPlacement = this.cloneOrderArtPlacement(this.selectedOrderMaster.order_art_placements, res.order_id);
       reOrderArtPlacement.forEach((item) => {
-        console.log('Cloning Art Placements', item);
+        // console.log('Cloning Art Placements', item);
         this.orderService.addOrderArtPlacement(this.userProfile.profile.login_id.toUpperCase(), item).subscribe();
       });
 
@@ -373,7 +373,7 @@ export class CustomerOrderListComponent implements OnInit {
     today.setHours(0, 0, 0, 0);
     // newOrder.order_date = today.toISOString();
     newOrder.order_date = this.toISOLocal(today);
-    console.log('!!!cloneOrder: newOrder.order_date', newOrder.order_date);
+    // console.log('!!!cloneOrder: newOrder.order_date', newOrder.order_date);
     newOrder.order_number = this.formatOrderNumber(today);
     newOrder.order_status = null;
     newOrder.customer_id = origOrder.customer_id;
@@ -413,7 +413,7 @@ export class CustomerOrderListComponent implements OnInit {
 
   cloneOrderDetails(origDetails: Array<OrderDetail>, order_id: number): Array<OrderDetail> {
     const newDetails = new Array<OrderDetail>();
-    console.log('customer-order-list:cloneOrderDetails - origDetails', origDetails);
+    // console.log('customer-order-list:cloneOrderDetails - origDetails', origDetails);
     origDetails.forEach((item) => { // foreach statement
       const newDetail = new OrderDetail();
       newDetail.order_detail_id = 0;
@@ -518,7 +518,7 @@ export class CustomerOrderListComponent implements OnInit {
   }
 
   createCloneHistoryStatus(orderObj: Order): any {
-    console.log('Saving Order Status History orderId=', orderObj.order_id);
+    // console.log('Saving Order Status History orderId=', orderObj.order_id);
     // console.log('user', this.userProfile);
     const orderStatusHistory = new OrderStatusHistory();
     orderStatusHistory.order_status_history_id = 0;
@@ -529,7 +529,7 @@ export class CustomerOrderListComponent implements OnInit {
     orderStatusHistory.status_date = today.toISOString();
     orderStatusHistory.set_by_user_id = this.userProfile.profile.user_id;
 
-    console.log('order-info:saveOrderStatusHistory - OrderStatusHistory', orderStatusHistory);
+    // console.log('order-info:saveOrderStatusHistory - OrderStatusHistory', orderStatusHistory);
     return this.orderService.addOrderStatus(this.userProfile.login_id, orderStatusHistory).subscribe();
   }
 
@@ -581,19 +581,19 @@ export class CustomerOrderListComponent implements OnInit {
     return data.first_name + ' ' + data.last_name;
   }
   applyChanges() {
-    console.log('customer-order_list: applyChanges');
+    // console.log('customer-order_list: applyChanges');
     if (this.orderInfo.isValid()) {
       this.orderInfo.batchSave().subscribe(res => {
         this.orderDetail.batchSave(res);
         // Still need art tab batch save.
         this.orderArt.batchSave(res);
         // console.log('orderTaskList on ApplyChanges', this.orderTaskList.orderTask);
-        console.log('order balance_due', this.selectedOrderMaster.balance_due);
-        console.log('order', this.selectedOrderMaster);
+        // console.log('order balance_due', this.selectedOrderMaster.balance_due);
+        // console.log('order', this.selectedOrderMaster);
         this.selectedOrderMaster.order_id = res;
         // tslint:disable-next-line:max-line-length
         if (+this.selectedOrderMaster.balance_due === 0.00 && (this.selectedOrderMaster.order_payments && this.selectedOrderMaster.order_payments.length > 0)) {
-          console.log('balance is paid!');
+          // console.log('balance is paid!');
           const fpmtTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'fnpmt');
           if (fpmtTask) {
             fpmtTask[0].is_complete = 'Y';
@@ -603,14 +603,14 @@ export class CustomerOrderListComponent implements OnInit {
         }
         if (this.selectedOrderMaster.order_payments) {
           if (this.selectedOrderMaster.order_payments.length >= 1) {
-            console.log('Order Tasks', this.selectedOrderMaster.order_tasks);
+            // console.log('Order Tasks', this.selectedOrderMaster.order_tasks);
             const depTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'deprc');
             if (depTask) {
               depTask[0].is_complete = 'Y';
               depTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();
               depTask[0].completed_date = new Date().toISOString();
             }
-            console.log('depost is paid!', this.selectedOrderMaster.order_payments);
+            // console.log('depost is paid!', this.selectedOrderMaster.order_payments);
           }
         }
 
@@ -627,7 +627,7 @@ export class CustomerOrderListComponent implements OnInit {
     }
   }
   showValues() {
-    console.log('Showing Order Values', this.selectedOrderMaster);
+    // console.log('Showing Order Values', this.selectedOrderMaster);
   }
 
   selectionChanged(e) {
@@ -641,10 +641,10 @@ export class CustomerOrderListComponent implements OnInit {
   showEditPopup(e) {
     // e.cancel = true;
     // console.log('E', e);
-    console.log('*** customer-order-list-comopnent:showEditPopup - START', e.data);
+    // console.log('*** customer-order-list-comopnent:showEditPopup - START', e.data);
     this.loadOrder(e.data);
     this.popupVisible = true;
-    console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
+    // console.log('*** customer-order-list-comopnent:showEditPopup - LEAVING');
     // console.log('Selected Order', this.selectedOrder);
   }
 
@@ -690,8 +690,8 @@ export class CustomerOrderListComponent implements OnInit {
       this.orderService.loadOrderTaskData('', this.selectedOrderMaster.order_id), // 7
       this.correspondenceService.getCorrespondenceData('', this.selectedOrderMaster.order_id), // 8
     ).subscribe(results => {
-      console.log('selectedOrder', this.selectedOrderMaster);
-      console.log('forkJoin Return', results);
+      // console.log('selectedOrder', this.selectedOrderMaster);
+      // console.log('forkJoin Return', results);
       this.selectedOrderMaster = results[0];
       this.selectedOrderLines = results[0].order_detail;
       this.selectedOrderMaster.order_detail = results[0].order_detail;
@@ -712,7 +712,7 @@ export class CustomerOrderListComponent implements OnInit {
       this.selectedCorrespondence = results[8].correspondences;
       this.selectedOrderMaster.order_correspondence = results[8].correspondences;
       this.selectedOrderMaster.customer = this.customer;
-      console.log('Order Master Return', this.selectedOrderMaster);
+      // console.log('Order Master Return', this.selectedOrderMaster);
       this.loadingOrder = false;
       this.loading = false;
       // this.popupVisible = true;
@@ -720,7 +720,7 @@ export class CustomerOrderListComponent implements OnInit {
   }
 
   showOrderSummary(e) {
-    console.log('showOrderSummary', e);
+    // console.log('showOrderSummary', e);
 
     // this.selectedOrder = e;
     this.selectedOrderMaster = e;
@@ -739,7 +739,7 @@ export class CustomerOrderListComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    console.log('ngChanges on customer-order-list', this.customer);
+    // console.log('ngChanges on customer-order-list', this.customer);
     this.dataSource = null;
     if (this.customer) {
       if (this.customer.customer_id > 0) {
@@ -750,10 +750,10 @@ export class CustomerOrderListComponent implements OnInit {
   }
 
   toISOLocal(d) {
-    var timezoneOffset = d.getMinutes() + d.getTimezoneOffset();
-    var timestamp = d.getTime() + timezoneOffset * 1000;
-    var correctDate = new Date(timestamp);
-    
+    const timezoneOffset = d.getMinutes() + d.getTimezoneOffset();
+    const timestamp = d.getTime() + timezoneOffset * 1000;
+    const correctDate = new Date(timestamp);
+
     correctDate.setUTCHours(0, 0, 0, 0);
 
     return correctDate.toISOString();

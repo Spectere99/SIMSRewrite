@@ -46,7 +46,7 @@ export class CustomerItemComponent implements OnInit {
   constructor(globalDataProvider: GlobalDataProvider, customerSvc: CustomerService,
     public authService: AuthenticationService, private globals: Globals) {
     this.userProfile = JSON.parse(authService.getUserToken());
-    console.log('customer_item.component:constructor - userProfile', this.userProfile);
+    // console.log('customer_item.component:constructor - userProfile', this.userProfile);
     this.readOnly = this.userProfile.profile.role.filter(item => item === 'Readonly').length > 0;
     // console.log('customer-item.component:constructor - readOnly', this.readOnly);
     this.customerService = customerSvc;
@@ -69,7 +69,7 @@ export class CustomerItemComponent implements OnInit {
   }
 
   applyChanges() {
-    console.log('Address is Valid', this.contactAddressCmpt.isValid());
+    // console.log('Address is Valid', this.contactAddressCmpt.isValid());
     this.loading = true;
     if (this.contactAddressCmpt.isValid()) {
       this.customerInfoCmpt.batchSave(this.customer.customer_id).subscribe(res => {
@@ -84,7 +84,7 @@ export class CustomerItemComponent implements OnInit {
         setTimeout(() => {
           // this.gridOrders.instance.refresh();
           this.customerService.getCustomerData('', res).subscribe(cust => {
-            console.log('contact-list applyChanges - selectedCustomer', this.customer);
+            // console.log('contact-list applyChanges - selectedCustomer', this.customer);
             // console.log('contact-list applyChanges - Customer', cust);
             this.customer = cust;
             this.customer.customer_person = this.customer.customer_person.filter(item => item.status_code === 'act');

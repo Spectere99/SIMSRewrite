@@ -182,7 +182,7 @@ export class OrderListComponent implements OnInit {
   }
 
   showValues() {
-    console.log('Showing Order Values', this.selectedOrderMaster);
+    // console.log('Showing Order Values', this.selectedOrderMaster);
   }
   createStatusDataSource() {
 
@@ -396,7 +396,7 @@ export class OrderListComponent implements OnInit {
     today.setHours(0, 0, 0, 0);
     // newOrder.order_date = today.toDateString();
     newOrder.order_date = this.toISOLocal(today);
-    console.log('!!!cloneOrder: newOrder.order_date', newOrder.order_date);
+    // console.log('!!!cloneOrder: newOrder.order_date', newOrder.order_date);
     newOrder.order_number = this.formatOrderNumber(today);
     newOrder.order_status = null;
     newOrder.customer_id = origOrder.customer_id;
@@ -540,8 +540,8 @@ export class OrderListComponent implements OnInit {
   }
 
   createCloneHistoryStatus(orderObj: Order): any {
-    console.log('Saving Order Status History orderId=', orderObj.order_id);
-    console.log('user', this.userProfile);
+    // console.log('Saving Order Status History orderId=', orderObj.order_id);
+    // console.log('user', this.userProfile);
     const orderStatusHistory = new OrderStatusHistory();
     orderStatusHistory.order_status_history_id = 0;
     orderStatusHistory.order_id = orderObj.order_id;
@@ -551,7 +551,7 @@ export class OrderListComponent implements OnInit {
     orderStatusHistory.status_date = today.toISOString();
     orderStatusHistory.set_by_user_id = this.userProfile.profile.user_id;
 
-    console.log('order-info:saveOrderStatusHistory - OrderStatusHistory', orderStatusHistory);
+    // console.log('order-info:saveOrderStatusHistory - OrderStatusHistory', orderStatusHistory);
     return this.orderService.addOrderStatus(this.userProfile.login_id, orderStatusHistory).subscribe();
   }
 
@@ -733,7 +733,7 @@ export class OrderListComponent implements OnInit {
   }
 
   showOrderSummary(e) {
-    console.log('showOrderSummary', e);
+    // console.log('showOrderSummary', e);
 
     this.selectedOrderMaster = e;
     this.summaryVisible = true;

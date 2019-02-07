@@ -74,7 +74,7 @@ export class OrderDetailComponent implements OnInit {
     this.lookupDataSource = globalDataProvider.getLookups();
     this.priceListDataSource = globalDataProvider.getPriceList();
     this.userDataSource = globalDataProvider.getUsers();
-    console.log('userDataSource', this.userDataSource);
+    // console.log('userDataSource', this.userDataSource);
     this.sizeTypes = this.createLookupTypeSource('ssiz');
     this.styleTypes = this.createLookupTypeSource('sclas');
     this.vendorTypes = this.createSortedLookupTypeSource('vend');
@@ -86,7 +86,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   showValues() {
-    console.log('Showing Order Values', this.order);
+    // console.log('Showing Order Values', this.order);
   }
   orderTaxableChange(val: boolean): string {
     this.updateTotals();
@@ -97,23 +97,23 @@ export class OrderDetailComponent implements OnInit {
   }
 
   createSortedLookupTypeSource(className: string): any {
-    let sortedArray = this.lookupDataSource.filter(item => item.class === className).sort(this.compareValues('description'));
-    console.log('sortedLookupType Array', sortedArray);
+    const sortedArray = this.lookupDataSource.filter(item => item.class === className).sort(this.compareValues('description'));
+    // console.log('sortedLookupType Array', sortedArray);
     return sortedArray;
   }
 
-  compareValues(key, order='asc') {
+  compareValues(key, order = 'asc') {
     return function(a, b) {
-      if(!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
+      if (!a.hasOwnProperty(key) || !b.hasOwnProperty(key)) {
         // property doesn't exist on either object
         return 0;
       }
-  
+
       const varA = (typeof a[key] === 'string') ?
         a[key].toUpperCase() : a[key];
       const varB = (typeof b[key] === 'string') ?
         b[key].toUpperCase() : b[key];
-  
+
       let comparison = 0;
       if (varA > varB) {
         comparison = 1;
@@ -121,9 +121,9 @@ export class OrderDetailComponent implements OnInit {
         comparison = -1;
       }
       return (
-        (order == 'desc') ? (comparison * -1) : comparison
+        (order === 'desc') ? (comparison * -1) : comparison
       );
-    }
+    };
   }
 
   createItemTypeSource(type: string): any {
@@ -183,19 +183,19 @@ export class OrderDetailComponent implements OnInit {
   }
 
   onVendorSelect(e, orderDetail, idx) {
-    console.log('onVendorSelect', e);
+    // console.log('onVendorSelect', e);
     orderDetail.vendor = e;
-    if (e==='gmtpr') {
-      orderDetail.taxable_ind = 'N'
+    if (e === 'gmtpr') {
+      orderDetail.taxable_ind = 'N';
       this.onTaxRateChange('N');
       this.onQtyPriceChange(e, idx);
     }
-    
+
   }
 
   onOther1TypeSelect(e, orderDetail, idx) {
-    console.log('onOther1TypeSelect', e);
-    if (e==='') {
+    // console.log('onOther1TypeSelect', e);
+    if (e === '') {
       orderDetail.other1_type = null;
     } else {
       orderDetail.other1_type = e;
@@ -204,7 +204,7 @@ export class OrderDetailComponent implements OnInit {
   addLineItem(e) {
     const lineItem = new OrderDetail();
 
-    console.log('add Line Item - line_item_number', lineItem.item_line_number);
+    // console.log('add Line Item - line_item_number', lineItem.item_line_number);
     lineItem.order_detail_id = (this.masterOrder.order_detail.length + 1) * -1;
     lineItem.order_id = this.masterOrder.order_id;
     lineItem.item_type = null;
@@ -247,8 +247,8 @@ export class OrderDetailComponent implements OnInit {
     }
     this.order.order_detail.unshift(lineItem);
     this.masterOrder.order_detail.unshift(lineItem);
-    console.log('addItem - order_detail', this.masterOrder.order_detail);
-    console.log('addItem - order_detail', this.order.order_detail);
+    // console.log('addItem - order_detail', this.masterOrder.order_detail);
+    // console.log('addItem - order_detail', this.order.order_detail);
   }
 
   copyOrderLine(e, idx) {
@@ -442,10 +442,10 @@ export class OrderDetailComponent implements OnInit {
         e.target.value = null;
         // console.log('onQtyPriceChange', e.target);
       }
-      
+
     }
     // console.log('onQtyPriceChange:orderDetail', this.masterOrder.order_detail[idx]);
-    
+ 
     let totalItemQty = 0;
     // const orderLine = this.order.order_detail[idx];
     const orderLine = this.masterOrder.order_detail[idx];
@@ -553,12 +553,12 @@ export class OrderDetailComponent implements OnInit {
   }
 
   onOtherTypeChange(e, idx) {
-    console.log('onOtherTypeChange', e);
-    console.log('onOtherTypeChange : idx', idx);
+    // console.log('onOtherTypeChange', e);
+    // console.log('onOtherTypeChange : idx', idx);
     if (e.length === 0) {
       this.masterOrder.order_detail[idx].other1_type = null;
       this.masterOrder.order_detail[idx].other1_qty = null;
-      console.log('onOtherTypeChange: order_detail[idx]', this.masterOrder.order_detail[idx]);
+      // console.log('onOtherTypeChange: order_detail[idx]', this.masterOrder.order_detail[idx]);
     }
   }
 
@@ -619,7 +619,7 @@ export class OrderDetailComponent implements OnInit {
     }
   }
   onOtherQtyChange(e, idx) {
-    console.log('onOtherQtyChange', e);
+    // console.log('onOtherQtyChange', e);
     if (e === null) {
       this.masterOrder.order_detail[idx].other1_type = null;
       this.masterOrder.order_detail[idx].other1_qty = null;

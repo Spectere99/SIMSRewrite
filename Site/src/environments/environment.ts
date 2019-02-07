@@ -4,36 +4,17 @@
 // The list of which env maps to which file can be found in `.angular-cli.json`.
 // export const baseUrl = 'http://spserver:8888';
 export const baseUrl = 'http://localhost:56543';
-// export const baseUrl = 'http://192.168.1.5:8888';
-export const environmentName = 'Test';
-export const version = '0.90';
+export const environmentName = 'Prod';
+export const version = '2.00';
 export const connectionTimeout = 100000;
 export const environment = {
   production: false,
-  // authEndpoint: 'http://localhost:56543/api/Security',
-  // authEndpoint: 'http://localhost:8888/api/Security',
   authEndpoint: baseUrl + '/api/Security',
-
-  // odataEndpoint: 'http://localhost:56543/odata/',
-  // odataEndpoint: 'http://localhost:8888/odata/',
   odataEndpoint: baseUrl + '/odata/',
-
-  // reportingEndpoint: 'http://localhost:56543/odata/',
-  // reportingEndpoint: 'http://localhost:8888/odata/',
   reportingEndpoint: baseUrl + '/odata/',
-
-  // artUploadURL: 'http://localhost:56543/api/ArtFile',
-  // artUploadURL: 'http://localhost:8888/api/ArtFile',  // DO NOT USE Slash at end!
   artUploadURL: baseUrl + '/api/ArtFile',  // DO NOT USE Slash at end!
-
-  // docUploadURL: 'http://localhost:56543/api/Document',
-  // docUploadURL: 'http://localhost:8888/api/Document',
   docUploadURL: baseUrl + '/api/Document',
-
-  // defaultArtFolder: 'http://localhost:8888/orderimage/',
   defaultArtFolder: baseUrl + '/orderimage/',
-
-  // defaultDocFolder: 'http://localhost:8888/'
   defaultDocFolder: baseUrl + '/',
   connectionTimeout: this.connectionTimeout
 

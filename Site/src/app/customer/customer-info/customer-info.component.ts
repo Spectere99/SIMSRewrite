@@ -83,7 +83,7 @@ ctrlHasFocus: string;
     return this.saveCustomer(this.customer).map(res => {
       this.customerService.getActiveParentCustomers('rwflowers').subscribe(res => {
         this.customerList = res.value;
-        console.log('customerList', this.customerList);
+        // console.log('customerList', this.customerList);
       });
       return res;
     });

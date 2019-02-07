@@ -58,13 +58,13 @@ export class ContactInfoComponent implements OnInit {
       // console.log('The Result', result);
       if (result) {
 
-        console.log('Removing Customer Contact', customerPersonId);
+        // console.log('Removing Customer Contact', customerPersonId);
         const contactToRemove = this.customer.customer_person.filter(p => p.customer_person_id === customerPersonId);
 
         // Remove contact from the database using Web service call.
 
         if (customerPersonId > 0) {
-          console.log('Removing Contact', contactToRemove[0]);
+          // console.log('Removing Contact', contactToRemove[0]);
           contactToRemove[0].status_code = 'inact';
           this.customerService.updateCustomerContact('', contactToRemove[0])
             .subscribe(res => {
@@ -75,7 +75,7 @@ export class ContactInfoComponent implements OnInit {
               });
             });
         } else {
-          console.log('Customer Contact Removed', customerPersonId);
+          // console.log('Customer Contact Removed', customerPersonId);
           this.customer.customer_person = this.customer.customer_person.filter(p => p.customer_person_id !== customerPersonId);
           this.snackBar.open('Customer Contact Deleted!', '', {
             duration: 4000,
@@ -89,16 +89,16 @@ export class ContactInfoComponent implements OnInit {
 
   batchSave(customer_id: number): Observable<any> {
     // Loop through the Customer Contacts and Save each.
-    console.log('customer-contacts batchSave', customer_id);
+    // console.log('customer-contacts batchSave', customer_id);
     if (this.customer.customer_person) {
       for (let x = 0; x < this.customer.customer_person.length; x++) {
         this.customer.customer_person[x].customer_id = customer_id;
-        console.log('Saving customer person', this.customer.customer_person[x]);
+        // console.log('Saving customer person', this.customer.customer_person[x]);
         this.saveContact(this.customer.customer_person[x]).subscribe(res => {
         });
       }
     }
-    console.log('contact-info:batchSave - customer', this.customer);
+    // console.log('contact-info:batchSave - customer', this.customer);
     return Observable.create(observer => {
       // tslint:disable-next-line:no-unused-expression
       this.customer.customer_person;
@@ -143,7 +143,7 @@ export class ContactInfoComponent implements OnInit {
     if (customerContact.customer_person_id <= 0) {
       return this.customerService.addCustomerContact('rwflowers', customerContact)
         .map(res => {
-          console.log('Savecontact Return', res);
+          // console.log('Savecontact Return', res);
           this.snackBar.open('Customer Contact Added!', '', {
             duration: 4000,
             verticalPosition: 'top'
@@ -189,7 +189,7 @@ export class ContactInfoComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    console.log('contact-info:ngOnChange', this.customer);
+    // console.log('contact-info:ngOnChange', this.customer);
   }
 
 }

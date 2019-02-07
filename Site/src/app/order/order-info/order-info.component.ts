@@ -90,7 +90,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   convertOrderInfo(order: OrderMaster): Order {
-    console.log('convertOrderInfo');
+    // console.log('convertOrderInfo');
     const orderToSave = new Order();
     orderToSave.order_id = order.order_id;
     orderToSave.customer_id = order.customer_id;
@@ -104,14 +104,14 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     // orderToSave.order_date =  fixedOrderDate.toISOString();
     orderToSave.order_date = order.order_date;
     const orderDueDate = new Date(order.order_due_date);
-    console.log('orderDueDate', orderDueDate);
+    // console.log('orderDueDate', orderDueDate);
     // var date = new Date();
     /* var timezoneOffset = orderDueDate.getMinutes() + orderDueDate.getTimezoneOffset();
     var timestamp = orderDueDate.getTime() + timezoneOffset * 1000;
     var correctDate = new Date(timestamp);
-    
+
     correctDate.setUTCHours(0, 0, 0, 0); */
-    
+
     orderToSave.order_due_date =  this.toISOLocal(orderDueDate);
     // console.log('orderDueDate after toISOLocal', orderToSave.order_due_date);
     // console.log('orderDueDate: toISOString', new Date(order.order_due_date).toISOString());
@@ -157,17 +157,17 @@ export class OrderInfoComponent implements OnInit, OnChanges {
     orderToSave.contact_phone2_ext =  order.contact_phone2_ext;
     orderToSave.contact_phone2_type =  order.contact_phone2_type;
 
-    console.log('convertOrderInfo: return value', orderToSave);
+    // console.log('convertOrderInfo: return value', orderToSave);
     return orderToSave;
   }
 
   saveOrderInfo() {
-      console.log('Order on Save', this.currentOrder);
+      // console.log('Order on Save', this.currentOrder);
       const insOrder = this.convertOrderInfo(this.currentOrder);
       // console.log('Converted Order on Save', insOrder);
       if (this.currentOrder.order_id <= 0) {
         this.currentOrder.order_id = 0;
-        console.log('saveOrderInfo:insOrder', insOrder);
+        // console.log('saveOrderInfo:insOrder', insOrder);
         return this.orderService.addOrderInfo('rwflowers', insOrder)
         .map(res => {
           // console.log('Save orderInfo Return', res);
@@ -180,7 +180,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
         });
       } else {
         const updOrder = this.convertOrderInfo(this.currentOrder);
-        console.log('saveOrderInfo:updOrder', updOrder);
+        // console.log('saveOrderInfo:updOrder', updOrder);
         return this.orderService.updateOrderInfo('rwflowers', updOrder)
         .map(res => {
           // console.log('Update orderInfo Return', res);
@@ -194,14 +194,14 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   isValid(): boolean {
-    console.log('isValid', this.currentOrder);
+    // console.log('isValid', this.currentOrder);
     let valid = false;
     // valid = this.currentOrder.order_due_date !== undefined && this.currentOrder.order_due_date !== null
     //         && this.currentOrder.order_due_date.length > 0;
     if (this.currentOrder.order_due_date) {
       valid = true;
       if (this.currentOrder.order_type) {
-        valid = true
+        valid = true;
         if (this.currentOrder.order_status) {
           valid = true;
         } else {
@@ -249,7 +249,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   onOrderStatusChange(e) {
-    console.log('onOrderStatusChange', e);
+    // console.log('onOrderStatusChange', e);
     // console.log('Current Order Status', this.currentOrder.order_status);
     if (e !== this.originalOrderStatus) {
       this.orderStatusChanged = true;
@@ -262,7 +262,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   onTakenUserIdChange(e) {
-    console.log('TakenUserIdChange', e);
+    // console.log('TakenUserIdChange', e);
     this.currentOrder.taken_user_id = e;
   }
   ngOnInit() {
@@ -306,10 +306,10 @@ export class OrderInfoComponent implements OnInit, OnChanges {
   }
 
   toISOLocal(d) {
-    var timezoneOffset = d.getMinutes() + d.getTimezoneOffset();
-    var timestamp = d.getTime() + timezoneOffset * 1000;
-    var correctDate = new Date(timestamp);
-    
+    const timezoneOffset = d.getMinutes() + d.getTimezoneOffset();
+    const timestamp = d.getTime() + timezoneOffset * 1000;
+    const correctDate = new Date(timestamp);
+
     correctDate.setUTCHours(0, 0, 0, 0);
 
     return correctDate.toISOString();

@@ -203,13 +203,13 @@ export class ContactListComponent implements OnInit {
       // console.log('contact-list calling contactsComponent batchSave', res);
       const cnt = this.contactInfoCmpt.batchSave(res);
       const adr = this.contactAddressCmpt.batchSave(res);
-        console.log('contactInfo batch Saved Result', cnt);
+        // console.log('contactInfo batch Saved Result', cnt);
         // console.log('contactAddress batch Saved Result', adr);
           setTimeout(() => {
             this.gridCustomers.instance.refresh();
             this.customerService.getCustomerData('', res).subscribe(cust => {
               // console.log('contact-list applyChanges - selectedCustomer', this.selectedCustomer);
-            console.log('contact-list applyChanges - Customer', cust);
+            // console.log('contact-list applyChanges - Customer', cust);
             this.selectedCustomer = cust;
             this.selectedCustomer.customer_person = this.selectedCustomer.customer_person.filter(f => f.status_code === 'act');
             });
