@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { AuthenticationService } from '../_services/authentication.service';
 @Component({
   selector: 'app-garment',
   templateUrl: './garment.component.html',
@@ -7,7 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GarmentComponent implements OnInit {
 
-  constructor() { }
+  userProfile;
+  constructor(authService: AuthenticationService) {
+    this.userProfile = JSON.parse(authService.getUserToken());
+  }
 
   ngOnInit() {
   }

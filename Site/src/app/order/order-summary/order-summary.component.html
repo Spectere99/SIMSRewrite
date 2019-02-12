@@ -203,45 +203,48 @@
       </div>
 
       <br>
-
       <div id="ORDER_ART">
-        <fieldset>
-          <legend class="SmallBodyText">
-            <b>Order Art:</b>
-          </legend>
-          <table class="SmallBodyText" cellpadding="1" cellspacing="0">
+          <fieldset>
+            <legend class="SmallBodyText">
+              <b>Order Art:</b>
+            </legend>
+            <table class="SmallBodyText" cellpadding="1" cellspacing="0">
+                <tr>
+                  <td width="250">
+                    <b>Art File</b>
+                  </td>
+                  <td width="250">
+                    <b>Art Folder</b>
+                  </td>
+                  <td width="250">
+                    <b>Notes</b>
+                  </td>
+                  <td width="250">
+                    <b>Thumbnail</b>
+                  </td>
+                </tr>
+            </table>
+            <!--includeif tableempty="ORDER_ART_FILE"-->
+            <div *ngIf="currentOrder.order_art_file === undefined || currentOrder.order_art_file.length === 0">No art files</div>
+            <!--else-->
+            <div *ngFor="let artFile of currentOrder.order_art_file">
+            <table class="SmallBodyText" cellpadding="1" cellspacing="0">
+              <!--foreachrow table="ORDER_ART_FILE"-->
               <tr>
-                <td width="250">
-                  <b>Art File</b>
-                </td>
-                <td width="250">
-                  <b>Art Folder</b>
-                </td>
-                <td width="250">
-                  <b>Notes</b>
-                </td>
+                <td width="250">{{artFile.image_file}}&nbsp;&nbsp;</td>
+                <td width="250">{{artFile.art_folder}}&nbsp;&nbsp;</td>
+                <td width="250">{{artFile.note}}&nbsp;&nbsp;</td>
+                <td width="250"><img [src]="defaultArtFolder + artFile.image_file" height="75px" width="75px"></td>
               </tr>
-          </table>
-          <!--includeif tableempty="ORDER_ART_FILE"-->
-          <div *ngIf="currentOrder.order_art_file === undefined || currentOrder.order_art_file.length === 0">No art files</div>
-          <!--else-->
-          <div *ngFor="let artFile of currentOrder.order_art_file">
-          <table class="SmallBodyText" cellpadding="1" cellspacing="0">
-            <!--foreachrow table="ORDER_ART_FILE"-->
-            <tr>
-              <td width="250">{{artFile.image_file}}&nbsp;&nbsp;</td>
-              <td width="250">{{artFile.art_folder}}&nbsp;&nbsp;</td>
-              <td width="250">{{artFile.note}}&nbsp;&nbsp;</td>
-            </tr>
-            <!--endforeachrow-->
-          </table>
+              <!--endforeachrow-->
+            </table>
+          </div>
+            <!--endincludeif-->
+          </fieldset>
         </div>
-          <!--endincludeif-->
-        </fieldset>
-      </div>
-
-      <br>
-
+  
+        <br>
+        
       <div id="ORDER_NOTES">
         <fieldset>
           <legend class="SmallBodyText">

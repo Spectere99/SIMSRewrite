@@ -127,7 +127,7 @@ export class OrderDetailComponent implements OnInit {
   }
 
   createItemTypeSource(type: string): any {
-    return this.priceListDataSource.filter(item => item.pricelist_type === type);
+    return this.priceListDataSource.filter(item => item.pricelist_type === type).sort(this.compareValues('pricelist_description'));
   }
 
   noOrderItems() {

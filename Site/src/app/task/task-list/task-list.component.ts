@@ -124,6 +124,7 @@ export class TaskListComponent implements OnInit {
         'order/order_date',
         'order/order_status',
         'order/customer_id',
+        'order/ship_attn',
         'order/order_number',
         'order/order_type',
         'order/order_due_date',

@@ -26,6 +26,7 @@ export class OrderSummaryComponent implements OnInit {
   vendorTypes: Array<LookupItem>;
   artLocations: Array<LookupItem>;
   userDataSource: any;
+  defaultArtFolder = environment.defaultArtFolder;
 
   orderArtPlacement: Array<OrderArtPlacement>;
   orderFees: Array<OrderFee>;
@@ -211,6 +212,7 @@ export class OrderSummaryComponent implements OnInit {
       });
       this.orderService.loadOrderArtFileData('', this.currentOrder.order_id).subscribe(res => {
         this.orderArtFile = res.order_art_file;
+        console.log('pulled Art File', this.orderArtFile);
       });
       this.orderService.loadOrderNotesData('', this.currentOrder.order_id).subscribe(res => {
         // console.log('Retreiving Order Notes', this.orderNotes);

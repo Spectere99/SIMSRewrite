@@ -316,32 +316,6 @@ export class OrderListComponent implements OnInit {
     // Get the Billing Address if available
     // console.log('setBillingAndShipmentAddress', this.customer);
     const billingAddress = this.customer.customer_address.filter(item => item.type_code === 'bill');
-    /* this.selectedOrder.ship_attn = this.customer.customer_name;
-    if (billingAddress && billingAddress.length > 0) {
-      // console.log('Billing Adr', billingAddress[0]);
-      this.selectedOrder.BILL_ADDRESS_1 = billingAddress[0].address_1;
-      this.selectedOrder.BILL_ADDRESS_2 = billingAddress[0].address_2;
-      this.selectedOrder.BILL_CITY = billingAddress[0].city;
-      this.selectedOrder.BILL_STATE = billingAddress[0].state;
-      this.selectedOrder.BILL_ZIP = billingAddress[0].zip;
-      if (this.customer.ship_to_bill_ind === 'Y') {
-        this.selectedOrder.SHIP_ADDRESS_1 = billingAddress[0].address_1;
-        this.selectedOrder.SHIP_ADDRESS_2 = billingAddress[0].address_2;
-        this.selectedOrder.SHIP_CITY = billingAddress[0].city;
-        this.selectedOrder.SHIP_STATE = billingAddress[0].state;
-        this.selectedOrder.SHIP_ZIP = billingAddress[0].zip;
-      } else {
-        const shippingAddress = this.customer.customer_address.filter(item => item.type_code === 'ship');
-        if (shippingAddress && shippingAddress.length > 0) {
-          this.selectedOrder.SHIP_ADDRESS_1 = shippingAddress[0].address_1;
-          this.selectedOrder.SHIP_ADDRESS_2 = shippingAddress[0].address_2;
-          this.selectedOrder.SHIP_CITY = shippingAddress[0].city;
-          this.selectedOrder.SHIP_STATE = shippingAddress[0].state;
-          this.selectedOrder.SHIP_ZIP = shippingAddress[0].zip;
-        }
-      }
-    } */
-
     this.selectedOrderMaster.ship_attn = this.customer.customer_name;
     if (billingAddress && billingAddress.length > 0) {
       // console.log('Billing Adr', billingAddress[0]);
@@ -365,6 +339,15 @@ export class OrderListComponent implements OnInit {
           this.selectedOrderMaster.SHIP_STATE = shippingAddress[0].state;
           this.selectedOrderMaster.SHIP_ZIP = shippingAddress[0].zip;
         }
+      }
+    } else {
+      const shippingAddress = this.customer.customer_address.filter(item => item.type_code === 'ship');
+      if (shippingAddress && shippingAddress.length > 0) {
+        this.selectedOrderMaster.SHIP_ADDRESS_1 = shippingAddress[0].address_1;
+        this.selectedOrderMaster.SHIP_ADDRESS_2 = shippingAddress[0].address_2;
+        this.selectedOrderMaster.SHIP_CITY = shippingAddress[0].city;
+        this.selectedOrderMaster.SHIP_STATE = shippingAddress[0].state;
+        this.selectedOrderMaster.SHIP_ZIP = shippingAddress[0].zip;
       }
     }
   }
@@ -755,10 +738,10 @@ export class OrderListComponent implements OnInit {
   }
 
   toISOLocal(d) {
-    var timezoneOffset = d.getMinutes() + d.getTimezoneOffset();
-    var timestamp = d.getTime() + timezoneOffset * 1000;
-    var correctDate = new Date(timestamp);
-    
+    const timezoneOffset = d.getMinutes() + d.getTimezoneOffset();
+    const timestamp = d.getTime() + timezoneOffset * 1000;
+    const correctDate = new Date(timestamp);
+
     correctDate.setUTCHours(0, 0, 0, 0);
 
     return correctDate.toISOString();

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { NgModel } from '@angular/forms';
 import { LookupService } from '../_services/lookups.service';
 import { UserService } from '../_services/user.service';
+import { AuthenticationService } from '../_services/authentication.service';
 
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/map';
@@ -41,9 +42,11 @@ export class OrderComponent implements OnInit {
   lookupDataSource: any;
 
   filterDate = new Date(2008, 1, 1);
+  userProfile;
 
-    constructor(private http: Http, lookupService: LookupService, userService: UserService) {
+    constructor(private http: Http, lookupService: LookupService, userService: UserService, authService: AuthenticationService) {
       this.baseUrl = 'http://localhost:56543/odata/';
+      this.userProfile = JSON.parse(authService.getUserToken());
       lookupService.loadLookupData('').subscribe(res => {
         this.lookupDataSource = res.value;
         // console.log('lookupDataSource', this.lookupDataSource);

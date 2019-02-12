@@ -3,6 +3,7 @@ import { DxDataGridComponent, DxTemplateModule } from 'devextreme-angular';
 import { CustomerInfoComponent } from './customer-info/customer-info.component';
 import { LookupService } from '../_services/lookups.service';
 import { UserService } from '../_services/user.service';
+import { AuthenticationService } from '../_services/authentication.service';
 // import { CustomerContactsComponent } from './customer-contacts/customer-contacts.component';
 import { CustomerListComponent } from './customer-list/customer-list.component';
 
@@ -16,6 +17,11 @@ import {NgbTabset} from '@ng-bootstrap/ng-bootstrap';
 export class CustomerComponent implements OnInit {
   @ViewChild('customerTabs') tabs: NgbTabset;
 
+  userProfile;
+
+  constructor(authService: AuthenticationService) {
+    this.userProfile = JSON.parse(authService.getUserToken());
+  }
   ngOnInit() {
   }
 

@@ -27,6 +27,7 @@
         <dxi-column dataField="task_code" caption="Task" [width]="175" [allowEditing]="false">
           <dxo-lookup [dataSource]="taskLookup" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
         </dxi-column>
+        <dxi-column dataField="order.ship_attn" caption="Customer" [width]="300" [allowEditing]="false"></dxi-column>
         <dxi-column dataField="order.order_status" caption="Order Status" [width]="125" [allowEditing]="false">
           <dxo-lookup [dataSource]="order_statusSource" valueExpr="char_mod" displayExpr="description"></dxo-lookup>
         </dxi-column>

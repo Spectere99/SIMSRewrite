@@ -13,13 +13,16 @@ export class NavbarComponent implements OnInit {
   isAdmin = true;
   environmentName = environmentName;
   version = version;
+  user;
   constructor(public _authService: AuthenticationService, public _router: Router) {
     const userToken = JSON.parse(_authService.getUserToken());
     if (userToken) {
-      this.isAdmin = userToken.profile.role.indexOf('Security Administrator') !== -1;
-      // console.log('User Token', userToken);
+      this.user = userToken.profile;
     }
-    
+    if (userToken) {
+      this.isAdmin = userToken.profile.role.indexOf('Security Administrator') !== -1;
+      console.log('User Token', userToken);
+    }
   }
 
   ngOnInit() {
@@ -27,7 +30,7 @@ export class NavbarComponent implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnChanges() {
-    // console.log('NavBar On Changes');
+    console.log('NavBar On Changes');
   }
 
   logout(): void {

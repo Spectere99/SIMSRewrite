@@ -735,7 +735,7 @@ export class OrderInvoiceComponent implements OnInit {
     xhr.responseType = 'blob';
     xhr.send();
   } */
-  
+
   ngOnInit() {
     // console.log('order-invoice:ngOnInit: Master Order', this.masterOrder);
     if (this.masterOrder) {

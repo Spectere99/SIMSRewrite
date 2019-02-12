@@ -5,7 +5,7 @@
 // export const baseUrl = 'http://spserver:8888';
 export const baseUrl = 'http://localhost:56543';
 export const environmentName = 'Prod';
-export const version = '2.00';
+export const version = '2.15';
 export const connectionTimeout = 100000;
 export const environment = {
   production: false,
