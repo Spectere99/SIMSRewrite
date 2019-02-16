@@ -181,7 +181,7 @@ export class GarmentListComponent implements OnInit {
           this.loadOrder(this.selectedOrderMaster);
           this.popupVisible = false;
         }, 1000);
-        
+
       });
     } else {
       alert('Order Due Date, Order Type, and Order Status are required.');
@@ -341,54 +341,6 @@ export class GarmentListComponent implements OnInit {
     // console.log('customer', e.data.order.customer_id);
     this.loadOrder(e.data);
     this.popupVisible = true;
-    // e.cancel = true;
-    // console.log('E', e);
-    // console.log('*** garment-list-comopnent:showEditPopup - START');
-    /* this.loadingOrder = true;
-    this.loading = true;
-    this.selectedOrder = e.data;
-    this.selectedOrderMaster = e.data;
-    forkJoin(
-      this.orderService.loadOrderData('', this.selectedOrder.order_id), // 0
-      this.orderService.loadArtPlacementData('', this.selectedOrder.order_id), // 1
-      this.orderService.loadOrderFeeData('', this.selectedOrder.order_id), // 2
-      this.orderService.loadOrderPaymentData('', this.selectedOrder.order_id), // 3
-      this.orderService.loadOrderArtFileData('', this.selectedOrder.order_id), // 4
-      this.orderService.loadOrderNotesData('', this.selectedOrder.order_id), // 5
-      this.orderService.loadOrderStatusHistoryData('', this.selectedOrder.order_id), // 6
-      this.orderService.loadOrderTaskData('', this.selectedOrder.order_id), // 7
-      this.correspondenceService.getCorrespondenceData('', this.selectedOrder.order_id), // 8
-      this.customerService.getCustomerData('', e.data.order.customer_id) // 9
-    ).subscribe(results => {
-      // console.log('selectedOrder', this.selectedOrder);
-      // console.log('forkJoin Return', results);
-      this.selectedOrderLines = results[0].order_detail;
-      this.selectedOrderMaster = results[0];
-      this.selectedOrderMaster.order_detail = results[0].order_detail;
-      this.selectedArtPlacements = results[1].order_art_placement;
-      this.selectedOrderMaster.order_art_placements = results[1].order_art_placement;
-      this.selectedOrderFees = results[2].order_fees;
-      this.selectedOrderMaster.order_fees = results[2].order_fees;
-      this.selectedPayments = results[3].order_payments;
-      this.selectedOrderMaster.order_payments = results[3].order_payments;
-      this.selectedArtFiles = results[4].order_art_file;
-      this.selectedOrderMaster.order_art_file = results[4].order_art_file;
-      this.selectedNotes = results[5].order_notes;
-      this.selectedOrderMaster.order_notes = results[5].order_notes;
-      this.selectedStatusHistory = results[6].order_status_history;
-      this.selectedOrderMaster.order_status_histories = results[6].order_status_history;
-      this.selectedTasks = results[7].order_task;
-      this.selectedOrderMaster.order_tasks = results[7].order_task;
-      this.selectedCorrespondence = results[8].correspondences;
-      this.customer = results[9];
-      this.selectedOrderMaster.order_correspondence = results[8].correspondences;
-      this.selectedOrderMaster.customer = this.customer;
-      // console.log('Order Master Return', this.selectedOrderMaster);
-      this.loadingOrder = false;
-      this.loading = false;
-      this.popupVisible = true;
-    }); */
-    // console.log('*** garment-list-comopnent:showEditPopup - LEAVING');
   }
 
   loadOrder(e) {
@@ -446,6 +398,18 @@ export class GarmentListComponent implements OnInit {
     });
   }
 
+  cancelChanges() {
+    console.log('cancelChanges');
+    this.loadOrder(this.selectedOrderMaster);
+    this.popupVisible = false;
+  }
+
+  popupHiding(e) {
+    console.log('hiding popup');
+    // e.cancel = true;  // This will stop the popup from hiding.
+                         //  Use to check for changes
+    this.gridOrders.instance.refresh();
+  }
   ngOnInit() {
     // console.log('garment-list.component:ngOnInit');
   }

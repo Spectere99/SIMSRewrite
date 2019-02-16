@@ -219,6 +219,7 @@ export class ContactListComponent implements OnInit {
         });
   }
   cancelChanges() {
+    this.gridCustomers.instance.refresh();
     this.popupVisible = false;
   }
 
@@ -226,6 +227,7 @@ export class ContactListComponent implements OnInit {
   }
 
   popupHiding(e) {
+    console.log('popupHiding');
     // e.cancel = true;  // This will stop the popup from hiding.
                          //  Use to check for changes
     this.gridCustomers.instance.refresh();

@@ -20,7 +20,7 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 export class TaskListComponent implements OnInit {
   @ViewChild(DxDataGridComponent) gridOrders: DxDataGridComponent;
   baseUrl = environment.odataEndpoint;
-  
+
   selectedOrderMaster: OrderMaster;
   /* Data Strutures for Orders */
   selectedOrder: any;
@@ -154,7 +154,7 @@ export class TaskListComponent implements OnInit {
       this.loadOrder(e.data);
       // this.contactPersons = this.orderCustomer.customer_person;
       // console.log('pulled Customer', this.orderCustomer);
-    //});
+    // });
     // console.log('showPopup order', e.data);
     // console.log('Selected Order', this.selectedOrder);
     // alert('Editing!');

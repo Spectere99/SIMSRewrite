@@ -269,7 +269,7 @@ export class OrderInvoiceComponent implements OnInit {
           this.loading = false;
         });
       });
-    })
+    });
   }
 
   private buildInvoiceMessage(doc) {
@@ -544,7 +544,7 @@ export class OrderInvoiceComponent implements OnInit {
     doc.rect(5, lineLocation - 4, 135, 5);
     // console.log('other1_type', lineItem);
     if (lineItem.other1_qty !== null) {
-      doc.text(143, lineLocation, this.getSizeTypeDescription(lineItem.other1_type) + '(' + (lineItem.other1_qty === null ? '' 
+      doc.text(143, lineLocation, this.getSizeTypeDescription(lineItem.other1_type) + '(' + (lineItem.other1_qty === null ? ''
       : lineItem.other1_qty.toString()) + ')');
     }
     // doc.text(152, lineLocation, );

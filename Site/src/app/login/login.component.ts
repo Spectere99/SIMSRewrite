@@ -47,7 +47,7 @@ window;
         this._authService.login(this.loginForm.value.userName, this.loginForm.value.passwordText)
             .subscribe(() => {
                 this.loading = false;
-                Sentry.captureMessage('User: ' + this.loginForm.value.userName + ' logging in.');
+                // Sentry.captureMessage('User: ' + this.loginForm.value.userName + ' logging in.');
                 const to: string = this._authService.getRedirectUrl() || '/Customer';
                 this._router.navigate([to]);
             }, (error) => {

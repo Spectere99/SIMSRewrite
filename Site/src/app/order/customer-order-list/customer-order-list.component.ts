@@ -641,7 +641,7 @@ export class CustomerOrderListComponent implements OnInit {
     this.selectedOrder.order_number = this.formatOrderNumber(today);
     this.selectedOrder.order_date = today;
     this.selectedOrder.taken_user_id = this.userProfile.profile.user_id; */
-
+    console.log('closeEditor');
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     this.selectedOrderMaster = new OrderMaster();
@@ -654,7 +654,16 @@ export class CustomerOrderListComponent implements OnInit {
     this.popupVisible = false;
   }
   cancelChanges() {
+    console.log('cancelChanges');
+    this.loadOrder(this.selectedOrderMaster);
     this.popupVisible = false;
+  }
+
+  popupHiding(e) {
+    console.log('hiding popup');
+    // e.cancel = true;  // This will stop the popup from hiding.
+                         //  Use to check for changes
+    this.gridOrders.instance.refresh();
   }
 
   loadOrder(e) {

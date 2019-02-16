@@ -665,7 +665,15 @@ export class OrderListComponent implements OnInit {
     this.popupVisible = false;
   }
   cancelChanges() {
+    this.gridOrders.instance.refresh();
     this.popupVisible = false;
+  }
+
+  popupHiding(e) {
+    console.log('hiding popup');
+    // e.cancel = true;  // This will stop the popup from hiding.
+                         //  Use to check for changes
+    this.gridOrders.instance.refresh();
   }
 
   loadOrder(e) {
