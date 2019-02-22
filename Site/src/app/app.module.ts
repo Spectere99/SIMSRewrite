@@ -76,6 +76,8 @@ import { LookupsComponent } from './admin/lookups/lookups.component';
 import { LookupListComponent } from './admin/lookups/lookup-list/lookup-list.component';
 import { PriceListComponent } from './admin/price-list/price-list.component';
 import { PricelistListComponent } from './admin/price-list/pricelist-list/pricelist-list.component';
+import { NumberCorrectionComponent } from './admin/number-correction/number-correction.component';
+import { NumberListComponent } from './admin/number-correction/number-list/number-list.component';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -148,6 +150,8 @@ export class SentryErrorHandler implements ErrorHandler {
     LookupListComponent,
     PriceListComponent,
     PricelistListComponent,
+    NumberCorrectionComponent,
+    NumberListComponent,
   ],
   imports: [
     NgbModule.forRoot(),

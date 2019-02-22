@@ -18,7 +18,7 @@ export class LookupListComponent implements OnInit {
   lookupDataSource: Array<LookupItem>;
   lookupClassDataSource: Array<LookupItem>;
 
-  constructor(globalDataProvider: GlobalDataProvider, public lookupService: LookupService, 
+  constructor(globalDataProvider: GlobalDataProvider, public lookupService: LookupService,
               public userService: UserService, public authService: AuthenticationService) {
     this.userProfile = JSON.parse(authService.getUserToken());
     this.lookupDataSource = globalDataProvider.getLookups();

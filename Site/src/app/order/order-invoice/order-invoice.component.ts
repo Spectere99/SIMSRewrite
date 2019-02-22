@@ -566,9 +566,9 @@ export class OrderInvoiceComponent implements OnInit {
 
     doc.text(8, lineLocation, this.getLookupDescription(artInfo.art_placement_code));
     doc.rect(5, lineLocation - 4, 39, 5);
-    doc.text(46, lineLocation, artInfo.colors === null ? '' : artInfo.colors.toString());
+    doc.text(46, lineLocation, (artInfo.colors === null || artInfo.colors === undefined) ? '' : artInfo.colors.toString());
     doc.rect(5, lineLocation - 4, 98, 5);
-    doc.text(105, lineLocation, artInfo.notes === null ? '' : artInfo.notes.toString());
+    doc.text(105, lineLocation, (artInfo.notes === null || artInfo.colors === undefined) ? '' : artInfo.notes.toString());
     // doc.rect(5, lineLocation - 4, 64, 5);
 
     doc.rect(5, lineLocation - 4, 200, 5);

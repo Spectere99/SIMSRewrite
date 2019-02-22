@@ -1,0 +1,28 @@
+<div class="container col-md-12">
+  <div class="row">
+      <dx-data-grid id="gridOrders" [dataSource]="dataSource" [showColumnLines]="true" [showRowLines]="true" [showBorders]="true"
+        [hoverStateEnabled]="true" [rowAlternationEnabled]="false">
+        <dxo-selection mode="single"></dxo-selection>
+        <dxi-column dataField="order_id" caption="Order ID" [visible]="false" [width]="40" [allowFiltering]="false" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="order_number" caption="Order Number" [width]="150" [allowSearch]="true" [allowFiltering]="true" [allowEditing]="true"></dxi-column>
+        <dxi-column dataField="customer.customer_name" caption="Customer" [width]="350" [allowSearch]="true" [allowFiltering]="true" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="order_date" caption="Order Date" [width]="150" [allowSearch]="true" [allowFiltering]="true" [allowEditing]="false"></dxi-column>
+        <dxi-column dataField="order_due_date" caption="Order Due Date" [width]="150" [allowSearch]="true" [allowFiltering]="true" [allowEditing]="false"></dxi-column>
+        <!-- <dxo-search-panel [visible]="true"></dxo-search-panel> -->
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
+        <!-- <dxo-scrolling mode="virtual"></dxo-scrolling> -->
+        <dxo-sorting mode="multiple">
+          <!-- or "multiple" | "none" -->
+        </dxo-sorting>
+        <dxo-column-chooser [enabled]="true"></dxo-column-chooser>
+        <dxo-export [enabled]="true" fileName="Lookup List"></dxo-export>
+        <dxo-paging [pageSize]="50"></dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20, 50]" [showInfo]="true"></dxo-pager>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-editing mode="batch" [allowUpdating]="true" [allowDeleting]="false" [allowAdding]="false">
+        </dxo-editing>
+      </dx-data-grid>
+    </div>
+</div>
+

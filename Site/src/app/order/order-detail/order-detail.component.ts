@@ -326,6 +326,7 @@ export class OrderDetailComponent implements OnInit {
   addArtPlacement(e) {
     const artPlacement = new OrderArtPlacement();
     artPlacement.order_art_placement_id = (this.masterOrder.order_art_placements.length + 1) * -1;
+    artPlacement.art_placement_code = null;
     artPlacement.added_by = this.userProfile.profile.login_id.toUpperCase();
     artPlacement.notes = null;
     artPlacement.order = null;

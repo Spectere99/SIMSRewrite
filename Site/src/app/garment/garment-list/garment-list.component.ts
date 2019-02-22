@@ -158,7 +158,7 @@ export class GarmentListComponent implements OnInit {
           const fpmtTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'fnpmt');
           if (fpmtTask) {
             fpmtTask[0].is_complete = 'Y';
-            fpmtTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();;
+            fpmtTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();
             fpmtTask[0].completed_date = new Date().toISOString();
           }
         }
@@ -167,7 +167,7 @@ export class GarmentListComponent implements OnInit {
             const depTask = this.selectedOrderMaster.order_tasks.filter(p => p.task_code === 'deprc');
             if (depTask) {
               depTask[0].is_complete = 'Y';
-              depTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();;
+              depTask[0].completed_by = this.userProfile.profile.login_id.toUpperCase();
               depTask[0].completed_date = new Date().toISOString();
             }
             // console.log('depost is paid!', this.selectedOrderMaster.order_payments);
