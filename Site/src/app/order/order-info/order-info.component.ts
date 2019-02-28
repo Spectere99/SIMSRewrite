@@ -216,7 +216,7 @@ export class OrderInfoComponent implements OnInit, OnChanges {
             && this.currentOrder.order_type.length > 0;
     }
     if (valid) {
-      valid = this.currentOrder.order_status !== undefined && this.currentOrder.order_status !== null 
+      valid = this.currentOrder.order_status !== undefined && this.currentOrder.order_status !== null
             && this.currentOrder.order_status.length > 0;
     } */
     return valid;

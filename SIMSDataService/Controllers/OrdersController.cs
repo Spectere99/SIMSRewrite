@@ -130,16 +130,19 @@ namespace SIMSDataService.Controllers
             //order.order_id = nextPk;
 
             //Need to set the orderNumber
+            
             DateTime startDate = DateTime.Now.Date;
+            _log.Info(string.Format("POST-OrdersController - order.order_date={0} | startDate={1}", order.order_date, startDate));
             if (order.order_date != null)
             {
                 startDate = order.order_date.Value;
             }
 
             order.order_date = startDate;
-
+            _log.Info(string.Format("POST-OrdersController - updated order_date ={0}", order.order_date));
             List<order> todaysOrders = db.orders.Where(p => p.order_date == startDate).ToList();
 
+            _log.Info(string.Format("POST-OrdersController - todaysOrders.count={0}", todaysOrders.Count));
             if (usePrefix)
             {
                 order.order_number = locationPrefix + order.order_number + (todaysOrders.Count + 1);
@@ -148,7 +151,7 @@ namespace SIMSDataService.Controllers
             {
                 order.order_number = order.order_number + (todaysOrders.Count + 1);
             }
-
+            _log.Info(string.Format("POST-OrdersController - fixedOrderNumber={0}", order.order_number));
             db.orders.Add(order);
 
             try

@@ -189,6 +189,8 @@ export class CustomerOrderListComponent implements OnInit {
     this.selectedOrderMaster.customer = this.customer;
     this.selectedOrderMaster.order_number = this.formatOrderNumber(today);
     this.selectedOrderMaster.order_date = this.toISOLocal(today);
+    console.log('formattedOrderNumber', this.toISOLocal(today));
+    console.log('createNewOrder', this.selectedOrderMaster.order_date);
     this.selectedOrderMaster.taken_user_id = this.userProfile.profile.user_id;
     this.selectedOrderMaster.order_detail = [];
     this.selectedOrderMaster.order_art_placements = [];
@@ -746,7 +748,7 @@ export class CustomerOrderListComponent implements OnInit {
     const timestamp = d.getTime() + timezoneOffset * 1000;
     const correctDate = new Date(timestamp);
 
-    correctDate.setUTCHours(0, 0, 0, 0);
+    // correctDate.setUTCHours(0, 0, 0, 0);
 
     return correctDate.toISOString();
   }

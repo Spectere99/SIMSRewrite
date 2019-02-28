@@ -750,7 +750,7 @@ export class OrderListComponent implements OnInit {
     const timestamp = d.getTime() + timezoneOffset * 1000;
     const correctDate = new Date(timestamp);
 
-    correctDate.setUTCHours(0, 0, 0, 0);
+    // correctDate.setUTCHours(0, 0, 0, 0);
 
     return correctDate.toISOString();
   }
