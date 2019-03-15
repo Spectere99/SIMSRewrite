@@ -611,7 +611,8 @@ export class OrderInvoiceComponent implements OnInit {
     doc.text(195, lineLocation, (this.masterOrder.subtotal === null ? '-' :
       this.cp.transform(this.masterOrder.subtotal.toString(), 'USD', 'symbol')), 'right');
     const non_tax = ((this.masterOrder.total === null) ? 0 : +this.masterOrder.total) -
-                    ((this.masterOrder.subtotal === null) ? 0 : +this.masterOrder.subtotal);
+                    ((this.masterOrder.subtotal === null) ? 0 : +this.masterOrder.subtotal) -
+                    ((this.masterOrder.tax_amount === null) ? 0 : +this.masterOrder.tax_amount);
     doc.text(195, lineLocation + 5, (non_tax === null ? '-' :
       this.cp.transform(non_tax, 'USD', 'symbol')), 'right');
     doc.text(195, lineLocation + 10, (this.masterOrder.tax_rate === null ? '-' :
