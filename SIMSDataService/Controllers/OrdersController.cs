@@ -133,14 +133,14 @@ namespace SIMSDataService.Controllers
             
             DateTime startDate = DateTime.Now.Date;
             _log.Info(string.Format("POST-OrdersController - order.order_date={0} | startDate={1}", order.order_date, startDate));
-            if (order.order_date != null)
-            {
-                startDate = order.order_date.Value;
-            }
+            //if (order.order_date != null)
+            //{
+            //    startDate = order.order_date.Value;
+            //}
 
             order.order_date = startDate;
             _log.Info(string.Format("POST-OrdersController - updated order_date ={0}", order.order_date));
-            List<order> todaysOrders = db.orders.Where(p => p.order_date == startDate).ToList();
+            List<order> todaysOrders = db.orders.Where(p => p.order_date >= startDate).ToList();
 
             _log.Info(string.Format("POST-OrdersController - todaysOrders.count={0}", todaysOrders.Count));
             if (usePrefix)

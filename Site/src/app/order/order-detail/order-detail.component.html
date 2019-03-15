@@ -68,31 +68,31 @@
                 </select>
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.xsmall_qty" (keyup)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.xsmall_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.small_qty" (keyup)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.small_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.med_qty" (keyup)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.med_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.large_qty" (keyup)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.large_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.xl_qty" (keyup)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.xl_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C2xl_qty" (keyup)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.C2xl_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C3xl_qty" (keyup)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.C3xl_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C4xl_qty" (keyup)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.C4xl_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C5xl_qty" (keyup)="onQtyPriceChange($event, i)">
+                <input type="text" size="1" [(ngModel)]="orderDetail.C5xl_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
                 <select class="form-control form-control-sm" style="font-size: 1vw; width:auto;" [ngModel]="orderDetail.other1_type" (ngModelChange)="onOther1TypeSelect($event, orderDetail, 1)">
@@ -103,7 +103,7 @@
                 </select>
               </td>
               <td>
-                <input type="text" size="2" [(ngModel)]="orderDetail.other1_qty" (keyup)="onQtyPriceChange($event, i)">
+                <input type="text" size="2" [(ngModel)]="orderDetail.other1_qty" (keyup)="onQtyChange($event, i)">
               </td>
             </tr>
           </table>
@@ -131,7 +131,7 @@
               <td>
                 <div class="input-group input-group-sm">
                   <span class="input-group-addon">$</span>
-                  <input type="text" class="form-control" placeholder="0.00" size="4" [(ngModel)]="orderDetail.item_price_each" (keyup)="onQtyPriceChange($event, i)">
+                  <input type="text" class="form-control" placeholder="0.00" size="4" [(ngModel)]="orderDetail.item_price_each" (keyup)="onPriceChange($event, i)">
                 </div>
               </td>
               <td style="text-align:center;">${{orderDetail.item_price_ext}}</td>
@@ -277,7 +277,7 @@
             </td>
             <td>{{fee.fee_line_number}}</td>
             <td>
-              <input class="form-control" type="text" size="5" [(ngModel)]="fee.fee_quantity" (keyup)="onFeeChange($event, i);">
+              <input class="form-control" type="text" size="5" [(ngModel)]="fee.fee_quantity" (keyup)="onFeeQtyChange($event, i);">
             </td>
             <td>
               <select class="form-control form-control-sm" style="width:auto;" [(ngModel)]="fee.pricelist_id">

@@ -657,7 +657,9 @@ export class CustomerOrderListComponent implements OnInit {
   }
   cancelChanges() {
     console.log('cancelChanges');
-    this.loadOrder(this.selectedOrderMaster);
+    if (this.selectedOrderMaster.order_id > 0) {
+      this.loadOrder(this.selectedOrderMaster);
+    }
     this.popupVisible = false;
   }
 

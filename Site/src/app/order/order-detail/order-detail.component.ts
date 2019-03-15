@@ -8,6 +8,7 @@ import { LookupService, LookupItem } from '../../_services/lookups.service';
 import { PriceListService, PriceListItem } from '../../_services/pricelist.service';
 import { AuthenticationService } from '../../_services/authentication.service';
 import { WindowRef } from '../../_services/window-ref.service';
+import { isNumeric } from 'rxjs/util/isNumeric';
 import { ArraySortPipe } from '../../_shared/pipes/orderBy.pipe';
 import { OrderTaskListComponent } from '../order-task-list/order-task-list.component';
 
@@ -179,7 +180,7 @@ export class OrderDetailComponent implements OnInit {
   onOrderItemClick(e, orderDetail, idx) {
     orderDetail.item_price_each = '0.00';
     orderDetail.pricelist_id = e;
-    this.onQtyPriceChange(e, idx);
+    this.onPriceChange(e, idx);
   }
 
   onVendorSelect(e, orderDetail, idx) {
@@ -188,7 +189,7 @@ export class OrderDetailComponent implements OnInit {
     if (e === 'gmtpr') {
       orderDetail.taxable_ind = 'N';
       this.onTaxRateChange('N');
-      this.onQtyPriceChange(e, idx);
+      this.onPriceChange(e, idx);
     }
 
   }
@@ -433,10 +434,7 @@ export class OrderDetailComponent implements OnInit {
     this.masterOrder.order_payments.splice(index, 1);
   }
 
-  onQtyPriceChange(e, idx) {
-    // console.log('Order Detail onChange Event', e.target.value);
-    // console.log('Order Index item', idx);
-    // console.log('Order Item Price Change', e.target);
+  onPriceChange(e, idx) {
     if (e.target) {
       // console.log('onQtyPriceChange', e.target.value.length);
       if (e.target.value.length === 0) {
@@ -444,47 +442,115 @@ export class OrderDetailComponent implements OnInit {
         // console.log('onQtyPriceChange', e.target);
       }
 
+      // console.log('onQtyPriceChange:orderDetail', this.masterOrder.order_detail[idx]);
+      let priceValue = e.target.value;
+      if (e.target.value.indexOf(',') > -1) {
+        priceValue = parseFloat(e.target.value.replace(/,/g, ''));
+      }
+      if (isNumeric(priceValue)) {
+        let totalItemQty = 0;
+        // const orderLine = this.order.order_detail[idx];
+        const orderLine = this.masterOrder.order_detail[idx];
+        orderLine.item_price_each = e.target.value;
+        // console.log('orderLine', orderLine);
+        totalItemQty = totalItemQty + ((orderLine.xsmall_qty === undefined) ? 0 : +orderLine.xsmall_qty);
+        totalItemQty = totalItemQty + ((orderLine.small_qty === undefined) ? 0 : +orderLine.small_qty);
+        totalItemQty = totalItemQty + ((orderLine.med_qty === undefined) ? 0 : +orderLine.med_qty);
+        totalItemQty = totalItemQty + ((orderLine.large_qty === undefined) ? 0 : +orderLine.large_qty);
+        totalItemQty = totalItemQty + ((orderLine.xl_qty === undefined) ? 0 : +orderLine.xl_qty);
+        totalItemQty = totalItemQty + ((orderLine.C2xl_qty === undefined) ? 0 : +orderLine.C2xl_qty);
+        totalItemQty = totalItemQty + ((orderLine.C3xl_qty === undefined) ? 0 : +orderLine.C3xl_qty);
+        totalItemQty = totalItemQty + ((orderLine.C4xl_qty === undefined) ? 0 : +orderLine.C4xl_qty);
+        totalItemQty = totalItemQty + ((orderLine.C5xl_qty === undefined) ? 0 : +orderLine.C5xl_qty);
+        totalItemQty = totalItemQty + ((orderLine.other1_qty === undefined) ? 0 : +orderLine.other1_qty);
+        /* this.order.order_detail[idx].item_quantity = totalItemQty;
+        this.order.order_detail[idx].item_price_ext = (totalItemQty * ((orderLine.item_price_each === undefined) ? 0
+          : +orderLine.item_price_each)).toFixed(2); */
+        this.masterOrder.order_detail[idx].item_quantity = totalItemQty;
+        this.masterOrder.order_detail[idx].item_price_ext = (totalItemQty * ((priceValue === undefined) ? 0
+            : +priceValue)).toFixed(2);
+        this.updateTotals();
     }
-    // console.log('onQtyPriceChange:orderDetail', this.masterOrder.order_detail[idx]);
- 
-    let totalItemQty = 0;
-    // const orderLine = this.order.order_detail[idx];
-    const orderLine = this.masterOrder.order_detail[idx];
-    // console.log('orderLine', orderLine);
-    totalItemQty = totalItemQty + ((orderLine.xsmall_qty === undefined) ? 0 : +orderLine.xsmall_qty);
-    totalItemQty = totalItemQty + ((orderLine.small_qty === undefined) ? 0 : +orderLine.small_qty);
-    totalItemQty = totalItemQty + ((orderLine.med_qty === undefined) ? 0 : +orderLine.med_qty);
-    totalItemQty = totalItemQty + ((orderLine.large_qty === undefined) ? 0 : +orderLine.large_qty);
-    totalItemQty = totalItemQty + ((orderLine.xl_qty === undefined) ? 0 : +orderLine.xl_qty);
-    totalItemQty = totalItemQty + ((orderLine.C2xl_qty === undefined) ? 0 : +orderLine.C2xl_qty);
-    totalItemQty = totalItemQty + ((orderLine.C3xl_qty === undefined) ? 0 : +orderLine.C3xl_qty);
-    totalItemQty = totalItemQty + ((orderLine.C4xl_qty === undefined) ? 0 : +orderLine.C4xl_qty);
-    totalItemQty = totalItemQty + ((orderLine.C5xl_qty === undefined) ? 0 : +orderLine.C5xl_qty);
-    totalItemQty = totalItemQty + ((orderLine.other1_qty === undefined) ? 0 : +orderLine.other1_qty);
-    /* this.order.order_detail[idx].item_quantity = totalItemQty;
-    this.order.order_detail[idx].item_price_ext = (totalItemQty * ((orderLine.item_price_each === undefined) ? 0
-      : +orderLine.item_price_each)).toFixed(2); */
+  }
+  }
+  onQtyChange(e, idx) {
+    // console.log('Order Detail onChange Event', e.target.value);
+    // console.log('Order Index item', idx);
+    // console.log('Order Item Price Change', e.target);
+    if (e.target) {
+        // console.log('onQtyPriceChange', e.target.value.length);
+        if (e.target.value.length === 0) {
+          e.target.value = null;
+          // console.log('onQtyPriceChange', e.target);
+        }
 
-    this.masterOrder.order_detail[idx].item_quantity = totalItemQty;
-    this.masterOrder.order_detail[idx].item_price_ext = (totalItemQty * ((orderLine.item_price_each === undefined) ? 0
-        : +orderLine.item_price_each)).toFixed(2);
-    this.updateTotals();
+        // console.log('onQtyPriceChange:orderDetail', this.masterOrder.order_detail[idx]);
+        let priceValue = e.target.value;
+        if (e.target.value.indexOf(',') > -1) {
+          priceValue = parseFloat(e.target.value.replace(/,/g, ''));
+        }
+        if (isNumeric(priceValue)) {
+          let totalItemQty = 0;
+          // const orderLine = this.order.order_detail[idx];
+          const orderLine = this.masterOrder.order_detail[idx];
+          // orderLine.item_price_each = e.target.value;
+          // console.log('orderLine', orderLine);
+          totalItemQty = totalItemQty + ((orderLine.xsmall_qty === undefined) ? 0 : +orderLine.xsmall_qty);
+          totalItemQty = totalItemQty + ((orderLine.small_qty === undefined) ? 0 : +orderLine.small_qty);
+          totalItemQty = totalItemQty + ((orderLine.med_qty === undefined) ? 0 : +orderLine.med_qty);
+          totalItemQty = totalItemQty + ((orderLine.large_qty === undefined) ? 0 : +orderLine.large_qty);
+          totalItemQty = totalItemQty + ((orderLine.xl_qty === undefined) ? 0 : +orderLine.xl_qty);
+          totalItemQty = totalItemQty + ((orderLine.C2xl_qty === undefined) ? 0 : +orderLine.C2xl_qty);
+          totalItemQty = totalItemQty + ((orderLine.C3xl_qty === undefined) ? 0 : +orderLine.C3xl_qty);
+          totalItemQty = totalItemQty + ((orderLine.C4xl_qty === undefined) ? 0 : +orderLine.C4xl_qty);
+          totalItemQty = totalItemQty + ((orderLine.C5xl_qty === undefined) ? 0 : +orderLine.C5xl_qty);
+          totalItemQty = totalItemQty + ((orderLine.other1_qty === undefined) ? 0 : +orderLine.other1_qty);
+          /* this.order.order_detail[idx].item_quantity = totalItemQty;
+          this.order.order_detail[idx].item_price_ext = (totalItemQty * ((orderLine.item_price_each === undefined) ? 0
+            : +orderLine.item_price_each)).toFixed(2); */
+          this.masterOrder.order_detail[idx].item_quantity = totalItemQty;
+          this.masterOrder.order_detail[idx].item_price_ext = (totalItemQty * ((orderLine.item_price_each === undefined) ? 0
+              : +orderLine.item_price_each)).toFixed(2);
+          this.updateTotals();
+      }
+    }
   }
 
+  onFeeQtyChange(e, idx) {
+    const feeLine = this.masterOrder.order_fees[idx];
+    let feeQty = parseFloat(e.target.value.replace(/,/g, ''));
+    if (e.target.value.indexOf(',') > -1) {
+      feeQty = parseFloat(e.target.value.replace(/,/g, ''));
+    }
+    if (isNumeric(feeQty)) {
+      feeLine.fee_price_ext = '';
+      feeLine.fee_quantity = e.target.value;
+      feeLine.fee_price_ext = (+feeQty * +feeLine.fee_price_each).toFixed(2);
+
+      this.updateTotals();
+    }
+  }
   onFeeChange(e, idx) {
     // const feeLine = this.orderFees[idx];
     const feeLine = this.masterOrder.order_fees[idx];
+    let feeValue = e.target.value;
+    if (e.target.value.indexOf(',') > -1 ) {
+      feeValue = parseFloat(e.target.value.replace(/,/g, ''));
+    }
+    if (isNumeric(feeValue)) {
+      feeLine.fee_price_ext = '';
+      feeLine.fee_price_each = e.target.value;
+      feeLine.fee_price_ext = (+feeLine.fee_quantity * +feeValue).toFixed(2);
 
-    feeLine.fee_price_ext = (+feeLine.fee_quantity * +feeLine.fee_price_each).toFixed(2);
-
-    this.updateTotals();
+      this.updateTotals();
+    }
   }
   onTaxRateChange(e) {
     /* for (let x = 0; x < this.order.order_detail.length; x++) {
       this.onQtyPriceChange(e, x);
     } */
     for (let x = 0; x < this.masterOrder.order_detail.length; x++) {
-      this.onQtyPriceChange(e, x);
+      this.onPriceChange(e, x);
     }
     this.updateTotals();
   }

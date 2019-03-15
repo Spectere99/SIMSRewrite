@@ -241,8 +241,8 @@ export class OrderInvoiceComponent implements OnInit {
         });
       }
       // console.log('PaymentLineLocation', paymentLineLocation);
-      this.buildTotalSummaryHeader(doc, 250);
-      this.buildTotalSummary(doc, 250);
+      this.buildTotalSummaryHeader(doc, 245);
+      this.buildTotalSummary(doc, 245);
 
       this.buildInvoiceMessage(doc);
 
@@ -467,14 +467,15 @@ export class OrderInvoiceComponent implements OnInit {
     doc.setFontType('normal');
 
     doc.text(150, lineLocation, 'Subtotal:');
-    doc.text(150, lineLocation + 5, 'Tax Rate:');
-    doc.text(150, lineLocation + 10, 'Tax:');
-    doc.text(150, lineLocation + 15, 'Shipping:');
-    doc.text(150, lineLocation + 20, 'Total:');
-    doc.text(150, lineLocation + 25, 'Payments:');
+    doc.text(150, lineLocation + 5, 'Non-taxable:');
+    doc.text(150, lineLocation + 10, 'Tax Rate:');
+    doc.text(150, lineLocation + 15, 'Tax:');
+    doc.text(150, lineLocation + 20, 'Shipping:');
+    doc.text(150, lineLocation + 25, 'Total:');
+    doc.text(150, lineLocation + 30, 'Payments:');
 
     doc.setFontType('bolditalic');
-    doc.text(150, lineLocation + 30, 'Balance Due:');
+    doc.text(150, lineLocation + 35, 'Balance Due:');
 
   }
 
@@ -609,19 +610,23 @@ export class OrderInvoiceComponent implements OnInit {
     // console.log('buildTotalSummary', this.masterOrder);
     doc.text(195, lineLocation, (this.masterOrder.subtotal === null ? '-' :
       this.cp.transform(this.masterOrder.subtotal.toString(), 'USD', 'symbol')), 'right');
-    doc.text(195, lineLocation + 5, (this.masterOrder.tax_rate === null ? '-' :
+    const non_tax = ((this.masterOrder.total === null) ? 0 : +this.masterOrder.total) -
+                    ((this.masterOrder.subtotal === null) ? 0 : +this.masterOrder.subtotal);
+    doc.text(195, lineLocation + 5, (non_tax === null ? '-' :
+      this.cp.transform(non_tax, 'USD', 'symbol')), 'right');
+    doc.text(195, lineLocation + 10, (this.masterOrder.tax_rate === null ? '-' :
       this.masterOrder.tax_rate.toString() + '%'), 'right');
-    doc.text(195, lineLocation + 10, (this.masterOrder.tax_amount === null ? '-' :
+    doc.text(195, lineLocation + 15, (this.masterOrder.tax_amount === null ? '-' :
       this.cp.transform(this.masterOrder.tax_amount.toString(), 'USD', 'symbol')), 'right');
-    doc.text(195, lineLocation + 15, (this.masterOrder.shipping === null ? '-' :
+    doc.text(195, lineLocation + 20, (this.masterOrder.shipping === null ? '-' :
       this.cp.transform(this.masterOrder.shipping.toString(), 'USD', 'symbol')), 'right');
-    doc.text(195, lineLocation + 20, (this.masterOrder.total === null ? '-' :
+    doc.text(195, lineLocation + 25, (this.masterOrder.total === null ? '-' :
       this.cp.transform(this.masterOrder.total.toString(), 'USD', 'symbol')), 'right');
-    doc.text(195, lineLocation + 25, (this.masterOrder.payments === null ? '-' :
+    doc.text(195, lineLocation + 30, (this.masterOrder.payments === null ? '-' :
       this.cp.transform(this.masterOrder.payments.toString(), 'USD', 'symbol')), 'right');
 
     doc.setFontType('bold');
-    doc.text(195, lineLocation + 30, '$' + this.masterOrder.balance_due === null ? '' :
+    doc.text(195, lineLocation + 35, '$' + this.masterOrder.balance_due === null ? '' :
       this.cp.transform(this.masterOrder.balance_due.toString(), 'USD', 'symbol'), 'right');
   }
 
