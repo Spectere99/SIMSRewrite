@@ -3,7 +3,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule, APP_INITIALIZER, ErrorHandler, Injectable, Injector, InjectionToken } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule, Routes } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpClientJsonpModule } from '@angular/common/http';
 import { Http, HttpModule, Headers, RequestMethod, RequestOptions } from '@angular/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -17,6 +17,9 @@ import { MatIconModule, MatSelectModule, MatInputModule, MatButtonModule,
   MatDatepickerModule, MatNativeDateModule, MatCheckboxModule,
   MatExpansionModule, MatDialogModule, MatSnackBarModule, MatCardModule,
   MatChipsModule, MatTabsModule} from '@angular/material';
+
+import { HttpClientModule } from '@angular/common/http';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 import { ConfirmDialogComponent } from './_shared/confirm/confirm.component';
 
@@ -78,6 +81,7 @@ import { PriceListComponent } from './admin/price-list/price-list.component';
 import { PricelistListComponent } from './admin/price-list/pricelist-list/pricelist-list.component';
 import { NumberCorrectionComponent } from './admin/number-correction/number-correction.component';
 import { NumberListComponent } from './admin/number-correction/number-list/number-list.component';
+import { IntegrationComponent } from './admin/integration/integration.component';
 
 /* const appRoutes: Routes = [
   { path: 'Customer', component: CustomerComponent },
@@ -152,6 +156,7 @@ export class SentryErrorHandler implements ErrorHandler {
     PricelistListComponent,
     NumberCorrectionComponent,
     NumberListComponent,
+    IntegrationComponent,
   ],
   imports: [
     NgbModule.forRoot(),
@@ -178,7 +183,9 @@ export class SentryErrorHandler implements ErrorHandler {
     MatSnackBarModule,
     MatCardModule,
     MatChipsModule,
-    MatTabsModule
+    MatTabsModule,
+    HttpClientJsonpModule,
+    OAuthModule.forRoot()
     ],
   providers: [DatePipe, ArraySortPipe, UpperCasePipe, AuthenticationService, AuthGuard,
               LookupService, PriceListService, UserService, GlobalDataProvider, WindowRef,

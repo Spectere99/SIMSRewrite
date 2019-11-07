@@ -181,7 +181,7 @@ export class ContactAddressComponent implements OnInit {
   }
 
   isValid(): boolean {
-    let valid = true;
+    let valid = false;
     if (this.customer.customer_address && this.customer.customer_address.length > 0) {
       // console.log('isValid', this.customer.customer_address);
       valid = false;

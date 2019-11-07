@@ -282,7 +282,7 @@ export class OrderInvoiceComponent implements OnInit {
     doc.setFontSize(6);
     doc.setFontType('normal');
     let disclaimer = 'All artwork and custom designs are for the use only of the individual or organization paying for the designs.';
-    disclaimer = disclaimer.concat(' The "screens" remain the property of Southpaw Screen Printing.');
+    disclaimer = disclaimer.concat(' The "screens" remain the property of Metro Print Screen Printing.');
     doc.text(105, 291, disclaimer, 'center');
 
   }

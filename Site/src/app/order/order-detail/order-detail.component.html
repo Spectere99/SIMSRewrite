@@ -58,41 +58,41 @@
                 </select>
               </td>
               <td>
-                <input class="form-control" type="text" size="7" [(ngModel)]="orderDetail.color_code">
+                <input class="form-control" type="text" size="8" [(ngModel)]="orderDetail.color_code">
               </td>
               <td>
-                <select class="form-control form-control-sm" style="font-size: 11px; width:auto;" [(ngModel)]="orderDetail.style_code">
+                <select class="form-control form-control-sm" style="font-size: 10px; width:auto;" [(ngModel)]="orderDetail.style_code">
                   <option *ngFor="let itm of styleTypes" [value]="itm.char_mod">
                     {{itm.description}}
                   </option>
                 </select>
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.xsmall_qty" (keyup)="onQtyChange($event, i)">
+                <input class="form-control" type="text" size="1" [(ngModel)]="orderDetail.xsmall_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.small_qty" (keyup)="onQtyChange($event, i)">
+                <input class="form-control" type="text" size="1" [(ngModel)]="orderDetail.small_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.med_qty" (keyup)="onQtyChange($event, i)">
+                <input class="form-control" type="text" size="1" [(ngModel)]="orderDetail.med_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.large_qty" (keyup)="onQtyChange($event, i)">
+                <input class="form-control" type="text" size="1" [(ngModel)]="orderDetail.large_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.xl_qty" (keyup)="onQtyChange($event, i)">
+                <input class="form-control" type="text" size="1" [(ngModel)]="orderDetail.xl_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C2xl_qty" (keyup)="onQtyChange($event, i)">
+                <input class="form-control" type="text" size="1" [(ngModel)]="orderDetail.C2xl_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C3xl_qty" (keyup)="onQtyChange($event, i)">
+                <input class="form-control" type="text" size="1" [(ngModel)]="orderDetail.C3xl_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C4xl_qty" (keyup)="onQtyChange($event, i)">
+                <input class="form-control" type="text" size="1" [(ngModel)]="orderDetail.C4xl_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
-                <input type="text" size="1" [(ngModel)]="orderDetail.C5xl_qty" (keyup)="onQtyChange($event, i)">
+                <input class="form-control" type="text" size="1" [(ngModel)]="orderDetail.C5xl_qty" (keyup)="onQtyChange($event, i)">
               </td>
               <td>
                 <select class="form-control form-control-sm" style="font-size: 1vw; width:auto;" [ngModel]="orderDetail.other1_type" (ngModelChange)="onOther1TypeSelect($event, orderDetail, 1)">
@@ -103,7 +103,7 @@
                 </select>
               </td>
               <td>
-                <input type="text" size="2" [(ngModel)]="orderDetail.other1_qty" (keyup)="onQtyChange($event, i)">
+                <input class="form-control" type="text" size="2" [(ngModel)]="orderDetail.other1_qty" (keyup)="onQtyChange($event, i)">
               </td>
             </tr>
           </table>
@@ -126,12 +126,12 @@
                 <button class="btn-default" type="button" style="font-size:12px;" (click)="copyOrderLine($event, i)">Copy</button>
               </td>
               <td style="text-align:center;">
-                <input type="text" class="form-control" size="1" [(ngModel)]="orderDetail.item_quantity" readonly>
+                <input type="text" class="form-control" size="2" [(ngModel)]="orderDetail.item_quantity" readonly>
               </td>
               <td>
                 <div class="input-group input-group-sm">
                   <span class="input-group-addon">$</span>
-                  <input type="text" class="form-control" placeholder="0.00" size="4" [(ngModel)]="orderDetail.item_price_each" (keyup)="onPriceChange($event, i)">
+                  <input type="text" class="form-control" placeholder="0.00" size="5" [(ngModel)]="orderDetail.item_price_each" (keyup)="onPriceChange($event, i)">
                 </div>
               </td>
               <td style="text-align:center;">${{orderDetail.item_price_ext}}</td>

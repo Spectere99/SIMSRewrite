@@ -69,9 +69,10 @@ export class CustomerItemComponent implements OnInit {
   }
 
   applyChanges() {
-    // console.log('Address is Valid', this.contactAddressCmpt.isValid());
+    console.log('Address is Valid', this.contactAddressCmpt.isValid());
+    console.log('Contact is Valid', this.contactInfoCmpt.isValid());
     this.loading = true;
-    if (this.contactAddressCmpt.isValid()) {
+    if (this.contactAddressCmpt.isValid() && this.contactInfoCmpt.isValid()) {
       this.customerInfoCmpt.batchSave(this.customer.customer_id).subscribe(res => {
         // console.log('contact-list calling contactsComponent batchSave', res);
         this.contactInfoCmpt.batchSave(res);
@@ -100,7 +101,7 @@ export class CustomerItemComponent implements OnInit {
       // this.popupVisible = this.leaveWindowOpen;
     } else {
       this.loading = false;
-      alert('Customer contact Address Type is required.');
+      alert('Customer contact person and address is required.');
     }
   }
 

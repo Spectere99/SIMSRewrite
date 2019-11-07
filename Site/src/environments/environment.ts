@@ -5,11 +5,12 @@
 // export const baseUrl = 'http://spserver:8888';
 export const baseUrl = 'http://localhost:56543';
 export const environmentName = 'Prod';
-export const version = '2.26';
+export const version = '2.35';
 export const connectionTimeout = 100000;
 export const environment = {
   production: false,
   authEndpoint: baseUrl + '/api/Security',
+  integrationEndpoint: baseUrl + '/api/QBIntegration',
   odataEndpoint: baseUrl + '/odata/',
   reportingEndpoint: baseUrl + '/odata/',
   artUploadURL: baseUrl + '/api/ArtFile',  // DO NOT USE Slash at end!

@@ -723,7 +723,7 @@ export class CustomerOrderListComponent implements OnInit {
     this.summaryVisible = true;
   }
   ngOnInit() {
-    // console.log('ngInit on customer-order-list', this.customer);
+    console.log('ngInit on customer-order-list', this.customer);
     this.dataSource = null;
     if (this.customer) {
       if (this.customer.customer_id > 0) {

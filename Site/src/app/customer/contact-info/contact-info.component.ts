@@ -184,6 +184,24 @@ export class ContactInfoComponent implements OnInit {
     }
     return formattedNumber;
   }
+
+  isValid(): boolean {
+    let valid = false;
+    if (this.customer.customer_person && this.customer.customer_person.length > 0) {
+      console.log('isValid', this.customer.customer_person);
+      valid = false;
+      for (let x = 0; x < this.customer.customer_person.length; x++) {
+        if (this.customer.customer_person[x].person_type) {
+          valid = true;
+          } else {
+            valid = false;
+            break;
+          }
+      }
+    }
+    return valid;
+  }
+
   ngOnInit() {
   }
 

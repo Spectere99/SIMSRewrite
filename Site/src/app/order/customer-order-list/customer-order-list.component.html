@@ -3,7 +3,7 @@
     <h6>Filter by using the corresponding column. (Expand each row to view associated image files).</h6>
     <hr>
     <div class="col-md-2">
-      <input *ngIf="!readOnly" type="button" class="btn btn-primary btn-sm" value="New Order" (click)="createNewOrder(customerId);">
+      <input *ngIf="customer.customer_id > 0" type="button" class="btn btn-primary btn-sm" value="New Order" (click)="createNewOrder(customerId);">
     </div>
     <div class="row">
       <div class="col-lg-12">
@@ -59,7 +59,7 @@
           </div>
         </dx-data-grid>
         <!-- START POPUP EDITOR MARKUP -->
-        <dx-popup class="popup" [showTitle]="true" title="Details" [fullScreen]="false" 
+        <dx-popup class="popup" [showTitle]="true" title="Details" [fullScreen]="true" 
           [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="popupVisible" (onHiding)="popupHiding($event)">
           <div *dxTemplate="let data of 'content'" style="height:100%; width: 100%;">
             <div class="row">

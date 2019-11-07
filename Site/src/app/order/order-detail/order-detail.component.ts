@@ -470,26 +470,25 @@ export class OrderDetailComponent implements OnInit {
         this.masterOrder.order_detail[idx].item_price_ext = (totalItemQty * ((priceValue === undefined) ? 0
             : +priceValue)).toFixed(2);
         this.updateTotals();
+    } else {
+      this.masterOrder.order_detail[idx].item_price_ext = '0';
     }
   }
   }
   onQtyChange(e, idx) {
-    // console.log('Order Detail onChange Event', e.target.value);
-    // console.log('Order Index item', idx);
-    // console.log('Order Item Price Change', e.target);
     if (e.target) {
-        // console.log('onQtyPriceChange', e.target.value.length);
         if (e.target.value.length === 0) {
           e.target.value = null;
           // console.log('onQtyPriceChange', e.target);
         }
 
         // console.log('onQtyPriceChange:orderDetail', this.masterOrder.order_detail[idx]);
-        let priceValue = e.target.value;
+        /* let priceValue = e.target.value;
         if (e.target.value.indexOf(',') > -1) {
           priceValue = parseFloat(e.target.value.replace(/,/g, ''));
-        }
-        if (isNumeric(priceValue)) {
+        } */
+        // console.log('priceValue is numeric', isNumeric(priceValue), priceValue);
+        // if (isNumeric(priceValue)) {
           let totalItemQty = 0;
           // const orderLine = this.order.order_detail[idx];
           const orderLine = this.masterOrder.order_detail[idx];
@@ -508,11 +507,14 @@ export class OrderDetailComponent implements OnInit {
           /* this.order.order_detail[idx].item_quantity = totalItemQty;
           this.order.order_detail[idx].item_price_ext = (totalItemQty * ((orderLine.item_price_each === undefined) ? 0
             : +orderLine.item_price_each)).toFixed(2); */
+
+          const priceValue = parseFloat(orderLine.item_price_each.replace(/,/g, ''));
           this.masterOrder.order_detail[idx].item_quantity = totalItemQty;
-          this.masterOrder.order_detail[idx].item_price_ext = (totalItemQty * ((orderLine.item_price_each === undefined) ? 0
-              : +orderLine.item_price_each)).toFixed(2);
+          /* this.masterOrder.order_detail[idx].item_price_ext = (totalItemQty * ((orderLine.item_price_each === undefined) ? 0
+              : +orderLine.item_price_each)).toFixed(2); */
+          this.masterOrder.order_detail[idx].item_price_ext = (totalItemQty * priceValue).toFixed(2);
           this.updateTotals();
-      }
+     // }
     }
   }
 
